@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
-import { MODELLING_CHAPTERS, MODELLING_JOURNEYS, getModellingChapter } from '../src/lib/modelling-navigation.ts';
+import { MODELLING_CHAPTERS, MODELLING_JOURNEYS, ONTOLOGY_JUDGEMENT_CHAPTERS, getModellingChapter } from '../src/lib/modelling-navigation.ts';
 import { searchEntries } from '../src/lib/site-search.mjs';
 import {
   STANDARDS_PROFILE,
@@ -33,12 +33,8 @@ const visualKinds = [
 const sourceContracts = {
   'from-question-to-candidate': ['ODR-0046', 'ODR-0038', 'ODR-0045', 'ODR-0060', 'ODR-0059'],
   'scope-and-package': ['ODR-0046', 'ADR-0063', 'ADR-0067'],
-  'classes-and-relationships': ['ODR-0047', 'ODR-0037', 'ODR-0042', 'ODR-0059', 'ODR-0063'],
-  'roles-and-phases': ['ODR-0041', 'ODR-0042', 'ODR-0053', 'ODR-0059'],
-  'context-map-records': ['ODR-0064', 'ODR-0051', 'ODR-0056', 'ODR-0058'],
   'mapping-records': ['ODR-0051', 'ODR-0056', 'ODR-0058', 'ODR-0059'],
   'meaning-checks-and-delivery': ['ODR-0037', 'ODR-0043', 'ODR-0044', 'ODR-0050'],
-  'evidence-and-time': ['ODR-0052', 'ODR-0053', 'ODR-0044', 'ODR-0064'],
   'sensitivity-and-policy': ['ODR-0054', 'ODR-0057'],
 };
 
@@ -54,10 +50,10 @@ const literalExample = (source, name) => {
   return source.slice(contentStart, end);
 };
 
-test('one registry supplies 25 canonical pages across four task-based journeys', () => {
+test('one registry supplies the canonical pages across four task-based journeys', () => {
   assert.deepEqual(MODELLING_JOURNEYS.map(({ url }) => url),
     ['understand', 'explore', 'contribute', 'method'].map((slug) => `${sectionRoot}/${slug}`));
-  assert.equal(routes.length, 25);
+  assert.ok(ONTOLOGY_JUDGEMENT_CHAPTERS.length >= 6);
   assert.equal(new Set(routes).size, routes.length);
   for (const group of MODELLING_JOURNEYS) {
     assert.ok(group.children?.length, `${group.url} has no chapters`);
@@ -71,9 +67,10 @@ test('one registry supplies 25 canonical pages across four task-based journeys',
     assert.ok(existsSync(path.join(root, relative)), `${route} has no page`);
     const source = read(relative);
     assert.ok(source.split('\n').length < 500, `${relative} exceeds the project file limit`);
-    assert.match(source, /import ModellingLayout from ['"]@\/layouts\/ModellingLayout\.astro['"]/u);
-    assert.match(source, /<ModellingLayout\s/u);
-    assert.match(source, /<\/ModellingLayout>/u);
+    const template = route.startsWith(`${sectionRoot}/method`) ? 'OntologyChapter' : 'ModellingLayout';
+    assert.ok(source.includes(`import ${template} from '@/layouts/${template}.astro'`));
+    assert.ok(source.includes(`<${template} `));
+    assert.ok(source.includes(`</${template}>`));
     assert.doesNotMatch(source, /JourneyNav|<style\b|<h1\b|Astro\.redirect|http-equiv=["']refresh/iu);
     assert.doesNotMatch(source, /\bH\s*(?:&(?:amp;|#38;|#x26;)?|and)\s*M\b|Hennes|Mauritz/iu,
       `${relative} exposes source-business content`);
@@ -100,6 +97,21 @@ test('one registry supplies 25 canonical pages across four task-based journeys',
   assert.match(learning, /details:not\(\.modelling-detail\)\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;[^}]*padding:\s*0;/su);
   const methodLanding = textOf('method');
   assert.doesNotMatch(methodLanding, /ChapterEnd|hideFooter/u);
+});
+
+test('modelling judgement has a complete, visible, locally grounded teaching spine', () => {
+  for (const chapter of ONTOLOGY_JUDGEMENT_CHAPTERS) {
+    const source = read(sourcePath(chapter.url));
+    assert.match(source, /<JudgementDiagram\b/u, `${chapter.url} needs its redesigned visual`);
+    assert.doesNotMatch(source, /<details\b|<ModellingVisual\b|<EnrichmentVisual\b|<PrincipleSpread\b/u);
+    const decisions = [...source.matchAll(/href="\/modelling\/odr\/(odr-\d{4})"/gu)];
+    assert.ok(decisions.length, `${chapter.url} lacks a governing decision link`);
+    for (const [, decision] of decisions) {
+      assert.ok(readdirSync(path.join(root, 'docs/ontology/odr'))
+        .some(file => file.toLowerCase().startsWith(`${decision}-`) && file.endsWith('.md')),
+      `${chapter.url} links a missing local decision: ${decision}`);
+    }
+  }
 });
 
 test('selected concern numbers, dispositions and local adoption receipts remain inspectable', () => {
@@ -140,23 +152,20 @@ test('selected concern numbers, dispositions and local adoption receipts remain 
       assert.ok(receipt.includes(record), `${chapter} receipt lacks ${record}`);
       if (record.startsWith('ODR-')) assert.ok(receipt.includes(`href="/modelling/odr/${record.toLowerCase()}"`), `${chapter} lacks the local ${record} link`);
     }
-    assert.match(source, /claim="method"/u);
+    assert.match(source, /<OntologyChapter[^>]+section="reference"/u);
   }
 });
 
 test('technical examples retain distinct identities, event dates and applicability contracts', () => {
-  const entities = literalExample(textOf('method/classes-and-relationships'), 'example');
-  for (const id of ['building', 'dwelling-1', 'dwelling-2', 'address-1', 'title-record']) {
-    assert.match(entities, new RegExp(`ex:${id} a model:`, 'u'));
-  }
+  const entities = literalExample(textOf('method/classes-and-relationships'), 'illustration');
+  assert.match(entities, /ex:inspection-12-aug a model:Inspection/u);
+  assert.match(entities, /model:hasSubject ex:flat-1/u);
+  assert.equal([...entities.matchAll(/model:reportsInspection ex:inspection-12-aug/gu)].length, 2);
   assert.doesNotMatch(entities, /owl:sameAs|owl:equivalentClass/u);
-  const provenance = literalExample(textOf('method/evidence-and-time'), 'provenance');
-  assert.match(provenance, /ex:inspection a model:Inspection, prov:Activity/u);
-  for (const [id, date] of [['inspection', '2026-08-12'], ['report-v1', '2026-08-14'], ['report-v2', '2026-08-20']]) {
-    assert.match(provenance, new RegExp(`ex:${id} a [\\s\\S]*?"${date}T`, 'u'));
-  }
-  assert.equal([...provenance.matchAll(/model:reportsInspection ex:inspection/gu)].length, 2);
-  assert.match(provenance, /prov:wasRevisionOf ex:report-v1/u);
+  const provenance = textOf('method/evidence-and-time');
+  for (const date of ['12 August', '14 August', '20 August', '21 August']) assert.ok(provenance.includes(date));
+  assert.match(provenance, /Valid time[\s\S]*Recorded or transaction time/u);
+  assert.match(provenance, /Both reports refer to the same visit/u);
   const contracts = textOf('method/meaning-checks-and-delivery');
   const applicability = literalExample(contracts, 'applicability');
   const shape = literalExample(contracts, 'shape');
@@ -182,7 +191,7 @@ test('technical examples retain distinct identities, event dates and applicabili
   assert.match(shape, /sh:minCount 1/u);
   assert.doesNotMatch(shape, /rdfs:domain|schema:domainIncludes/u);
   const roles = textOf('method/roles-and-phases');
-  assert.ok(roles.includes('https://www.loa.istc.cnr.it/old/Papers/CACM2002.pdf'));
+  assert.ok(textOf('method/foundational-analysis').includes('https://www.loa.istc.cnr.it/old/Papers/CACM2002.pdf'));
   for (const token of ['roleOf', 'phaseOf', 'ODR-0041', 'ODR-0042']) assert.ok(roles.includes(token));
 });
 
@@ -247,7 +256,7 @@ test('shared server-rendered figures have distinct descriptions and complete tex
     for (const figure of figures) {
       assert.match(figure, /<figcaption\b[^>]*>[\s\S]+?<\/figcaption>/u, `${route} has an uncaptioned figure`);
       const alternative = figure.replace(/<figcaption\b[\s\S]*?<\/figcaption>/gu, '').replace(/<ModellingVisual\b[^>]*\/>/gu, '');
-      assert.match(alternative, /<(?:p|dl|ol|ul|table|blockquote)\b/u, `${route} lacks a semantic text equivalent`);
+      assert.match(alternative, /<(?:p|dl|ol|ul|table|blockquote|ReferencePlate)\b/u, `${route} lacks a semantic text equivalent`);
       const visuals = [...figure.matchAll(/<ModellingVisual\b[^>]*kind="([^"]+)"[^>]*\/>/gu)];
       assert.ok(visuals.length <= 1, `${route} duplicates a visual within one figure`);
       for (const [, kind] of visuals) assert.ok(visualKinds.includes(kind), `${route} uses unknown visual ${kind}`);
@@ -312,7 +321,8 @@ test('the technical method adopts and explains the RDF, SPARQL and SHACL 1.2 fam
   assert.doesNotMatch(chapter, /rdf11-concepts|sparql11-query|www\.w3\.org\/TR\/shacl\//u);
 
   const method = textOf('method');
-  assert.ok(method.includes('href="/semantic-modelling/method/languages-and-profiles#semantic-standards-baseline"'));
+  assert.match(method, /ONTOLOGY_REFERENCE_CHAPTERS\.map/u);
+  assert.match(method, /RDF 1\.2, SPARQL 1\.2 and SHACL 1\.2/u);
   const register = textOf('method/standards-and-decisions');
   const languageRule = register.match(/records: 'ODR-0043 · ODR-0044'[\s\S]*?\},/u)?.[0] ?? '';
   for (const standard of ['RDF 1.2', 'SPARQL 1.2', 'SHACL 1.2']) assert.ok(languageRule.includes(standard));

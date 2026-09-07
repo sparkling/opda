@@ -1,0 +1,23 @@
+---
+import { createHash } from 'node:crypto';
+import { judgementSource, type JudgementDiagramKind } from './diagram-sources';
+import '@/styles/modelling/judgement-diagrams.css';
+
+interface Props {
+  kind: JudgementDiagramKind;
+  caption?: string;
+  id?: string;
+}
+const { kind, caption, id = '' } = Astro.props;
+const key = createHash('sha256').update([Astro.url.pathname, kind, caption ?? '', id].join('\0')).digest('hex').slice(0, 16);
+const instance = `judgement-${kind}-${key}`;
+const figure = judgementSource(kind, instance, caption);
+---
+<figure class="judgement-figure" data-judgement-diagram={kind} aria-labelledby={`${instance}-caption`}>
+  <div class="judgement-image" set:html={figure.svg} />
+  <figcaption class="judgement-caption" id={`${instance}-caption`}>
+    <strong class="judgement-caption__title">{figure.title}</strong>
+    {caption ?? figure.description}
+  </figcaption>
+  <div class="judgement-equivalent-wrap" set:html={figure.equivalent} />
+</figure>

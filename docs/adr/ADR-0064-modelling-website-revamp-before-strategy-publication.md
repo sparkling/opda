@@ -185,6 +185,25 @@ separate migration decision authorises replacement of current pages.
 
 ## Amendments
 
+- **2026-09-07 — Re-author the reusable source teaching, with a new editorial design.**
+  The operator rejected relocating the complete schema-derived reference and
+  authorised a complete rewrite of its reusable modelling explanations within
+  Ontology modelling. A six-chapter judgement core covers foundational analysis,
+  representation, roles and change, context connections, evidence and time, and
+  reasoning from sources. The remaining language, vocabulary, constraint, mapping,
+  sensitivity and decision references retain their distinct subject ownership
+  within the same new chapter layout. Navigation and search expose both parts.
+  New diagrams, comparison infographics and paired-mode illustration replace the
+  old technical teaching visuals. Local ODRs and their amendments govern the
+  rewrite; historical identity answers, category tags, simulated council votes,
+  implementation counts and retired inference conventions do not transfer as
+  method. Established context boundaries remain inputs. Source transformation,
+  runtime application design and detailed JSON-LD lessons remain excluded.
+  This authorises local implementation and validation, not publication or
+  adoption of a candidate ontology. It supersedes the 5 September constraint to
+  retain the previous modelling-page components, not the shared site authority
+  and navigation contracts. Changes to circulated routes still require an
+  explicit destination and tested migration, rather than accidental dead links.
 - **2026-09-07 — Two-audience teaching enrichment implemented locally.** The
   operator authorised implementation of the reviewed enrichment proposals using a
   Ruflo-tracked swarm, native Codex authors and an independent native Claude

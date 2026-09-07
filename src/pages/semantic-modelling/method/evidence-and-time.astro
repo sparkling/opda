@@ -1,85 +1,81 @@
 ---
-import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
-const provenance = `@prefix ex: <https://example.org/harbour-court/> .
-@prefix model: <https://example.org/property-model/> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
-ex:inspection a model:Inspection, prov:Activity ;
-    prov:startedAtTime "2026-08-12T09:00:00+01:00"^^xsd:dateTime .
-ex:report-v1 a model:ReportVersion, prov:Entity ;
-    model:reportsInspection ex:inspection ;
-    prov:generatedAtTime "2026-08-14T10:00:00+01:00"^^xsd:dateTime .
-ex:report-v2 a model:ReportVersion, prov:Entity ;
-    model:reportsInspection ex:inspection ;
-    prov:wasRevisionOf ex:report-v1 ;
-    prov:generatedAtTime "2026-08-20T11:00:00+01:00"^^xsd:dateTime .`;
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import JudgementDiagram from '@/components/modelling/judgement/JudgementDiagram.astro';
+import JudgementNote from '@/components/modelling/judgement/JudgementNote.astro';
 ---
 
-<ModellingLayout title="Evidence and time: preserve what happened and what was recorded" description="An inspection, a claim about its subject and a report describing it have different identities and timelines. Provenance explains a statement’s production and sources; it does not turn a statement into a verified fact." claim="method">
-  <section aria-labelledby="dossier">
-    <h2 id="dossier">Follow one inspection through two reports</h2>
-    <p>In the fictional Harbour Court dossier, the inspection takes place on 12 August 2026. Report version 1 is produced on 14 August. A correction produces report version 2 on 20 August. Both report versions concern the same inspection in this illustration. A consumer must be able to discover that difference rather than treating the latest document as evidence of a later visit.</p>
-    <p>Distinguish the physical subject, the inspection activity, the statement about its findings and the report version carrying that statement. The building contains two dwellings, so identifying only the address may be insufficient to determine the inspection’s subject. A correction to the subject reference is itself important evidence; it must not silently alter the identity of the building or erase the earlier record.</p>
-    <p>The dates and resources are invented for explanation. They do not certify a real inspection, an approved OPDA provenance model or current candidate support for every pattern described here.</p>
+<OntologyChapter title="Evidence, claims and time" description="Identify the assertion, its source and the time it concerns. Keep the history of an event separate from the history of what people recorded about it." kicker="Modelling judgement" number="05">
+  <p class="og-lead">The newest report is not necessarily evidence of the newest inspection. A precisely copied statement is not necessarily a correct statement. To make information interpretable, the model must preserve which claim is being made, what supports it, and which event or period each date describes.</p>
+
+  <section aria-labelledby="one-visit">
+    <h2 id="one-visit">One visit, two reports, a later receipt</h2>
+    <p>In our fictional Harbour Court dossier, an inspection takes place on 12 August. The first report is produced on 14 August. A corrected report follows on 20 August, and a receiving system records it on 21 August. Both reports refer to the same visit. A query returning 21 August as “the inspection date” is not merely imprecise: it answers a different question.</p>
+    <p>Identify the inspected subject, inspection activity, findings, report versions and receipt separately where the questions require them. A report can carry several assertions, and an assertion may depend on evidence beyond that report. An address on the cover does not establish which of Harbour Court’s two dwellings was inspected.</p>
   </section>
 
-<figure class="modelling-figure" data-modelling-figure="evidence-timeline">
-    <ModellingVisual kind="evidence-timeline" />
-    <ol class="modelling-steps">
-      <li><time datetime="2026-08-12">12 August 2026</time>: inspection activity occurs.</li>
-      <li><time datetime="2026-08-14">14 August 2026</time>: report version 1 is generated.</li>
-      <li><time datetime="2026-08-20">20 August 2026</time>: corrected report version 2 is generated, referring to the same inspection.</li>
-    </ol>
-    <figcaption>A new document version is not a new inspection. The time a receiving system records either report is a further, separately described fact.</figcaption>
-  </figure>
+  <JudgementDiagram kind="evidence-time" caption="The inspection occurs on 12 August; reports are produced on 14 and 20 August. A receiving system’s later record time is a further fact, not another visit." />
+
+  <section aria-labelledby="claim">
+    <h2 id="claim">Start with the assertion whose evidence matters</h2>
+    <p>“The report exists”, “the report states that the wall has a defect” and “the wall has that defect” are three distinguishable claims. A file can establish what text it contains without establishing the accuracy of the observation. A model should not silently upgrade evidence of an assertion into evidence that the assertion is true.</p>
+    <p>Suppose report version 1 identifies Flat 2 on its cover, but its room descriptions indicate Flat 1. Version 2 corrects the cover. Preserve the correction and the relationship between versions; do not silently edit the old subject reference and leave consumers believing it was always unambiguous. The correction concerns a description, not necessarily the inspected dwelling or the visit’s identity.</p>
+    <p>Now suppose only the conclusion changes after another professional reviews the photographs. That revision need not imply a second inspection either. The model needs the identity and provenance of the revised assertion, not an invented event to explain why the text differs.</p>
+  </section>
 
   <section aria-labelledby="provenance">
-    <h2 id="provenance">Describe entities, activities and responsible agents</h2>
-    <p>PROV-O provides distinctions between an entity, an activity that uses or produces entities, and an agent associated with responsibility. A report version can be an entity; producing or revising it can be an activity. Attribution to an agent and derivation from a source answer different questions and should not be interchanged merely because both look like “where this came from”. <a href="https://www.w3.org/TR/prov-o/#description-starting-point-terms">PROV-O §§3.1 and 4.1</a> introduces those terms.</p>
-    <p>The provenance of an ontology term is another use of this discipline. Which source definition supported the modelling choice? Which extraction or editorial activity produced the candidate? Which version of the source was used? That is not the same as provenance of an inspection finding in a property transaction. Both may be needed, but they describe different entities and activities.</p>
-    <p>A source-file path is a literal location string, not automatically a PROV Location resource. The OPDA method’s 28 August amendment makes its source-file datatype property independent of <code>prov:atLocation</code>; it must not be a datatype subproperty of that object property. Retaining useful lineage does not justify violating the reused vocabulary’s property kinds.</p>
+    <h2 id="provenance">Describe production, responsibility and derivation separately</h2>
+    <p>PROV-O distinguishes entities, activities and responsible agents. A report version can be an entity, its production an activity, and its author an agent. Derivation links an entity to evidence used in producing it; attribution identifies responsibility. Neither relation is a truth certificate. <a href="https://www.w3.org/TR/prov-o/#description-starting-point-terms">PROV-O’s starting-point terms</a> provide the vocabulary distinctions.</p>
+    <p>A plan belongs with the activity association when that qualified pattern is used: activity → qualified association → agent, role and plan. This preserves which participant followed which procedure. Do not scatter plans onto generic attribution records or impose a single agent or plan merely because the first example has one. <a href="https://www.w3.org/TR/prov-o/#Association">PROV-O’s Association pattern</a> explains this qualification.</p>
+    <p>The adopted provenance concern also distinguishes four origins: causal extraction, editorial modelling history, mapping-decision provenance and discovery-system origin. A tool that extracted a statement is not the source author. The place where a document was discovered is not necessarily its publisher. The person who revised an ontology definition is not the person who inspected the property.</p>
+    <p>These distinctions are useful within one dossier. A report can be the source of a candidate domain definition, and separately evidence for a finding about a dwelling. The two uses describe different claims. A single “source” label cannot reliably explain both.</p>
   </section>
-
-  <aside class="callout callout--note modelling-callout">
-    <div class="callout__label">Inspect report revision without inventing another inspection</div>
-    <p>Times below are illustrative additions to the teaching dates. The excerpt does not show complete activities, attribution, claim qualification or vocabulary definitions.</p>
-    <pre><code>{provenance}</code></pre>
-    <p>The two report links identify the same inspection resource. Revision relates the report entities. It does not assert that a later document changed the past event or that every claim in either version is true.</p>
-  </aside>
 
   <section aria-labelledby="granularity">
-    <h2 id="granularity">Choose provenance granularity by the claim</h2>
-    <p>Per-resource provenance is economical when all relevant statements about an immutable generated resource share the same source and attribution. It becomes misleading if one statement is later added from a different source while the resource still appears to have uniform provenance.</p>
-    <p>The selected method uses resource-level provenance by default, with statement-level identification when attribution or confidence differs between fields. An immutable-unit assumption is a precondition to the simpler pattern, not a fact to assume about all current outputs. When that precondition no longer holds, change the provenance representation rather than hiding the divergence.</p>
-    <p>For Harbour Court, the inspection’s subject, date and conclusion might come from different portions or versions of evidence. A single “verified” badge cannot express that. Identify the particular claim and the evidence supporting it, and retain uncertainty where the source cannot establish the answer. Reification makes a statement addressable; it does not establish its truth.</p>
+    <h2 id="granularity">Choose the smallest honest unit of provenance</h2>
+    <p>Resource-level provenance is efficient when all relevant statements share origin and confidence and the resource is created and validated as an immutable unit. ODR-0052 permits that pattern under those conditions. It is not permission to attach one source to an evolving resource whose facts come from several places.</p>
+    <p>Imagine an extracted report resource containing the visit date and conclusion from version 1. A modeller later adds a corrected subject from version 2. Retaining a resource-wide claim that everything came from version 1 is now misleading. Different statement evidence requires selective RDF 1.2 reification under the adopted carrier profile.</p>
+    <p>Statement reification makes the particular assertion addressable for provenance. Qualified generation instead describes details of the event that generated an entity. They can coexist, but they answer different questions. ODR-0052 makes qualified generation conditional on an activating local amendment; selecting statement-level provenance does not silently activate that additional pattern or deferred shapes.</p>
+    <p>Respect the reused vocabulary’s property kinds. A source-file path is a literal string, not automatically a PROV Location resource. The adopted correction keeps the local source-file datatype property independent of the object-valued <code>prov:atLocation</code>. A useful-looking hierarchy is not justification for an incompatible subproperty declaration.</p>
   </section>
 
-  <section aria-labelledby="two-times">
-    <h2 id="two-times">Separate valid time from recorded time</h2>
-    <p>Valid time says when a state or claim applies in the modelled world. Recorded or transaction time says when the system acquired or recorded the information. A correction entered on 20 August may concern an observation on 12 August. Collapsing those times makes it impossible to ask what was believed at a particular time and what period that belief concerned.</p>
-    <p>The adopted temporal pattern uses an immutable transition-record entity for a change of state. Its effective time points to an OWL-Time instant. Its generation time, when supplied, describes the record; the recording activity is linked separately. Activities use activity start/end properties, not a generation timestamp borrowed from an entity pattern.</p>
-    <p>OWL-Time supplies instants, intervals and temporal relationships. A local state-transition relation supplies the domain-specific meaning of changing state; the time vocabulary alone does not define a lifecycle. The adopted profile uses a deliberately limited temporal-relation selection rather than claiming every possible temporal inference is operational. <a href="https://www.w3.org/TR/owl-time/#time:Instant">OWL-Time §4.1</a> defines its temporal classes.</p>
+  <section class="og-example" aria-labelledby="valid-and-recorded">
+    <h2 id="valid-and-recorded">Ask which time the question needs</h2>
+    <div class="og-table">
+      <table>
+        <caption>Four dates in the fictional report history</caption>
+        <thead><tr><th scope="col">Date</th><th scope="col">What it concerns</th><th scope="col">Question it helps answer</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">12 August</th><td>Inspection activity</td><td>When did the visit occur?</td></tr>
+          <tr><th scope="row">14 August</th><td>Generation of report version 1</td><td>When was that version produced?</td></tr>
+          <tr><th scope="row">20 August</th><td>Generation of corrected report version 2</td><td>When was the revised account produced?</td></tr>
+          <tr><th scope="row">21 August</th><td>A receiver’s recording of version 2</td><td>When did this system acquire that account?</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Valid time says when a state or claim applies in the modelled world. Recorded or transaction time says when it was recorded. A correction received on 21 August can concern a condition observed on 12 August. To ask “what did we know on 15 August about the visit?” requires both perspectives, not merely a latest timestamp.</p>
+    <p>“Observed on 12 August” also does not establish a validity interval stretching indefinitely into the future. If the evidence supplies no end date, preserve that limitation. Do not invent temporal precision from a familiar date field or assume that a report’s administrative expiry defines how long a physical condition holds.</p>
   </section>
 
-  <section aria-labelledby="state">
-    <h2 id="state">Record transitions; derive snapshots when useful</h2>
-    <p>The selected pattern treats the transition chain as primary and a point-in-time snapshot as an optional derived view. A transition identifies the entity, its previous and new state, and its effective time. State values belong to a governed closed state space. An explicit allowed-successor relation describes one-step adjacency; SKOS hierarchy must not be used as a substitute.</p>
-    <p>This distinction matters when asking “what was the transaction’s status on 15 August?”. A stored “current status” value cannot by itself answer a historical question. Conversely, adopting a temporal concern does not require every candidate to materialise a full snapshot history before it has a use case.</p>
-    <p>Do not confuse state history with identity. Subdivision of Flat 1 remains an unresolved identity case in this example. Recording a state transition would assume the bearer persists, which is precisely what the reviewers have not yet established. The <a href="/semantic-modelling/method/roles-and-phases">roles and phases</a> chapter makes that boundary explicit.</p>
+  <section aria-labelledby="state-history">
+    <h2 id="state-history">A transition has a subject; a record has its own creation time</h2>
+    <p>ODR-0053 selects immutable transition records for applicable state history. A transition record is a <code>prov:Entity</code> identifying its subject, previous state, new state and effective instant. Its optional <code>prov:generatedAtTime</code> describes the record’s creation time; <code>prov:wasGeneratedBy</code> identifies the recording activity. An activity has its own start and end times rather than borrowing an entity’s generation timestamp.</p>
+    <p>The state values belong to the same locally closed state space and are distinct. Explicit allowed-successor relations represent adjacency. A point-in-time snapshot can be derived where it has a use, but the transition chain is primary. A “current status” field alone cannot reconstruct what an earlier query would have found.</p>
+    <p>The selected OWL-Time profile supplies bounded temporal resources and relationships. Instants require timestamp values; proper intervals require a beginning and an end later than the beginning. These constraints check declared time data. They do not infer an absent observation, invent a domain lifecycle or settle whether an entity survives a subdivision.</p>
   </section>
 
-  <section aria-labelledby="quality">
-    <h2 id="quality">Evidence supports assessment; it is not a quality guarantee</h2>
-    <p>Confidence in an extraction is not confidence in the source’s factual claim. A tool might reproduce a report perfectly while the report itself is incomplete or mistaken. The OPDA method’s confidence annotation has no automatically operationalised ISO 25012 or DQV quality meaning. Do not imply a quality certification simply because those standards appear in a category’s references.</p>
-    <p>The failure case is a page showing “latest inspection: 20 August” because it selected the newest report timestamp. The repair is to preserve the event/report distinction and query the time appropriate to the question. A validation result can check the presence and datatype of a date; human and source evidence establish what that date means.</p>
-    <p>Temporal patterns are also scoped. The active strategic relationships in <a href="/semantic-modelling/method/context-map-records">context maps</a> explicitly do not use the report revision/history model. One reusable vocabulary does not make every resource share one lifecycle.</p>
+  <JudgementNote tone="insight" title="Confidence in extraction is not confidence in the world">
+    <p>A tool can copy a mistaken report perfectly. Its extraction-confidence annotation concerns that extraction, not automatic factual accuracy or a comprehensive quality score. ODR-0052 does not adopt a full DQV measurement model for one confidence value. If richer quality distinctions are needed, define and govern them explicitly.</p>
+  </JudgementNote>
+
+  <section class="og-review" aria-labelledby="review">
+    <h2 id="review">Test what changed—and what did not</h2>
+    <p>Supply the two report versions and ask for the inspection date, report-generation dates and receiver’s knowledge on a chosen day. A corrected report should not create a second visit. Mixed-origin statements should not retain a false uniform source. A valid date on the wrong resource should still fail the semantic review even if its datatype is correct.</p>
+    <p>Keep temporal profiles scoped. The active strategic relationships in <a href="/semantic-modelling/method/context-map-records#projection">context maps</a> explicitly do not use this report revision model: their history lives in files and Git. Reusing PROV-O is not a reason to impose one lifecycle on every kind of resource.</p>
   </section>
 
-  <section aria-labelledby="source-contract">
-    <h2 id="source-contract">Source contract</h2>
-    <p>Required method: OPDA <a href="/modelling/odr/odr-0052">ODR-0052</a> R2–R4 and its 28 August source-file correction; <a href="/modelling/odr/odr-0053">ODR-0053</a> R2–R5 and its 28 August transition-record/time correction; <a href="/modelling/odr/odr-0044">ODR-0044</a>’s asserted/derived distinction. <a href="/modelling/odr/odr-0056">ODR-0056</a> reserves mapping confidence for its SSSOM profile. <a href="/modelling/odr/odr-0064">ODR-0064</a>’s later active-map-only exception remains separate.</p>
-    <p>Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for authority and scope. Required provenance patterns, fictional report data and demonstrated current-candidate coverage are not interchangeable.</p>
+  <section class="og-references" aria-labelledby="references">
+    <h2 id="references">Decision basis and further reading</h2>
+    <p><a href="/modelling/odr/odr-0052">ODR-0052</a> governs provenance granularity, local confidence and the source-file correction; <a href="/modelling/odr/odr-0053">ODR-0053</a> governs time and transition records; <a href="/modelling/odr/odr-0058">ODR-0058</a> governs statement reification. <a href="https://www.w3.org/TR/owl-time/">OWL-Time</a> defines the reused temporal vocabulary. These are selected method requirements, not evidence that every pattern has been implemented in the current candidate.</p>
+    <p>Domain provenance and sensitivity semantics can support the wider programme, but do not implement its Trust Framework. Broader scheme responsibilities remain in <a href="/dbt-smart-data">DBT Smart Data</a>; this chapter concerns what the model must distinguish.</p>
   </section>
-</ModellingLayout>
+</OntologyChapter>

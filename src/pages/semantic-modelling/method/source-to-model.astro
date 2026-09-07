@@ -1,0 +1,94 @@
+---
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import JudgementDiagram from '@/components/modelling/judgement/JudgementDiagram.astro';
+import JudgementNote from '@/components/modelling/judgement/JudgementNote.astro';
+---
+
+<OntologyChapter title="From source evidence to model decisions" description="Work a source requirement through identity, representation, ownership and evidence. Produce a candidate whose decisions can be challenged without copying a source schema into the ontology." kicker="Modelling judgement" number="06">
+  <p class="og-lead">The source says “latest survey date”. The model cannot. Before it can say anything useful, someone must decide what counts as a survey, which subject it concerns, which date is meant and what “latest” orders. This is where the preceding chapters become a practical method.</p>
+
+  <section aria-labelledby="coverage-not-structure">
+    <h2 id="coverage-not-structure">A requirement fixes a question, not an ontology shape</h2>
+    <p>The Property Pack’s 451 required source items establish its initial coverage boundary. They do not establish 451 properties, the same number of ontology terms, or a hierarchy copied from the workbook. One item can need several semantic constructs; several items can be served by one coherent construct. Every source item still needs an explicit coverage disposition.</p>
+    <p>The existing PDTF schema, forms, glossary, dictionary and schema-derived ontology remain valuable evidence. They can reveal expected information, historical ambiguities and implementation assumptions. They do not seed the new class hierarchy or settle a domain definition simply because a generator already emitted it.</p>
+    <p>This chapter follows reasoning from evidence to a candidate decision. It does not introduce an executable transformation pipeline, RML/R2RML mapping or the excluded source-mapping ontology category. Requirements coverage and editorial provenance explain why a construct is present; they do not make the source’s document tree the model.</p>
+  </section>
+
+  <JudgementDiagram kind="source-evidence" caption="Source evidence informs a domain interpretation. The candidate states its meaning and open issues; the decision record preserves the review, disposition and justification." />
+
+  <section class="og-example" aria-labelledby="first-reading">
+    <h2 id="first-reading">First reading: the convenient answer is ambiguous</h2>
+    <p>Take a fictional source item labelled “latest survey date” and a Harbour Court dossier containing a visit on 12 August, a report on 14 August and a correction on 20 August. A literal translation might add <em>latestSurveyDate</em> to a general Property resource and fill it with 20 August.</p>
+    <p>That is one possible interpretation, not an extraction result established by the label. It assumes “survey” means report version, “date” means generation date, “latest” means the greatest report-generation time, and “property” denotes the correct inspected subject. None of those four commitments is visible in the proposed field.</p>
+    <p>Ask a discriminating question instead: “For Flat 1, when did the inspection described by this report take place?” Ask another: “Which version of the report was available to this reviewer on 15 August?” The first needs an inspection date; the second needs report identity and recording history. A single scalar can answer neither safely unless its intended question is much narrower.</p>
+  </section>
+
+  <section aria-labelledby="evidence-reading">
+    <h2 id="evidence-reading">Read evidence for the distinctions it supports</h2>
+    <p>Locate the source definition, instructions, relevant examples and practitioner explanation. Keep their versions and exact supporting passages. A field’s datatype can establish a technical expectation; a form section may explain what a respondent sees. Neither independently establishes a subject’s identity or the scope of a business rule.</p>
+    <p>When sources disagree, preserve the disagreement at the level of the question. One source may use “survey” for a visit and another for a document. That need not mean either source is defective; they may serve different tasks. Within one governed context, reconcile accidental system-specific vocabulary. Across established contexts, investigate whether the meanings should remain distinct and be related.</p>
+    <p>Separate three kinds of statement in the working record: what the source explicitly says, what the modeller infers from it, and what the candidate proposes. A quotation does not establish the inference beside it. A generated proposal remains a proposal even when several tools produce similar answers.</p>
+  </section>
+
+  <section aria-labelledby="candidate-decisions">
+    <h2 id="candidate-decisions">Make each representation choice answerable</h2>
+    <p>For this exercise, propose separate identities for the inspected dwelling, inspection and report version. Explain what each identifies and what distinguishes two instances. Propose a relation from report to inspection and from inspection to subject. Record which date belongs to which resource. These are candidate modelling decisions supported by the two questions, not new OPDA terms minted by this chapter.</p>
+    <p>Now challenge the choices with the four axes. Which class supplies its identity criterion? Which classifications are contingent? Does a proposed quality identify its bearer? Does a proposed whole have a justified unity criterion? If a commission is represented as a material relator, identify its dependent domain characteristics and bearers rather than borrowing that classification from its box shape.</p>
+    <p>Choose a controlled vocabulary when governed categories are needed, not a subclass for every source code. Put applicability at the level where the property’s meaning begins. Write truthful RDFS commitments, inclusion hints or a governed waiver under the exclusive per-side contract, then describe the validation obligations separately.</p>
+    <p>Finally assign one candidate semantic home to every OPDA-defined resource. Surveying and Valuation is a plausible home to investigate for inspection meaning; consuming that meaning in Finance and Banking does not automatically make it common-boundary content. The final assignment requires domain evidence. A consumer’s need for a different assessment may call for a distinct resource and an explicit relationship.</p>
+  </section>
+
+  <section aria-labelledby="concerns">
+    <h2 id="concerns">Use all eight concerns without multiplying models</h2>
+    <p>Domain structure does not finish the candidate. Inspect the other retained concerns for this same small package: vocabulary and taxonomy, classification metadata, validation and constraints, cross-domain mappings, provenance and quality, temporal state and history, and sensitivity and access semantics.</p>
+    <p>For each, record <em>model here</em>, <em>reuse shared</em>, <em>boundary contribution</em> or <em>not applicable</em> with a rationale. A hypothetical report package might own the report/inspection distinction, reuse the adopted provenance and time profiles, contribute a boundary-mapping question and record why a particular concern has no further local content. It need not create eight ontologies.</p>
+    <p>These concerns organise the work under ODR-0062; they do not form one inheritance tree. Foundational analysis constrains decisions across them. Subject facets support discovery. Context identifies definition authority. Administrative metadata records such things as title, steward and modification date. A records-only register can connect those perspectives without inventing another domain class or namespace.</p>
+    <p>The six outputs—glossary, dictionary, taxonomies, controlled vocabularies, resources and relationships—must remain aligned views of the agreement. A glossary definition that says “inspection date” while the dictionary says “report date” is a substantive contradiction, even if each file validates independently.</p>
+  </section>
+
+  <section aria-labelledby="tests">
+    <h2 id="tests">Build a small set of examples that could defeat the proposal</h2>
+    <p>Use an ordinary case, a violating case and a genuinely non-target case for each applicable check. For the report/inspection link, start with a report of an identified visit. Then remove a reference required by the selected profile. Finally include a different resource that the report shape must not treat as a report. Report how many eligible targets were actually evaluated.</p>
+    <p>Competency questions test another dimension. Two report versions from one visit must not create two inspection dates. Two visits to different dwellings at the same address must remain distinguishable. A corrected subject reference must preserve the earlier account’s provenance. An unresolved subdivision must not be silently resolved through a state transition.</p>
+    <p>Ask what each successful result establishes. A parser accepts syntax. A shape checks selected constraints against a specified graph. A query returns the expected answers for its examples. Foundational checks compare justified declarations. None alone certifies that the domain interpretation is right; together they make the candidate’s consequences inspectable.</p>
+  </section>
+
+  <JudgementNote tone="method" title="A green result needs a named scope">
+    <p>Pin the candidate, evidence, standards snapshots, feature profiles, processors and graph scope. OPDA’s normative families are RDF 1.2, SPARQL 1.2 and SHACL 1.2; a tested subset is not full-family support. Missing, unsupported or unevaluated required behaviour cannot be reported as a pass.</p>
+  </JudgementNote>
+
+  <section class="og-example" aria-labelledby="example-decision">
+    <h2 id="example-decision">An inspectable candidate decision: “latest survey date”</h2>
+    <p>This is the completed teaching record for our invented evidence, not an actual OPDA decision, source-item disposition or proposed vocabulary declaration.</p>
+    <div class="og-table">
+      <table>
+        <caption>Illustrative decision record — proposed, with checks not run</caption>
+        <thead><tr><th scope="col">Record field</th><th scope="col">Candidate content</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Question</th><td>When was Flat 1 inspected? Separately, which report version was available to a particular reviewer on 15 August?</td></tr>
+          <tr><th scope="row">Source evidence</th><td>The fictional item says “latest survey date”. Report versions dated 14 and 20 August both refer to the 12 August visit. No reviewer receipt is supplied.</td></tr>
+          <tr><th scope="row">Modeller’s inference</th><td>Report creation and the visit need separate dates. A report’s issue date alone cannot establish when a particular reviewer had it. The intended ordering behind “latest” remains unresolved.</td></tr>
+          <tr><th scope="row">Proposal</th><td>Identify the inspection, subject and report versions separately; relate both versions to the visit. Preserve each date’s meaning. Any later “latest” view must declare which date it orders and for which subject.</td></tr>
+          <tr><th scope="row">Alternative and trade-off</th><td>Reject one unqualified date on Property: it hides the event/document distinction. Separate facts require more structure, but allow explicit inspection-date or report-date views without erasing the underlying history.</td></tr>
+          <tr><th scope="row">Owner and open question</th><td>Propose Surveying and Valuation to review inspection meaning; final resource homes and the intended source-item interpretation are unagreed. A cross-context correspondence, if needed, goes to the Interoperability Working Group.</td></tr>
+          <tr><th scope="row">Expected checks — not executed</th><td>Inspection query: 12 August once, despite two reports. Report dates: 14 and 20 August. Reviewer availability on 15 August: undetermined. Removing an inspection reference required by the proposed report profile should fail that constraint.</td></tr>
+          <tr><th scope="row">Disposition</th><td>Proposed for discussion. No semantic approval, coverage closure, executed conformance result or publication decision follows from this record.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="og-review" aria-labelledby="decision-record">
+    <h2 id="decision-record">Hand reviewers the decision, its cost and its alternative</h2>
+    <p>A useful review package says: here is the question; here are the definitions and example; here is the source evidence; here is why the proposed structure answers the question; here is the alternative we rejected and the case that distinguishes it. Include unresolved identity and mapping questions with their responsible owners.</p>
+    <p>For “latest survey date”, the candidate may recommend two explicit questions instead of one ambiguous value. The benefit is interpretability across versions and uses. The cost is more structure and a precise rule for selecting “latest” where that view is still needed. Let reviewers judge that trade-off in ordinary language.</p>
+    <p>Keep method adoption, candidate validation and domain approval separate in the result. An older accepted ODR can remain authoritative in its recorded scope; a later number alone does not override it. A historical implementation receipt proves what that implementation did, not what a new candidate conforms to. The <a href="/semantic-modelling/method/standards-and-decisions">decision register</a> is the place to resolve scope and amendment precedence.</p>
+    <p>Human model-review governance determines how the candidate is considered; it is not the programme’s Trust Framework. JSON-LD and other representations can be generated from the agreed model, but they are not a second source of meaning. Approval and publication remain separately evidenced decisions.</p>
+  </section>
+
+  <section class="og-references" aria-labelledby="references">
+    <h2 id="references">Decision basis</h2>
+    <p><a href="/modelling/adr/adr-0063">ADR-0063</a> establishes domain-led modelling and the selected concerns; <a href="/modelling/adr/adr-0067">ADR-0067</a> establishes first-principles Property Pack coverage and resource homes. <a href="/modelling/odr/odr-0047">ODR-0047</a> governs domain structure; <a href="/modelling/odr/odr-0062">ODR-0062</a> governs concern-led organisation and the records-only register; <a href="/modelling/odr/odr-0043">ODR-0043</a> governs the standards baseline and profiles.</p>
+    <p>The existing <a href="/development/inputs/pdtf-schema/schema-derived-ontology">schema-derived ontology</a> is a separate evidence corpus. This synthesis re-authors its reusable questions under the current method; it does not migrate or endorse its identities, generated vocabulary or historical design decisions.</p>
+  </section>
+</OntologyChapter>

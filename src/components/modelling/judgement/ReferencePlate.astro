@@ -1,0 +1,56 @@
+---
+import '@/styles/modelling/reference-plate.css';
+type Kind = 'scope' | 'mapping' | 'mapping-change' | 'constraint' | 'vocabulary' | 'privacy';
+interface Props { kind: Kind }
+interface Entry { key: string; title: string; description: string; boundary: string }
+const plates: Record<Kind, { title: string; entries: Entry[] }> = {
+  scope: { title: 'Eight retained concerns, with their method identifiers', entries: [
+    { key: '01', title: 'Domain structure', description: 'Identify the things and their relationships.', boundary: 'Not a copy of the form.' },
+    { key: '02', title: 'Vocabulary', description: 'Give choices and concepts governed meanings.', boundary: 'Not every list is closed.' },
+    { key: '05', title: 'Classification', description: 'Describe the model through independent facets.', boundary: 'Not another inheritance tree.' },
+    { key: '07', title: 'Constraints', description: 'State and test the conditions on supplied data.', boundary: 'Not proof that a claim is true.' },
+    { key: '08', title: 'Correspondences', description: 'Qualify the connection between defined terms.', boundary: 'Not automatic equivalence.' },
+    { key: '09', title: 'Provenance', description: 'Make sources and responsibility inspectable.', boundary: 'Attribution is not endorsement.' },
+    { key: '10', title: 'Time', description: 'Distinguish occurrence, validity and recording.', boundary: 'Not one generic timestamp.' },
+    { key: '11', title: 'Sensitivity', description: 'Describe privacy, role and policy scope.', boundary: 'Not operational enforcement.' },
+  ] },
+  mapping: { title: 'A correspondence needs an argument', entries: [
+    { key: 'QUESTION', title: 'What suggests comparison?', description: 'A shared label or key can identify a candidate.', boundary: 'Similarity does not select a predicate.' },
+    { key: 'WARRANT', title: 'Do the meanings survive the hard case?', description: 'Compare definitions, identity criteria and counterexamples.', boundary: 'An unresolved criterion remains unresolved.' },
+    { key: 'CLAIM', title: 'Which relationship is justified?', description: 'Choose the precise correspondence—or preserve separation.', boundary: 'Weaker is not automatically warranted.' },
+    { key: 'RECORD', title: 'Can someone inspect the decision?', description: 'Retain sources, versions, justification and the mapping-set release.', boundary: 'Metadata cannot rescue an unsupported claim.' },
+  ] },
+  'mapping-change': { title: 'Changed evidence can challenge either verdict', entries: [
+    { key: 'FALSE POSITIVE', title: 'Re-examine an accepted link', description: 'A reused key defeats the earlier warrant. Review the assertion and record any governed retraction against its versioned decision.', boundary: 'Do not leave the old exact match in the current set.' },
+    { key: 'FALSE NEGATIVE', title: 'Re-examine a denied candidate', description: 'A changed definition or stronger identifier may remove an earlier obstacle. Repeat the semantic comparison before recording a new verdict.', boundary: 'Reopening is not acceptance.' },
+  ] },
+  constraint: { title: 'Read a validation finding back to its rule', entries: [
+    { key: 'SELECT', title: 'Which report was checked?', description: 'The class target selects the example report with the missing link because its ReportVersion type is supplied.', boundary: 'A link-based target could miss this exact defect.' },
+    { key: 'INSPECT', title: 'What was supplied on the path?', description: 'reportsInspection has zero values for that focus node.', boundary: 'There is no offending value to invent.' },
+    { key: 'EXPLAIN', title: 'Why is there a finding?', description: 'The named property shape requires at least one value. Its minimum-count condition produces the declared Violation.', boundary: 'This does not prove no inspection happened.' },
+  ] },
+  vocabulary: { title: 'Three different relationships behind three lists', entries: [
+    { key: 'SELECT A VALUE', title: 'Inspection → outcome', description: 'A receiving profile selects from an explicitly closed, governed set.', boundary: 'A new typed value does not extend sh:in.' },
+    { key: 'IDENTIFY A MEMBER', title: 'A surveyor → Surveyor', description: 'An identified resource is an instance of a class in a growing population.', boundary: 'A new surveyor is not a new enumeration value.' },
+    { key: 'ORGANISE MEANING', title: 'Roof condition → Building fabric', description: 'The first topic has the second as its broader concept.', boundary: 'Broader meaning is not physical containment.' },
+  ] },
+  privacy: { title: 'Keep the subject of each statement visible', entries: [
+    { key: 'ABOUT THE MODEL', title: 'Classify a property', description: 'A reviewed annotation describes the contact-detail property and its intended information category.', boundary: 'The property IRI is not a person or a disclosed contact value.' },
+    { key: 'ABOUT PARTICIPATION', title: 'Qualify a domain role', description: 'A person participates in one transaction, with a stated role and relevant time and evidence.', boundary: 'Seller does not mean authorised reader.' },
+    { key: 'ABOUT AN AUTHORITY CLAIM', title: 'Name its scope', description: 'Identify the particular data, action, context and validity to which a separately justified authority relates.', boundary: 'Describing authority does not authenticate or grant access.' },
+  ] },
+};
+const { kind } = Astro.props;
+const plate = plates[kind];
+if (!plate) throw new Error(`Unknown reference plate: ${kind}`);
+---
+<div class:list={['reference-plate', `reference-plate--${kind}`]} role="group" aria-label={plate.title}>
+  <p class="reference-plate__caption">{plate.title}</p>
+  <dl class="reference-plate__grid">
+    {plate.entries.map((entry) => <div class="reference-plate__item">
+      <dt><span class="reference-plate__key">{entry.key}</span><span>{entry.title}</span></dt>
+      <dd>{entry.description}</dd>
+      <dd class="reference-plate__boundary">{entry.boundary}</dd>
+    </div>)}
+  </dl>
+</div>

@@ -1,9 +1,9 @@
 ---
-import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import ReferencePlate from '@/components/modelling/judgement/ReferencePlate.astro';
 ---
 
-<ModellingLayout title="Sensitivity and policy: model privacy, roles and scope" description="Describe which data a privacy statement concerns, which role and action a rule names, and what evidence and time qualify the claim. Ontology annotations and mappings support the Trust Framework without themselves granting access." claim="method">
+<OntologyChapter title="Sensitivity and policy: model privacy, roles and scope" description="Describe which data a privacy statement concerns, which role and action a rule names, and what evidence and time qualify the claim. Ontology annotations and mappings support the Trust Framework without themselves granting access." section="reference">
   <section aria-labelledby="separation">
     <h2 id="separation">A public model does not make its instance data public</h2>
     <p>A definition of a person’s contact-detail property can be openly readable without exposing anyone’s contact details. A model may explain how an inspection report relates to a transaction without making every report available to every visitor. Vocabulary publication, data disclosure and access enforcement are different decisions.</p>
@@ -12,8 +12,7 @@ import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
   </section>
 
   <figure class="modelling-figure" data-modelling-figure="privacy-scope">
-    <EnrichmentVisual kind="privacy-scope" />
-    <p>Text equivalent: a privacy annotation describes the model's contact-detail property. Separately, a person plays a role in one transaction; a claim identifies a particular report version, supporting evidence and a validity reference. None of these links turns the property annotation or the Seller role into permission to read a report.</p>
+    <ReferencePlate kind="privacy" />
     <figcaption>The model can make the scope of a claim inspectable. Authentication, an actual grant of rights and enforcement are not consequences of these ontology links.</figcaption>
   </figure>
 
@@ -122,4 +121,4 @@ import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
     <p>Required method: OPDA <a href="/modelling/odr/odr-0054">ODR-0054</a> R2–R6, including its amended shape/profile boundaries and 28 August applicability correction; <a href="/modelling/odr/odr-0057">ODR-0057</a> R3–R9, especially the three scoped policy uses and R7’s human-curation limitation. Category 11 is retained; importing category 6 as a governance ontology is outside the selected OPDA scope.</p>
     <p>Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for register and adoption scope. OPDA method adoption, fictional policy questions and current operational enforcement are separate claims; this chapter establishes no legal or enforcement result.</p>
   </section>
-</ModellingLayout>
+</OntologyChapter>

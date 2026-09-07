@@ -1,6 +1,6 @@
 ---
-import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import ReferencePlate from '@/components/modelling/judgement/ReferencePlate.astro';
 
 const closedVocabulary = `@prefix model: <https://example.org/property-model/> .
 @prefix outcome: <https://example.org/vocabulary/inspection-outcome/> .
@@ -68,7 +68,7 @@ subject:RoofCondition a skos:Concept ;
     skos:broader subject:BuildingFabric .`;
 ---
 
-<ModellingLayout title="Vocabularies and classification: choose what the list means" description="Decide whether a list contains governed outcomes, taxonomy concepts, independently identified resources or metadata about the model. Choose its representation, completeness claim and validation together." claim="method">
+<OntologyChapter title="Vocabularies and classification: choose what the list means" description="Decide whether a list contains governed outcomes, taxonomy concepts, independently identified resources or metadata about the model. Choose its representation, completeness claim and validation together." section="reference">
   <section aria-labelledby="representation">
     <h2 id="representation">Four lists can require four different models</h2>
     <p>Harbour Court has an inspection, a report version and a surveyor. The report may refer to an inspection outcome, be indexed under a subject taxonomy and have administrative metadata. These lists can look alike in a spreadsheet while answering different questions. A drop-down control is evidence of an interface choice, not evidence that all its entries are the same kind of thing.</p>
@@ -86,8 +86,7 @@ subject:RoofCondition a skos:Concept ;
   </section>
 
   <figure class="modelling-figure" data-modelling-figure="vocabulary-representations">
-    <EnrichmentVisual kind="vocabulary-representations" />
-    <p>Text equivalent: an inspection selects an outcome from a closed set; an identified surveyor is an instance of Surveyor in a growing population; Roof condition has the broader concept Building fabric in an open taxonomy. Selection, instance typing and broader meaning are different relationships.</p>
+    <ReferencePlate kind="vocabulary" />
     <figcaption>The three domain cases do not determine how the report class itself is classified. That is the separate metadata layer below.</figcaption>
   </figure>
 
@@ -203,4 +202,4 @@ subject:RoofCondition a skos:Concept ;
     <p>Required method: <a href="/modelling/odr/odr-0036">ODR-0036</a> for base facets; <a href="/modelling/odr/odr-0039">ODR-0039</a> and <a href="/modelling/odr/odr-0040">ODR-0040</a> for SKOS enumerations and open populations; <a href="/modelling/odr/odr-0048">ODR-0048</a> for evidence, hierarchy and exclusions; <a href="/modelling/odr/odr-0049">ODR-0049</a> for classification stewardship and stricter completeness; <a href="/modelling/odr/odr-0055">ODR-0055</a> for the bounded administrative profile.</p>
     <p>Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a>. All domain terms, values and review outcomes above are fictional teaching illustrations, not approved OPDA vocabulary or candidate conformance claims.</p>
   </section>
-</ModellingLayout>
+</OntologyChapter>

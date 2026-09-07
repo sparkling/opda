@@ -1,105 +1,86 @@
 ---
-import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import PrincipleSpread from '@/components/modelling/PrincipleSpread.astro';
-import ContrastPair from '@/components/modelling/ContrastPair.astro';
-import ModellingIllustration from '@/components/modelling/ModellingIllustration.astro';
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import JudgementCover from '@/components/modelling/judgement/JudgementCover.astro';
+import { ONTOLOGY_JUDGEMENT_CHAPTERS, ONTOLOGY_REFERENCE_CHAPTERS } from '@/lib/modelling-navigation';
+
+const chapterQuestions = [
+  'What makes this the same thing, an essential type, a dependent entity or a whole? Work through the four axes and the limits of mechanical checks.',
+  'Should this be a class, a controlled value, a literal or a qualified relationship? Make each node and arrow earn its place.',
+  'What persists when a person changes roles, a record is corrected or a dwelling is subdivided? Separate participation from identity.',
+  'What agreement connects these contexts, and which exact term correspondences apply? Preserve both scales without inventing equivalence.',
+  'Which assertion has this source, and which event does this date concern? Follow one visit through two reports and a correction.',
+  'How does an ambiguous source requirement become a defensible candidate? Assemble evidence, alternatives, examples and a decision for review.',
+];
+
+const referencePurposes = [
+  'Scope a question, identify evidence and prepare an inspectable candidate.',
+  'Assess the retained concerns and keep the six semantic outputs aligned.',
+  'Define governed choices, taxonomies and independent classification facets.',
+  'Record correspondence strength, SSSOM metadata and matching-process justification.',
+  'Distinguish semantic commitments, constraints, derivations and tested results.',
+  'Represent sensitivity, purpose and policy meaning without claiming enforcement.',
+  'Apply the RDF 1.2, SPARQL 1.2 and SHACL 1.2 baseline with explicit feature profiles.',
+  'Find applicable decisions, amendments, source provenance and implementation limits.',
+];
 ---
 
-<ModellingLayout title="Ontology modelling" description="A technical guide for ontology modellers and implementers: start with the work, make identity explicit, and connect meanings through accountable agreements." claim="method">
-  <aside class="callout callout--caution" aria-label="Technical audience">
-    <p class="callout__label">Technical audience</p>
-    <p>This section is for ontology modellers, technical architects and implementers. It covers ontology design, RDF/OWL, SKOS, SHACL, mappings, validation and standards profiles. For a non-technical introduction, start with <a href="/semantic-modelling/understand">understanding shared meaning</a>.</p>
-  </aside>
-  <p>
-    OPDA uses RDF 1.2, SPARQL 1.2 and SHACL 1.2. These are the normative standards
-    families; each package must declare its selected features and demonstrate support.
-    Read the <a href="/semantic-modelling/method/languages-and-profiles#semantic-standards-baseline">language
-    baseline and profiles</a> and the governing <a href="/modelling/odr/odr-0043">ODR-0043</a>.
-  </p>
-  <p>
-    A framework should make expertise more usable, not replace it with a vocabulary
-    designed at a distance. Our approach begins with the questions a community needs
-    to answer and the distinctions its work depends on. We then make those distinctions
-    precise, challenge them with formal analysis, reuse suitable standards and connect
-    them through explicit boundaries.
-  </p>
-  <p>
-    This is a position about the order of discovery and the ownership of meaning.
-    It is not an argument against ontological rigour, shared standards or common
-    concepts. It rejects premature universality: assuming the same word means the
-    same thing everywhere, or that placing every class in one hierarchy establishes
-    a shared understanding.
-  </p>
+<OntologyChapter title="Ontology modelling" description="A practical guide to deciding what a model means, testing its commitments and making those decisions reviewable." kicker="Method atlas" section="atlas">
+  <p class="og-lead">Start with a distinction that matters in the work. Give it a clear definition and an accountable home. Then ask difficult questions of it. This guide teaches the judgement between a source phrase and an ontology statement—the part that a diagramming tool, a schema generator or a language model cannot settle for you.</p>
+  <p>For ontology modellers and facilitators, the six chapters form a connected argument. For a particular authoring task, the references below provide the selected profiles. Readers who want the idea before the method can begin with <a href="/semantic-modelling/understand">understanding shared meaning</a>.</p>
 
-  <ModellingIllustration kind="modelling-workbench" />
+  <JudgementCover />
 
-  <PrincipleSpread number={1} id="start-with-work" aliases={["questions","cycle","evidence","untrusted-evidence"]} title="Start with a question people need to answer">
-    <p>Begin with a decision, exchange or misunderstanding in real work. Name the question, the evidence available and examples that would change the answer. A source form is valuable evidence, but its sections and fields are not automatically the conceptual structure of the domain.</p>
-    <p>For Harbour Court, “which report describes the inspection of Flat 1?” immediately separates a dwelling, an event and a document version. Those distinctions earn their place by making the question answerable.</p>
-    <Fragment slot="practice"><p>Write a competency question in ordinary language. Add at least one ordinary case and one counterexample. Ask who can judge the answer before choosing the encoding.</p><p><a href="/semantic-modelling/method/from-question-to-candidate">From question to candidate →</a></p></Fragment>
-    <Fragment slot="misreading"><p>Evidence-led does not mean copying every source structure. The first-principles Property Pack approach in OPDA ADR-0067 treats sources as evidence to evaluate, not a schema that dictates the ontology.</p></Fragment>
-  </PrincipleSpread>
+  <section aria-labelledby="judgement">
+    <h2 id="judgement">Six chapters in modelling judgement</h2>
+    <p>The running case is fictional Harbour Court: one building, two dwellings, concurrent buyer and seller roles, an inspection and revised reports. The facts are deliberately small; the questions are not. Follow them from foundational analysis to a candidate that a domain expert can challenge.</p>
+    <ol class="og-atlas">
+      {ONTOLOGY_JUDGEMENT_CHAPTERS.map((chapter, index) => (
+        <li>
+          <span class="og-atlas__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <div>
+            <h3><a href={chapter.url}>{chapter.title}</a></h3>
+            <p>{chapterQuestions[index]}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
 
-  <PrincipleSpread number={2} id="own-meaning" aliases={["local-authority","responsibilities","participation"]} title="Give meaning an accountable home">
-    <p>A context establishes where a meaning is coherent and who is responsible for changing it. It is not simply a department, software service or search category. A profession can participate in several contexts; a term can be classified under several subjects while retaining one semantic home.</p>
-    <p>Local ownership prevents a convenient enterprise label from erasing an operational distinction. It also creates obligations: publish the definition, expose its assumptions, review change and explain what is promised at the boundary.</p>
-    <Fragment slot="practice"><p>Name the context, the questions it serves and the authority for its meanings. Record the boundary agreement separately from particular term correspondences.</p><p><a href="/semantic-modelling/method/context-map-records">Strategic context maps →</a></p></Fragment>
-    <Fragment slot="misreading"><p>Context-first is not “every team has its own truth”. Conflicting claims about the same event still require evidence. A context is a responsibility for meaning, not an exemption from consistency.</p></Fragment>
-  </PrincipleSpread>
+  <section class="og-contrast" aria-labelledby="one-field">
+    <h2 id="one-field">One innocent field can hide several decisions</h2>
+    <p>“Latest survey date” sounds ready to model. But is a survey a visit, an assessment or a document? Is its subject the building or a dwelling? Does the date describe the visit, the report’s creation or its receipt? Does “latest” select the most recent event or the newest account of an earlier event?</p>
+    <p>A source field gives us evidence that somebody needs an answer. It does not decide those meanings. A defensible model makes the interpretations visible, tests them against examples and records who can resolve the difference. More structure is justified when it preserves a needed distinction; less structure is justified when the distinction has no consumer.</p>
+  </section>
 
-  <PrincipleSpread number={3} id="identity-before-equivalence" aliases={["distinctions","foundations"]} title="Establish identity before asserting equivalence">
-    <p>A shared address can help locate records without making a building, dwelling and title record identical. Ask what an individual is, what distinguishes it from others and what changes it can survive. A label match or common source key cannot answer those questions alone.</p>
-    <p>Use kinds, roles and phases deliberately. A person participating as buyer is not a new person. A state change is not automatically a new identity. A subdivision is not automatically a phase: the identity criterion must be resolved by the domain.</p>
-    <Fragment slot="practice"><p>Test identity against corrections, concurrent roles, split and merge cases. Refuse an equivalence when the referents differ; keep an unresolved criterion visible.</p><p><a href="/semantic-modelling/method/roles-and-phases">Roles and phases →</a></p></Fragment>
-    <Fragment slot="misreading"><p>UFO-informed distinctions and OntoClean analysis are required analytical disciplines in the selected OPDA method. <a href="/modelling/odr/odr-0063">ODR-0063</a> prohibits domain-class subsumption under external upper ontologies within its scope. Analytical rigour is not a requirement to import an external class hierarchy.</p></Fragment>
-  </PrincipleSpread>
+  <section aria-labelledby="method-shape">
+    <h2 id="method-shape">One agreement, several independent concerns</h2>
+    <p>The method is domain-led within six established property bounded contexts. Practitioners judge meaning; formal analysis exposes commitments; external standards provide reusable vocabulary; validation checks the agreed constraints. The Interoperability Working Group governs boundary agreements without turning those contexts into one universal property model.</p>
+    <p>Eight retained concerns keep the work complete: domain structure, vocabulary and taxonomy, classification metadata, validation and constraints, cross-domain mappings, provenance and quality, temporal state and history, and sensitivity and access semantics. Each needs a disposition, not a separate ontology. Concerns organise the work; foundational discipline applies across them; facets and semantic homes answer different questions.</p>
+    <p>RDF/RDFS/OWL meaning, applicability hints, SHACL constraints and selected derivations remain distinct. JSON-LD artefacts are generated from the model, not designed here as another authority. Model-review governance is also separate from the wider SPDTF Trust Framework: these chapters explain domain semantics, not scheme operation or application deployment.</p>
+  </section>
 
-  <PrincipleSpread number={4} id="connect-with-evidence" aliases={["connect-without-collapse"]} title="Connect meanings without disguising differences">
-    <p>Reuse an externally governed term when its meaning fits. Where local meanings must remain distinct, record the relationship and the evidence for its strength. An exact conceptual correspondence, a close correspondence, a broader concept and identity of individuals are different commitments.</p>
-    <p>A strategic context agreement says how communities depend on one another. A qualified mapping record says how particular terms correspond. Neither can stand in for the other. Each bridge must identify the individual mappings that actually apply.</p>
-    <p>Before aligning a list, establish <a href="/semantic-modelling/method/vocabularies-and-classification">what its members mean and whether it is closed</a>. A taxonomy concept, domain outcome, independently identified resource and model-classification facet need different commitments.</p>
-    <Fragment slot="practice"><p>Record the source and target versions, mapping predicate, matching-process justification, mapping date and mapping-set release. Preserve the SKOS statement and the required SSSOM/SEMAPV qualification.</p><p><a href="/semantic-modelling/method/mapping-records">Qualified term mappings →</a></p></Fragment>
-    <Fragment slot="misreading"><p>“Connected” does not mean “equivalent”. Refusing a proposed mapping is a useful outcome. A confidence score cannot repair incompatible identity criteria.</p></Fragment>
-  </PrincipleSpread>
+  <section aria-labelledby="references">
+    <h2 id="references">Keep the authoring references close</h2>
+    <p>The chapters explain why a decision matters. These references specify how the selected method expresses, checks and records it. Use the relevant profile alongside the example rather than replacing reasoning with a checklist.</p>
+    <dl class="og-reference-index">
+      {ONTOLOGY_REFERENCE_CHAPTERS.map((chapter, index) => (
+        <div>
+          <dt><a href={chapter.url}>{chapter.title}</a></dt>
+          <dd>{referencePurposes[index]}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
 
-  <PrincipleSpread number={5} id="respect-semantics" aliases={["reuse","separate-concerns"]} title="Keep meaning, checks and delivery distinct">
-    <p>RDF statements, RDFS implications, applicability hints, SHACL constraints and materialisation rules do different jobs. Their composition must be explicit. Switching off a reasoner does not change the meaning of an exported RDFS domain declaration.</p>
-    <p>JSON-LD artefacts are generated from the ontology; they are not a second semantic authority. The technical task here is to make the model's distinctions and constraints reviewable. A successful serialisation is not proof of semantic preservation.</p>
-    <Fragment slot="practice"><p>Choose a bounded language profile. Supply positive and negative data examples, explicit competency queries and evidence for each claimed projection. Keep asserted and derived information distinguishable.</p><p><a href="/semantic-modelling/method/meaning-checks-and-delivery">Meaning, checks and delivery →</a></p></Fragment>
-    <Fragment slot="misreading"><p>This is neither unrestricted OWL reasoning nor a claim that inference is forbidden. The selected method bounds its OWL surface and declares supported rule materialisation separately.</p></Fragment>
-  </PrincipleSpread>
+  <section class="og-review" aria-labelledby="useful-result">
+    <h2 id="useful-result">The result to aim for</h2>
+    <p>A useful candidate lets a reviewer find the definition, see the ordinary case, challenge the hard case and inspect the evidence behind the choice. It explains the rejected alternative and its consequences. Where an identity criterion, mapping or rule remains unresolved, that question is visible rather than concealed by a convenient encoding.</p>
+    <p>Technical evidence has equally precise limits. A parsed graph, a successful shape run, a populated four-axis check and a correct competency-query answer establish different things. An accepted method does not prove an implementation exists. A validated candidate does not become an adopted domain model through a green badge.</p>
+  </section>
 
-  <PrincipleSpread number={6} id="explain-the-boundary" title="Make evidence, time and limits part of the model">
-    <p>A useful assertion can be traced to what supports it. A useful date says which event or period it concerns. A useful sensitivity classification tells readers what it describes without pretending to grant access. These concerns are part of trustworthy interpretation, not decorative metadata added after the model is finished.</p>
-    <p>Keep the scope proportional. The eight selected <a href="/modelling/odr/odr-0046">ODR-0046</a> concerns require assessment, not eight separate ontologies. Reuse a shared artefact or record why a concern is not applicable when that is the justified disposition.</p>
-    <Fragment slot="practice"><p>Distinguish event time from recording time, resource provenance from claim provenance, and classification from enforcement. State what the evidence does not establish.</p><p><a href="/semantic-modelling/method/scope-and-package">Eight concerns, six outputs →</a></p></Fragment>
-    <Fragment slot="misreading"><p>Publishing a vocabulary is not permission to publish personal records. A complete metadata record is not proof that a claim is true, and passing technical checks does not adopt a standard.</p></Fragment>
-  </PrincipleSpread>
-
-  <h2 id="tradeoffs"><span id="evolve" aria-hidden="true"></span><span id="success" aria-hidden="true"></span>The trade-off we choose openly</h2>
-  <ContrastPair leftLabel="What this approach protects" rightLabel="What it asks us to maintain" accent="none">
-    <Fragment slot="left"><p>Local distinctions remain reviewable. Change has an accountable home. Shared meanings can be reused without forcing all contexts into one vocabulary. Implementers can inspect the assumptions behind a connection.</p></Fragment>
-    <Fragment slot="right"><p>Boundaries and mappings require stewardship. Local autonomy can produce duplication unless reuse is actively reviewed. A common term still needs a release and change agreement. These are ongoing responsibilities, not costs that linked data makes disappear.</p></Fragment>
-  </ContrastPair>
-  <p>
-    We are not claiming an industry-wide consensus that all ontology work follows one
-    top-down pattern. Top-down and bottom-up techniques can both contribute. Our
-    commitment is to begin with evidenced local questions, retain formal discipline
-    and make the step from local understanding to shared agreement explicit.
-  </p>
-
-  <h2 id="source-contract"><span id="authority" aria-hidden="true"></span><span id="receipt" aria-hidden="true"></span>What makes this a method rather than a slogan</h2>
-  <p>
-    OPDA <a href="/modelling/odr/odr-0046">ODR-0046</a> supplies the selected concerns; <a href="/modelling/odr/odr-0038">ODR-0038</a> / <a href="/modelling/odr/odr-0045">ODR-0045</a> / <a href="/modelling/odr/odr-0060">ODR-0060</a> the
-    boundary discipline; <a href="/modelling/odr/odr-0041">ODR-0041</a> / <a href="/modelling/odr/odr-0042">ODR-0042</a> and <a href="/modelling/odr/odr-0061">ODR-0061</a> / <a href="/modelling/odr/odr-0062">ODR-0062</a> / <a href="/modelling/odr/odr-0063">ODR-0063</a> the identity and analytical
-    commitments; <a href="/modelling/odr/odr-0037">ODR-0037</a> / <a href="/modelling/odr/odr-0043">ODR-0043</a> / <a href="/modelling/odr/odr-0044">ODR-0044</a> the applicability and language contracts; and
-    <a href="/modelling/odr/odr-0056">ODR-0056</a> / <a href="/modelling/odr/odr-0058">ODR-0058</a> / <a href="/modelling/odr/odr-0059">ODR-0059</a> / <a href="/modelling/odr/odr-0064">ODR-0064</a> the mapping and context-map rules. The explanatory manifesto
-    above synthesises those requirements—it does not create additional adopted rules.
-  </p>
-  <p>
-    The <a href="/semantic-modelling/method/standards-and-decisions">decision register</a>
-    links the adopted OPDA rules, scope and amendments, with upstream revision provenance. It separates
-    normative method, proposed operating workflow and current candidate evidence.
-    The external standards remain authoritative for the semantics of their terms.
-  </p>
-</ModellingLayout>
+  <section class="og-references" aria-labelledby="basis">
+    <h2 id="basis">Where this guide gets its authority</h2>
+    <p><a href="/modelling/adr/adr-0063">ADR-0063</a> establishes the domain-led approach and scope. <a href="/modelling/adr/adr-0067">ADR-0067</a> establishes first-principles Property Pack modelling and resource homes. <a href="/modelling/odr/odr-0062">ODR-0062</a> organises the method; <a href="/modelling/odr/odr-0061">ODR-0061</a> and <a href="/modelling/odr/odr-0063">ODR-0063</a> require foundational analysis without external upper-ontology subsumption.</p>
+    <p>The <a href="/semantic-modelling/method/standards-and-decisions">decision register</a> records applicable scope, amendments and source-method provenance. Older accepted decisions retain their recorded scope. The <a href="/development/inputs/pdtf-schema/schema-derived-ontology">schema-derived ontology</a> remains a separately identified evidence corpus; the teaching here re-authors useful questions under the current method, not its historical conclusions.</p>
+  </section>
+</OntologyChapter>

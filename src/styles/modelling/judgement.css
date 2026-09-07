@@ -1,0 +1,235 @@
+/* Open editorial atlas; lists stay readable without a card dashboard. */
+.ontology-chapter .og-content .og-atlas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--space-8);
+  row-gap: 0;
+  max-inline-size: var(--og-measure);
+  margin-block-start: var(--space-6);
+  padding: 0;
+  list-style: none;
+}
+.ontology-chapter .og-content .og-atlas > li {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-content: start;
+  column-gap: var(--space-5);
+  margin: 0;
+  padding-block: var(--space-6);
+  padding-inline: 0;
+  border-block-start: 1px solid var(--color-border-strong);
+  min-inline-size: 0;
+}
+.ontology-chapter .og-atlas__number {
+  color: var(--color-text-muted);
+  font: 500 var(--text-2xl) / var(--leading-snug) var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.04em;
+}
+.ontology-chapter .og-content .og-atlas > li > div { min-inline-size: 0; }
+.ontology-chapter .og-content .og-atlas h3 {
+  margin: 0;
+  font: 700 var(--text-xl) / var(--leading-snug) var(--font-sans);
+  text-wrap: balance;
+}
+.ontology-chapter .og-content .og-atlas p {
+  margin-block-start: var(--space-3);
+  font: 400 var(--text-lg) / var(--leading-normal) var(--font-reading);
+}
+.ontology-chapter .og-atlas a { text-decoration-thickness: 1px; text-underline-offset: .18em; }
+.ontology-chapter .og-atlas a:hover { text-decoration-thickness: 2px; }
+.ontology-chapter .og-content .og-reference-index {
+  display: block;
+  max-inline-size: var(--og-measure);
+  margin-block-start: var(--space-6);
+}
+.ontology-chapter .og-reference-index > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3) var(--space-6);
+  padding-block: var(--space-5);
+  border-block-start: 1px solid var(--color-border);
+  min-inline-size: 0;
+}
+.ontology-chapter .og-reference-index dt { margin: 0; font: 700 var(--text-lg) / var(--leading-snug) var(--font-sans); }
+.ontology-chapter .og-reference-index dd {
+  margin: 0;
+  color: var(--color-text-muted);
+  font: 400 var(--text-lg) / var(--leading-normal) var(--font-reading);
+  overflow-wrap: anywhere;
+}
+@container (min-width: 40rem) {
+  .ontology-chapter .og-reference-index > div { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+}
+@container (min-width: 56rem) {
+  .ontology-chapter .og-content .og-atlas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (forced-colors: active) {
+  .ontology-chapter .og-content .og-atlas > li,
+  .ontology-chapter .og-reference-index > div { border-color: CanvasText; }
+  .ontology-chapter .og-atlas__number,
+  .ontology-chapter .og-reference-index dd { color: CanvasText; }
+}
+@media print {
+  .ontology-chapter .og-content .og-atlas > li,
+  .ontology-chapter .og-reference-index > div { break-inside: avoid; }
+}
+
+/* Ontology teaching is an editorial chapter, not a status dashboard.
+   This module owns only the new chapter and its deliberately small vocabulary. */
+.ontology-chapter {
+  --og-measure: 64rem;
+  color: var(--color-text);
+  font: 400 var(--text-lg) / var(--leading-normal) var(--font-reading);
+}
+.ontology-chapter .og-opening,
+.ontology-chapter .og-content { min-inline-size: 0; }
+.ontology-chapter .og-opening > * { margin: 0; max-inline-size: var(--og-measure); }
+.ontology-chapter .og-opening h1 {
+  color: var(--color-text-strong);
+  font: 700 var(--text-3xl) / 1.22 var(--font-sans);
+  text-wrap: balance;
+}
+.ontology-chapter .og-opening .og-deck {
+  margin-block-start: var(--space-4);
+  font: 400 var(--text-lg) / var(--leading-normal) var(--font-reading);
+  text-align: justify;
+  text-align-last: start;
+  hyphens: auto;
+}
+.ontology-chapter .og-opening .og-audience {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin-block-start: var(--space-5);
+  font: 500 var(--text-sm) / var(--leading-snug) var(--font-sans);
+  color: var(--color-text-muted);
+  text-align: start;
+}
+.og-audience__mark,
+.og-audience > strong { color: var(--color-status-danger); }
+.og-audience__mark { font-size: var(--text-lg); font-weight: 700; }
+.og-kicker { border-inline-start: 1px solid var(--color-border-strong); padding-inline-start: var(--space-3); }
+.og-number { font: 400 var(--text-xs) / var(--leading-normal) var(--font-mono); }
+.ontology-chapter .og-opening .og-basis {
+  margin-block-start: var(--space-2);
+  font: 400 var(--text-caption) / var(--leading-normal) var(--font-sans);
+  color: var(--color-text-muted);
+  text-align: start;
+}
+.ontology-chapter .og-content { margin-block-start: var(--space-7); container-type: inline-size; }
+.ontology-chapter .og-content :where(section, .document-flow) { display: flow-root; }
+.ontology-chapter .og-content :where(p, ul, ol, dl, blockquote, aside) { max-inline-size: var(--og-measure); }
+.ontology-chapter .og-content :where(p, ul, ol, dl, blockquote, figure, aside, section, h2, h3, h4, pre, table) { margin-block: 0; }
+.ontology-chapter .og-content :where(p) {
+  text-align: justify;
+  text-align-last: start;
+  hyphens: auto;
+}
+.ontology-chapter .og-content :where(section, .document-flow) > * + *,
+.ontology-chapter .og-content > * + * { margin-block-start: var(--space-4); }
+.ontology-chapter .og-content > :is(h2, h3, h4, section),
+.ontology-chapter .og-content :where(section, .document-flow) > :is(h2, h3, h4, section) {
+  margin-block-start: var(--space-7);
+}
+.ontology-chapter .og-content > :first-child,
+.ontology-chapter .og-content :where(section, .document-flow) > :first-child { margin-block-start: 0; }
+.ontology-chapter .og-content :is(h2, h3, h4) {
+  border: 0;
+  padding: 0;
+  color: var(--color-text-strong);
+  font-family: var(--font-sans);
+  text-wrap: balance;
+}
+.ontology-chapter .og-content h2 { font-size: var(--text-2xl); }
+.ontology-chapter .og-content h3 { font-size: var(--text-xl); }
+.ontology-chapter .og-content h4 { font-size: var(--text-lg); }
+.ontology-chapter .og-lead { font-weight: 500; }
+.ontology-chapter .og-content :is(a, code, th, td) { overflow-wrap: anywhere; }
+.ontology-chapter .og-content a:not([class]) { text-underline-offset: .18em; }
+.ontology-chapter .og-content :is(ul, ol) { padding-inline-start: 1.5em; }
+.ontology-chapter .og-content li + li { margin-block-start: var(--space-3); }
+
+/* A worked case stays part of the argument: one marginal label, no card stack. */
+.ontology-chapter .og-example {
+  border-inline-start: 4px solid var(--color-callout-technical);
+  padding: var(--space-5) var(--space-6);
+  background: var(--color-callout-technical-surface);
+}
+.ontology-chapter .og-contrast {
+  border-block: 1px solid var(--color-border-strong);
+  padding-block: var(--space-5);
+}
+.ontology-chapter .og-review {
+  border-inline-start: 4px solid var(--color-callout-method);
+  padding-inline-start: var(--space-6);
+}
+.ontology-chapter .og-references {
+  color: var(--color-text-muted);
+  font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
+}
+.ontology-chapter :is(.og-example, .og-contrast, .og-review, .og-references) > * + * {
+  margin-block-start: var(--space-4);
+}
+.ontology-chapter :is(.og-example, .og-contrast, .og-review, .og-references) > :first-child { margin-block-start: 0; }
+.ontology-chapter .og-table { inline-size: 100%; min-inline-size: 0; overflow: visible; }
+.ontology-chapter .og-table table,
+.ontology-chapter table.og-table {
+  inline-size: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
+}
+.ontology-chapter .og-table :is(th, td) { white-space: normal; vertical-align: top; }
+.ontology-chapter .og-table caption { position: absolute; inline-size: 1px; block-size: 1px; clip-path: inset(50%); overflow: hidden; }
+
+/* Notes use an editorial marginal label and a continuous reading surface.
+   The label is text, not a TOC heading or an assertion of validation status. */
+.ontology-chapter .judgement-note {
+  --jn-ink: var(--color-callout-technical);
+  --jn-surface: var(--color-callout-technical-surface);
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) minmax(0, 4fr);
+  gap: var(--space-6);
+  border-inline-start: 4px solid var(--jn-ink);
+  padding: var(--space-5);
+  background: var(--jn-surface);
+  max-inline-size: var(--og-measure);
+}
+.ontology-chapter .judgement-note--method { --jn-ink: var(--color-callout-method); --jn-surface: var(--color-callout-method-surface); }
+.ontology-chapter .judgement-note--caution { --jn-ink: var(--color-status-danger); --jn-surface: var(--color-status-danger-surface); }
+.ontology-chapter .judgement-note--example { --jn-ink: var(--color-callout-technical); --jn-surface: var(--color-callout-technical-surface); }
+.judgement-note__rail { color: var(--jn-ink); }
+.ontology-chapter .judgement-note__label {
+  font: 700 var(--text-sm) / var(--leading-snug) var(--font-sans);
+  text-align: start;
+}
+.judgement-note__symbol { display: block; font: 700 var(--text-xl) / 1 var(--font-sans); margin-block-end: var(--space-3); }
+.judgement-note__body { min-inline-size: 0; }
+
+@container (max-width: 40rem) {
+  .ontology-chapter .judgement-note { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+  .judgement-note__rail { display: flex; gap: var(--space-3); align-items: baseline; }
+  .judgement-note__symbol { margin: 0; }
+}
+
+@media (max-width: 40rem) {
+  .ontology-chapter .og-opening h1 { font-size: 1.875rem; line-height: 1.267; }
+  /* A narrow reading track cannot justify words without large gaps. */
+  .ontology-chapter .og-content p,
+  .ontology-chapter .og-opening .og-deck { text-align: start; hyphens: manual; }
+  .ontology-chapter .judgement-note { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+  .judgement-note__rail { display: flex; gap: var(--space-3); align-items: baseline; }
+  .judgement-note__symbol { margin: 0; }
+  .ontology-chapter .og-example { padding: var(--space-4) var(--space-5); }
+  .ontology-chapter .og-review { padding-inline-start: var(--space-5); }
+}
+@media (forced-colors: active) {
+  .ontology-chapter :is(.og-audience__mark, .og-audience > strong, .judgement-note__rail) { color: CanvasText; }
+  .ontology-chapter :is(.judgement-note, .og-example, .og-review, .og-contrast) { border-color: CanvasText; }
+}
+@media print {
+  .ontology-chapter :is(.judgement-note, .og-example) { break-inside: avoid; }
+  .ontology-chapter .og-audience { color: CanvasText; }
+}

@@ -1,0 +1,90 @@
+---
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import JudgementDiagram from '@/components/modelling/judgement/JudgementDiagram.astro';
+import JudgementNote from '@/components/modelling/judgement/JudgementNote.astro';
+---
+
+<OntologyChapter title="Foundations and modelling judgement" description="Use identity, rigidity, dependence and unity to challenge a model before its convenient structures become lasting commitments." kicker="Modelling judgement" number="01">
+  <p class="og-lead">An ontology becomes useful when its distinctions survive a difficult question. Does this identifier identify the building or a record about it? Can someone stop being a seller without becoming a different person? Is a commission merely a link, or a relationship with characteristics of its own? Foundational analysis makes those questions explicit.</p>
+
+  <section aria-labelledby="reasoning">
+    <h2 id="reasoning">A discipline for reasons, not a machine for answers</h2>
+    <p>A source form can tell us that someone entered “seller”. A database can tell us that a key has remained unchanged. Neither establishes what the person is, what makes the role contextual, or which changes the identified thing can survive. Those are modelling judgements: claims about the intended world, supported by definitions, examples and the people responsible for that meaning.</p>
+    <p>The selected OPDA method uses UFO-informed distinctions and OntoClean analysis. UFO supplies an analytical vocabulary for such distinctions as kinds, roles, qualities and material relators. OntoClean supplies metaproperty questions that expose problematic classifications and inheritance. They contribute related but different ideas; neither is just another name for an RDF syntax or a validation engine.</p>
+    <p>Apply the discipline across the eight retained modelling concerns, not only a small “relator spine”. First understand the proposed referent. Then examine all four relevant axes, explain the classifications, and test their consequences under the adopted rules.</p>
+  </section>
+
+  <JudgementDiagram kind="four-axes" caption="Four independent questions interrogate one modelling commitment. The answers need justification before a checker can use them." />
+
+  <section aria-labelledby="identity">
+    <h2 id="identity">Identity: what counts as the same individual?</h2>
+    <p>Identity concerns individuation: distinguishing one thing from another and recognising it across descriptions or changes. A kind supplies the relevant identity criterion; a subkind retains that criterion. An identifier is a device for referring to something under a convention. It can be excellent evidence without being the criterion itself.</p>
+    <p>In our fictional Harbour Court case, one building contains Flat 1 and Flat 2. A report and a title record both mention the building’s address. Equating the building with either document would confuse the described subject with a description. An address match helps locate related material; it does not make those resources one individual.</p>
+    <p>For a candidate dwelling definition, ask what happens if Flat 1 is subdivided. Does it cease, persist as one successor, or persist under a different domain convention? Record the alternatives and the evidence needed to choose. We leave that case unresolved here. A new code, a continued address or an old source model’s answer cannot settle the new definition by themselves.</p>
+    <p>ODR-0061’s identity check examines declared identity-supplying kinds and their asserted ancestors. A kind beneath two distinct identity-supplying kinds raises a conflict that the modeller must explain. The tool can find the incompatible declarations; it cannot establish the identity criterion from matching labels or decide that the contexts should be merged.</p>
+  </section>
+
+  <section aria-labelledby="rigidity">
+    <h2 id="rigidity">Rigidity: could membership cease while the bearer remains?</h2>
+    <p>A rigid classification is essential to each of its instances. An anti-rigid classification is not essential to any of its instances: every bearer could cease to belong while remaining that individual. This concerns what could be the case, not simply what the records happen to show. A lifetime of recorded selling does not make Seller an essential kind.</p>
+    <p>Imagine that Maya sells Flat 1 while buying elsewhere. The two participations are compatible because each has its own context. If the sale ends, Maya need not cease to exist. That is a reason to analyse Seller as a role, with relational dependence, rather than as an identity-supplying kind.</p>
+    <p>Now reverse a tempting hierarchy. Suppose a modeller places a rigid Person class beneath an anti-rigid Seller class, because the source’s “seller” section contains all person records. The hierarchy says every person instance is classified as a seller, contradicting the declared essential-membership commitments. ODR-0061 requires this check along indirect as well as immediate subclass paths.</p>
+    <p>The direction matters. “An anti-rigid type must not subsume a rigid type” is not the universal claim “a role can never be a subclass of a kind”. OPDA separately chooses local <code>roleOf</code> and <code>phaseOf</code> annotations for those class-level relationships. The <a href="/semantic-modelling/method/roles-and-phases">roles and change chapter</a> distinguishes that encoding policy from the analytical rule.</p>
+  </section>
+
+  <section aria-labelledby="dependence">
+    <h2 id="dependence">Dependence: what must exist for this thing to exist?</h2>
+    <p>A database foreign key says how records connect. Existential dependence asks something stronger about the modelled entities. If a proposed quality is the condition of a particular wall, it needs a bearer: the wall whose condition it is. A condition value such as “poor” is not itself that particular quality. A report recording the assessment is different again.</p>
+    <p>In ODR-0061’s intended contract, a mode or quality identifies a bearer through <code>opda:inheresIn</code>. A material relator identifies its bearers through <code>opda:mediates</code>. These are proposed local model predicates with implementation pending, not evidence that current candidate data already emits them.</p>
+    <div class="og-example">
+      <h3>A commission that may warrant a relator</h3>
+      <p>Suppose a fictional commission establishes a relationship between a commissioning party and a surveying practice, with an agreed scope of work. Reviewers identify the commission separately from the instruction document and the eventual inspection. Its agreed scope belongs to that relationship, not to either party independently.</p>
+      <p>This gives a material-relator proposal something to defend: a domain relation involving at least two bearers and a characteristic of its own. Ask whether ending the relationship leaves the parties identifiable, which dependent commitments constitute it, and what distinguishes it from a later commission between the same parties.</p>
+      <p>Contrast a record saying that two vocabulary terms are close matches. It has endpoints, a date and a justification, but these describe a correspondence judgement. Adding attributes does not turn it into the same kind of domain relationship as the commission.</p>
+    </div>
+    <p>The adopted relator check requires at least one own attribute and mediation of at least two bearers. Those are necessary declared conditions in this profile, not sufficient philosophical proof. Inventing an attribute merely to satisfy the count would defeat the analysis. The choice must earn its place through the domain evidence.</p>
+  </section>
+
+  <section aria-labelledby="unity">
+    <h2 id="unity">Unity: what makes these parts one whole?</h2>
+    <p>Identity asks whether this is the same individual; unity asks what binds its parts into a whole. A list of records has membership, but its database grouping does not establish the unity of what the records describe. Equally, a building’s address does not explain which material parts constitute that building.</p>
+    <p>Consider a proposed functional whole in the Harbour Court example. Reviewers may use the organisation of parts and their contribution to a function to justify a functional-complex classification. A separately modelled amount of construction material raises a different question: dividing an amount is not the same operation as distinguishing the parts of the functioning whole. Do not express “made from” as “is a subclass of”.</p>
+    <p>The local controlled unity vocabulary has four choices: functional complex, collective, amount of matter and no unity. Functional complexes and collectives carry positive unity; amounts of matter carry anti-unity. “No unity” is its own value, not an alias for positive unity or missing information. The modeller must justify which classification applies.</p>
+    <p>ODR-0061 checks that an anti-unity class does not subsume a positive-unity class along the asserted hierarchy. A software aggregate boundary or a part/whole link may supply useful evidence, but neither is automatic proof of a unity criterion. The mechanical check only becomes meaningful when that classification is populated and defensible.</p>
+  </section>
+
+  <section class="og-example" aria-labelledby="worked-classification">
+    <h2 id="worked-classification">Work all four axes on one candidate</h2>
+    <p>A fictional inspector brings a torch to Harbour Court. For this exercise only, we propose a Torch kind defined by its original design as a portable lighting artefact, plus a TorchMass quality. This small equipment example isolates the reasoning; it does not add equipment to the Property Pack scope or settle property identity.</p>
+    <div class="og-table">
+      <table>
+        <caption>A proposed classification and the counterexample that challenges it</caption>
+        <thead><tr><th scope="col">Axis</th><th scope="col">Our proposed commitment and reason</th><th scope="col">Adverse case to check</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Identity</th><td>Torch supplies identity through continuity of one manufactured assembly: changing its battery or inventory code preserves it; replacing the complete assembly does not. The stock record identifies a record, not that assembly.</td><td>Put the Torch kind beneath two declared identity-supplying kinds, PhysicalDevice and StockRecord. The adopted ancestor check should report the competing commitments.</td></tr>
+          <tr><th scope="row">Rigidity</th><td>Torch is classified as rigid because original design, not current illumination or possession, defines this candidate type. A broken or returned torch still belongs. OnLoanAsset is separately anti-rigid.</td><td>Make OnLoanAsset an ancestor of Torch. The check should reject an anti-rigid type subsuming the declared rigid kind.</td></tr>
+          <tr><th scope="row">Dependence</th><td>The torch is not classified as a mode, quality or relator. Its particular mass is a separate quality borne by that torch; a value such as 200 grams describes the quality, not a second torch.</td><td>Declare TorchMass a quality but omit its intended <code>inheresIn</code> bearer relation. The eligible quality should fail the inherence check; Torch itself is a non-target for that check.</td></tr>
+          <tr><th scope="row">Unity</th><td>Torch has positive unity as a functional complex: its organised parts constitute the lighting artefact. An amount of its plastic is a different proposed class, classified with anti-unity.</td><td>Make AmountOfPlastic an ancestor of Torch. The unity check should reject the anti-unity/positive-unity hierarchy; a material-composition relation would express a different claim.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The ordinary candidate contains the justified classifications, no conflicting ancestors and an explicit bearer for TorchMass. These declarations are expected to meet the relevant checks. Each adverse case changes one declaration or relationship so that the expected failure has an identifiable cause. The checker still cannot establish that our assembly-continuity or original-design criteria are philosophically correct.</p>
+    <p>Now remove the quality classification itself. A typed-target inherence check may no longer select TorchMass; that is missing classification and lost coverage, not a conforming quality. Distinguish this from the deliberately non-target Torch class. These are proposed examples and expected outcomes only: ODR-0061 selects the requirements, but no fixture execution or implementation is claimed here.</p>
+  </section>
+
+  <section class="og-review" aria-labelledby="checking">
+    <h2 id="checking">What a successful check can honestly establish</h2>
+    <p>A checker evaluates declared classifications and relationships. It can expose an absent bearer, conflicting kind ancestors, an anti-rigid ancestor over a rigid class or incompatible unity declarations. It does not observe possible worlds, discover essential properties or prove that the definitions describe the domain correctly.</p>
+    <p>For every rule, distinguish installation, conforming and violating fixtures, non-target fixtures, eligible production targets and actual evaluation of those targets. A zero-target success is not coverage. Missing classification is not a conforming classification. ODR-0061 currently records accepted requirements with implementation confirmation pending; historical source-project tests cannot fill that gap.</p>
+  </section>
+
+  <JudgementNote tone="method" title="Required analysis; no imported upper-class hierarchy">
+    <p><a href="/modelling/odr/odr-0063">ODR-0063</a> prohibits grounding domain classes through <code>rdfs:subClassOf</code> links to external UFO, gUFO, BFO, DOLCE or GIST classes. It allows legitimate local inheritance and requires the analytical discipline above. Use reviewed correspondences when an integration needs them. A correspondence neither imports the prohibited inheritance nor guarantees consistency.</p>
+  </JudgementNote>
+
+  <section class="og-references" aria-labelledby="references">
+    <h2 id="references">Decision basis and further reading</h2>
+    <p>The governing requirements are <a href="/modelling/odr/odr-0061">ODR-0061: four-axis checks</a>, <a href="/modelling/odr/odr-0062">ODR-0062: organising concerns and foundational discipline</a> and <a href="/modelling/odr/odr-0063">ODR-0063: no external upper-ontology subsumption</a>. <a href="/modelling/odr/odr-0059">ODR-0059</a> governs cross-context identity comparison.</p>
+    <p>Guarino and Welty’s <a href="https://www.loa.istc.cnr.it/old/Papers/CACM2002.pdf"><cite>Evaluating Ontological Decisions with OntoClean</cite></a> explains the distinction between identity and unity and the direction of the rigidity constraint. The Harbour Court exercises apply the selected local method; they are not adopted property definitions.</p>
+  </section>
+</OntologyChapter>

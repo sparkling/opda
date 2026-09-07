@@ -1,7 +1,7 @@
 ---
-import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
-import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import JudgementNote from '@/components/modelling/judgement/JudgementNote.astro';
+import ReferencePlate from '@/components/modelling/judgement/ReferencePlate.astro';
 const mapping = `@prefix left: <https://example.org/surveying-vocabulary/> .
 @prefix right: <https://example.org/assessment-vocabulary/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -26,7 +26,7 @@ left:InspectionReport skos:closeMatch right:AssessmentEvidence .
     sssom:comment "Teaching example only; not an approved correspondence." .`;
 ---
 
-<ModellingLayout title="Mapping records: correspondence with an inspectable argument" description="A mapping is a claim about two defined terms. Its predicate states the relationship; its record preserves the sources, versions and justification needed to review that claim." claim="method">
+<OntologyChapter title="Mapping records: correspondence with an inspectable argument" description="A mapping is a claim about two defined terms. Its predicate states the relationship; its record preserves the sources, versions and justification needed to review that claim." section="reference">
   <section aria-labelledby="candidate">
     <h2 id="candidate"><span id="questions" aria-hidden="true"></span><span id="mapping-workflow" aria-hidden="true"></span><span id="strength" aria-hidden="true"></span>A plausible match is the start of a question</h2>
     <p>Similar labels, shared identifiers and nearby graph structures can reveal useful candidates for comparison. They do not choose the final mapping predicate. Read both definitions, examine their identity criteria and compare hard cases. Ask whether the two terms classify the same things, overlapping things, a broader and narrower population, or related but fundamentally different things.</p>
@@ -35,7 +35,7 @@ left:InspectionReport skos:closeMatch right:AssessmentEvidence .
   </section>
 
 <figure class="modelling-figure" data-modelling-figure="mapping-gates">
-    <ModellingVisual kind="mapping-gates" />
+    <ReferencePlate kind="mapping" />
     <ol class="modelling-steps">
       <li><strong>Candidate.</strong> A label, key or source relationship suggests comparison.</li>
       <li><strong>Meaning and identity.</strong> Compare definitions, link-key evidence, hard cases and vetoes.</li>
@@ -60,12 +60,11 @@ left:InspectionReport skos:closeMatch right:AssessmentEvidence .
     <p>Confidence is optional in this profile and is constrained when supplied. Do not display a missing confidence value as an asserted score. Similarity and curator confidence are also different measurements. A label-similarity algorithm’s number should not be relabelled as a probability that a semantic identity claim is correct.</p>
   </section>
 
-  <aside class="callout callout--note modelling-callout">
-    <div class="callout__label">Inspect an illustrative SSSOM record with RDF 1.2 statement identity</div>
+  <JudgementNote tone="example" title="Inspect an illustrative SSSOM record with RDF 1.2 statement identity">
     <p>This deliberately hypothetical close match demonstrates the record structure only. Its endpoints and date are fictional, and no real curation or OPDA adoption is claimed. The example uses RDF 1.2 triple-term syntax; an RDF 1.1-only parser is not sufficient.</p>
     <pre><code>{mapping}</code></pre>
     <p>The named reifier identifies the same subject–predicate–object statement asserted above it. The OPDA method keeps the OWL annotation-axiom form and tabular SSSOM as derived exports, not independent sources of truth. SSSOM model slot names such as <code>subject_id</code> must not be invented as canonical RDF predicates in this encoding.</p>
-  </aside>
+  </JudgementNote>
 
   <section aria-labelledby="profile">
     <h2 id="profile">Distinguish standard capabilities from the selected profile</h2>
@@ -106,8 +105,7 @@ left:InspectionReport skos:closeMatch right:AssessmentEvidence .
   </section>
 
   <figure class="modelling-figure" data-modelling-figure="mapping-review">
-    <EnrichmentVisual kind="mapping-review" />
-    <p>Text equivalent: new counterevidence can reopen an accepted mapping and lead to a governed retraction. New evidence can also reopen a denied candidate and lead to a newly justified correspondence—or a retained denial or unresolved result. Each new verdict links to the decision it supersedes; neither direction rewrites history.</p>
+    <ReferencePlate kind="mapping-change" />
     <figcaption>Mapping stewardship corrects false positives and false negatives. Reopening is a review state, not automatic acceptance.</figcaption>
   </figure>
 
@@ -146,4 +144,4 @@ left:InspectionReport skos:closeMatch right:AssessmentEvidence .
     <p>Required method: OPDA <a href="/modelling/odr/odr-0051">ODR-0051</a>, <a href="/modelling/odr/odr-0056">ODR-0056</a> R1–R5 as amended 30 August 2026, <a href="/modelling/odr/odr-0058">ODR-0058</a>’s named RDF 1.2 reifier/export contract, and <a href="/modelling/odr/odr-0059">ODR-0059</a>’s accepted ordered identity gates and R11 version discipline. <a href="/modelling/odr/odr-0059">ODR-0059</a>’s separately labelled proposed round-two refinement is not silently promoted by its accepted document header.</p>
     <p>Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. <a href="https://mapping-commons.github.io/semantic-mapping-vocabulary/">SEMAPV’s published term definitions</a> supply the precise justification IRIs. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for local adoption and provenance. A required mapping-record method does not imply that today’s candidate contains reviewed mappings.</p>
   </section>
-</ModellingLayout>
+</OntologyChapter>

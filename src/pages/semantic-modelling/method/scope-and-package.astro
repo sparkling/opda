@@ -1,9 +1,9 @@
 ---
-import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import ReferencePlate from '@/components/modelling/judgement/ReferencePlate.astro';
 ---
 
-<ModellingLayout title="Scope and package: eight concerns, six connected outputs" description="Assess the meaning a context must own, the agreements it can reuse and the evidence needed at its boundaries. Bring the results together as one versioned semantic package, not a collection of independently drifting documents." claim="method">
+<OntologyChapter title="Scope and package: eight concerns, six connected outputs" description="Assess the meaning a context must own, the agreements it can reuse and the evidence needed at its boundaries. Bring the results together as one versioned semantic package, not a collection of independently drifting documents." section="reference">
   <section aria-labelledby="different-jobs">
     <h2 id="different-jobs"><span id="four-structures" aria-hidden="true"></span><span id="workshop" aria-hidden="true"></span>Do not turn three useful structures into one hierarchy</h2>
     <p>The eight retained modelling concerns tell us what to consider. The six semantic outputs tell us what practitioners should be able to review. The four dispositions record where responsibility for each concern belongs. They are different structures: a concern can affect several outputs, while one output can draw on several concerns.</p>
@@ -12,7 +12,7 @@ import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
   </section>
 
   <figure class="modelling-figure" data-modelling-figure="scope-map">
-    <ModellingVisual kind="scope-map" />
+    <ReferencePlate kind="scope" />
     <p>Text equivalent: assess domain structure (1), vocabulary and taxonomy (2), classification metadata (5), validation (7), mappings (8), provenance and quality (9), time and history (10), and sensitivity and access policy (11) across one connected package.</p>
     <figcaption>Eight concerns are a coverage contract, not eight mandatory files or separate ontologies. The original category numbers preserve traceability to the source framework.</figcaption>
   </figure>
@@ -93,7 +93,6 @@ import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
     <h2 id="receipt">A package handoff is a receipt, not a claim of completion</h2>
     <p>Identify the scope and semantic owner; package and source versions; concern dispositions; the six output views; vocabulary and mapping dependencies; relevant validation and inference profiles; and unresolved questions. Where a view is generated, state its source, generator and derivation. Where it is manually maintained, explain how alignment is checked.</p>
     <p>A package diff and appropriate rerun evidence make a synchronisation claim reviewable. The method requires that evidence; this explanatory page neither performs those checks nor certifies today’s candidates. Technical conformance and human adoption remain distinct.</p>
-    <p>Continue with <a href="/semantic-modelling/method/from-question-to-candidate">from question to candidate</a> or <a href="/semantic-modelling/method/meaning-checks-and-delivery">meaning, checks and delivery</a>.</p>
   </section>
 
   <section aria-labelledby="source-contract">
@@ -101,4 +100,4 @@ import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
     <p>OPDA <a href="/modelling/odr/odr-0046">ODR-0046</a> R1 supplies the fourteen-category framework; child records <a href="/modelling/odr/odr-0047">ODR-0047</a> / <a href="/modelling/odr/odr-0048">ODR-0048</a> / <a href="/modelling/odr/odr-0049">ODR-0049</a> / <a href="/modelling/odr/odr-0050">ODR-0050</a> / <a href="/modelling/odr/odr-0051">ODR-0051</a> / <a href="/modelling/odr/odr-0052">ODR-0052</a> / <a href="/modelling/odr/odr-0053">ODR-0053</a> / <a href="/modelling/odr/odr-0054">ODR-0054</a> govern the retained concerns. OPDA ADR-0063 and ADR-0067 establish the selected scope and connected semantic outputs; the package is not an adoption of excluded category 14. Supporting property, mapping, temporal and policy rules retain their own amendments and applicability boundaries.</p>
     <p>Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for local adoption scope and upstream provenance. The assessment and proposed change above are fictional illustrations, not populated candidate records or conformance results.</p>
   </section>
-</ModellingLayout>
+</OntologyChapter>

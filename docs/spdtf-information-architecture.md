@@ -209,13 +209,13 @@ Home /
 │   ├── Architecture and ontology decision indexes
 │   └── Programme decisions
 ├── Modelling /semantic-modelling
-│   ├── Understand ontologies /semantic-modelling/why-ontologies
-│   │   ├── Benefits; taking part through the website
-│   │   └── How to read the model; common questions
-│   └── How we model SPDTF /semantic-modelling/modelling-method
-│       ├── Principles; eight concerns; contexts and context maps
-│       ├── Identity, roles and phases; patterns; rules; linked-data languages
-│       └── Semantic package; evidence and mappings; validation; standards; decision basis
+│   ├── Understand shared meaning /semantic-modelling/understand
+│   ├── Explore the model /semantic-modelling/explore
+│   ├── Contribute your expertise /semantic-modelling/contribute
+│   └── Ontology modelling /semantic-modelling/method
+│       ├── Judgement: foundations; representation; identity through roles and change
+│       ├── Judgement: context agreements; evidence and time; source-to-model decisions
+│       └── Eight authoring references: scope, vocabularies, constraints, mappings, policy and standards
 ├── Development /development
 │   ├── Overview: the first collaborative scheme draft, its scope and status
 │   ├── Property Pack ontology /development/property-pack

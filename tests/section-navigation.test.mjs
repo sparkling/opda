@@ -80,7 +80,7 @@ test('the left section navigation implements all six destinations from one regis
   ])), {
     programme: 18,
     governance: 32,
-    'semantic-modelling': 25,
+    'semantic-modelling': 1 + MODELLING_JOURNEYS.reduce((count, journey) => count + 1 + journey.children.length, 0),
     spdtf: 241,
     'working-groups': 39,
     resources: 12,
@@ -459,7 +459,7 @@ test('semantic modelling uses the shared four-journey registry with linked paren
   assert.equal(getNavigationPrevNext('/semantic-modelling/contribute/what-happens-next').next?.url,
     '/semantic-modelling/method');
   assert.equal(getNavigationPrevNext('/semantic-modelling/method').next?.url,
-    '/semantic-modelling/method/from-question-to-candidate');
+    '/semantic-modelling/method/foundational-analysis');
   assert.equal(getNavigationPrevNext('/semantic-modelling/method/standards-and-decisions').next, undefined);
 });
 

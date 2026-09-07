@@ -200,6 +200,7 @@ Nested content flows expose the shared `.document-flow` role;
 spacing never depends on a route or on the link text.
 Authored reading content uses Atkinson Hyperlegible Next at 18px; generated references retain their existing typography. The 1024px text measure applies sitewide to authored content, including callouts, without narrowing tables or images.
 Modelling SVG figures use their left-aligned 960px design measure; their definition keys, explanations and captions align to that same measure instead of stretching across the article.
+Ontology-modelling chapters use `OntologyChapter` and the scoped judgement vocabulary: a compact method basis, continuous reading flow, semantic marginal notes and responsive comparison plates. The six-chapter judgement core is a new editorial composition, not a reskin of the source reference. Its eight diagram masters live in `docs/working/modelling-judgement/`; the website extracts the same SVG geometry and complete text equivalents. Narrow tracks and forced colours show the equivalent instead of shrinking diagram labels into illegibility. Decorative paired-mode artwork has separate prompt provenance in `public/images/modelling/judgement/manifest.json` and is never evidence of a model relationship.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. Authored ADR/ODR sections share the editorial heading rhythm;
 their technical quotations and code keep their existing treatment.

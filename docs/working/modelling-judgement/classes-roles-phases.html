@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kinds, roles and phases · OPDA modelling</title>
+<!-- Canonical standalone authoring source. Diagram Design: tree; fit, 960px-wide; technical audience; static; newly authored 2026-09-07.
+     Effective brand: OPDA profile, projected to current DESIGN.md fonts. No external assets. Offline system fallbacks are intentional.
+     This is an illustrative teaching figure, not an emitted ontology or evidence of implementation. -->
+<style>
+:root { --jg-paper:#ffffff; --jg-node:#f9f9f9; --jg-ink:#231f2f; --jg-muted:#625d72; --jg-rule:#cbc8d5; --jg-accent:#6c5bd4; --jg-tint:#eeebfa; --jg-link:#5b51d8; --jg-sans:'Source Sans 3','Segoe UI',sans-serif; --jg-reading:'Atkinson Hyperlegible Next','Segoe UI',sans-serif; --jg-mono:'Roboto Mono',Consolas,monospace; }
+[data-theme="dark"] { --jg-paper:#131224; --jg-node:#231f2f; --jg-ink:#f9f9f9; --jg-muted:#a5a1b2; --jg-rule:#56506d; --jg-accent:#9a8fe8; --jg-tint:#29233f; --jg-link:#a9a0ff; }
+body { max-width:1024px; margin:32px auto; padding:0 16px; background:#f9f9f9; color:#231f2f; font:18px/1.625 var(--jg-reading); }
+h1 { font:700 28px/1.25 var(--jg-sans); } h2 { font:700 16px/1.5 var(--jg-sans); } p { margin:12px 0; } figure { margin:0; }
+section { margin-top:32px; padding:24px; color:var(--jg-ink); background:var(--jg-paper); } figcaption { margin-top:16px; font:400 14px/1.625 var(--jg-sans); }
+figcaption strong { display:block; color:var(--jg-ink); font-size:18px; } footer { margin-top:24px; border-top:1px solid #cbc8d5; font:400 12px/1.625 var(--jg-sans); }
+.judgement-equivalent { margin-top:24px; padding-left:24px; } .judgement-equivalent li + li { margin-top:8px; }
+@media(max-width:640px) { section { padding:16px; } .judgement-drawing { display:none; } }
+@media(forced-colors:active) { .judgement-drawing { display:none; } section { color:CanvasText; border:1px solid CanvasText; } }
+@media print { .judgement-drawing { break-inside:avoid; } section { break-before:page; } }
+.judgement-drawing { width:100%; height:auto; display:block; color:var(--jg-ink); font-family:var(--jg-sans); }
+.judgement-drawing text { fill:var(--jg-ink); font-family:var(--jg-sans); }
+.judgement-drawing .jg-name { font-size:20px; font-weight:700; }
+.judgement-drawing .jg-note { font-size:16px; fill:var(--jg-muted); }
+.judgement-drawing .jg-small { font-size:12px; fill:var(--jg-muted); }
+.judgement-drawing .jg-tag { font-size:12px; font-weight:700; letter-spacing:.06em; fill:var(--jg-muted); }
+.judgement-drawing .jg-code, .judgement-drawing .jg-edge-label { font:500 12px var(--jg-mono); fill:var(--jg-muted); }
+.judgement-drawing .jg-paper, .judgement-drawing .jg-mask { fill:var(--jg-paper); }
+.judgement-drawing .jg-node { fill:var(--jg-node); stroke:var(--jg-ink); stroke-width:1; }
+.judgement-drawing .jg-focal { fill:var(--jg-tint); stroke:var(--jg-accent); stroke-width:2; }
+.judgement-drawing .jg-record { fill:var(--jg-paper); stroke:var(--jg-muted); }
+.judgement-drawing .jg-zone { fill:none; stroke:var(--jg-rule); stroke-width:1; stroke-dasharray:4 4; }
+.judgement-drawing .jg-panel { fill:none; stroke:var(--jg-muted); stroke-width:1; }
+.judgement-drawing .jg-edge { fill:none; stroke:var(--jg-muted); stroke-width:1.2; stroke-linecap:round; stroke-linejoin:round; }
+.judgement-drawing .jg-heavy { stroke-width:2; }
+.judgement-drawing .jg-dashed { stroke-dasharray:4 4; }
+.judgement-drawing .jg-rule { fill:none; stroke:var(--jg-rule); stroke-width:1; }
+.judgement-drawing .jg-dot, .judgement-drawing .jg-arrow { fill:var(--jg-muted); }
+@media(max-width:640px), (forced-colors:active) { .judgement-drawing { display:none; } }
+</style></head><body>
+<h1>Kinds, roles and phases</h1><p>Kind, role and phase classify the same individual; roleOf and phaseOf are governed local class-level annotations, not subclass edges or instance participations.</p>
+<section data-theme="light"><h2>Light</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="judgement-drawing" id="classes-roles-phases-light" viewBox="0 0 960 456" role="img" aria-labelledby="classes-roles-phases-light-title classes-roles-phases-light-desc">
+<title id="classes-roles-phases-light-title">Kinds, roles and phases</title>
+<desc id="classes-roles-phases-light-desc">Kind, role and phase classify the same individual; roleOf and phaseOf are governed local class-level annotations, not subclass edges or instance participations.</desc>
+<defs>
+<marker id="classes-roles-phases-light-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="jg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker>
+</defs>
+<rect class="jg-paper" width="960" height="456"/>
+
+<path class="jg-edge" d="M 208 240 V 200 Q 208 192 216 192 H 352 Q 360 192 360 184 V 152" marker-end="url(#classes-roles-phases-light-arrow)"/>
+<path class="jg-edge" d="M 752 240 V 200 Q 752 192 744 192 H 608 Q 600 192 600 184 V 152" marker-end="url(#classes-roles-phases-light-arrow)"/>
+<rect class="jg-mask" x="240" y="160" width="88" height="24"/><text class="jg-edge-label" x="284" y="176" text-anchor="middle">roleOf</text>
+<rect class="jg-mask" x="640" y="160" width="88" height="24"/><text class="jg-edge-label" x="684" y="176" text-anchor="middle">phaseOf</text>
+<g><rect class="jg-node jg-focal" x="320" y="40" width="320" height="112"/><text class="jg-name" x="336" y="72">Person</text><text class="jg-note" x="336" y="96">Identity-supplying kind</text><text class="jg-note" x="336" y="116">Criterion must be justified</text></g>
+<g><rect class="jg-node" x="40" y="240" width="336" height="112"/><text class="jg-name" x="56" y="272">Buyer · role</text><text class="jg-note" x="56" y="296">Depends on an external relation</text><text class="jg-note" x="56" y="316">Can be lost without losing person</text><text class="jg-note" x="56" y="336">identity</text></g>
+<g><rect class="jg-node" x="584" y="240" width="336" height="112"/><text class="jg-name" x="600" y="272">Adult · phase</text><text class="jg-note" x="600" y="296">Depends on an intrinsic condition</text><text class="jg-note" x="600" y="316">Criterion makes the phase explicit</text></g>
+<text class="jg-note" x="40" y="392">Class-level local annotations—not subclass edges or instance participations.</text>
+<text class="jg-note" x="40" y="416">An individual’s identity still needs a justified criterion.</text>
+</svg>
+<figcaption><strong>Kinds, roles and phases</strong>Kind, role and phase classify the same individual; roleOf and phaseOf are governed local class-level annotations, not subclass edges or instance participations.</figcaption>
+</figure></section>
+<section data-theme="dark"><h2>Dark</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="judgement-drawing" id="classes-roles-phases-dark" viewBox="0 0 960 456" role="img" aria-labelledby="classes-roles-phases-dark-title classes-roles-phases-dark-desc">
+<title id="classes-roles-phases-dark-title">Kinds, roles and phases</title>
+<desc id="classes-roles-phases-dark-desc">Kind, role and phase classify the same individual; roleOf and phaseOf are governed local class-level annotations, not subclass edges or instance participations.</desc>
+<defs>
+<marker id="classes-roles-phases-dark-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="jg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker>
+</defs>
+<rect class="jg-paper" width="960" height="456"/>
+
+<path class="jg-edge" d="M 208 240 V 200 Q 208 192 216 192 H 352 Q 360 192 360 184 V 152" marker-end="url(#classes-roles-phases-dark-arrow)"/>
+<path class="jg-edge" d="M 752 240 V 200 Q 752 192 744 192 H 608 Q 600 192 600 184 V 152" marker-end="url(#classes-roles-phases-dark-arrow)"/>
+<rect class="jg-mask" x="240" y="160" width="88" height="24"/><text class="jg-edge-label" x="284" y="176" text-anchor="middle">roleOf</text>
+<rect class="jg-mask" x="640" y="160" width="88" height="24"/><text class="jg-edge-label" x="684" y="176" text-anchor="middle">phaseOf</text>
+<g><rect class="jg-node jg-focal" x="320" y="40" width="320" height="112"/><text class="jg-name" x="336" y="72">Person</text><text class="jg-note" x="336" y="96">Identity-supplying kind</text><text class="jg-note" x="336" y="116">Criterion must be justified</text></g>
+<g><rect class="jg-node" x="40" y="240" width="336" height="112"/><text class="jg-name" x="56" y="272">Buyer · role</text><text class="jg-note" x="56" y="296">Depends on an external relation</text><text class="jg-note" x="56" y="316">Can be lost without losing person</text><text class="jg-note" x="56" y="336">identity</text></g>
+<g><rect class="jg-node" x="584" y="240" width="336" height="112"/><text class="jg-name" x="600" y="272">Adult · phase</text><text class="jg-note" x="600" y="296">Depends on an intrinsic condition</text><text class="jg-note" x="600" y="316">Criterion makes the phase explicit</text></g>
+<text class="jg-note" x="40" y="392">Class-level local annotations—not subclass edges or instance participations.</text>
+<text class="jg-note" x="40" y="416">An individual’s identity still needs a justified criterion.</text>
+</svg>
+<figcaption><strong>Kinds, roles and phases</strong>Kind, role and phase classify the same individual; roleOf and phaseOf are governed local class-level annotations, not subclass edges or instance participations.</figcaption>
+</figure></section>
+<ol class="judgement-equivalent">
+<li>Person is the illustrative identity-supplying kind. The actual criterion still requires domain justification.</li>
+<li>Buyer is an illustrative role grounded in a relevant external relation; someone may cease being a buyer and remain the same person.</li>
+<li>An age-defined adult classification is an illustrative phase grounded in an intrinsic condition under an explicit classification criterion.</li>
+<li>The local class-level annotations Buyer roleOf Person and Adult phaseOf Person identify bearer types; they are not rdfs:subClassOf edges or instance-level participation assertions. The individual retains the bearer’s identity under its justified criterion, rather than acquiring a new identity from role or phase membership.</li>
+</ol>
+<footer>Local authoring source · no publication authorised · OPDA DESIGN.md typography and semantic colours · ODR-0041 and ODR-0042 encoding; ODR-0061, ODR-0062 and ODR-0063 analytical boundaries. Source Sans 3 and Atkinson Hyperlegible Next are used when locally available; self-hosted site fonts apply in the website renderer.</footer>
+</body></html>

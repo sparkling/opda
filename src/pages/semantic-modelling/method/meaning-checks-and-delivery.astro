@@ -1,7 +1,8 @@
 ---
-import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
-import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import JudgementNote from '@/components/modelling/judgement/JudgementNote.astro';
+import JudgementDiagram from '@/components/modelling/judgement/JudgementDiagram.astro';
+import ReferencePlate from '@/components/modelling/judgement/ReferencePlate.astro';
 const applicability = `@prefix model: <https://example.org/property-model/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -50,17 +51,8 @@ model:CreatorReviewProperty a sh:PropertyShape ;
     sh:severity sh:Warning .`;
 ---
 
-<ModellingLayout title="Meaning, checks and delivery: four jobs, four contracts" description="The meaning of a published assertion, the intended uses of a property, the requirements of an exchange and the triples a rule derives are different contracts. Keep them visible even when one tool processes them all." claim="method">
-<figure class="modelling-figure" data-modelling-figure="semantic-layers">
-    <ModellingVisual kind="semantic-layers" />
-    <dl>
-      <dt>Semantic assertion</dt><dd>What the graph says, including the consequences of the vocabulary used.</dd>
-      <dt>Applicability hint</dt><dd>Which subjects or values a property is intended to describe, without that entailment.</dd>
-      <dt>Validation condition</dt><dd>What this supplied graph must contain or satisfy for the declared exchange.</dd>
-      <dt>Derived statement</dt><dd>What a named, separately configured rule produces from its inputs.</dd>
-    </dl>
-    <figcaption>Four distinct jobs. Disabling a processing step does not rewrite the meaning of a published RDF statement.</figcaption>
-  </figure>
+<OntologyChapter title="Meaning, checks and delivery: four jobs, four contracts" description="The meaning of a published assertion, the intended uses of a property, the requirements of an exchange and the triples a rule derives are different contracts. Keep them visible even when one tool processes them all." section="reference">
+<JudgementDiagram kind="meaning-applicability-constraints" />
 
   <section aria-labelledby="semantics">
     <h2 id="semantics">Published RDF keeps its semantics</h2>
@@ -76,12 +68,11 @@ model:CreatorReviewProperty a sh:PropertyShape ;
     <p>A waiver is exceptional, not a quick way to make coverage green. An accepted decision must identify the property and side, explain why no truthful useful commitment or hint can be given, and state a review trigger. The waiver has a non-blank English, decision-qualified rationale. A vacuous universal type does not become informative merely because it has an IRI.</p>
   </section>
 
-  <aside class="callout callout--note modelling-callout">
-    <div class="callout__label">Inspect safe applicability and alternative intended uses</div>
+  <JudgementNote tone="example" title="Inspect safe applicability and alternative intended uses">
     <p>These illustrative vocabulary excerpts are not a complete module. For <code>inspectionOf</code>, both sides use safe RDFS commitments. For <code>referenceCode</code>, the subject side uses only inclusion hints and the value side uses only RDFS.</p>
     <pre><code>{applicability}</code></pre>
     <p>The example does not assert that a reference-bearing inspection is also a report. It also does not require either kind of resource to have a reference code.</p>
-  </aside>
+  </JudgementNote>
 
   <section aria-labelledby="validation">
     <h2 id="validation"><span id="use-specific-rules" aria-hidden="true"></span><span id="open-closed" aria-hidden="true"></span><span id="automated" aria-hidden="true"></span>A shape checks an explicitly chosen graph</h2>
@@ -90,11 +81,10 @@ model:CreatorReviewProperty a sh:PropertyShape ;
     <p>The validation contract must also identify the input graph, shape version and relevant entailment regime. Are expected types asserted, or made available by a declared processing step? Different answers can change the result. A successful validation means the supplied graph meets the encoded conditions; it proves neither the factual truth of a roof claim nor approval of the whole ontology.</p>
   </section>
 
-  <aside class="callout callout--note modelling-callout">
-    <div class="callout__label">Inspect the illustrative report-exchange condition</div>
+  <JudgementNote tone="example" title="Inspect the illustrative report-exchange condition">
     <pre><code>{shape}</code></pre>
     <p>This ordinary NodeShape illustrates a check, not the full adopted shape-authoring profile. A complete candidate must also document the referenced vocabulary, chosen processing assumptions and further requirements. No validation result for current OPDA artefacts is asserted here.</p>
-  </aside>
+  </JudgementNote>
 
   <section aria-labelledby="author-constraints">
     <h2 id="author-constraints">Author a rule that a domain reviewer can challenge</h2>
@@ -104,7 +94,7 @@ model:CreatorReviewProperty a sh:PropertyShape ;
   </section>
 
   <figure class="modelling-figure" data-modelling-figure="constraint-trace">
-    <EnrichmentVisual kind="constraint-trace" />
+    <ReferencePlate kind="constraint" />
     <dl>
       <dt>Focus node</dt><dd><code>ex:report-missing</code>, selected because it is a ReportVersion.</dd>
       <dt>Result path</dt><dd><code>model:reportsInspection</code>, with no supplied value. A missing-value result need not have an offending value.</dd>
@@ -117,11 +107,10 @@ model:CreatorReviewProperty a sh:PropertyShape ;
   <section aria-labelledby="target-missing-data">
     <h2 id="target-missing-data">An empty result can mean that the defective node was never selected</h2>
     <p>Replace <code>sh:targetClass model:ReportVersion</code> with <code>sh:targetSubjectsOf model:reportsInspection</code>. The latter selects only subjects that already have the link. It selects the good report and misses <code>ex:report-missing</code>—the exact absence this rule was intended to detect. On a graph containing only the missing-link report it selects no focus nodes at all.</p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Exercise: diagnose the apparent success</div>
+    <JudgementNote tone="example" title="Exercise: diagnose the apparent success">
       <p>The defective report remains unchanged, yet the result is empty after that target edit. Has the rule been repaired? No: target coverage has been lost. Restore the class target and expect the missing report's <code>sh:MinCountConstraintComponent</code> Violation. Keep the adverse fixture so a later target change cannot make the defect invisible.</p>
       <p>A class target also cannot find a report with no relevant type information. If the receiving scope includes such untyped resources, establish an independent way to identify them—for example a reviewed explicit focus-node list using <code>sh:targetNode</code>. Document that selection rule; do not assume an absent type or required link can identify itself.</p>
-    </aside>
+    </JudgementNote>
   </section>
 
   <section aria-labelledby="contradictory-constraints">
@@ -167,4 +156,4 @@ model:CreatorReviewProperty a sh:PropertyShape ;
     <p>Required method: OPDA <a href="/modelling/odr/odr-0037">ODR-0037</a> R1–R6 as amended 28 and 30 August 2026; <a href="/modelling/odr/odr-0043">ODR-0043</a> Core Principle and permitted/excluded tables; <a href="/modelling/odr/odr-0044">ODR-0044</a> Normative Rules, including its later cross-context equivalence correction. <a href="/modelling/odr/odr-0050">ODR-0050</a> supplies the validation concern. These adopted OPDA records govern the method, not candidate implementation.</p>
     <p>Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a>. These are required method distinctions with fictional examples, not evidence that a current runtime or candidate already implements them.</p>
   </section>
-</ModellingLayout>
+</OntologyChapter>

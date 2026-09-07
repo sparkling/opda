@@ -1,0 +1,102 @@
+/* New, standalone-authored technical figures. Not the retired ModellingVisual
+   grammar. Each drawing is imported from its reviewed light/dark HTML source. */
+.judgement-figure {
+  --jg-paper: var(--color-surface);
+  --jg-node: var(--color-surface-alt);
+  --jg-ink: var(--color-text);
+  --jg-muted: var(--color-text-muted);
+  --jg-rule: var(--color-border-strong);
+  --jg-accent: var(--color-data-1);
+  --jg-tint: var(--color-data-1-surface);
+  --jg-link: var(--color-link);
+  --jg-sans: var(--font-sans);
+  --jg-mono: var(--font-mono);
+  inline-size: 100%;
+  max-inline-size: 60rem;
+  margin-inline: 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  container-type: inline-size;
+}
+[data-theme='dark'] .judgement-figure {
+  --jg-accent: var(--color-data-1-dark);
+  --jg-tint: color-mix(in srgb, var(--color-data-1-dark) 14%, var(--color-surface));
+}
+
+.judgement-drawing { width:100%; height:auto; display:block; color:var(--jg-ink); font-family:var(--jg-sans); }
+.judgement-drawing text { fill:var(--jg-ink); font-family:var(--jg-sans); }
+.judgement-drawing .jg-name { font-size:20px; font-weight:700; }
+.judgement-drawing .jg-note { font-size:16px; fill:var(--jg-muted); }
+.judgement-drawing .jg-small { font-size:12px; fill:var(--jg-muted); }
+.judgement-drawing .jg-tag { font-size:12px; font-weight:700; letter-spacing:.06em; fill:var(--jg-muted); }
+.judgement-drawing .jg-code, .judgement-drawing .jg-edge-label { font:500 12px var(--jg-mono); fill:var(--jg-muted); }
+.judgement-drawing .jg-paper, .judgement-drawing .jg-mask { fill:var(--jg-paper); }
+.judgement-drawing .jg-node { fill:var(--jg-node); stroke:var(--jg-ink); stroke-width:1; }
+.judgement-drawing .jg-focal { fill:var(--jg-tint); stroke:var(--jg-accent); stroke-width:2; }
+.judgement-drawing .jg-record { fill:var(--jg-paper); stroke:var(--jg-muted); }
+.judgement-drawing .jg-zone { fill:none; stroke:var(--jg-rule); stroke-width:1; stroke-dasharray:4 4; }
+.judgement-drawing .jg-panel { fill:none; stroke:var(--jg-muted); stroke-width:1; }
+.judgement-drawing .jg-edge { fill:none; stroke:var(--jg-muted); stroke-width:1.2; stroke-linecap:round; stroke-linejoin:round; }
+.judgement-drawing .jg-heavy { stroke-width:2; }
+.judgement-drawing .jg-dashed { stroke-dasharray:4 4; }
+.judgement-drawing .jg-rule { fill:none; stroke:var(--jg-rule); stroke-width:1; }
+.judgement-drawing .jg-dot, .judgement-drawing .jg-arrow { fill:var(--jg-muted); }
+.ontology-chapter .judgement-figure .judgement-caption {
+  margin-block-start: var(--space-4);
+  color: var(--color-text-muted);
+  font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
+  text-align: start;
+}
+.judgement-caption__title {
+  display: block;
+  color: var(--color-text-strong);
+  font: 700 var(--text-lg) / var(--leading-snug) var(--font-sans);
+  margin-block-end: var(--space-2);
+}
+.judgement-equivalent-wrap {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.ontology-chapter .judgement-equivalent-wrap ol {
+  padding-inline-start: 1.5em;
+  margin: 0;
+}
+@container (max-width: 52rem) {
+  .judgement-image { display: none; }
+  .judgement-equivalent-wrap {
+    position: static;
+    inline-size: auto;
+    block-size: auto;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+    margin-block-start: var(--space-4);
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--color-border-strong);
+  }
+}
+@media (forced-colors: active), screen and (max-width: 40rem) {
+  .judgement-image { display: none; }
+  .judgement-equivalent-wrap {
+    position: static;
+    inline-size: auto;
+    block-size: auto;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+    margin-block-start: var(--space-4);
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid;
+  }
+}
+@media print {
+  .judgement-image { display: block; }
+  .judgement-figure { break-inside: avoid; }
+}

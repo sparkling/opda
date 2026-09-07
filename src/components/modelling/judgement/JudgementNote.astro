@@ -1,0 +1,17 @@
+---
+interface Props {
+  id?: string;
+  tone?: 'method' | 'caution' | 'example' | 'insight';
+  title?: string;
+}
+const { tone = 'insight', title, id } = Astro.props;
+const labels = { method: 'Method commitment', caution: 'Boundary to preserve', example: 'Worked example', insight: 'Modelling insight' };
+if (!(tone in labels)) throw new Error('Unknown judgement-note tone');
+---
+<aside id={id} aria-label={title ?? labels[tone]} class:list={['judgement-note', `judgement-note--${tone}`]}>
+  <div class="judgement-note__rail">
+    <span class="judgement-note__symbol" aria-hidden="true">{tone === 'caution' ? '!' : tone === 'example' ? '↳' : '·'}</span>
+    <p class="judgement-note__label">{title ?? labels[tone]}</p>
+  </div>
+  <div class="judgement-note__body document-flow"><slot /></div>
+</aside>

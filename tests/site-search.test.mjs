@@ -110,12 +110,11 @@ test('site-search entries use canonical destinations and deterministic relevance
   assert.equal(distinctWorkAreas.size, 3);
 });
 
-test('modelling search covers the 24 canonical pages without retired flat-page duplicates', () => {
+test('modelling search covers the chapter registry without retired flat-page duplicates', () => {
   const modelling = SITE_SEARCH_ENTRIES.filter(({ url }) => (
     url === '/semantic-modelling' || url.startsWith('/semantic-modelling/')
   ));
   const expected = ['/semantic-modelling', ...MODELLING_CHAPTERS.map(({ url }) => url)];
-  assert.equal(expected.length, 24);
   assert.deepEqual(modelling.map(({ url }) => url).sort(), [...expected].sort());
   assert.equal(new Set(modelling.map(({ url }) => url)).size, modelling.length);
   assert.ok(modelling.every(({ url }) => !Object.hasOwn(MODELLING_REDESIGN_REPLACEMENTS, url)));
@@ -130,6 +129,8 @@ test('modelling search covers the 24 canonical pages without retired flat-page d
     ['roleOf', 'method/roles-and-phases'],
     ['SHACL', 'method/meaning-checks-and-delivery'],
     ['ODR-0071', 'method/scope-and-package'],
+    ['four axes', 'method/foundational-analysis'],
+    ['source evidence', 'method/source-to-model'],
   ]) {
     assert.ok(searchEntries(query).some(({ url }) => url === `/semantic-modelling/${target}`), `${query} must find ${target}`);
   }

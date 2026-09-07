@@ -9,11 +9,11 @@ const page = (name) => readFileSync(new URL(`../src/pages/semantic-modelling/met
 const chapters = ['vocabularies-and-classification', 'meaning-checks-and-delivery', 'mapping-records', 'sensitivity-and-policy'];
 
 // These contracts protect visible teaching content; they are not RDF/SHACL execution receipts.
-test('ontology enrichment uses existing layouts and preserves its illustrative boundary', () => {
+test('ontology references use the redesigned chapter and preserve their illustrative boundary', () => {
   for (const name of chapters) {
     const source = page(name);
     assert.ok(source.split('\n').length < 500, `${name} exceeds the file limit`);
-    assert.match(source, /<ModellingLayout[^>]+claim="method"/u);
+    assert.match(source, /<OntologyChapter[^>]+section="reference"/u);
     assert.match(source, /example\.org|fictional/u);
     assert.doesNotMatch(source, /<details\b|<style\b|JourneyNav|ChapterEnd|Hennes|Mauritz/iu);
     for (const [, odr] of source.matchAll(/href="\/modelling\/odr\/(odr-\d{4})"/gu)) {
@@ -106,7 +106,8 @@ test('vocabulary decisions separate four representations and profile-specific co
   assert.match(source, /complete seven-facet/iu);
   for (const term of ['title', 'creator', 'issued', 'modified', 'identifier', 'subject']) assert.ok(source.includes(`dct:${term}`));
   for (const odr of ['0036', '0039', '0040', '0048', '0049', '0055']) assert.ok(source.includes(`href="/modelling/odr/odr-${odr}"`));
-  for (const name of ['languages-and-profiles', 'scope-and-package', 'index']) assert.ok(page(name).includes('/semantic-modelling/method/vocabularies-and-classification'));
+  for (const name of ['languages-and-profiles', 'scope-and-package']) assert.ok(page(name).includes('/semantic-modelling/method/vocabularies-and-classification'));
+  assert.match(page('index'), /ONTOLOGY_REFERENCE_CHAPTERS\.map/u);
 });
 
 test('constraint authoring exposes target, contradiction and severity failures', () => {

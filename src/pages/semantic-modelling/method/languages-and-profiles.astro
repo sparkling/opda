@@ -1,6 +1,7 @@
 ---
-import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import JudgementNote from '@/components/modelling/judgement/JudgementNote.astro';
+import JudgementDiagram from '@/components/modelling/judgement/JudgementDiagram.astro';
 import {
   STANDARDS_PROFILE,
   STANDARDS_PROFILE_VERSION,
@@ -16,7 +17,7 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
 }));
 ---
 
-<ModellingLayout title="Languages and profiles: choose the tool for the question" description="Use established languages for distinct jobs: describing things, organising choices, checking deliveries and preserving evidence. Then state exactly which features the method selects and which the candidate actually uses." claim="method">
+<OntologyChapter title="Languages and profiles: choose the tool for the question" description="Use established languages for distinct jobs: describing things, organising choices, checking deliveries and preserving evidence. Then state exactly which features the method selects and which the candidate actually uses." section="reference">
   <section aria-labelledby="semantic-standards-baseline">
     <h2 id="semantic-standards-baseline">OPDA uses RDF 1.2, SPARQL 1.2 and SHACL 1.2</h2>
     <p>This is the normative language baseline in OPDA <a href="/modelling/odr/odr-0043">ODR-0043</a>. <a href="https://www.w3.org/TR/rdf12-concepts/">RDF 1.2</a> describes the graph, <a href="https://www.w3.org/TR/sparql12-query/">SPARQL 1.2</a> queries it and <a href="https://www.w3.org/TR/shacl12-core/">SHACL 1.2 Core</a> checks its declared constraints. Each package selects and tests a bounded feature profile; that boundary is not a switch to older standards or a claim of full-family implementation.</p>
@@ -40,16 +41,7 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
     <p>The required method below follows OPDA’s adopted <a href="/modelling/odr/odr-0046">ODR-0046</a> framework and concerns 1, 2, 5, 7, 8, 9, 10 and 11. The linked local decisions govern their scoped rules and amendments. Upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code> is adoption provenance only. The <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions chapter</a> explains the local authority and scope.</p>
   </section>
 
-  <figure class="modelling-figure">
-    <ModellingVisual kind="semantic-layers" />
-    <figcaption>Four different jobs, not four approval stages. The applicability row depicts non-entailing inclusion hints; the complete per-side applicability choice is explained below.</figcaption>
-    <dl>
-      <dt>Assertion</dt><dd>State what the graph says, using RDF and the selected RDFS/OWL vocabulary. A statement's standard meaning still matters when local inference is switched off.</dd>
-      <dt>Applicability hint</dt><dd>Document intended uses without inferring a type or enforcing a delivery requirement.</dd>
-      <dt>Constraint</dt><dd>Check the supplied data against a declared SHACL delivery profile. Passing is not human adoption or proof of truth.</dd>
-      <dt>Derivation</dt><dd>Produce additional statements through selected, declared rules, keeping their origin distinguishable from asserted information.</dd>
-    </dl>
-  </figure>
+<JudgementDiagram kind="meaning-applicability-constraints" />
 
   <section aria-labelledby="shared-foundation">
     <h2 id="shared-foundation">RDF 1.2 and Turtle: connect identified things</h2>
@@ -70,12 +62,11 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
       <li><strong>An explicit governed waiver.</strong> Record the exception under an owning ODR. Leaving the side unexplained is not a waiver.</li>
     </ol>
     <p>Do not mix these families on the same side. SHACL shapes and explanatory prose do not, by themselves, discharge the applicability contract. A property's subject and value sides can legitimately choose different families when their evidence warrants it.</p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Review a hard case: “issued on” for reports and title records</div>
+    <JudgementNote tone="example" title="Review a hard case: “issued on” for reports and title records">
       <p>Suppose an illustrative property is intended for both a report and a title record. Adding Report and TitleRecord as two RDFS domains would say that each subject using it belongs to both classes. That is stronger than the proposed “either kind of document” intention.</p>
       <p>Ask whether one universally true superclass is genuinely justified, whether inclusion hints express the intended alternatives, or whether a governed waiver is necessary. Do not invent a superclass merely to make the declaration pass. Then decide the value side independently: a date requirement in one delivery shape does not settle the property's universal range.</p>
       <p>This is a review exercise, not a conformance result for a current candidate. Its useful output is the intended meaning and counterexample, not a guessed technical answer.</p>
-    </aside>
+    </JudgementNote>
     <h3 id="bounded-owl">Use a bounded OWL profile, not unrestricted reasoning</h3>
     <p>OWL supplies formal axioms, but OPDA <a href="/modelling/odr/odr-0043">ODR-0043</a> deliberately excludes restrictions, Boolean class constructors, cardinality restrictions, closed OWL enumerations and keys from the documentation profile. Their delivery-validation requirements belong in SHACL. Under open-world semantics, missing information is not automatically false.</p>
     <p><a href="/modelling/odr/odr-0044">ODR-0044</a> selects a Safe Group of processing features: class and property hierarchies, inverse links, transitivity, symmetry and disjointness checks. Domain/range inference, identity merging and equivalence propagation are outside that local runtime ruleset, not outside the standards' semantics. This selection is neither full OWL reasoning nor evidence that every candidate already runs it. See <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships</a> and the <a href="https://www.w3.org/TR/owl2-syntax/">OWL structural specification</a>.</p>
@@ -130,15 +121,14 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
       <li><strong>Map when distinct meanings need a reviewed correspondence.</strong> Preserve both meanings and select the relation actually warranted. Record source identities and versions, relation strength, process and semantic justification, mapping date and release. Similar labels are not enough.</li>
       <li><strong>Mint only for a reviewed gap.</strong> A new locally governed identifier needs a defined meaning, semantic owner, source evidence and an approved namespace policy. Governed SPDTF minting is blocked pending that governance; machine-proposed candidate IRIs are not adopted terms.</li>
     </ol>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">What should happen when an external “property” term almost fits?</div>
+    <JudgementNote tone="insight" title="What should happen when an external “property” term almost fits?">
       <p>First identify what it denotes. If it means a title interest while the local question concerns Harbour Court's physical building, a common label does not justify reuse or identity. Compare definitions and hard cases, including subdivision. An unresolved identity criterion stays unresolved; do not force equivalence to finish the profile.</p>
       <p>A weaker, justified relationship may be useful, or the terms may need to remain separate. Minting is not an escape from this analysis. Record what suitable existing meanings fail to cover before proposing a new term.</p>
-    </aside>
+    </JudgementNote>
     <p><code>owl:imports</code> is not a citation: it brings the imported ontology's axioms through its import closure into scope. A prefix declaration is not term use, and term use is not full-vocabulary conformance. Record the actual act and its consequences.</p>
     <h3 id="upper-ontology">Analytical methods do not require foundational inheritance</h3>
     <p>UFO-informed identity, role, phase and introducing-class analysis, together with OntoClean's rigidity, identity, dependence and unity checks, are selected disciplines. Their OPDA decision basis is <a href="/modelling/odr/odr-0041">ODR-0041</a> / <a href="/modelling/odr/odr-0042">ODR-0042</a>, <a href="/modelling/odr/odr-0061">ODR-0061</a> / <a href="/modelling/odr/odr-0062">ODR-0062</a> and <a href="/modelling/odr/odr-0063">ODR-0063</a>. They guide whether a hierarchy makes sense; <a href="/modelling/odr/odr-0063">ODR-0063</a> explicitly prohibits subsuming domain classes under external upper-ontology classes within the selected scope. This is analytical use, not foundational inheritance.</p>
-    <p>gUFO is a separate OWL implementation, not selected simply because UFO analysis is selected. DOLCE remains historical comparison evidence. Property Pack 0.1 has no separate analytical-method conformance receipt. See <a href="/semantic-modelling/method/roles-and-phases">roles and phases</a> for the practical identity questions.</p>
+    <p>gUFO is a separate OWL implementation, not selected simply because UFO analysis is selected. DOLCE remains historical comparison evidence. Property Pack 0.1 has no separate analytical-method conformance receipt. The new <a href="/semantic-modelling/method/foundational-analysis">foundations and modelling judgement</a> chapter explains the four axes, their counterexamples and what the selected checks can establish. <a href="/semantic-modelling/method/roles-and-phases">Identity through roles and change</a> then applies the local encoding policy.</p>
   </section>
 
   <section aria-labelledby="implemented">
@@ -167,8 +157,7 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
     <h2 id="register">The complete standards register</h2>
     <p>All {STANDARDS_PROFILE.length} records are retained below, including deferred, blocked and historical entries. Read a record to compare the selected boundary with external maturity and actual implementation. The external sources were last checked on <time datetime="2026-08-20">2026-08-20</time>; the later governance reconciliation is not a new publication check.</p>
     <p>Stable <code>standard-*</code> anchors identify individual records. A link to an external specification identifies its source, not a claim to implement its latest version.</p>
-    {STANDARDS_PROFILE.map((record) => <aside class="callout callout--note modelling-callout" id={standardAnchor(record)}>
-      <div class="callout__label">{record.name}</div>
+    {STANDARDS_PROFILE.map((record) => <JudgementNote tone="method" title={record.name} id={standardAnchor(record)}>
       <dl>
         <dt>Purpose</dt><dd>{record.purpose}</dd>
         <dt>Selected profile boundary</dt><dd>{decisionParts(record.versionBoundary).map(({ text, href }) => <a href={href ?? record.profileSource}>{text}</a>)}</dd>
@@ -184,7 +173,7 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
         <dt>Re-open trigger</dt><dd>{record.reopenTrigger}</dd>
         <dt>External publication last checked</dt><dd><time datetime={record.lastChecked}>{record.lastChecked}</time></dd>
       </dl>
-    </aside>)}
+    </JudgementNote>)}
   </section>
 
   <section aria-labelledby="next-decision">
@@ -192,4 +181,4 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
     <p>Bring one question, one ordinary case and one counterexample. Name the resource being described, the intended meaning, the language job and the precise feature needed. Then point to the selected profile and state what implementation evidence exists or is still missing. This is more useful than adding a namespace without explaining its responsibility.</p>
     <p>A practitioner can supply that argument without writing RDF. Use <a href="/semantic-modelling/contribute/review-a-definition">review a definition</a> to frame it in ordinary language, or follow <a href="/semantic-modelling/method/from-question-to-candidate">from question to candidate</a> for the technical handoff. A standards record supports that review; it does not replace it.</p>
   </section>
-</ModellingLayout>
+</OntologyChapter>

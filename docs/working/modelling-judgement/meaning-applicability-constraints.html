@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Document both property sides; validate separately · OPDA modelling</title>
+<!-- Canonical standalone authoring source. Diagram Design: architecture; fit, 960px-wide; technical audience; static; newly authored 2026-09-07.
+     Effective brand: OPDA profile, projected to current DESIGN.md fonts. No external assets. Offline system fallbacks are intentional.
+     This is an illustrative teaching figure, not an emitted ontology or evidence of implementation. -->
+<style>
+:root { --jg-paper:#ffffff; --jg-node:#f9f9f9; --jg-ink:#231f2f; --jg-muted:#625d72; --jg-rule:#cbc8d5; --jg-accent:#6c5bd4; --jg-tint:#eeebfa; --jg-link:#5b51d8; --jg-sans:'Source Sans 3','Segoe UI',sans-serif; --jg-reading:'Atkinson Hyperlegible Next','Segoe UI',sans-serif; --jg-mono:'Roboto Mono',Consolas,monospace; }
+[data-theme="dark"] { --jg-paper:#131224; --jg-node:#231f2f; --jg-ink:#f9f9f9; --jg-muted:#a5a1b2; --jg-rule:#56506d; --jg-accent:#9a8fe8; --jg-tint:#29233f; --jg-link:#a9a0ff; }
+body { max-width:1024px; margin:32px auto; padding:0 16px; background:#f9f9f9; color:#231f2f; font:18px/1.625 var(--jg-reading); }
+h1 { font:700 28px/1.25 var(--jg-sans); } h2 { font:700 16px/1.5 var(--jg-sans); } p { margin:12px 0; } figure { margin:0; }
+section { margin-top:32px; padding:24px; color:var(--jg-ink); background:var(--jg-paper); } figcaption { margin-top:16px; font:400 14px/1.625 var(--jg-sans); }
+figcaption strong { display:block; color:var(--jg-ink); font-size:18px; } footer { margin-top:24px; border-top:1px solid #cbc8d5; font:400 12px/1.625 var(--jg-sans); }
+.judgement-equivalent { margin-top:24px; padding-left:24px; } .judgement-equivalent li + li { margin-top:8px; }
+@media(max-width:640px) { section { padding:16px; } .judgement-drawing { display:none; } }
+@media(forced-colors:active) { .judgement-drawing { display:none; } section { color:CanvasText; border:1px solid CanvasText; } }
+@media print { .judgement-drawing { break-inside:avoid; } section { break-before:page; } }
+.judgement-drawing { width:100%; height:auto; display:block; color:var(--jg-ink); font-family:var(--jg-sans); }
+.judgement-drawing text { fill:var(--jg-ink); font-family:var(--jg-sans); }
+.judgement-drawing .jg-name { font-size:20px; font-weight:700; }
+.judgement-drawing .jg-note { font-size:16px; fill:var(--jg-muted); }
+.judgement-drawing .jg-small { font-size:12px; fill:var(--jg-muted); }
+.judgement-drawing .jg-tag { font-size:12px; font-weight:700; letter-spacing:.06em; fill:var(--jg-muted); }
+.judgement-drawing .jg-code, .judgement-drawing .jg-edge-label { font:500 12px var(--jg-mono); fill:var(--jg-muted); }
+.judgement-drawing .jg-paper, .judgement-drawing .jg-mask { fill:var(--jg-paper); }
+.judgement-drawing .jg-node { fill:var(--jg-node); stroke:var(--jg-ink); stroke-width:1; }
+.judgement-drawing .jg-focal { fill:var(--jg-tint); stroke:var(--jg-accent); stroke-width:2; }
+.judgement-drawing .jg-record { fill:var(--jg-paper); stroke:var(--jg-muted); }
+.judgement-drawing .jg-zone { fill:none; stroke:var(--jg-rule); stroke-width:1; stroke-dasharray:4 4; }
+.judgement-drawing .jg-panel { fill:none; stroke:var(--jg-muted); stroke-width:1; }
+.judgement-drawing .jg-edge { fill:none; stroke:var(--jg-muted); stroke-width:1.2; stroke-linecap:round; stroke-linejoin:round; }
+.judgement-drawing .jg-heavy { stroke-width:2; }
+.judgement-drawing .jg-dashed { stroke-dasharray:4 4; }
+.judgement-drawing .jg-rule { fill:none; stroke:var(--jg-rule); stroke-width:1; }
+.judgement-drawing .jg-dot, .judgement-drawing .jg-arrow { fill:var(--jg-muted); }
+@media(max-width:640px), (forced-colors:active) { .judgement-drawing { display:none; } }
+</style></head><body>
+<h1>Document both property sides; validate separately</h1><p>For the illustrative referenceCode property, subject-side inclusion hints and a truthful value-side RDFS range use different permitted families; SHACL requirements remain a separate contract.</p>
+<section data-theme="light"><h2>Light</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="judgement-drawing" id="meaning-applicability-constraints-light" viewBox="0 0 960 696" role="img" aria-labelledby="meaning-applicability-constraints-light-title meaning-applicability-constraints-light-desc">
+<title id="meaning-applicability-constraints-light-title">Document both property sides; validate separately</title>
+<desc id="meaning-applicability-constraints-light-desc">For the illustrative referenceCode property, subject-side inclusion hints and a truthful value-side RDFS range use different permitted families; SHACL requirements remain a separate contract.</desc>
+<defs>
+<marker id="meaning-applicability-constraints-light-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="jg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker>
+</defs>
+<rect class="jg-paper" width="960" height="696"/>
+
+<path class="jg-edge" d="M 400 152 V 184 Q 400 192 392 192 H 248 Q 240 192 240 200 V 240" marker-end="url(#meaning-applicability-constraints-light-arrow)"/>
+<path class="jg-edge" d="M 560 152 V 184 Q 560 192 568 192 H 712 Q 720 192 720 200 V 240" marker-end="url(#meaning-applicability-constraints-light-arrow)"/>
+<rect class="jg-mask" x="264" y="160" width="104" height="24"/><text class="jg-edge-label" x="316" y="176" text-anchor="middle">SUBJECTS</text>
+<rect class="jg-mask" x="592" y="160" width="104" height="24"/><text class="jg-edge-label" x="644" y="176" text-anchor="middle">VALUES</text>
+<g><rect class="jg-node jg-focal" x="320" y="40" width="320" height="112"/><text class="jg-name" x="336" y="72">referenceCode</text><text class="jg-note" x="336" y="96">Illustrative datatype property</text><text class="jg-note" x="336" y="116">Definition and kind remain explicit</text></g>
+<g><rect class="jg-node" x="40" y="240" width="400" height="128"/><text class="jg-name" x="56" y="272">Subject side · inclusion hints</text><text class="jg-note" x="56" y="296">schema:domainIncludes</text><text class="jg-note" x="56" y="316">Inspection · ReportVersion</text><text class="jg-note" x="56" y="336">Intended alternatives, not entailment</text></g>
+<g><rect class="jg-node" x="520" y="240" width="400" height="128"/><text class="jg-name" x="536" y="272">Value side · truthful RDFS</text><text class="jg-note" x="536" y="296">rdfs:range xsd:string</text><text class="jg-note" x="536" y="316">Holds for every referenceCode value</text><text class="jg-note" x="536" y="336">Entailment, not a validation rule</text></g>
+<path class="jg-rule" d="M 40 400 H 920"/>
+<text class="jg-name" x="40" y="436">Select one complete mechanism family on each side</text>
+<text class="jg-note" x="40" y="464">One truthful RDFS IRI · OR useful inclusion hints · OR a governed waiver</text>
+<text class="jg-small" x="40" y="488">Never mix families on one side. Subject and value sides may choose different families.</text>
+<g><rect class="jg-node" x="40" y="520" width="880" height="96"/><text class="jg-name" x="56" y="552">SHACL owns exchange requirements</text><text class="jg-note" x="56" y="576">Required types · cardinalities · datatypes · conditions · per-target rules</text><text class="jg-note" x="56" y="596">A definition or SHACL path never substitutes for two-sided applicability.</text></g>
+<text class="jg-note" x="40" y="656">RDFS meaning, applicability hints and validation requirements are distinct contracts.</text>
+</svg>
+<figcaption><strong>Document both property sides; validate separately</strong>For the illustrative referenceCode property, subject-side inclusion hints and a truthful value-side RDFS range use different permitted families; SHACL requirements remain a separate contract.</figcaption>
+</figure></section>
+<section data-theme="dark"><h2>Dark</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="judgement-drawing" id="meaning-applicability-constraints-dark" viewBox="0 0 960 696" role="img" aria-labelledby="meaning-applicability-constraints-dark-title meaning-applicability-constraints-dark-desc">
+<title id="meaning-applicability-constraints-dark-title">Document both property sides; validate separately</title>
+<desc id="meaning-applicability-constraints-dark-desc">For the illustrative referenceCode property, subject-side inclusion hints and a truthful value-side RDFS range use different permitted families; SHACL requirements remain a separate contract.</desc>
+<defs>
+<marker id="meaning-applicability-constraints-dark-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="jg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker>
+</defs>
+<rect class="jg-paper" width="960" height="696"/>
+
+<path class="jg-edge" d="M 400 152 V 184 Q 400 192 392 192 H 248 Q 240 192 240 200 V 240" marker-end="url(#meaning-applicability-constraints-dark-arrow)"/>
+<path class="jg-edge" d="M 560 152 V 184 Q 560 192 568 192 H 712 Q 720 192 720 200 V 240" marker-end="url(#meaning-applicability-constraints-dark-arrow)"/>
+<rect class="jg-mask" x="264" y="160" width="104" height="24"/><text class="jg-edge-label" x="316" y="176" text-anchor="middle">SUBJECTS</text>
+<rect class="jg-mask" x="592" y="160" width="104" height="24"/><text class="jg-edge-label" x="644" y="176" text-anchor="middle">VALUES</text>
+<g><rect class="jg-node jg-focal" x="320" y="40" width="320" height="112"/><text class="jg-name" x="336" y="72">referenceCode</text><text class="jg-note" x="336" y="96">Illustrative datatype property</text><text class="jg-note" x="336" y="116">Definition and kind remain explicit</text></g>
+<g><rect class="jg-node" x="40" y="240" width="400" height="128"/><text class="jg-name" x="56" y="272">Subject side · inclusion hints</text><text class="jg-note" x="56" y="296">schema:domainIncludes</text><text class="jg-note" x="56" y="316">Inspection · ReportVersion</text><text class="jg-note" x="56" y="336">Intended alternatives, not entailment</text></g>
+<g><rect class="jg-node" x="520" y="240" width="400" height="128"/><text class="jg-name" x="536" y="272">Value side · truthful RDFS</text><text class="jg-note" x="536" y="296">rdfs:range xsd:string</text><text class="jg-note" x="536" y="316">Holds for every referenceCode value</text><text class="jg-note" x="536" y="336">Entailment, not a validation rule</text></g>
+<path class="jg-rule" d="M 40 400 H 920"/>
+<text class="jg-name" x="40" y="436">Select one complete mechanism family on each side</text>
+<text class="jg-note" x="40" y="464">One truthful RDFS IRI · OR useful inclusion hints · OR a governed waiver</text>
+<text class="jg-small" x="40" y="488">Never mix families on one side. Subject and value sides may choose different families.</text>
+<g><rect class="jg-node" x="40" y="520" width="880" height="96"/><text class="jg-name" x="56" y="552">SHACL owns exchange requirements</text><text class="jg-note" x="56" y="576">Required types · cardinalities · datatypes · conditions · per-target rules</text><text class="jg-note" x="56" y="596">A definition or SHACL path never substitutes for two-sided applicability.</text></g>
+<text class="jg-note" x="40" y="656">RDFS meaning, applicability hints and validation requirements are distinct contracts.</text>
+</svg>
+<figcaption><strong>Document both property sides; validate separately</strong>For the illustrative referenceCode property, subject-side inclusion hints and a truthful value-side RDFS range use different permitted families; SHACL requirements remain a separate contract.</figcaption>
+</figure></section>
+<ol class="judgement-equivalent">
+<li>The example property referenceCode is an illustrative datatype property. Its definition and property kind are explicit modelling commitments, not a validation result.</li>
+<li>Its subject side uses schema:domainIncludes for intended alternatives Inspection and ReportVersion. Those hints do not entail that a subject has either class, or both classes.</li>
+<li>Its value side uses one truthful rdfs:range IRI, xsd:string, which must hold for every value. That is an RDFS entailment, not a field-validation rule.</li>
+<li>Every governed property must document both sides. Select exactly one complete mechanism family per side: one truthful single RDFS IRI, useful inclusion hints, or a governed waiver. The two sides may select different families; never mix families on a single side.</li>
+<li>Subject mechanisms use rdfs:domain or schema:domainIncludes; value mechanisms use rdfs:range or schema:rangeIncludes. A waiver must identify its property and side, an accepted local ODR and waiver code, a non-blank English rationale and a review trigger.</li>
+<li>SHACL separately owns required types, cardinalities, datatypes, conditional branches and per-target differences. A definition, SHACL path or target never substitutes for property-applicability documentation.</li>
+</ol>
+<footer>Local authoring source · no publication authorised · ODR-0037 R1–R6 and ODR-0042 · illustrative referenceCode example · complete, exclusive applicability on each property side; RDFS meaning, inclusion hints and SHACL requirements remain distinct. Source Sans 3 and Atkinson Hyperlegible Next are used when locally available; self-hosted site fonts apply in the website renderer.</footer>
+</body></html>

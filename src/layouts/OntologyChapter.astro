@@ -1,0 +1,36 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import '@/styles/modelling/judgement.css';
+
+interface Props {
+  title: string;
+  description: string;
+  kicker?: string;
+  number?: string | number;
+  section?: string;
+  updated?: string;
+}
+const { title, description, kicker, number, section = 'judgement', updated = '2026-09-07' } = Astro.props;
+if (!/^\d{4}-\d{2}-\d{2}$/.test(updated) || !Number.isFinite(Date.parse(updated))) {
+  throw new Error('Ontology chapter needs an ISO date for its revision');
+}
+const updatedLabel = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
+}).format(new Date(updated));
+---
+
+<Layout title={title} description={description}
+  proseClass="prose wide ontology-chapter" mainClass="ontology-chapter-shell">
+  <header class="og-opening" data-chapter={section}>
+    <h1>{title}</h1>
+    <p class="og-deck">{description}</p>
+    <p class="og-audience">
+      <span class="og-audience__mark" aria-hidden="true">⌁</span>
+      <strong>Technical modelling guide</strong>
+      {kicker && <span class="og-kicker">{kicker}</span>}
+      {number !== undefined && <span class="og-number">Chapter {number}</span>}
+    </p>
+    <p class="og-basis"><a href="/semantic-modelling/method/standards-and-decisions#authority">Method basis</a><span aria-hidden="true"> · </span><span>Updated <time datetime={updated}>{updatedLabel}</time></span></p>
+  </header>
+  <div class="og-content document-flow"><slot /></div>
+</Layout>

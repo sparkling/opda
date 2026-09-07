@@ -1,0 +1,64 @@
+.ontology-chapter .reference-plate {
+  --plate-accent: var(--color-callout-method);
+  --plate-bg: var(--color-callout-method-surface);
+  --plate-ink: var(--color-text);
+  --plate-alt: var(--color-callout-technical);
+  max-width: 1024px;
+  margin-block: 2rem;
+  color: var(--plate-ink);
+}
+.ontology-chapter .reference-plate__caption {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--plate-accent);
+  text-align: left;
+}
+.ontology-chapter .reference-plate__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: none;
+  margin: 0;
+}
+.ontology-chapter .reference-plate__item {
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  background: var(--plate-bg);
+  border-top: 3px solid var(--plate-accent);
+}
+.ontology-chapter .reference-plate__item:nth-child(even) { border-color: var(--plate-alt); }
+.ontology-chapter .reference-plate__item dt {
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+  margin: 0 0 .75rem;
+  font-size: 1.2rem;
+  line-height: 1.35;
+  font-weight: 700;
+  color: inherit;
+}
+.ontology-chapter .reference-plate__key {
+  font-size: .75rem;
+  letter-spacing: .08em;
+  color: var(--plate-accent);
+}
+.ontology-chapter .reference-plate__item dd {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: left;
+  color: inherit;
+}
+.ontology-chapter .reference-plate__item .reference-plate__boundary {
+  margin-top: 1rem;
+  padding-top: .75rem;
+  border-top: 1px solid color-mix(in srgb, var(--plate-accent) 30%, transparent);
+  font-size: .95rem;
+}
+@media (max-width: 600px) {
+  .ontology-chapter .reference-plate__grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (forced-colors: active) {
+  .ontology-chapter .reference-plate__item { border: 1px solid CanvasText; }
+}

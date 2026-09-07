@@ -1,12 +1,12 @@
 ---
-import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ContrastPair from '@/components/modelling/ContrastPair.astro';
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import JudgementNote from '@/components/modelling/judgement/JudgementNote.astro';
 const revision = '67174057e6384b79d0b28b7736fe70a66e112895';
 const rules = [
   { records: 'ODR-0038 · ODR-0045 · ODR-0060', concern: 'Boundaries and authority', rule: 'Give meaning a coherent, accountable context. Semantic ownership, organisational accountability, classification and system topology are not the same structure.', href: 'context-map-records', title: 'Strategic context maps' },
   { records: 'ODR-0036 · ODR-0039 · ODR-0040', concern: 'Vocabulary and classification', rule: 'Separate classification from inheritance. Govern concepts and labels with SKOS; distinguish closed enumerations, their selected typing pattern, and open populations.', href: '../explore/names-and-choices', title: 'Names, choices and classifications' },
   { records: 'ODR-0041 · ODR-0042', concern: 'Identity and property placement', rule: 'Distinguish kind, role and phase. Place applicability at the type that introduces the meaning and represent qualifications explicitly. Class-level roleOf/phaseOf annotations are not instance participation.', href: 'roles-and-phases', title: 'Roles and phases' },
-  { records: 'ODR-0061 · ODR-0062 · ODR-0063', concern: 'Foundational discipline', rule: 'Apply OntoClean and UFO-informed analysis across the selected concerns. Do not subsume domain classes under external upper-ontology classes.', href: 'classes-and-relationships', title: 'Classes and relationships' },
+  { records: 'ODR-0061 · ODR-0062 · ODR-0063', concern: 'Foundational discipline', rule: 'Apply OntoClean and UFO-informed analysis across the selected concerns. Do not subsume domain classes under external upper-ontology classes.', href: 'foundational-analysis', title: 'Foundations and modelling judgement' },
   { records: 'ODR-0037', concern: 'Property applicability', rule: 'For each subject and value side, select exactly one complete mechanism: a safe universal RDFS declaration, alternative Schema.org inclusion hints, or a governed waiver. Read the 28 and 30 August amendments.', href: 'meaning-checks-and-delivery', title: 'Meaning, checks and delivery' },
   { records: 'ODR-0043 · ODR-0044', concern: 'Semantic standards and execution', rule: 'Use RDF 1.2, SPARQL 1.2 and SHACL 1.2 with pinned package profiles and feature evidence. Keep standard RDF/RDFS/OWL semantics. Bound the selected OWL surface; declare SHACL constraints and rule materialisation separately, with traceable derived information.', href: 'languages-and-profiles', title: 'Languages and profiles' },
   { records: 'ODR-0056 · ODR-0058 · ODR-0059', concern: 'Qualified mappings', rule: 'Establish identity compatibility before equivalence. Retain SKOS correspondence statements and qualified SSSOM 1.0 records using SEMAPV process values and named RDF 1.2 reifiers.', href: 'mapping-records', title: 'Qualified term mappings' },
@@ -60,7 +60,7 @@ const methodHref = (slug: string) => slug.startsWith('../')
   : '/semantic-modelling/method/' + slug;
 ---
 
-<ModellingLayout title="The decisions behind the method" description="Know which rules are normative, which operating proposals remain open, and which implementation claims need evidence. This register connects the manifesto to the adopted OPDA ODRs and the relevant OPDA ADRs." claim="method">
+<OntologyChapter title="The decisions behind the method" description="Know which rules are normative, which operating proposals remain open, and which implementation claims need evidence. This register connects the manifesto to the adopted OPDA ODRs and the relevant OPDA ADRs." section="reference">
   <p>
     An ontology decision record explains a modelling choice, its scope and its
     consequences. The adopted OPDA ODRs linked here are normative for how we model
@@ -68,10 +68,10 @@ const methodHref = (slug: string) => slug.startsWith('../')
     the property programme. Neither adopting a method nor a successful generator run
     adopts the meanings in a candidate model.
   </p>
-  <ContrastPair leftLabel="A rule we must follow" rightLabel="A result we must demonstrate" accent="none">
-    <Fragment slot="left"><p>A mapping must carry the selected qualification and source versions. That requirement applies even while the current candidate contains no reviewed mappings.</p></Fragment>
-    <Fragment slot="right"><p>A particular release actually contains qualified mappings and passes the declared checks. That statement needs artefact-level evidence; the rule alone cannot support it.</p></Fragment>
-  </ContrastPair>
+  <JudgementNote tone="method" title="A requirement is not an implementation result">
+    <p>A mapping must carry the selected qualification and source versions. That requirement applies even while the current candidate contains no reviewed mappings.</p>
+    <p>Claiming that a particular release contains qualified mappings and passes the declared checks needs artefact-level evidence. The rule alone cannot support that statement.</p>
+  </JudgementNote>
 
   <h2 id="authority">Local decisions govern; upstream sources explain their provenance</h2>
   <p>
@@ -157,11 +157,11 @@ const methodHref = (slug: string) => slug.startsWith('../')
 
   <h2 id="opda-adrs">The relevant OPDA ADRs</h2>
   <table>
-    <caption>Decision standing reviewed on 5 September 2026</caption>
+    <caption>Programme scope reconciled with the 7 September 2026 clarifications</caption>
     <thead><tr><th scope="col">OPDA record</th><th scope="col">Standing</th><th scope="col">What it contributes</th></tr></thead>
     <tbody>
       <tr><th scope="row"><a href="/modelling/adr/adr-0039">0039 · Linked-data foundation</a></th><td>Accepted · 3 June 2026</td><td>The semantic foundation and the relationship to delivery representations.</td></tr>
-      <tr><th scope="row"><a href="/modelling/adr/adr-0063">0063 · Domain-led working groups</a></th><td>Accepted · 19 July; clarified 5 September</td><td>Practitioner-led meaning, context ownership, six outputs and the selected <a href="/modelling/odr/odr-0046">ODR-0046</a> concerns.</td></tr>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0063">0063 · Domain-led working groups</a></th><td>Accepted · 19 July; clarified 7 September</td><td>Practitioner-led meaning within established context boundaries, six outputs and the selected <a href="/modelling/odr/odr-0046">ODR-0046</a> concerns.</td></tr>
       <tr><th scope="row"><a href="/modelling/adr/adr-0064">0064 · Modelling website revamp</a></th><td>Accepted · 19 July</td><td>Readable participation and explicit candidate-versus-historical authority.</td></tr>
       <tr><th scope="row"><a href="/modelling/adr/adr-0067">0067 · First-principles Property Pack</a></th><td>Accepted · 3 August</td><td>The RDF 1.2, SPARQL 1.2 and SHACL 1.2 baseline with bounded candidate conformance.</td></tr>
       <tr><th scope="row"><a href="/modelling/adr/adr-0074">0074 · Website information architecture</a></th><td>Implemented · 18 August</td><td>One Modelling destination for both audiences, using the shared page and navigation templates. This rewrite organises their tasks into four journeys.</td></tr>
@@ -188,9 +188,12 @@ const methodHref = (slug: string) => slug.startsWith('../')
   <p>
     The <a href="/development/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture/modelling-frameworks">legacy modelling explainer</a>
     and <a href="/development/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture/identity">identity guide</a>
-    offer useful explanations and concrete examples. They describe a schema-derived
-    model. Their business-specific identity choices, technical counts and runtime
-    conventions do not automatically govern a newly modelled context.
+    preserve the reasoning and implementation history of a schema-derived model.
+    Reusable techniques are now re-authored in the <a href="/semantic-modelling/method/foundational-analysis">foundations</a>,
+    <a href="/semantic-modelling/method/classes-and-relationships">representation</a> and
+    <a href="/semantic-modelling/method/source-to-model">source-evidence</a> chapters.
+    The older business-specific identity choices, technical counts and runtime
+    conventions do not govern the new teaching or silently define the candidate.
   </p>
   <p>
     In particular, earlier OPDA documentary-domain and SSSOM-deferral accounts remain
@@ -198,9 +201,8 @@ const methodHref = (slug: string) => slug.startsWith('../')
     method. This documentation rewrite does not alter the ontology corpus, invent
     reviewed mappings or claim that an outstanding generator migration has happened.
   </p>
-  <aside class="callout callout--note modelling-callout">
-    <div class="callout__label">All 29 adopted OPDA decisions</div>
+  <JudgementNote tone="insight" title="All 29 adopted OPDA decisions">
     <p>These local records are the normative register for the selected method. Each records its source lineage, scoped adoption and amendment boundaries. Upstream revision <code>{revision}</code> is provenance only; it does not adopt excluded categories, proposed clauses or source implementation claims.</p>
     <ul>{adoptedRecords.map(([record, title]) => <li><a href={`/modelling/odr/${record.toLowerCase()}`}>{record} · {title}</a></li>)}</ul>
-  </aside>
-</ModellingLayout>
+  </JudgementNote>
+</OntologyChapter>
