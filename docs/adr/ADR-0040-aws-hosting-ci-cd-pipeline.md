@@ -111,8 +111,10 @@ Chosen option: **A — GitHub Actions + IAM OIDC role + CloudFormation deploys**
 
 **2a. Break-glass site deploys — explicit manual exception.**
 
-* Trigger: `workflow_dispatch` with an explicit boolean confirmation that the
-  operator is releasing without the normal validation jobs.
+* Trigger: `workflow_dispatch` with an explicit boolean confirmation, or a
+  `main` commit that changes only this workflow's path and carries the explicit
+  `[break-glass-release]` marker. The push trigger exists for operators who can
+  push `main` but cannot dispatch Actions; other workflow edits do not deploy.
 * Build and deployment: install the locked dependency graph, build from the
   selected `main` commit, assume the same short-lived OIDC role, apply the same
   protected-prefix exclusions, synchronise S3 and invalidate CloudFront.

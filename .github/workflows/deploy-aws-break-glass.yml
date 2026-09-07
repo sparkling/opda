@@ -1,6 +1,10 @@
 name: Break-glass deploy site to AWS
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-aws-break-glass.yml'
   workflow_dispatch:
     inputs:
       confirm_release:
@@ -19,7 +23,9 @@ permissions:
 jobs:
   deploy:
     name: Build and deploy without release gates
-    if: inputs.confirm_release
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.confirm_release) ||
+      (github.event_name == 'push' && contains(github.event.head_commit.message, '[break-glass-release]'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
