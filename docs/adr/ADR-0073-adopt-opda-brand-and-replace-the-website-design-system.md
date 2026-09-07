@@ -11,18 +11,11 @@ implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/Standal
 # Adopt the OPDA brand and replace the website design system
 
 > **Release boundary amended 2026-09-07 by [ADR-0083](./ADR-0083-rebuild-proportionate-risk-based-ci-cd.md).**
-> The broad 139-test Chromium matrix remains design-system assurance, but no
-> longer blocks every publication. Releases run five stable critical journeys;
-> application changes add focused browser evidence, and the complete responsive,
-> accessibility and visual suite runs on the non-deploying assurance schedule.
+> The broad 139-test Chromium matrix remains design-system assurance, but no longer blocks every publication. Releases run five stable critical journeys; application changes add focused browser evidence, and the complete responsive, accessibility and visual suite runs on the non-deploying assurance schedule.
 
 ## Context and problem statement
 
-The Knowledge Base shipped a cream, terracotta, Fraunces and Inter interface
-developed before the current OPDA brand resources were available. ADR-0025 made
-that implementation operationally canonical so Tailwind Preflight could not
-silently override it. The decision solved a cascade defect, but its visual premise
-is no longer correct.
+The Knowledge Base shipped a cream, terracotta, Fraunces and Inter interface developed before the current OPDA brand resources were available. ADR-0025 made that implementation operationally canonical so Tailwind Preflight could not silently override it. The decision solved a cascade defect, but its visual premise is no longer correct.
 
 The operator has now explicitly authorised a coherent replacement for this
 opda.org.uk application. The replacement must use all supplied brand evidence,
@@ -339,7 +332,7 @@ The grid now lives in a centred `.app-header__inner` track whose maximum width, 
 The working-group action uses the design system's standard yellow primary `.btn` together with its shared inset-surface template. The complete 44px target remains aligned while the yellow surface clears the divider by eight pixels, and the shared template centres its label within that visible surface through internal padding; the header class controls placement only and does not override colour, border, typography, padding or interaction states.
 On 2 September 2026 the organisation lock-up became the smaller identifier above the larger framework heading. A shared mini lock-up variant sets one typography scale; the existing relative icon width and gap scale the complete component without header-specific image dimensions.
 Both headings link to the site root, and the top-right utility group includes a labelled house icon as a third route home without adding another text action to the global destination row.
-The horizontal destination labels use the shared base text size rather than the smaller supporting-text role. The primary working-group action is labelled “Join a working group” and uses the shared compact button variant, which reduces horizontal padding without changing the 44px target height or introducing a header-local button treatment.
+The horizontal destination labels use the shared base text size rather than the smaller supporting-text role. The primary working-group action is labelled “Join a working group”. Amended 7 September 2026: this action, “Become a member” and “Sign in” share the existing narrow `.btn--compact` variant: automatic height, 6px vertical and 8px horizontal padding, with no header-local size overrides. Homepage defaults use panel Y 50px and width 96%; join defaults and the reusable campaign heading template are recorded in ADR-0078. Live sliders and initial rendering consume the same configuration.
 The application header, homepage and join page render the same shared `ThemeToggle` component. Its design-system rule provides one borderless, transparent 44px target that inherits the foreground colour of its surface; pages no longer duplicate its SVG or override its border and background locally. The application-header utility group occupies normal grid flow beside the organisation title, while campaign-page controls retain their hero-header placement.
 The application header itself now consumes shared theme-aware header tokens. Light mode uses the white surface, deep brand text, neutral navigation and light structural borders; dark mode retains the deep surface, white text and dark structural borders. The identity, navigation, utility icons, account control, hover states and compact disclosure all switch together; the yellow primary action remains unchanged.
 

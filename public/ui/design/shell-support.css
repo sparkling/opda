@@ -26,23 +26,6 @@
   margin-left: var(--space-2);
 }
 .auth-button [hidden] { display: none !important; }
-.auth-button__signin {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.4rem 0.8rem;
-  font: 600 var(--text-caption) / 1 var(--font-sans);
-  min-height: var(--target-min);
-  background: var(--brand-yellow);
-  color: var(--brand-ink);
-  border: 1px solid var(--brand-yellow);
-  border-radius: var(--radius-md);
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background var(--duration-fast) var(--ease), transform var(--duration-fast) var(--ease);
-}
-.auth-button__signin:hover { background: var(--brand-yellow-active); }
-.auth-button__signin:active { transform: translateY(1px); }
 .auth-button__user-trigger {
   display: inline-flex;
   align-items: center;

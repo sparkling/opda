@@ -339,12 +339,17 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     }
   }
   assert.match(page, /workingGroupImageSet = 'set-3'/u);
-  assert.match(page, /<CampaignThemeImage[\s\S]*lightSrc="\/images\/join\/set-3\/influence-light\.webp"[\s\S]*darkSrc="\/images\/join\/set-3\/influence-dark\.webp"/u);
+  for (const subject of ['motivation', 'influence']) {
+    for (const mode of ['light', 'dark']) {
+      const asset = `/images/join/set-3/${subject}-landscape-${mode}.webp`;
+      assert.ok(page.includes(asset));
+      assert.ok(existsSync(new URL(`../public${asset}`, import.meta.url)));
+      assert.ok(existsSync(new URL(`../public/images/join/set-3/${subject}-${mode}.webp`, import.meta.url)));
+    }
+  }
   assert.doesNotMatch(cards, /width=\{1200\}|height=\{300\}/u);
   assert.match(cards, /:global\(\.campaign-card__image\)/u);
-  assert.ok(existsSync(new URL('../public/images/join/set-3/influence-light.webp', import.meta.url)));
-  assert.ok(existsSync(new URL('../public/images/join/set-3/influence-dark.webp', import.meta.url)));
-  assert.match(page, /class="wg-trust__intro"/u);
+  assert.match(page, /<CampaignSectionHeading eyebrow="Taking part"/u);
   assert.match(page, /class="wg-trust__boundaries"/u);
   assert.equal((page.match(/<li class="wg-trust__boundary">/gu) ?? []).length, 4);
   const register = await readFile(new URL('../src/components/campaign/ContributionRegister.astro', import.meta.url), 'utf8');
@@ -371,7 +376,7 @@ test('campaign styles remain split below the project file limit', async () => {
   assert.match(campaign, /\.wg-section\s*\{[\s\S]*?width:\s*100%[\s\S]*?calc\(\(100vw - var\(--campaign-max\)\) \/ 2\)/u);
   assert.doesNotMatch(campaign, /\.wg-btn--large\s*\{[\s\S]*?color:\s*#000/u);
   assert.match(campaign, /\.wg-hero-note\s*\{[\s\S]*?border-left:\s*4px solid var\(--brand-yellow\)[\s\S]*?font:\s*600/u);
-  assert.match(campaign, /\.wg-hero-journey h2\s*\{[\s\S]*?clamp\(1\.75rem, 2\.5vw, 2\.75rem\)/u);
+  assert.match(campaign, /\.wg-hero-journey > h2\s*\{[\s\S]*?clamp\(1\.75rem, 2\.5vw, 2\.75rem\)/u);
   assert.match(campaign, /\.wg-hero-journey \.wg-process\s*\{[\s\S]*?grid-template-columns:\s*1fr/u);
   assert.match(campaign, /\.wg-hero-journey \.wg-process li\s*\{[\s\S]*?grid-template-columns:\s*3\.25rem minmax\(0, 1fr\)[\s\S]*?background:\s*transparent/u);
   assert.match(campaign, /\.wg-process__icon svg\s*\{[\s\S]*?width:\s*2rem[\s\S]*?height:\s*2rem/u);

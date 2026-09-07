@@ -1,5 +1,6 @@
 ---
 import type { ContributionOption, WorkingGroupContext } from '@/data/working-group-campaign';
+import CampaignSectionHeading from '@/components/campaign/CampaignSectionHeading.astro';
 
 interface Props {
   contexts: WorkingGroupContext[];
@@ -11,12 +12,12 @@ const { contexts, contributions, privacyNoticeVersion } = Astro.props;
 ---
 <section id="register" class="wg-section wg-form-shell" aria-labelledby="register-title">
   <div class="wg-form-intro">
-    <p class="wg-eyebrow">Register your interest</p>
-    <h2 id="register-title">Where can your experience help?</h2>
-    <p>
-      Choose one or more groups and the kinds of contribution you could make. The form usually
-      takes two or three minutes.
-    </p>
+    <CampaignSectionHeading eyebrow="Register your interest" title="Where can your experience help?" id="register-title" size="compact">
+      <p>
+        Choose one or more groups and the kinds of contribution you could make. The form usually
+        takes two or three minutes.
+      </p>
+    </CampaignSectionHeading>
     <div class="callout callout--note">
       <div class="callout__label">How we use these details</div>
       <p>
@@ -151,12 +152,12 @@ const { contexts, contributions, privacyNoticeVersion } = Astro.props;
     </form>
 
     <section id="registration-success" class="wg-success" tabindex="-1" hidden>
-      <p class="wg-eyebrow">Registration received</p>
-      <h2>Thank you for registering</h2>
-      <p>
-        OPDA will review your expression of interest. If we can progress it, we will contact you
-        about the relevant working group and send onboarding information separately.
-      </p>
+      <CampaignSectionHeading eyebrow="Registration received" title="Thank you for registering" size="compact">
+        <p>
+          OPDA will review your expression of interest. If we can progress it, we will contact you
+          about the relevant working group and send onboarding information separately.
+        </p>
+      </CampaignSectionHeading>
     </section>
   </div>
 </section>

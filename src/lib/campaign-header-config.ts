@@ -25,16 +25,18 @@ export const CAMPAIGN_HEADER_DEFAULTS: CampaignHeaderConfiguration = {
   lineGap: 0,
   spaceBelow: 18,
   panelPositionX: -67,
-  panelPositionY: -8,
-  panelWidth: 100,
+  panelPositionY: 50,
+  panelWidth: 96,
   panelItemSpacing: 16,
   themeTogglePositionY: 25,
 };
 
 export const JOIN_CAMPAIGN_HEADER_DEFAULTS: CampaignHeaderConfiguration = {
   ...CAMPAIGN_HEADER_DEFAULTS,
-  panelPositionX: 19,
-  panelPositionY: -118,
+  scale: 32,
+  opdaScale: 87,
+  panelPositionX: -17,
+  panelPositionY: -23,
   panelWidth: 93,
   themeTogglePositionY: 10,
 };

@@ -1,0 +1,90 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  id?: string;
+  level?: 2 | 3;
+  size?: 'section' | 'panel' | 'compact';
+  align?: 'start' | 'end';
+}
+
+const { eyebrow, title, id, level = 2, size = 'section', align = 'end' } = Astro.props;
+const Heading = level === 3 ? 'h3' : 'h2';
+const hasAside = Astro.slots.has('aside');
+---
+
+<header class:list={[
+  'campaign-section-heading',
+  `campaign-section-heading--${size}`,
+  { 'campaign-section-heading--split': hasAside, 'campaign-section-heading--start': align === 'start' },
+]}>
+  <div class="campaign-section-heading__titles">
+    <p class="campaign-section-heading__eyebrow">{eyebrow}</p>
+    <Heading id={id} class="campaign-section-heading__title">{title}</Heading>
+  </div>
+  {hasAside && <div class="campaign-section-heading__aside"><slot name="aside" /></div>}
+  {Astro.slots.has('default') && <div class="campaign-section-heading__body"><slot /></div>}
+</header>
+
+<style>
+  .campaign-section-heading {
+    display: grid;
+    gap: var(--space-5);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .campaign-section-heading--split {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    column-gap: var(--space-7);
+    align-items: end;
+  }
+  .campaign-section-heading--start { align-items: start; }
+  .campaign-section-heading__titles {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+  .campaign-section-heading .campaign-section-heading__eyebrow {
+    margin: 0;
+    padding: 0;
+    color: var(--campaign-section-accent, var(--color-link));
+    font: 700 var(--text-xs) / 1.3 var(--font-sans);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+    text-align: start;
+  }
+  .campaign-section-heading .campaign-section-heading__title {
+    margin: 0;
+    padding: 0;
+    color: var(--color-text-strong);
+    font: 600 clamp(2rem, 4vw, 4.25rem) / 1.06 var(--font-display);
+    letter-spacing: var(--tracking-display);
+    text-wrap: balance;
+    text-align: start;
+  }
+  .campaign-section-heading--panel .campaign-section-heading__title {
+    font-size: clamp(1.75rem, 2.5vw, 2.75rem);
+    line-height: 1.1;
+  }
+  .campaign-section-heading--compact .campaign-section-heading__title {
+    font: var(--h2);
+  }
+  .campaign-section-heading__aside,
+  .campaign-section-heading__body { min-width: 0; }
+  .campaign-section-heading__body { grid-column: 1 / -1; }
+  .campaign-section-heading :global(p:not(.campaign-section-heading__eyebrow)) {
+    margin: 0;
+    color: var(--color-text-muted);
+    font: var(--lead);
+  }
+  .campaign-section-heading :global(p:not(.campaign-section-heading__eyebrow) + p) { margin-top: var(--space-5); }
+
+  @media (max-width: 64rem) {
+    .campaign-section-heading--split { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (forced-colors: active) {
+    .campaign-section-heading :is(.campaign-section-heading__eyebrow, .campaign-section-heading__title) { color: CanvasText; }
+  }
+</style>

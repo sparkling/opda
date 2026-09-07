@@ -5,6 +5,7 @@ import CampaignThemeImage from '@/components/campaign/CampaignThemeImage.astro';
 import ContributionRegister from '@/components/campaign/ContributionRegister.astro';
 import CampaignHeaderControls from '@/components/campaign/CampaignHeaderControls.astro';
 import CampaignIdentity from '@/components/campaign/CampaignIdentity.astro';
+import CampaignSectionHeading from '@/components/campaign/CampaignSectionHeading.astro';
 import { contributionOptions, workingGroupContexts, motivationCards, policyCards, participationCards, evidenceCards } from '@/data/working-group-campaign';
 import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
 import { assetVersion } from '@/lib/asset-version.mjs';
@@ -73,6 +74,7 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
         identityId="join-campaign-identity"
         themeToggleId="join-theme-toggle"
         showOpdaLink
+        headingHref="/"
         configuration={JOIN_CAMPAIGN_HEADER_DEFAULTS}
       >
         <CampaignHeaderControls
@@ -97,8 +99,7 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
 
       <div class="wg-campaign-side">
         <div class="wg-hero-journey" id="join-influence-panel" style={joinPanelStyle} aria-labelledby="influence-title">
-          <p class="wg-eyebrow">Why your voice matters now</p>
-          <h2 id="influence-title">The standard needs your experience.</h2>
+          <CampaignSectionHeading eyebrow="Why your voice matters now" title="The standard needs your experience." id="influence-title" size="panel" />
           <ul class="wg-process" role="list">
             <li><span class="wg-process__icon" aria-hidden="true"><BriefcaseBusiness /></span><strong>Bring evidence from real work</strong><span>Show what happens beyond straightforward cases and ideal processes.</span></li>
             <li><span class="wg-process__icon" aria-hidden="true"><SearchCheck /></span><strong>Challenge assumptions before they harden</strong><span>Identify omissions, costs and unintended consequences while proposals can still improve.</span></li>
@@ -109,16 +110,12 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
     </section>
 
     <section id="why-this-matters" class="wg-section wg-motivation" aria-labelledby="motivation-title">
-      <div class="wg-section__heading wg-illustrated-intro">
-        <div>
-          <p class="wg-eyebrow">Why take part</p>
-          <h2 id="motivation-title">This is about making change work for the people who have to make it work.</h2>
-        </div>
-        <div class="wg-section-media">
+      <CampaignSectionHeading eyebrow="Why take part" title="This is about making change work for the people who have to make it work." id="motivation-title" align="start">
+        <div slot="aside" class="wg-section-media">
           <CampaignThemeImage
             className="wg-section-media__image"
-            lightSrc="/images/join/set-3/motivation-light.webp"
-            darkSrc="/images/join/set-3/motivation-dark.webp"
+            lightSrc="/images/join/set-3/motivation-landscape-light.webp"
+            darkSrc="/images/join/set-3/motivation-landscape-dark.webp"
             alt=""
           />
           <p>
@@ -127,17 +124,14 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
             The working groups are where those realities can shape the work.
           </p>
         </div>
-      </div>
+      </CampaignSectionHeading>
       <CampaignCardGrid cards={motivationCards} />
     </section>
 
     <section class="wg-policy" aria-labelledby="policy-title">
       <div class="wg-policy__inner">
-        <div>
-          <p class="wg-eyebrow">Why now</p>
-          <h2 id="policy-title">The direction of travel is clear. The practical detail is still open.</h2>
-        </div>
-        <div class="wg-policy__copy">
+        <CampaignSectionHeading eyebrow="Why now" title="The direction of travel is clear. The practical detail is still open." id="policy-title">
+        <div slot="aside" class="wg-policy__copy">
           <p>
             Government is pursuing home-buying reform and wider Smart Data policy. The Data (Use and
             Access) Act 2025 provides the framework for Smart Data schemes, while property-specific
@@ -149,43 +143,36 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
           </p>
           <a href="/programme">Understand the programme and policy context <span aria-hidden="true">→</span></a>
         </div>
+        </CampaignSectionHeading>
         <CampaignCardGrid cards={policyCards} columns={3} ordered label="Programme and policy context" />
       </div>
     </section>
 
     <section id="groups" class="wg-section wg-groups" aria-labelledby="groups-title">
-      <div class="wg-section__heading">
-        <div>
-          <p class="wg-eyebrow">Find your place</p>
-          <h2 id="groups-title">Choose the part of the property journey you know best.</h2>
-        </div>
-        <div>
+      <CampaignSectionHeading eyebrow="Find your place" title="Choose the part of the property journey you know best." id="groups-title">
+        <div slot="aside">
           <p>
             The groups bring together people who understand distinct parts of the property journey.
             Join one or more where your experience can make the difference between a plausible idea
             and a practical outcome.
           </p>
         </div>
-      </div>
+      </CampaignSectionHeading>
       <CampaignCardGrid cards={workingGroupCards} columns={3} />
       <aside class="wg-cross-cutting" aria-labelledby="cross-cutting-title">
-        <p class="wg-eyebrow">Experience that crosses every group</p>
-        <h3 id="cross-cutting-title">Commercial and public interests both belong in the room.</h3>
-        <p>You do not need to fit neatly into one professional group. Your business experience, consumer perspective, accessibility expertise or regulatory insight can help make the work stronger.</p>
+        <CampaignSectionHeading eyebrow="Experience that crosses every group" title="Commercial and public interests both belong in the room." id="cross-cutting-title" level={3} size="panel">
+          <p slot="aside">You do not need to fit neatly into one professional group. Your business experience, consumer perspective, accessibility expertise or regulatory insight can help make the work stronger.</p>
+        </CampaignSectionHeading>
       </aside>
     </section>
 
     <section class="wg-participation" aria-labelledby="participation-title">
-      <div class="wg-illustrated-intro">
-        <div>
-          <p class="wg-eyebrow">What you can influence</p>
-          <h2 id="participation-title">Bring experience. Improve the proposal. Change what will matter.</h2>
-        </div>
-        <div class="wg-section-media">
+      <CampaignSectionHeading eyebrow="What you can influence" title="Bring experience. Improve the proposal. Change what will matter." id="participation-title" align="start">
+        <div slot="aside" class="wg-section-media">
           <CampaignThemeImage
             className="wg-section-media__image"
-            lightSrc="/images/join/set-3/influence-light.webp"
-            darkSrc="/images/join/set-3/influence-dark.webp"
+            lightSrc="/images/join/set-3/influence-landscape-light.webp"
+            darkSrc="/images/join/set-3/influence-landscape-dark.webp"
             alt=""
           />
           <p>
@@ -194,43 +181,34 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
             for your field, your organisation and the people it serves.
           </p>
         </div>
-      </div>
+      </CampaignSectionHeading>
 
       <CampaignCardGrid cards={participationCards} ordered />
 
       <div class="wg-participation-grid">
-        <div>
-          <p class="wg-eyebrow">Ways to contribute</p>
-          <h3>Your contribution can match your experience and availability.</h3>
-        </div>
+        <CampaignSectionHeading eyebrow="Ways to contribute" title="Your contribution can match your experience and availability." level={3} size="panel" />
         <ContributionRegister options={contributionOptions} />
       </div>
 
     </section>
 
     <section class="wg-section wg-evidence" aria-labelledby="trust-title">
-      <div class="wg-evidence__statement">
-          <p class="wg-eyebrow">A contribution with boundaries</p>
-          <h2 id="trust-title">Your judgement is valuable. Your authority is respected.</h2>
-        <p>
+      <CampaignSectionHeading eyebrow="A contribution with boundaries" title="Your judgement is valuable. Your authority is respected." id="trust-title">
+        <p slot="aside">
           Existing documents show what has been recorded. Practitioners understand why it matters,
           where exceptions arise and what happens when a rule does not fit real work.
         </p>
-      </div>
+      </CampaignSectionHeading>
 
       <CampaignCardGrid cards={evidenceCards} />
 
       <div class="wg-trust">
-        <div class="wg-trust__intro">
-          <div>
-            <p class="wg-eyebrow">Taking part</p>
-            <h3>What participation does—and doesn’t—mean.</h3>
-          </div>
-          <p>
+        <CampaignSectionHeading eyebrow="Taking part" title="What participation does—and doesn’t—mean." level={3} size="panel">
+          <p slot="aside">
             Share only what you and your organisation are authorised to share. Source material is
             reviewed and is not automatically published.
           </p>
-        </div>
+        </CampaignSectionHeading>
         <ul class="wg-trust__boundaries" aria-label="Participation boundaries">
           <li class="wg-trust__boundary">
             <strong>In development</strong>

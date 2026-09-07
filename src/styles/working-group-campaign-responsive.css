@@ -6,16 +6,7 @@
 }
 
 @media (max-width: 64rem) {
-  .wg-section__heading,
-  .wg-illustrated-intro,
-  .wg-cross-cutting,
-  .wg-participation-grid,
-  .wg-evidence__statement,
-  .wg-trust__intro,
-  .wg-policy__inner { grid-template-columns: 1fr; }
-  .wg-cross-cutting .wg-eyebrow,
-  .wg-evidence__statement .wg-eyebrow { grid-column: auto; margin-bottom: 0; }
-  .wg-policy__copy { margin-top: var(--space-7); }
+  .wg-participation-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 48rem) {

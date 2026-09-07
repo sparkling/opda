@@ -5,6 +5,7 @@ interface Props {
   scale?: 'display' | 'mini' | 'compact';
   variant?: 'document' | 'paired';
   class?: string;
+  href?: string;
 }
 
 const {
@@ -13,10 +14,12 @@ const {
   scale = 'display',
   variant = 'document',
   class: className,
+  href,
 } = Astro.props;
+const Element = href ? 'a' : 'span';
 ---
 
-<span class:list={[
+<Element href={href} class:list={[
   'brand-heading',
   {
     'brand-heading--on-light': surface === 'light',
@@ -35,4 +38,8 @@ const {
   ) : (
     <span class="brand-heading__label">Open Property Data <span class="brand-heading__label-accent">Association</span></span>
   )}
-</span>
+</Element>
+
+<style>
+  a.brand-heading { text-decoration: none; }
+</style>

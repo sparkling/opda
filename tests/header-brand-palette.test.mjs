@@ -21,6 +21,35 @@ const iconIds = [
   'quarter-turn-altered', 'aperture-altered', 'datum-altered',
 ];
 
+test('sign-in shares the existing narrow header button size without local padding overrides', async () => {
+  const [auth, header, support, buttons] = await Promise.all([
+    source('src/components/AuthButton.astro'), source('src/components/Header.astro'),
+    source('public/ui/design/shell-support.css'), source('public/ui/design/content.css'),
+  ]);
+  assert.match(auth, /class="auth-button__signin btn btn--compact"/u);
+  assert.match(header, /class="header-cta btn btn--compact"/u);
+  assert.match(header, /class="header-membership btn btn--ghost btn--compact"/u);
+  assert.doesNotMatch(support, /\.auth-button__signin\s*[:{]/u);
+  assert.match(buttons, /\.btn--compact\s*\{[^}]*padding-block:\s*6px;[^}]*padding-inline:\s*var\(--space-3\);/u);
+  assert.match(support, /\.auth-button \[hidden\]\s*\{\s*display:\s*none !important;/u);
+});
+
+test('join section titles share one eyebrow and layout template while card geometry stays independent', async () => {
+  const [page, form, heading, campaign, sections, cards] = await Promise.all([
+    source('src/pages/join/index.astro'), source('src/components/campaign/WorkingGroupInterestForm.astro'),
+    source('src/components/campaign/CampaignSectionHeading.astro'), source('src/styles/working-group-campaign.css'),
+    source('src/styles/working-group-campaign-sections.css'), source('src/components/campaign/CampaignCardGrid.astro'),
+  ]);
+  assert.equal((page.match(/<CampaignSectionHeading\b/gu) ?? []).length, 9);
+  assert.equal((form.match(/<CampaignSectionHeading\b/gu) ?? []).length, 2);
+  assert.doesNotMatch(`${page}\n${form}`, /class="wg-eyebrow"/u);
+  assert.match(heading, /campaign-section-heading__titles\s*\{[^}]*gap:\s*var\(--space-3\)/u);
+  assert.match(heading, /campaign-section-heading__eyebrow\s*\{[^}]*font:\s*700 var\(--text-xs\) \/ 1\.3 var\(--font-sans\)/u);
+  assert.doesNotMatch(`${campaign}\n${sections}`, /wg-illustrated-intro|wg-evidence__statement|wg-trust__intro|wg-section__heading/u);
+  assert.match(campaign, /\.wg-section-media__image\s*\{[^}]*aspect-ratio:\s*3 \/ 1;[^}]*object-fit:\s*contain/u);
+  assert.match(cards, /aspect-ratio:\s*4 \/ 1/u);
+});
+
 test('knowledge-base header uses paired OPDA and selectable framework identities', async () => {
   const [header, kbControls, previewControls, brand, framework, iconRegistry, headerBrand, base] = await Promise.all([
     source('src/components/Header.astro'),
@@ -163,9 +192,10 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(home, /<CampaignHeaderControls[\s\S]*variant="home"/u);
   assert.match(home, /class="wg-hero-journey" id="home-domains-panel"/u);
   assert.match(join, /<CampaignHeaderControls[\s\S]*variant="join"/u);
-  assert.match(campaignConfig, /icon: 'twin-frames'[\s\S]*palette: 'petrol'[\s\S]*scale: 26,[\s\S]*opdaScale: 106,[\s\S]*spaceAbove: 9,[\s\S]*lineGap: 0,[\s\S]*spaceBelow: 18,[\s\S]*panelPositionX: -67,[\s\S]*panelPositionY: -8,[\s\S]*panelWidth: 100,[\s\S]*panelItemSpacing: 16,[\s\S]*themeTogglePositionY: 25,/u);
-  assert.match(campaignIdentity, /<header class="wg-campaign-hero__header">[\s\S]*class="wg-campaign-identity"[\s\S]*<BrandHeading \/>[\s\S]*showOpdaLink && \([\s\S]*class="wg-campaign-identity__opda-link" href="\/"[\s\S]*<ThemeToggle id=\{`\$\{themeToggleId\}-button`\} \/>[\s\S]*<FrameworkHeading scale="display" \/>[\s\S]*class="wg-campaign-identity__configuration"><slot name="controls" \/>/u);
-  assert.match(campaignConfig, /JOIN_CAMPAIGN_HEADER_DEFAULTS[\s\S]*panelPositionX: 19,[\s\S]*panelPositionY: -118,[\s\S]*panelWidth: 93,[\s\S]*themeTogglePositionY: 10,/u);
+  assert.match(campaignConfig, /icon: 'twin-frames'[\s\S]*palette: 'petrol'[\s\S]*scale: 26,[\s\S]*opdaScale: 106,[\s\S]*spaceAbove: 9,[\s\S]*lineGap: 0,[\s\S]*spaceBelow: 18,[\s\S]*panelPositionX: -67,[\s\S]*panelPositionY: 50,[\s\S]*panelWidth: 96,[\s\S]*panelItemSpacing: 16,[\s\S]*themeTogglePositionY: 25,/u);
+  assert.match(campaignIdentity, /<header class="wg-campaign-hero__header">[\s\S]*class="wg-campaign-identity"[\s\S]*<BrandHeading href=\{headingHref\} \/>[\s\S]*showOpdaLink && \([\s\S]*class="wg-campaign-identity__opda-link" href="\/"[\s\S]*<ThemeToggle id=\{`\$\{themeToggleId\}-button`\} \/>[\s\S]*<FrameworkHeading scale="display" href=\{headingHref\} \/>[\s\S]*class="wg-campaign-identity__configuration"><slot name="controls" \/>/u);
+  assert.match(campaignConfig, /JOIN_CAMPAIGN_HEADER_DEFAULTS[\s\S]*scale: 32,[\s\S]*opdaScale: 87,[\s\S]*panelPositionX: -17,[\s\S]*panelPositionY: -23,[\s\S]*panelWidth: 93,[\s\S]*themeTogglePositionY: 10,/u);
+  assert.match(join, /headingHref="\/"/u);
   assert.match(campaignControls, /variant: 'home' \| 'join'[\s\S]*data-header-preview-controls-loader[\s\S]*data-controls-src=\{`\/ui\/header-preview-controls\/\$\{variant\}`\}/u);
   assert.match(homeControls, /controlId="home-header-preview-selectors"[\s\S]*identityId="home-campaign-identity"[\s\S]*positionTargetId="home-domains-panel"[\s\S]*initialScale=\{configuration\.scale\}[\s\S]*initialPanelItemSpacing=\{configuration\.panelItemSpacing\}/u);
   assert.match(joinControls, /controlId="join-header-preview-selectors"[\s\S]*identityId="join-campaign-identity"[\s\S]*positionTargetId="join-influence-panel"[\s\S]*initialScale=\{configuration\.scale\}[\s\S]*initialPanelItemSpacing=\{configuration\.panelItemSpacing\}/u);

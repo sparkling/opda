@@ -3,14 +3,6 @@
   margin: 0;
 }
 
-.wg-eyebrow {
-  margin: 0 0 var(--space-3);
-  color: var(--color-text-muted);
-  font: 700 var(--text-xs) / 1.3 var(--font-sans);
-  letter-spacing: var(--tracking-meta);
-  text-transform: uppercase;
-}
-
 .wg-hero h1,
 .wg-privacy h1 {
   margin: 0;
@@ -30,14 +22,6 @@
 .wg-section { padding-block: clamp(var(--space-8), 7vw, var(--space-12)); }
 .wg-section + .wg-section { border-top: 1px solid var(--color-border); }
 
-.wg-section__heading {
-  display: grid;
-  grid-template-columns: minmax(0, 0.7fr) minmax(18rem, 1.3fr);
-  gap: var(--space-7);
-  align-items: start;
-  margin-bottom: var(--space-7);
-}
-
 .wg-section h2,
 .wg-form-section h2,
 .wg-privacy h2 {
@@ -48,7 +32,6 @@
   text-wrap: balance;
 }
 
-.wg-section__heading p,
 .wg-form-intro p {
   margin: 0;
   color: var(--color-text-muted);
@@ -262,7 +245,6 @@
 }
 
 @media (max-width: 44rem) {
-  .wg-section__heading,
   .wg-fields,
   .wg-contexts,
   .wg-process,

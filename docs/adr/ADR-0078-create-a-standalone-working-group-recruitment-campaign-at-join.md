@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-27
-updated: 2026-09-06
+updated: 2026-09-07
 tags: [working-groups, recruitment, campaign, signup, design-system, accessibility, routing]
 supersedes: []
 depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073, ADR-0079]
@@ -99,6 +99,21 @@ Choose **Option C — create a standalone editorial campaign at `/join`**.
 
 This ADR is accepted. It authorises the local route, composition and quality
 contract; it does not authorise publication.
+
+Amended on 7 September 2026: the join identity links both shared OPDA and SPDTF
+headings to `/`. Join defaults are size 32, OPDA 87%, space below/between/above
+18/0/9px, panel position −17/−23px, width 93%, item spacing 16px and theme-control
+offset 10px. The live controls and initial layout consume the same configuration.
+`CampaignSectionHeading` now owns all join section/panel/form-intro mini headings:
+one uppercase small-text role, an 8px title gap, and shared section/panel/compact
+title variants. Split introductions use a 32px gutter and stack below 64rem.
+The motivation and influence introductions use new `*-landscape-{light,dark}.webp`
+siblings: native 3:1 compositions displayed without cropping, never changes to the
+six working-group card images. Astra Max directed the built-in image tool to
+recompose the existing subjects horizontally, retain the Set 3 ink/watercolour
+palette and complete hands/heads, then recolour each approved light composition
+for dark mode without changing its geometry. Exports are 1536×512 WebP (203–225KB),
+proportionally resized from 2172×724 generated originals; all older assets remain.
 
 Amended on 6 September 2026: every recruitment section and inset panel follows
 the selected light or dark mode, including policy, cross-cutting experience,

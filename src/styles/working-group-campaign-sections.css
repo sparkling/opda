@@ -6,17 +6,10 @@
 
 .wg-policy__inner {
   width: 100%;
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.95fr);
-  column-gap: clamp(var(--space-8), 7vw, var(--space-12));
   margin-inline: 0;
   padding: var(--campaign-section-space) max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2));
 }
 
-.wg-policy .wg-eyebrow { color: var(--campaign-section-accent); }
-.wg-policy h2 { margin: 0; color: var(--color-text-strong); font: 600 clamp(2.3rem, 4.5vw, 4.75rem) / 1.02 var(--font-display); letter-spacing: var(--tracking-display); text-wrap: balance; }
-.wg-policy__copy p { margin: 0; color: var(--color-text-muted); font: var(--lead); }
-.wg-policy__copy p + p { margin-top: var(--space-5); }
 .wg-policy__copy a { display: inline-flex; min-height: var(--target-min); align-items: center; gap: var(--space-2); margin-top: var(--space-6); color: var(--campaign-section-link); font-weight: 700; }
 .wg-policy__copy a:hover { color: var(--campaign-section-link-hover); }
 
@@ -29,9 +22,6 @@
   border-block: 4px solid var(--brand-yellow);
 }
 
-.wg-participation .wg-eyebrow { color: var(--campaign-section-accent); }
-.wg-participation h2 { margin: 0; color: var(--color-text-strong); font: 600 clamp(2.5rem, 5vw, 5.25rem) / 1.02 var(--font-display); letter-spacing: -0.025em; text-wrap: balance; }
-
 .wg-participation-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.75fr) minmax(24rem, 1.25fr);
@@ -40,18 +30,9 @@
   margin-top: clamp(var(--space-10), 8vw, 7rem);
 }
 
-.wg-participation-grid h3 { margin: 0; color: var(--color-text-strong); font: 600 clamp(1.75rem, 3vw, 3rem) / 1.1 var(--font-display); }
-
 .wg-evidence { width: 100%; padding-inline: max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2)); }
-.wg-evidence__statement { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr); gap: clamp(var(--space-8), 7vw, var(--space-12)); align-items: end; }
-.wg-evidence__statement .wg-eyebrow { grid-column: 1 / -1; margin-bottom: calc(var(--space-6) * -1); }
-.wg-evidence__statement > p:last-child { margin: 0; color: var(--color-text-muted); font: var(--lead); }
 
 .wg-trust { margin-top: clamp(var(--space-8), 4vw, var(--space-10)); padding: var(--space-7); color: var(--color-text-strong); background: var(--campaign-panel-surface); border-top: 4px solid var(--brand-yellow); }
-.wg-trust__intro { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(22rem, 1.2fr); gap: clamp(var(--space-8), 7vw, var(--space-12)); align-items: end; }
-.wg-trust .wg-eyebrow { color: var(--campaign-section-accent); }
-.wg-trust h3 { margin: 0; color: var(--color-text-strong); font: 600 clamp(1.75rem, 3vw, 3rem) / 1.1 var(--font-display); }
-.wg-trust__intro > p { margin: 0; color: var(--color-text-muted); font: var(--lead); }
 .wg-trust__boundaries { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: var(--space-7) 0 0; padding: 0; list-style: none; border-block: 1px solid var(--color-border); }
 .wg-trust__boundary { display: grid; align-content: start; gap: var(--space-2); min-width: 0; padding: var(--space-5) 0; color: var(--color-text-muted); }
 .wg-trust__boundary:nth-child(even) { padding-left: var(--space-6); border-left: 1px solid var(--color-border); }

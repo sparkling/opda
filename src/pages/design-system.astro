@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import BrandHeading from '@/components/BrandHeading.astro';
+import CampaignSectionHeading from '@/components/campaign/CampaignSectionHeading.astro';
 
 const brandColours = [
   { name: 'Deep ink', value: '#131224', role: 'Header, hero, footer and code' },
@@ -151,6 +152,13 @@ const tokenSample = `:root {
     the built-in image tool and approved on 6 September 2026; rejected variants are
     not part of the system.
   </p>
+  <p>
+    Section introductions use separately composed 3:1 panoramas, exported at
+    1536×512 WebP below 225&nbsp;KB and displayed uncropped. Use the same drawing
+    and paired-mode prompts, changing the composition ratio to 3:1; never stretch
+    a card image or change its 4:1 layout. ADR-0078 records the Astra-directed
+    motivation and influence landscape variants; earlier assets remain available.
+  </p>
 
   <h2 id="colour">Colour</h2>
   <div class="colour-grid">
@@ -257,6 +265,10 @@ const tokenSample = `:root {
 
   <h2 id="standalone-public">Public-service family</h2>
   <p><code>/join</code> remains a standalone recruitment composition. <code>/join/privacy</code> and <code>/accessibility</code> use the same global <code>Header</code> as the Knowledge Base, with both side menus, breadcrumbs, comments and previous/next navigation omitted. Every route consumes the official assets, semantic tokens, typography, buttons, fields, focus treatment and shared <code>SiteFooter</code> from this system.</p>
+  <CampaignSectionHeading eyebrow="Shared campaign heading" title="One heading template, one spacing rhythm." level={3} size="panel">
+    <p><code>CampaignSectionHeading</code> owns every join mini heading and its 8px gap above the title. Section, panel and compact variants change the title size, not the eyebrow. The optional aside slot supplies a lead or landscape image on a shared responsive grid.</p>
+  </CampaignSectionHeading>
+  <p>Compact labelled header buttons—including Sign in, Join a working group and Become a member—share <code>btn btn--compact</code>: 6px top/bottom padding, 8px left/right padding and automatic height. Colour variants remain independent of size.</p>
   <div class="evidence-grid">
     <article><span>Shell</span><h3>One global header for public statements</h3><p>Privacy and accessibility match the Knowledge Base header while omitting documentation side menus. Recruitment keeps its focused campaign header.</p></article>
     <article><span>Recruitment</span><h3>Purpose before process</h3><p>Plain working-group cards name the audience, practical scope and next action. Programme purpose and professional influence come before technical method.</p></article>
