@@ -1,0 +1,65 @@
+name: Break-glass deploy site to AWS
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_release:
+        description: Confirm an unvalidated production release
+        required: true
+        type: boolean
+        default: false
+
+concurrency:
+  group: opda-site-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Build and deploy without release gates
+    if: inputs.confirm_release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build site from committed inputs
+        run: pnpm run build
+
+      - name: Assume deploy role (OIDC)
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.OPDA_SITE_DEPLOY_ROLE_ARN }}
+          aws-region: eu-west-2
+
+      - name: Sync dist to the site bucket
+        run: |
+          SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
+            --stack-name opda-site \
+            --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
+          aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/*"
+
+      - name: Invalidate CloudFront
+        run: |
+          DISTRIBUTION_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
+            --stack-name opda-site \
+            --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" --output text)
+          aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths '/*'

@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-06
-updated: 2026-09-03
+updated: 2026-09-07
 tags: [infrastructure, ci-cd, deployment, security]
 supersedes: []
 depends-on: [ADR-0021, ADR-0037]
@@ -9,6 +9,13 @@ implements: [ADR-0038]
 ---
 
 # AWS hosting CI/CD pipeline
+
+> **Amended 2026-09-07.** A deliberately manual, audited break-glass workflow
+> (`deploy-aws-break-glass.yml`) may build and deploy a named `main` commit
+> without the normal validation jobs when the operator explicitly confirms an
+> unvalidated production release. It retains GitHub OIDC, the production S3
+> exclusions and CloudFront invalidation. It is an incident escape hatch, not
+> the routine release path; use of it is visible in the Actions audit trail.
 
 > **Amended 2026-09-03.** Site validation and deployment now form one real
 > release gate in `.github/workflows/deploy-aws.yml`. Independent contracts run
@@ -101,6 +108,19 @@ Chosen option: **A — GitHub Actions + IAM OIDC role + CloudFormation deploys**
 * Deploy: replace the wrangler step with `aws s3 sync dist/ s3://<site-bucket> --delete` followed by `aws cloudfront create-invalidation --paths '/*'` (at ~20 views/day, a full invalidation is simpler than hashed-path bookkeeping and within the 1,000 free invalidation paths/month).
 * Permissions: validation jobs receive only `contents: read`; the final deploy
   job alone receives `id-token: write` for OIDC.
+
+**2a. Break-glass site deploys — explicit manual exception.**
+
+* Trigger: `workflow_dispatch` with an explicit boolean confirmation that the
+  operator is releasing without the normal validation jobs.
+* Build and deployment: install the locked dependency graph, build from the
+  selected `main` commit, assume the same short-lived OIDC role, apply the same
+  protected-prefix exclusions, synchronise S3 and invalidate CloudFront.
+* Auditability: the GitHub Actions run records the initiating operator and the
+  exact commit. No standing credential or local AWS deployment path is added.
+* Boundary: this path exists for recovery from a disproportionate or defective
+  gate. It does not redefine a failed gate as passing and must not become the
+  normal publication mechanism.
 
 **3. Infrastructure deploys — `infra.yml` (new).**
 
