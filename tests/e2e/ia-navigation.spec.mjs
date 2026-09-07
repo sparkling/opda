@@ -41,7 +41,7 @@ test('aria-current follows canonical route ownership', async ({ page }) => {
     ['/programme', 'Programme'],
     ['/governance', 'Governance'],
     ['/semantic-modelling', 'Modelling'],
-    ['/semantic-modelling/standards', 'Modelling'],
+    ['/semantic-modelling/method/languages-and-profiles', 'Modelling'],
     ['/development', 'Development'],
     ['/development/working-groups', 'Groups'],
     ['/development/working-groups/estate-agency', 'Groups'],
@@ -211,9 +211,9 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
 test('category pages are direct links whose active trails reveal children', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await visit(page, '/semantic-modelling/standards');
-  const category = page.locator('.nav-group[data-group="Understand ontologies"]');
-  const link = category.locator('.nav-group-link[href="/semantic-modelling/why-ontologies"]');
+  await visit(page, '/semantic-modelling/method/languages-and-profiles');
+  const category = page.locator('.nav-group[data-group="Ontology modelling"]');
+  const link = category.locator('.nav-group-link[href="/semantic-modelling/method"]');
   await expect(link).toBeVisible();
   expect(await category.locator(':scope > .nav-group-row > a')
     .evaluateAll((nodes) => nodes.map(({ tagName }) => tagName))).toEqual(['A']);
@@ -222,12 +222,12 @@ test('category pages are direct links whose active trails reveal children', asyn
 
   await link.focus();
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/semantic-modelling\/why-ontologies$/u);
+  await expect(page).toHaveURL(/\/semantic-modelling\/method$/u);
   await expect(page.locator('.nav-group-row.is-active-page a[aria-current="page"]'))
-    .toHaveAttribute('href', '/semantic-modelling/why-ontologies');
+    .toHaveAttribute('href', '/semantic-modelling/method');
   await expect(page.locator('nav[aria-label="Breadcrumb"]')).toHaveCount(0);
   await expect(page.locator('nav.page-footer a').last())
-    .toHaveAttribute('href', '/semantic-modelling/reading-the-model');
+    .toHaveAttribute('href', '/semantic-modelling/method/from-question-to-candidate');
   clean();
 });
 
@@ -261,7 +261,7 @@ test('Property Pack definition cards link to their canonical views', async ({ pa
 test('nested navigation follows one consistent indentation ladder', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await visit(page, '/semantic-modelling/standards');
+  await visit(page, '/semantic-modelling/method/languages-and-profiles');
 
   const geometry = await page.evaluate(() => {
     const link = (href) => document.querySelector(`#section-navigation a[href="${href}"]`);
@@ -271,8 +271,8 @@ test('nested navigation follows one consistent indentation ladder', async ({ pag
       return range.getBoundingClientRect().left;
     };
     const rootLeaf = link('/semantic-modelling');
-    const rootFolder = link('/semantic-modelling/why-ontologies');
-    const childLeaf = link('/semantic-modelling/reading-the-model');
+    const rootFolder = link('/semantic-modelling/method');
+    const childLeaf = link('/semantic-modelling/method/from-question-to-candidate');
     return {
       rootLeaf: textLeft(rootLeaf),
       rootFolder: textLeft(rootFolder),

@@ -1,20 +1,12 @@
 import assert from 'node:assert/strict';
 import { PDTF1_ROUTES } from '../../src/lib/pdtf1-routes.mjs';
+import { MODELLING_CHAPTERS } from '../../src/lib/modelling-navigation.ts';
 
 export { PDTF1_ROUTES };
 
 export const SEMANTIC_MODELLING_ROUTES = [
   '/semantic-modelling',
-  '/semantic-modelling/why-ontologies',
-  '/semantic-modelling/reading-the-model',
-  '/semantic-modelling/modelling-method',
-  '/semantic-modelling/semantic-package',
-  '/semantic-modelling/bounded-contexts',
-  '/semantic-modelling/modelling-rules',
-  '/semantic-modelling/coverage',
-  '/semantic-modelling/standards',
-  '/semantic-modelling/evidence-and-mappings',
-  '/semantic-modelling/validation',
+  ...MODELLING_CHAPTERS.map(({ url }) => url),
 ];
 
 export const PDTF_ONTOLOGY_CATEGORY_ROUTES = [

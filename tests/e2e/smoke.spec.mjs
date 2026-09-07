@@ -112,7 +112,7 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
 test('mobile section drawer returns focus on Escape', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 375, height: 812 });
-  await visit(page, '/semantic-modelling/standards');
+  await visit(page, '/semantic-modelling/method/languages-and-profiles');
   await page.evaluate(() => localStorage.setItem('opda-sidebar-collapsed', '1'));
   await page.reload();
   const opener = page.locator('#menu-toggle');
@@ -127,8 +127,8 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   await expect(first).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   await expect(last).toBeFocused();
-  const category = sidebar.locator('.nav-group[data-group="Understand ontologies"]');
-  const categoryLink = category.locator('a[href="/semantic-modelling/why-ontologies"]');
+  const category = sidebar.locator('.nav-group[data-group="Understand shared meaning"]');
+  const categoryLink = category.locator('a[href="/semantic-modelling/understand"]');
   await expect(category.locator('.nav-group-toggle')).toHaveCount(0);
   await page.keyboard.press('Escape');
   await expect(sidebar).not.toHaveClass(/open/);
@@ -136,7 +136,7 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   await expect(opener).toBeFocused();
   await opener.click();
   await categoryLink.click();
-  await expect(page).toHaveURL(/\/semantic-modelling\/why-ontologies$/u);
+  await expect(page).toHaveURL(/\/semantic-modelling\/understand$/u);
   await expect(sidebar).not.toHaveClass(/open/);
   await assertNoBodyOverflow(page);
   clean();
@@ -171,103 +171,76 @@ test('mobile PDTF ontology hierarchy keeps folder labels linked and keyboard ord
 
 test('semantic modelling exposes linked audience branches and one active page', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/semantic-modelling/standards');
+  await visit(page, '/semantic-modelling/method/languages-and-profiles');
   const navigation = page.locator('#section-navigation');
-  const method = navigation.locator('.nav-group[data-group="How we model SPDTF"]');
-  const teaching = navigation.locator('.nav-group[data-group="Understand ontologies"]');
-  await expect(teaching).toHaveClass(/is-open/u);
+  const method = navigation.locator('.nav-group[data-group="Ontology modelling"]');
+  const teaching = navigation.locator('.nav-group[data-group="Understand shared meaning"]');
+  await expect(teaching).not.toHaveClass(/is-open/u);
   await expect(teaching.locator(':scope > .nav-group-row > a'))
-    .toHaveText('Understand ontologies');
+    .toHaveText('Understand shared meaning');
   await expect(teaching.locator(':scope > .nav-group-row > a'))
-    .toHaveAttribute('href', '/semantic-modelling/why-ontologies');
-  await expect(method).not.toHaveClass(/is-open/u);
+    .toHaveAttribute('href', '/semantic-modelling/understand');
+  await expect(method).toHaveClass(/is-open/u);
   await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
   await expect(navigation.locator('a[aria-current="page"]'))
-    .toHaveAttribute('href', '/semantic-modelling/standards');
+    .toHaveAttribute('href', '/semantic-modelling/method/languages-and-profiles');
   clean();
 });
 
-test('every semantic teaching diagram is named, described, captioned and keyboard-operable', async ({ page }) => {
+test('semantic teaching diagrams have names, descriptions and visible text equivalents', async ({ page }) => {
+  test.setTimeout(120_000);
   const clean = watchRuntime(page);
-  await page.setViewportSize({ width: 320, height: 900 });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   let diagramCount = 0;
-
   for (const path of SEMANTIC_MODELLING_ROUTES) {
     await visit(page, path);
-    const figures = page.locator('.graph-diagram-wrapper');
-    const count = await figures.count();
-    diagramCount += count;
-
-    for (let index = 0; index < count; index += 1) {
-      const figure = figures.nth(index);
-      await figure.scrollIntoViewIfNeeded();
-      const svg = figure.locator('.gd-mermaid svg');
+    const figures = page.locator('figure:has(> svg.modelling-visual)');
+    diagramCount += await figures.count();
+    for (const figure of await figures.all()) {
+      const svg = figure.locator(':scope > svg.modelling-visual');
       await expect(svg).toBeVisible();
       await expect(svg).toHaveAttribute('role', 'img');
-      await expect(svg).toHaveAttribute('tabindex', '0');
-
-      const accessibility = await svg.evaluate((node) => {
-        const title = node.querySelector(':scope > title');
-        const description = node.querySelector(':scope > desc');
-        const labelledBy = node.getAttribute('aria-labelledby');
-        const describedBy = (node.getAttribute('aria-describedby') || '').split(/\s+/u).filter(Boolean);
-        const directTags = [...node.children].slice(0, 2).map((child) => child.tagName.toLowerCase());
-        return {
-          directTags,
-          titleId: title?.id,
-          titleText: title?.textContent?.trim(),
-          descriptionId: description?.id,
-          descriptionText: description?.textContent?.trim(),
-          labelledBy,
-          describedBy,
-        };
-      });
-      expect(accessibility.directTags).toEqual(['title', 'desc']);
-      expect(accessibility.titleText?.length).toBeGreaterThan(10);
-      expect(accessibility.descriptionText?.length).toBeGreaterThan(30);
-      expect(accessibility.labelledBy).toBe(accessibility.titleId);
-      expect(accessibility.describedBy).toContain(accessibility.descriptionId);
-
-      const caption = figure.locator('figcaption');
-      await expect(caption).toBeVisible();
-      const captionId = await caption.getAttribute('id');
-      expect(captionId).toBeTruthy();
-      expect(accessibility.describedBy).toContain(captionId);
-
-      await svg.focus();
-      const canvas = figure.locator('.diagram-canvas');
-      const before = await canvas.evaluate((node) => getComputedStyle(node).transform);
-      await page.keyboard.press('ArrowRight');
-      const after = await canvas.evaluate((node) => getComputedStyle(node).transform);
-      expect(after).not.toBe(before);
+      await expect(svg).toHaveAttribute('viewBox', '0 0 960 600');
+      const alternative = await svg.evaluate((node) => ({
+        title: node.querySelector(':scope > title')?.textContent?.trim(),
+        description: node.querySelector(':scope > desc')?.textContent?.trim(),
+        ids: [...node.querySelectorAll(':scope > title, :scope > desc')].map(({ id }) => id),
+        labelledBy: node.getAttribute('aria-labelledby')?.split(/\s+/u),
+      }));
+      expect(alternative.title?.length).toBeGreaterThan(10);
+      expect(alternative.description?.length).toBeGreaterThan(30);
+      expect(alternative.labelledBy).toEqual(alternative.ids);
+      await expect(figure.locator('figcaption')).toBeVisible();
+      await expect(figure.locator('p, dl, ol, ul, table, blockquote').first()).toBeVisible();
     }
     await assertNoBodyOverflow(page);
   }
-
   expect(diagramCount).toBeGreaterThanOrEqual(10);
   clean();
 });
 
-test('semantic diagrams retain visible structure in forced colours', async ({ page }) => {
-  const clean = watchRuntime(page);
-  await page.emulateMedia({ forcedColors: 'active' });
-  await page.setViewportSize({ width: 390, height: 900 });
-
-  for (const path of SEMANTIC_MODELLING_ROUTES) {
-    await visit(page, path);
-    const figures = page.locator('.graph-diagram-wrapper');
-    for (let index = 0; index < await figures.count(); index += 1) {
-      const figure = figures.nth(index);
-      await figure.scrollIntoViewIfNeeded();
-      const svg = figure.locator('.gd-mermaid svg');
-      await expect(svg).toBeVisible();
-      await expect(svg.locator('g.node')).not.toHaveCount(0);
-      await expect(figure.locator('.diagram-toolbar')).toBeVisible();
+for (const mode of ['mobile', 'forced colours']) {
+  test(`semantic diagrams retain readable HTML alternatives in ${mode}`, async ({ page }) => {
+    test.setTimeout(120_000);
+    const clean = watchRuntime(page);
+    await page.setViewportSize({ width: mode === 'mobile' ? 390 : 1440, height: 900 });
+    if (mode === 'forced colours') await page.emulateMedia({ forcedColors: 'active' });
+    let diagramCount = 0;
+    for (const path of SEMANTIC_MODELLING_ROUTES) {
+      await visit(page, path);
+      const figures = page.locator('figure:has(> svg.modelling-visual)');
+      diagramCount += await figures.count();
+      for (const figure of await figures.all()) {
+        await expect(figure.locator(':scope > svg.modelling-visual')).toBeHidden();
+        await expect(figure.locator('figcaption')).toBeVisible();
+        await expect(figure.locator('p, dl, ol, ul, table, blockquote').first()).toBeVisible();
+      }
+      await assertNoBodyOverflow(page);
     }
-    await assertNoBodyOverflow(page);
-  }
-  clean();
-});
+    expect(diagramCount).toBeGreaterThanOrEqual(10);
+    clean();
+  });
+}
 
 test('mobile primary navigation is an inert disclosure with Escape return', async ({ page }) => {
   const clean = watchRuntime(page);
@@ -294,6 +267,14 @@ test('representative diagrams and data tables render', async ({ page }) => {
     const diagramSource = page.locator('.gd-mermaid').first();
     await diagramSource.scrollIntoViewIfNeeded();
     await expect(diagramSource.locator('svg')).toBeVisible();
+    const svg = diagramSource.locator('svg');
+    await expect(svg).toHaveAttribute('role', 'img');
+    await expect(svg).toHaveAttribute('tabindex', '0');
+    await svg.focus();
+    const canvas = diagramSource.locator('xpath=ancestor::*[contains(@class, "diagram-canvas")][1]');
+    const before = await canvas.evaluate((node) => getComputedStyle(node).transform);
+    await page.keyboard.press('ArrowRight');
+    expect(await canvas.evaluate((node) => getComputedStyle(node).transform)).not.toBe(before);
   }
   for (const path of [
     `${PDTF1_ROUTES.original}/data-dictionary`,

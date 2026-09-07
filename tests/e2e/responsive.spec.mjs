@@ -116,7 +116,7 @@ test('section rails, page navigation and content stay inside the shared containe
   await page.setViewportSize({ width: 1281, height: 1000 });
   await visit(page, '/semantic-modelling');
   await assertNoBodyOverflow(page);
-  const gateway = await page.locator('.card-grid').first().evaluate((node) => {
+  const gateway = await page.locator('.modelling-pathways').first().evaluate((node) => {
     const container = node.getBoundingClientRect();
     const links = Array.from(node.querySelectorAll('a')).map((link) => link.getBoundingClientRect());
     return {
@@ -154,7 +154,7 @@ test('working-group signup avoids dead-scroll breakpoints and ends with registra
   clean();
 });
 
-test('text flows to its outer content container without nested max-widths', async ({ page }) => {
+test('authored text uses the reading measure without constraining campaign and generated layouts', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
   const cases = [
@@ -171,10 +171,21 @@ test('text flows to its outer content container without nested max-widths', asyn
     for (const selector of selectors) {
       const element = page.locator(selector).first();
       await expect(element, `${route} ${selector}`).toBeAttached();
+      const isMeasuredText = route === '/programme' && selector.startsWith('.prose');
       expect(await element.evaluate((node) => getComputedStyle(node).maxWidth), `${route} ${selector}`)
-        .toBe('none');
+        .toBe(isMeasuredText ? 'min(100%, 1024px)' : 'none');
     }
   }
+  await page.setViewportSize({ width: 2200, height: 1000 });
+  await visit(page, '/programme');
+  const measure = await page.evaluate(() => ({
+    article: document.querySelector('.prose').getBoundingClientRect().width,
+    text: document.querySelector('.prose > .lead').getBoundingClientRect().width,
+    callout: document.querySelector('.callout--key').getBoundingClientRect().width,
+  }));
+  expect(measure.article).toBeGreaterThan(1024);
+  expect(measure.text).toBeCloseTo(1024, 1);
+  expect(measure.callout).toBeLessThanOrEqual(1024);
   clean();
 });
 
