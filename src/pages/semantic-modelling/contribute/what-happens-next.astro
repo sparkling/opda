@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import Callout from '@/components/Callout.astro';
 ---
 
 <ModellingLayout title="Follow feedback, disagreement and revision" description="Recognise a reasoned response: the evidence considered, meaning changed, checks made and questions left open. A retained distinction can be a successful outcome." proseClass="prose wide modelling-document learning-document">
@@ -12,7 +13,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
 
   <section aria-labelledby="journey">
     <h2 id="journey">Follow one question until the remaining difference is visible</h2>
-    <figure class="learning-specimen document-flow" aria-labelledby="journey-caption">
+    <figure class="learning-example document-flow" aria-labelledby="journey-caption">
       <figcaption id="journey-caption">An illustrative review journey — not a record of actual candidate changes</figcaption>
       <ol>
         <li><strong>Question.</strong> A participant notices that the draft choice list combines “Completed” and “Limited access”. “Our report can be complete even though an agreed area was inaccessible. Which choice describes that case?”</li>
@@ -28,24 +29,22 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
 
   <section aria-labelledby="responses">
     <h2 id="responses">What an understandable response should tell you</h2>
-    <div class="learning-spread">
-      <section class="learning-specimen document-flow" aria-labelledby="inadequate-response">
-        <h3 id="inadequate-response">An inadequate response</h3>
-        <blockquote><p>Resolved. We have renamed the options and all tests pass.</p></blockquote>
-        <p>You cannot tell whether the overlap was removed, which tests ran, what “complete” now means or how old records are treated.</p>
-      </section>
-      <section class="learning-specimen document-flow" aria-labelledby="reasoned-response">
-        <h3 id="reasoned-response">A worked, reasoned response</h3>
-        <blockquote><p>Teaching draft B separates physical access from completion of work. Its three outcomes concern the identified nonempty set of agreed areas during one visit. Harbour Court is some-but-not-all access. The empty-scope case is excluded from this list and needs separate treatment. An old “Completed” value does not determine an access outcome without more evidence. This remains a teaching proposal, not a release.</p></blockquote>
-      </section>
-    </div>
+    <Callout title="An inadequate response" tone="caution" heading="h3" id="inadequate-response">
+      <blockquote><p>Resolved. We have renamed the options and all tests pass.</p></blockquote>
+      <p>You cannot tell whether the overlap was removed, which tests ran, what “complete” now means or how old records are treated.</p>
+    </Callout>
+    <section class="learning-example document-flow" aria-labelledby="reasoned-response">
+      <h3 id="reasoned-response">A worked, reasoned response</h3>
+      <blockquote><p>Teaching draft B separates physical access from completion of work. Its three outcomes concern the identified nonempty set of agreed areas during one visit. Harbour Court is some-but-not-all access. The empty-scope case is excluded from this list and needs separate treatment. An old “Completed” value does not determine an access outcome without more evidence. This remains a teaching proposal, not a release.</p></blockquote>
+    </section>
     <p>The better response does not need to accept every suggestion. It connects the original question to a stated change and explains the boundary. In actual review, it should also identify the affected candidate version, the responsible decision or review record and the standing of that disposition.</p>
   </section>
 
   <section aria-labelledby="checks">
     <h2 id="checks">A technical result answers a bounded question</h2>
-    <h3 id="technical-answer">What can a technical check establish?</h3>
-    <p>A check might confirm that a supplied example uses an allowed value or that generated views retain an agreed relationship. It cannot establish that physical access occurred, that the evidence is accurate or that the proposed choice list is appropriate for every use. Domain reviewers can also discover that a technically enforceable requirement is itself wrong.</p>
+    <Callout title="What can a technical check establish?" tone="technical" heading="h3" id="technical-answer">
+      <p>A check might confirm that a supplied example uses an allowed value or that generated views retain an agreed relationship. It cannot establish that physical access occurred, that the evidence is accurate or that the proposed choice list is appropriate for every use. Domain reviewers can also discover that a technically enforceable requirement is itself wrong.</p>
+    </Callout>
     <h3 id="human-answer">Which judgement and authority are still needed?</h3>
     <p>A technical validation result and the Technical Working Group's determination are not the same event. For the Property Pack, the recorded accelerated arrangement separates that determination from later domain review. Neither automatically establishes release, adoption or external government recognition. Consult the maintained <a href="/development/property-pack/technical-working-group-determination">determination page</a> and <a href="/development/property-pack/review-and-releases">review and release record</a> rather than inferring status from this sequence.</p>
     <p>AI and facilitators can assemble evidence, propose alternatives and explain consequences. They do not gain decision authority because several drafts agree. Human domain judgement and recorded OPDA authority retain their separate roles.</p>
@@ -59,10 +58,9 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     <p>Two sources make incompatible access claims about the same identified area and visit, and neither is known to supersede the other. Renaming a term does not reconcile those accounts. Keep both, their versions and the evidence needed to investigate. “Use the newest” is not a general authority rule.</p>
     <h3>A legitimate difference of purpose</h3>
     <p>One user needs to know which areas were entered; another needs to know whether a document contains all required sections. Both questions can be valid. The useful outcome is to preserve the two meanings and identify how they relate, not force them into one universal “complete” status.</p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">A retained distinction can be progress</div>
+    <Callout title="A retained distinction can be progress" tone="information">
       <p>A minority counterexample may reveal a real boundary or exception. Recording it makes the consequence of the preferred proposal inspectable and gives reviewers a reason to revisit it if evidence changes. It does not imply that every objection prevents progress or that silence equals agreement.</p>
-    </aside>
+    </Callout>
   </section>
 
   <section class="learning-practice document-flow" aria-labelledby="follow-up-practice">

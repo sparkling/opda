@@ -13,7 +13,7 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 
   <section aria-labelledby="review-the-list">
     <h2 id="review-the-list">Make the scope precise enough to test</h2>
-    <figure class="learning-specimen document-flow" aria-labelledby="access-list">
+    <figure class="learning-example document-flow" aria-labelledby="access-list">
       <figcaption id="access-list">Revised fictional vocabulary: physical access during one visit</figcaption>
       <p><strong>Scope:</strong> access to a nonempty, identified set of agreed inspection areas during this visit. Select one outcome when the access evidence is known.</p>
       <dl>
@@ -31,16 +31,14 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
   <section aria-labelledby="compare-meanings">
     <h2 id="compare-meanings">A mapping must say what survives the crossing</h2>
     <p>Now imagine two fictional specifications exchanging access descriptions. Their labels are similar, but their definitions have different breadth. The versions below are teaching premises, not terms or accepted mappings in the Property Pack candidate.</p>
-    <div class="learning-spread">
-      <section class="learning-specimen document-flow" aria-labelledby="source-choice">
-        <h3 id="source-choice">Source specification A · version 1</h3>
-        <dl><dt>Label</dt><dd>Some access</dd><dt>Definition</dt><dd>At least one, but not all, areas in the identified nonempty agreed set were physically accessed during the visit.</dd><dt>Excludes</dt><dd>No areas accessed; every area accessed.</dd></dl>
-      </section>
-      <section class="learning-specimen document-flow" aria-labelledby="recipient-choice">
-        <h3 id="recipient-choice">Recipient specification B · version 1</h3>
-        <dl><dt>Label</dt><dd>Restricted access</dd><dt>Definition</dt><dd>Not all areas in the identified nonempty agreed set were physically accessed during the visit.</dd><dt>Includes</dt><dd>Some-but-not-all access and no access.</dd></dl>
-      </section>
-    </div>
+    <section class="document-flow" aria-labelledby="source-choice">
+      <h3 id="source-choice">Source specification A · version 1</h3>
+      <dl><dt>Label</dt><dd>Some access</dd><dt>Definition</dt><dd>At least one, but not all, areas in the identified nonempty agreed set were physically accessed during the visit.</dd><dt>Excludes</dt><dd>No areas accessed; every area accessed.</dd></dl>
+    </section>
+    <section class="document-flow" aria-labelledby="recipient-choice">
+      <h3 id="recipient-choice">Recipient specification B · version 1</h3>
+      <dl><dt>Label</dt><dd>Restricted access</dd><dt>Definition</dt><dd>Not all areas in the identified nonempty agreed set were physically accessed during the visit.</dd><dt>Includes</dt><dd>Some-but-not-all access and no access.</dd></dl>
+    </section>
     <LearningDiagram kind="mapping" caption="A proposed correspondence must preserve the compared definitions and scope. The teaching example is not an adopted cross-context mapping." />
     <p>Under these complete fictional definitions, A's “Some access” is narrower than B's “Restricted access”. A source record with some access can be described as restricted under B's definition if the visit and agreed set are the same. But the recipient loses the distinction between some access and none unless that extra information travels too.</p>
     <p>The reverse direction is not justified as an exact translation. A B record marked “Restricted access” does not tell us whether any area was entered. If we turn it into A's “Some access”, we invent a positive access claim. One counterexample — a visit at which every agreed area was inaccessible — defeats the proposed equivalence.</p>

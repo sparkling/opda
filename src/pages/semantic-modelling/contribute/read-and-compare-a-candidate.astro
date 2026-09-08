@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import Callout from '@/components/Callout.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 import { candidateManifest, kindLabels, resourceByKey, resourceRoute } from '@/lib/property-pack-model.mjs';
@@ -16,7 +17,7 @@ const reviewedCandidate = candidateManifest.candidate_id === 'property-pack-0.1'
     <h2 id="candidate-reading">Start with the page you have been asked to review</h2>
     <p>You do not need to finish the introductory chapters first. Keep the candidate's identity and version, read its definition, then choose one claim to examine. A good review can begin with one familiar subject and a well-explained counterexample.</p>
     <p>The <a href={propertyHref}>Property resource page</a> is a real candidate definition. The identity card below reads the same maintained candidate data as that page; it is not a separately maintained model. Everything in the later <a href="#fictional-revision">change comparison</a> is an invented teaching package, not actual candidate history.</p>
-    <figure class="learning-specimen document-flow" aria-labelledby="candidate-card">
+    <figure class="learning-example document-flow" aria-labelledby="candidate-card">
       <figcaption id="candidate-card">Actual candidate — identify the proposal before judging it</figcaption>
       <dl>
         <dt>Candidate</dt><dd><code>{candidateManifest.candidate_id}</code></dd>
@@ -29,7 +30,7 @@ const reviewedCandidate = candidateManifest.candidate_id === 'property-pack-0.1'
         <dt>Identity criterion</dt><dd>{property.identity_criterion}</dd>
       </dl>
     </figure>
-    {!reviewedCandidate && <aside class="callout callout--warn modelling-callout"><div class="callout__label">The candidate has changed</div><p>The detailed reading below was checked against property-pack-0.1, version 0.1.0-draft. Recheck the linked resource, constraints and evidence before applying those observations to the version displayed above.</p></aside>}
+    {!reviewedCandidate && <Callout title="The candidate has changed" tone="caution"><p>The detailed reading below was checked against property-pack-0.1, version 0.1.0-draft. Recheck the linked resource, constraints and evidence before applying those observations to the version displayed above.</p></Callout>}
     <p>“Class” describes the kind of model construct on this page. It is not the foundational judgement called an OntoUML <em>Kind</em>. Nor is this a record of Flat 1, an individual building or a live transaction. The definition proposes what a category includes; the Harbour Court story supplies fictional examples with which to practise reasoning.</p>
   </section>
 
@@ -51,7 +52,7 @@ const reviewedCandidate = candidateManifest.candidate_id === 'property-pack-0.1'
 
   <section class="learning-practice document-flow" aria-labelledby="candidate-note">
     <h2 id="candidate-note">A version-linked challenge you could make</h2>
-    <figure class="learning-specimen document-flow" aria-labelledby="candidate-note-caption">
+    <figure class="learning-extract document-flow" aria-labelledby="candidate-note-caption">
       <figcaption id="candidate-note-caption">Worked review wording — not submitted or decided</figcaption>
       <blockquote><p>For <code>{candidateManifest.candidate_id}</code>, version <code>{candidateManifest.candidate_version}</code>, I am reviewing <a href={`${propertyHref}#identity`}>{property.key}: Identity and meaning</a>. How would this criterion treat subdivision into two dwellings? The text leaves lifecycle rules open. Without a stated treatment, a recipient might carry evidence about the former unit onto a different resulting unit. What permitted source or domain review supports continuity in that case, and what remains explicitly unresolved?</p></blockquote>
     </figure>
@@ -68,9 +69,9 @@ const reviewedCandidate = candidateManifest.candidate_id === 'property-pack-0.1'
     <h2 id="fictional-revision">Now compare a fictional change across the agreement</h2>
     <p>Leave the real candidate here. The following <strong>teaching draft A and teaching draft B</strong> are invented model versions. They are not Property Pack releases, report versions or a live website comparison feature. The change addresses the ambiguous access choices discussed in <a href="/semantic-modelling/contribute/review-vocabularies-and-mappings">reviewing vocabularies</a>.</p>
     <LearningIllustration scene="technology" alt="Different representations laid out for comparison, with the connections between their subjects preserved." />
-    <div class="learning-spread">
-      <section class="learning-specimen document-flow" aria-labelledby="draft-a"><h3 id="draft-a">Teaching draft A</h3><p><strong>Access outcome:</strong> “Whether the inspection was completed.”</p><p><strong>Choices:</strong> Completed; Limited access; Not inspected.</p><p><strong>Relationship:</strong> “Report has access outcome”, without identifying the visit or agreed areas.</p></section>
-      <section class="learning-specimen document-flow" aria-labelledby="draft-b"><h3 id="draft-b">Teaching draft B</h3><p><strong>Physical-access outcome:</strong> “How much of the identified nonempty set of agreed areas was physically accessed during this visit.”</p><p><strong>Choices:</strong> All; Some but not all; None — with the full definitions established in the vocabulary.</p><p><strong>Relationship:</strong> A report version records an access-outcome statement about an identified inspection and its agreed areas.</p></section>
+    <div class="learning-comparison">
+      <section class="document-flow" aria-labelledby="draft-a"><h3 id="draft-a">Teaching draft A</h3><p><strong>Access outcome:</strong> “Whether the inspection was completed.”</p><p><strong>Choices:</strong> Completed; Limited access; Not inspected.</p><p><strong>Relationship:</strong> “Report has access outcome”, without identifying the visit or agreed areas.</p></section>
+      <section class="document-flow" aria-labelledby="draft-b"><h3 id="draft-b">Teaching draft B</h3><p><strong>Physical-access outcome:</strong> “How much of the identified nonempty set of agreed areas was physically accessed during this visit.”</p><p><strong>Choices:</strong> All; Some but not all; None — with the full definitions established in the vocabulary.</p><p><strong>Relationship:</strong> A report version records an access-outcome statement about an identified inspection and its agreed areas.</p></section>
     </div>
     <table class="learning-table">
       <caption>What changes — and what correctly stays unchanged</caption>
@@ -85,8 +86,9 @@ const reviewedCandidate = candidateManifest.candidate_id === 'property-pack-0.1'
       </tbody>
     </table>
     <p>The access rule and examples also need review against the new scope. Generated delivery artefacts, including JSON-LD, would need to preserve any agreed change; they do not decide its meaning. A revision need not alter every view, but every affected view must tell a compatible story.</p>
-    <h3>What the correction does not recover</h3>
-    <p>Harbour Court's supplied visit can be classified as some-but-not-all access under draft B. An old record containing only “Completed” cannot be reliably converted: it may describe completed work despite limited access. Ask for evidence rather than treating the new choices as a lossless renaming. That migration limitation belongs with the proposed change.</p>
-    <p>A useful review response therefore says both “this removes the demonstrated overlap” and “existing values do not determine every new outcome”. That is a more coherent agreement than a change list which celebrates cleaner labels while hiding lost meaning. Use the <a href="/development/working-groups/member-guide">current member guide</a> to take an actual candidate question into the authorised discussion.</p>
+    <Callout title="What the correction does not recover" tone="caution" heading="h3">
+      <p>Harbour Court's supplied visit can be classified as some-but-not-all access under draft B. An old record containing only “Completed” cannot be reliably converted: it may describe completed work despite limited access. Ask for evidence rather than treating the new choices as a lossless renaming. That migration limitation belongs with the proposed change.</p>
+      <p>A useful review response therefore says both “this removes the demonstrated overlap” and “existing values do not determine every new outcome”. That is a more coherent agreement than a change list which celebrates cleaner labels while hiding lost meaning. Use the <a href="/development/working-groups/member-guide">current member guide</a> to take an actual candidate question into the authorised discussion.</p>
+    </Callout>
   </section>
 </ModellingLayout>

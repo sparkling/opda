@@ -15,29 +15,27 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
   <section aria-labelledby="repair-the-map">
     <h2 id="repair-the-map">Repair a map that hides report versions</h2>
     <p>In our fictional Harbour Court case, Flat 1 was inspected on 12 August 2026. Report version 1 was issued on 14 August; version 2 was issued on 20 August and corrected the access-limitation description. There was no new visit. The following compact maps are written as numbered edges so every relationship remains readable without a graphical editor.</p>
-    <div class="learning-spread">
-      <figure class="learning-specimen document-flow" aria-labelledby="before-map">
-        <figcaption id="before-map">Before — an ambiguous teaching map</figcaption>
-        <ol>
-          <li>Report → describes → inspection of Flat 1.</li>
-          <li>Report → issue date → 14 August.</li>
-          <li>Report → issue date → 20 August.</li>
-          <li>Inspection of Flat 1 → occurrence date → 12 August.</li>
-        </ol>
-        <p>There is one undifferentiated “Report” subject. The map does not identify which report version has which issue date.</p>
-      </figure>
-      <figure class="learning-specimen document-flow" aria-labelledby="after-map">
-        <figcaption id="after-map">After — preserve the supplied distinctions</figcaption>
-        <ol>
-          <li>Report version 1 → describes → the 12 August inspection of Flat 1.</li>
-          <li>Report version 1 → issue date → 14 August.</li>
-          <li>Report version 2 → describes → the same 12 August inspection of Flat 1.</li>
-          <li>Report version 2 → issue date → 20 August.</li>
-          <li>Report version 2 → revises → report version 1.</li>
-        </ol>
-        <p>Two report versions describe one inspection. Their issue dates do not become two inspection dates.</p>
-      </figure>
-    </div>
+    <figure class="learning-example document-flow" aria-labelledby="before-map">
+      <figcaption id="before-map">Before — an ambiguous teaching map</figcaption>
+      <ol>
+        <li>Report → describes → inspection of Flat 1.</li>
+        <li>Report → issue date → 14 August.</li>
+        <li>Report → issue date → 20 August.</li>
+        <li>Inspection of Flat 1 → occurrence date → 12 August.</li>
+      </ol>
+      <p>There is one undifferentiated “Report” subject. The map does not identify which report version has which issue date.</p>
+    </figure>
+    <figure class="learning-example document-flow" aria-labelledby="after-map">
+      <figcaption id="after-map">After — preserve the supplied distinctions</figcaption>
+      <ol>
+        <li>Report version 1 → describes → the 12 August inspection of Flat 1.</li>
+        <li>Report version 1 → issue date → 14 August.</li>
+        <li>Report version 2 → describes → the same 12 August inspection of Flat 1.</li>
+        <li>Report version 2 → issue date → 20 August.</li>
+        <li>Report version 2 → revises → report version 1.</li>
+      </ol>
+      <p>Two report versions describe one inspection. Their issue dates do not become two inspection dates.</p>
+    </figure>
     <p>The numbered edges locate feedback; they are not ontology identifiers. A useful review note would say: “Before-map edges 2 and 3 attach both issue dates to an unspecified report. A recipient cannot associate each date with its version. Please distinguish the versions while retaining their connection to the same inspection.”</p>
     <p>There is a plausible alternative: a diagram could show one continuing report with two explicitly identified version descriptions. That can preserve the same distinction. The objection is not that every model must use our drawing; it is that the original map does not say which description and date belong together. Ontology modellers can evaluate the representation once that requirement is clear.</p>
   </section>
