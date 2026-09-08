@@ -13,7 +13,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   <section aria-labelledby="question-specimen">
     <h2 id="question-specimen">From a recurring problem to an answerable question</h2>
     <p>Consider a fictional property-data team comparing floor-area accounts. One gives 68 m² and another 72 m² for Flat 1 at Harbour Court. Someone suggests adding a warning whenever the numbers differ. Before deciding whether a warning helps, the model needs to make the accounts comparable.</p>
-    <figure class="learning-specimen document-flow" aria-labelledby="note-caption">
+    <figure class="learning-example document-flow" aria-labelledby="note-caption">
       <figcaption id="note-caption">A worked contribution note — fictional, not submitted</figcaption>
       <dl>
         <dt>The decision</dt><dd>A recipient needs to understand whether two area accounts describe the same measured extent.</dd>
@@ -30,13 +30,13 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
 
   <section aria-labelledby="avoid-solution-first">
     <h2 id="avoid-solution-first">Keep the need separate from your first solution</h2>
-    <div class="learning-spread">
-      <section class="learning-specimen document-flow" aria-labelledby="feature-request">
+    <div class="learning-comparison">
+      <section class="document-flow" aria-labelledby="feature-request">
         <h3 id="feature-request">An implementation request</h3>
         <blockquote><p>Add a mandatory “verified area” field and show a green tick when it has a value.</p></blockquote>
         <p>This proposes a field and a display. It leaves “verified”, the measured subject and the basis of comparison unresolved. A value in a field would not establish that the measurement was appropriate or correct.</p>
       </section>
-      <section class="learning-specimen document-flow" aria-labelledby="meaning-request">
+      <section class="document-flow" aria-labelledby="meaning-request">
         <h3 id="meaning-request">The modelling question behind it</h3>
         <blockquote><p>Which area account is being assessed, what assessment is claimed, by whom and for which purpose? What evidence supports that assessment?</p></blockquote>
         <p>This identifies meanings an implementation might need to preserve. Whether a product displays them as fields, a document or a warning is a later design choice.</p>

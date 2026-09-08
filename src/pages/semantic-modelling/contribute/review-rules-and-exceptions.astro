@@ -13,7 +13,7 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 
   <section aria-labelledby="rule-specimen">
     <h2 id="rule-specimen">Read the condition before looking for the required information</h2>
-    <figure class="learning-specimen document-flow" aria-labelledby="requirement-caption">
+    <figure class="learning-example document-flow" aria-labelledby="requirement-caption">
       <figcaption id="requirement-caption">Fictional requirement R — report the access limitation</figcaption>
       <blockquote><p>When a report states that inspection access was limited, it must identify at least one limitation being reported for that inspection.</p></blockquote>
       <dl>
@@ -57,7 +57,7 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
     <h2 id="rule-or-record">Use a counterexample to locate the design problem</h2>
     <p>A reviewer proposes strengthening R to “Every inspection report must identify a limitation”. Bring a report that explicitly records physical access to every agreed area and does not report any limitation. The proposed rule would require the author to invent a limitation or misuse the field to say “none”. That is evidence that the rule's applicability condition has been lost, not evidence that the report is incomplete under R.</p>
     <p>Another reviewer proposes “Any nonempty text is sufficient”. The record “limited” then passes, although it does not identify what was limited. This exposes a gap between the intended requirement and a shallow text-presence check. Technical specialists can explain which parts can be checked reliably and which need human judgement; the specification should not disguise the gap.</p>
-    <figure class="learning-specimen document-flow" aria-labelledby="rule-note">
+    <figure class="learning-extract document-flow" aria-labelledby="rule-note">
       <figcaption id="rule-note">A worked review note</figcaption>
       <blockquote><p>The proposed maximum of one limitation excludes the supplied case with a locked enclosed area and an inaccessible loft. Both concern the same identified inspection. Please explain the business reason for the maximum or allow several limitations. This challenges the rule's design, not the accuracy of either observation.</p></blockquote>
     </figure>
