@@ -1,45 +1,59 @@
 /* Field-guide composition: scope excludes the ontology engineering reference.
    Existing editorial-content.css owns type, prose measure and section rhythm. */
-.learning-document { min-width: 0; }
-.learning-document .learning-editorial { max-inline-size: 54rem; margin-inline: 0 auto; }
+.learning-document { min-width: 0; container: learning-chapter / inline-size; }
+.learning-document .learning-editorial { max-inline-size: none; margin-inline: 0 auto; }
 .learning-document .learning-editorial img { display: block; inline-size: 100%; block-size: auto; }
 .learning-document .learning-editorial figcaption {
   margin-block-start: var(--space-3);
   color: var(--color-text-muted);
   font-size: var(--text-sm);
 }
-.learning-document .learning-spread {
+.learning-document .learning-comparison {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
-  gap: var(--space-6);
-  max-inline-size: 64rem;
-  margin-inline: 0 auto;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-7) var(--space-8);
+  max-inline-size: none;
   align-items: start;
 }
-.learning-document .learning-specimen {
+.learning-document :is(.learning-comparison > *, .learning-example, .learning-extract) {
   min-inline-size: 0;
-  max-inline-size: var(--editorial-text-max, 64rem);
-  margin-inline: 0 auto;
-  padding: var(--space-5);
-  border: 1px solid var(--color-border-strong);
-  border-block-start: 3px solid var(--color-data-1);
-  background: var(--color-surface-alt);
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
-.learning-document .learning-specimen :is(h2,h3,h4):first-child { margin-block-start: 0; }
-.learning-document .learning-specimen :is(p,li,dd) { text-align: start; }
-.learning-document .learning-specimen > * + * { margin-block-start: var(--space-3); }
-.learning-document .learning-specimen > figcaption:first-child {
-  margin-block-start: 0;
-  font: 600 var(--text-sm) / var(--leading-normal) var(--font-sans);
+.learning-document .learning-extract > figcaption {
+  font: 600 var(--text-lg) / var(--leading-normal) var(--font-sans);
   color: var(--color-text-strong);
 }
-.learning-document .learning-specimen dl {
-  display: grid;
-  grid-template-columns: minmax(7rem, 1fr) minmax(0, 3fr);
-  gap: var(--space-3) var(--space-5);
+.learning-document .learning-extract blockquote {
+  font: inherit;
+  font-style: normal;
+  color: var(--color-text);
+  border: 0;
+  padding: 0;
 }
-.learning-document .learning-specimen :is(dt,dd) { margin: 0; padding: 0; min-width: 0; }
-.learning-document .learning-specimen pre { font-size: var(--text-sm); white-space: pre-wrap; }
+.learning-document .learning-extract figcaption > :first-child { margin-block-start: 0; }
+.learning-document .learning-comparison dl:not([class]):has(> dt) {
+  display: block;
+}
+.learning-document .learning-comparison dt { margin-block-start: var(--space-5); }
+.learning-document .learning-comparison dt:first-child { margin-block-start: 0; }
+.learning-document .learning-comparison dd { margin-block-start: var(--space-2); }
+.learning-document .learning-comparison p { text-align: start; hyphens: manual; }
+/* A comparison or figure can fill the article. Its reading copy cannot. */
+.prose.editorial-content.learning-document :is(.callout, .learning-comparison, .learning-table, .learning-figure, .learning-editorial) {
+  max-inline-size: none;
+}
+.prose.editorial-content.learning-document :is(.callout, .learning-extract, .learning-example) > :is(p, ul, ol, dl, blockquote, figcaption) {
+  max-inline-size: min(100%, var(--editorial-text-max));
+}
+.learning-document :is(.learning-comparison, .learning-example, .learning-extract, .learning-figure, .learning-editorial) {
+  margin-block: var(--space-6);
+}
+.learning-document .learning-comparison > * { margin-block: 0; }
+@container learning-chapter (min-width: 72rem) {
+  .learning-document .learning-comparison { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 .learning-document .learning-practice {
   padding: 0;
   border: 0;
@@ -48,7 +62,9 @@
 .learning-document .learning-practice > :is(h2,h3):first-child {
   color: var(--color-text-strong);
 }
-.learning-document .learning-table { inline-size: 100%; }
+.learning-document .learning-table { inline-size: 100%; overflow-x: auto; }
+.learning-document .learning-table table { inline-size: 100%; }
+.learning-document .learning-table :is(th, td) { vertical-align: top; }
 .learning-document .learning-note { color: var(--color-text-muted); }
 .learning-document .learning-index {
   list-style: none;
@@ -70,7 +86,7 @@
   --fg-tint: var(--color-data-1-surface);
   --fg-font: var(--font-sans);
   inline-size: 100%;
-  max-inline-size: 60rem;
+  max-inline-size: none;
   margin-inline: 0 auto;
   padding: 0;
   border: 0;
@@ -99,6 +115,7 @@
 .learning-drawing .fg-dot { fill:var(--fg-accent); }
 .learning-drawing .fg-interval { fill:none; stroke:var(--fg-accent); stroke-width:12; stroke-linecap:round; }
 .learning-document .learning-figure figcaption {
+  max-inline-size: var(--editorial-text-max, 64rem);
   font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
   color: var(--color-text-muted);
   text-align: start;
@@ -117,7 +134,8 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
-@container (max-width: 42rem) {
+/* At 960 source units, the 18px secondary labels need 854px to render at 16px. */
+@container (max-width: 53.5rem) {
   .learning-image { display: none; }
   .learning-equivalent-wrap {
     position: static; inline-size: auto; block-size: auto; overflow: visible;
@@ -125,9 +143,13 @@
   }
 }
 @media (max-width: 48rem) {
-  .learning-document :is(.learning-spread,.learning-index) { grid-template-columns: minmax(0, 1fr); }
-  .learning-document .learning-specimen dl { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
-  .learning-document .learning-specimen dd + dt { margin-block-start: var(--space-3); }
+  .learning-document .learning-index { grid-template-columns: minmax(0, 1fr); }
+  .learning-document p:not([class]) { text-align: start; hyphens: manual; }
+}
+@container learning-chapter (max-width: 48rem) {
+  .learning-document dl:not([class]):has(> dt) { display: block; }
+  .learning-document dl:not([class]) > dd + dt { margin-block-start: var(--space-5); }
+  .learning-document dl:not([class]) > dd { margin-block-start: var(--space-2); }
 }
 @media (forced-colors: active) {
   .learning-image { display: none; }
@@ -135,7 +157,6 @@
     position: static; inline-size: auto; block-size: auto; overflow: visible;
     clip-path: none; white-space: normal;
   }
-  .learning-document .learning-specimen { border-color: CanvasText; }
 }
 @media print {
   .learning-figure {
@@ -143,5 +164,5 @@
     --fg-rule: #817c90; --fg-accent: #6c5bd4; --fg-tint: #eeebfa;
     break-inside: avoid;
   }
-  .learning-document .learning-specimen { break-inside: avoid; }
+  .learning-document :is(.learning-example, .learning-extract) { break-inside: avoid; }
 }

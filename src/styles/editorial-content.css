@@ -83,6 +83,10 @@
 .prose.editorial-content :where(section:not([class]), .document-flow) > :is(h3, h4):first-child {
   margin-block-start: 0;
 }
+/* The first heading belongs to its container; do not add a second inset above it. */
+#main-content .prose.editorial-content :where(.document-flow, .callout) > :is(h2, h3, h4):first-child {
+  margin-block-start: 0;
+}
 .prose.editorial-content :where(section:not([class]), .document-flow) > :is(h2, h3, h4) + * {
   margin-block-start: var(--space-3);
 }
