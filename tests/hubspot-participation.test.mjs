@@ -7,6 +7,9 @@ import {
 } from '../config/aws/hubspot-participation/properties.mjs';
 import { planInitialContactSync } from '../config/aws/hubspot-participation/mapping.mjs';
 import { WORKING_GROUPS, CONTRIBUTIONS } from '../config/aws/working-group-interest/domain.mjs';
+import {
+  verifyPrivateApp, readSchemaPreflight, createMissingProperties,
+} from '../config/aws/hubspot-participation/admin.mjs';
 
 const now = Date.parse('2026-09-08T12:00:00Z');
 const registration = (changes = {}) => ({
@@ -190,4 +193,105 @@ test('missing default fields, duplicate names and malformed inventory are never 
     assert.equal(assessment.ready, false);
     assert.deepEqual(assessment.propertiesToCreate, []);
   }
+});
+
+const bridgeScopes = ['oauth', 'crm.objects.contacts.read', 'crm.objects.contacts.write', 'crm.schemas.contacts.read'];
+const expectedApp = { portalId: 123, appId: 456, scopes: bridgeScopes };
+const limits = (overall = 8, contacts = 8) => ({
+  overallLimit: overall + 2, overallUsage: 2,
+  byObjectType: [{ objectTypeId: '0-1', limit: contacts + 2, usage: 2 }],
+});
+function mockApi({ properties = standardProperties, archived = [], capacity = limits(), groups = [] } = {}) {
+  const calls = [];
+  const api = async (path, options = {}) => {
+    calls.push({ path, ...options });
+    if (options.method === 'POST') {
+      if (path.endsWith('/groups')) groups.push(options.body);
+      else properties.push(options.body);
+      return options.body;
+    }
+    if (path.endsWith('archived=false')) return { results: properties };
+    if (path.endsWith('archived=true')) return { results: archived };
+    if (path.endsWith('/groups')) return { results: groups };
+    if (path.endsWith('custom-properties')) {
+      if (capacity instanceof Error) throw capacity;
+      return capacity;
+    }
+    throw new Error('Unexpected endpoint');
+  };
+  return { api, calls };
+}
+
+test('private app identity and exact scopes must match before credential use', async () => {
+  const info = { hubId: 123, appId: 456, scopes: bridgeScopes };
+  assert.equal((await verifyPrivateApp(async () => info, expectedApp)).portalId, 123);
+  for (const wrong of [
+    { ...info, hubId: 789 }, { ...info, appId: 789 },
+    { ...info, scopes: bridgeScopes.slice(1) }, { ...info, scopes: [...bridgeScopes, 'crm.schemas.contacts.write'] },
+  ]) {
+    await assert.rejects(verifyPrivateApp(async () => wrong, expectedApp), /identity or scopes/);
+  }
+});
+
+test('live schema preflight uses the smaller of account-wide and contact capacity', async () => {
+  for (const capacity of [limits(7, 9), limits(9, 7)]) {
+    const { api, calls } = mockApi({ capacity });
+    const result = await readSchemaPreflight(api);
+    assert.equal(result.ready, false);
+    assert.equal(result.remainingCustomPropertySlots, 7);
+    assert.ok(calls.every((call) => !call.method));
+  }
+  assert.equal((await readSchemaPreflight(mockApi().api)).ready, true);
+});
+
+test('unavailable or invalid portal limits never become assumed free slots', async () => {
+  for (const capacity of [new Error('Forbidden'), {}, { ...limits(), overallLimit: -1 }, { ...limits(), overallUsage: '2' }]) {
+    const result = await readSchemaPreflight(mockApi({ capacity }).api);
+    assert.equal(result.ready, false);
+    assert.ok(result.blockers.some(({ code }) => code === 'verified-property-capacity-required'));
+  }
+});
+
+test('incomplete inventory and incompatible groups fail closed', async () => {
+  await assert.rejects(readSchemaPreflight(async () => ({ results: [], paging: { next: {} } })), /complete inventory/);
+  const result = await readSchemaPreflight(mockApi({
+    groups: [{ name: 'opda_participation', label: 'An unrelated purpose' }],
+  }).api);
+  assert.equal(result.ready, false);
+  assert.ok(result.blockers.some(({ code }) => code === 'incompatible-participation-group'));
+});
+
+test('provisioning only creates missing OPDA definitions and is an idempotent no-op on rerun', async () => {
+  const { api, calls } = mockApi({ properties: structuredClone(standardProperties) });
+  const first = await createMissingProperties(api);
+  assert.equal(first.createdProperties.length, 8);
+  assert.equal(first.verified, true);
+  const writes = calls.filter(({ method }) => method === 'POST');
+  assert.equal(writes.length, 9);
+  assert.ok(writes.every(({ path }) => path.startsWith('/crm/v3/properties/contacts')));
+  assert.equal((await createMissingProperties(api)).createdProperties.length, 0);
+  assert.equal(calls.filter(({ method }) => method === 'POST').length, 9);
+});
+
+test('provisioning cannot write anything when preflight has a blocker', async () => {
+  const { api, calls } = mockApi({ capacity: limits(7) });
+  await assert.rejects(createMissingProperties(api), /preflight blocked/);
+  assert.ok(calls.every(({ method }) => !method));
+});
+
+test('schema bootstrap can use a separate read-only limits credential without broader scopes', async () => {
+  const { api, calls } = mockApi({ capacity: new Error('Schema-only token cannot read object limits') });
+  const limitCalls = [];
+  const limitsApi = async (path) => { limitCalls.push(path); return limits(); };
+  assert.equal((await readSchemaPreflight(api, limitsApi)).ready, true);
+  assert.deepEqual(limitCalls, ['/crm/v3/limits/custom-properties']);
+  assert.ok(calls.every(({ path }) => path !== '/crm/v3/limits/custom-properties'));
+});
+
+test('custom-property inventory includes fields where HubSpot omits the false flag', async () => {
+  const { api } = mockApi({ properties: [...standardProperties,
+    { name: 'linkedin_account', label: 'LinkedIn account', type: 'string', fieldType: 'text' },
+    { name: 'membership_type', label: 'Membership type', hubspotDefined: false, type: 'enumeration', fieldType: 'select' },
+  ] });
+  assert.deepEqual((await readSchemaPreflight(api)).customProperties.map(({ name }) => name), ['linkedin_account', 'membership_type']);
 });

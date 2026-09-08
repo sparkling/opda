@@ -25,15 +25,13 @@ The current website session service and Artalk SSO use **Auth0**, not Cognito,
 with a separate commenter email allowlist. Therefore adopting Cognito is an
 authentication migration, not simply configuring an existing Cognito connector.
 
-The existing HubSpot account was inspected on 2026-09-08: Free Tools, five of
-five Core seats allocated, and 1,001 contacts. Two existing contact properties
-were identified: `membership_type` and `relationship_type`. The account's exact
-legacy contact and custom-property ceilings remain **unverified**. These account
-observations are not inferred from the limits of today's new Free offering.
+The account inspection on 2026-09-08 found Free Tools, five of five Core seats allocated
+at that inspection, and 1,001 contacts. API inventory found `linkedin_account`,
+`membership_type` and `relationship_type`. The account-wide custom-property limit is 10,
+with two used before setup. The legacy contact ceiling remains unverified.
 
-This concerns participant administration, not SPDTF trust implementation,
-standards authority or Microsoft access. It authorises no live provisioning,
-personal-data transfer, invitations, subscription purchase or login cutover.
+This concerns participant administration, not SPDTF trust, standards authority or Microsoft access.
+It authorises no live provisioning, data transfer, invitations, purchases or login cutover.
 
 ## Decision Drivers
 
@@ -93,9 +91,8 @@ contact and lifecycle data, not replace Cognito with HubSpot authentication.
 | New AWS participant register | Stable participant ID, application links, trusted decisions, approved groups, enrolment, active flag, identity binding, grants, audit and sync operations | Passwords, a second editable CRM directory, or a property-data model |
 | Cognito user pool | Credentials, verified identity attributes, MFA and authentication | Application evidence, CRM notes or approval inferred from an email address |
 
-The AWS register also holds a labelled last-observed CRM profile and its revision
-for administration/recovery. This is a projection, not bidirectional ownership.
-Decisions reference their application/values; CRM edits cannot rewrite that evidence.
+The AWS register holds a labelled last-observed CRM profile/revision for recovery, not
+bidirectional ownership. Decisions reference application evidence that CRM edits cannot rewrite.
 
 Use immutable random participant IDs, separate registration IDs and a verified
 `issuer + sub` identity binding. Store the HubSpot portal/contact mapping in AWS;
@@ -133,8 +130,8 @@ Pin/test the adapter API version and verify each portal's default metadata.
 [Default contact properties](https://knowledge.hubspot.com/properties/hubspots-default-contact-properties),
 [Properties API](https://developers.hubspot.com/docs/api-reference/latest/crm/properties/guide)
 
-Preserve `membership_type` (Associate, Founding Member) and `relationship_type`
-(Member, Partner, Stakeholder, Journalist, Other). Do not repurpose either, the
+Preserve `linkedin_account`, `membership_type` (Associate, Founding Member) and `relationship_type`
+(Member, Partner, Stakeholder, Journalist, Other). Do not repurpose these, the
 sales Lifecycle stage, Lead status, email subscription status or Contact owner
 as approval or website access. Do not classify every applicant as an OPDA member.
 
@@ -164,12 +161,11 @@ the raw input bytes. `createdAt` is epoch milliseconds and `expiresAt` seconds.
 They lack a separate form/option-set version and exact checkbox-click time.
 Preserve what exists; record unknown historic values rather than invent them.
 
-Eight new fields plus the two identified existing properties would total ten
-**only if a full property inventory confirms no others**. Confirm actual legacy
-capacity first; ten slots would leave no spare custom fields. Optional later
-fields require another capacity decision. If insufficient, present the smallest paid
-upgrade for approval; do not delete existing fields, hide the schema in notes,
-or silently buy a subscription. This ADR does not assume Free capacity.
+The complete inventory contained 395 active definitions and three custom-style fields;
+the account-wide quota counted two. Contact-specific capacity was 1,000 with three used.
+Use the smaller remaining quota, not a hand-count or advertised new-Free limit. Eight
+slots were available; all eight fields were created and read back on 2026-09-08.
+Recheck capacity for later additions; never remove fields or buy an upgrade implicitly. [Limits API](https://developers.hubspot.com/docs/api-reference/legacy/crm/limits-tracking/guide)
 
 ### 4. Reliable signup synchronisation without changing the receipt contract
 
@@ -232,9 +228,8 @@ identity correction. Link it from an OPDA-managed contact note using an opaque
 reference, never email, an invitation code or a bearer credential in the URL.
 Following a link authorises nothing; the server resolves and checks every target.
 
-The action page displays the original application separately from current CRM
-values. It must show the latest effective state, pending operations and reasons
-for ineligibility. Confirm sensitive actions and return the committed AWS result,
+The action page separates original applications from current CRM values and shows effective state,
+pending operations and reasons for ineligibility. Confirm sensitive actions and return the AWS result,
 distinguishing invitation requested/sent from delivered or account setup complete.
 Rejections and requests for more information are human communications; they must
 not trigger unrequested automatic messages to an unverified address.
@@ -336,11 +331,11 @@ cannot replace the live eligibility check.
 
 ### 7. Integration credentials and least privilege
 
-Use two single-account private apps with static auth: a read/write CRM bridge
-and read-only snapshot app. Verify current-platform installation entitlements;
-use a supported legacy private app only if necessary and available. No Marketplace
-distribution or OAuth callback service is needed. CLI personal keys and MCP are
-developer tooling, **not** production credentials.
+Use single-account private apps with static auth. The CRM bridge and temporary
+schema-bootstrap apps use the supported legacy interface; both tokens were stored
+in AWS Secrets Manager and read back on 2026-09-08. A separate read-only snapshot app
+remains future work. No Marketplace distribution or OAuth callback is needed.
+CLI personal keys and MCP are developer tooling, **not** production credentials.
 
 Keep app tokens in AWS Secrets Manager, separate from Cognito/client secrets,
 with explicit creation approval, rotation and revoke/recovery instructions. No
@@ -349,6 +344,8 @@ read/write and schema-read scopes; verify the minimum endpoint scopes for the
 small OPDA note/task operations. Property creation uses a separate one-time
 bootstrap credential with schema-write permission, not permanent runtime rights.
 No marketing-send, website-publish, broad export or unrelated-object permissions.
+The bootstrap reads quota through the bridge without adding contact access to the schema token.
+Verify portal/app IDs and exact scopes, including implicit `oauth`, before each operation.
 
 The public form role remains write-only to intake. The CRM bridge can read
 in-scope applications and synchronise profiles but cannot approve,
@@ -464,7 +461,10 @@ Deliver in independent, verified slices:
 
 ### Confirmation
 
-**Proposed, not implemented or deployed.** Before enabling the integration:
+**Proposed; credential and property setup completed, runtime not deployed.**
+The operator CLI, `scripts/hubspot-participation-admin.mjs`, provides read-only `preflight`.
+`apply-schema` requires confirmation, creates only missing definitions and verifies them.
+No applicant data was transferred, approved or invited. Before enabling integration:
 
 - Confirm lossless field/option mapping, no honeypot/timer CRM data and no invented historical evidence.
 - Exercise duplicates, contact merges, ambiguous timeouts, out-of-order events,
