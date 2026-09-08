@@ -54,6 +54,7 @@ test('identity infrastructure disables public signup and separates persistent re
   assert.match(stack, /ManagedLoginVersion: 2/);
   assert.match(stack, /PreventUserExistenceErrors: ENABLED/);
   assert.match(stack, /AllowedOAuthFlows: \[code\]/);
+  assert.match(stack, /WriteAttributes: \[email, name\]/);
   assert.match(stack, /RecoveryPeriodInDays: 35/);
   assert.match(stack, /BlockPublicPolicy: true/);
   assert.match(stack, /Prefix: recovery\//, 'only recovery snapshots expire; approval evidence is retained');

@@ -130,7 +130,9 @@ Resources:
       RefreshTokenValidity: 1
       TokenValidityUnits: { IdToken: minutes, AccessToken: minutes, RefreshToken: days }
       ReadAttributes: [email, email_verified, name, sub]
-      WriteAttributes: [name]
+      # Cognito requires app-client write permission for required attributes;
+      # the pool still makes email immutable after administrator creation.
+      WriteAttributes: [email, name]
 
   LoginDomain:
     Type: AWS::Cognito::UserPoolDomain
