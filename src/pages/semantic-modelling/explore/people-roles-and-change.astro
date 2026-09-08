@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 ---
@@ -10,16 +11,16 @@ import LearningIllustration from '@/components/modelling/LearningIllustration.as
   <LearningIllustration scene="finance" alt="Two arrangement documents and participant markers beside a residential model, inviting the reader to keep the arrangements distinct." />
   <p>The following facts are invented for this lesson, not lending requirements or legal interpretations. They let us reach a definite modelling conclusion without deciding what obligations real contracts create.</p>
   <div class="learning-comparison">
-    <section class="document-flow" aria-labelledby="arrangement-a">
+    <LearningCard labelledby="arrangement-a">
       <h3 id="arrangement-a">Arrangement A</h3>
       <p>A fictional participation record explicitly names <strong>Sam and Jo as borrowers</strong>, and North Bank as lender, in arrangement A during 1 September–31 December 2026.</p>
       <p>The record identifies Sam independently of their displayed name. It says nothing about either person's participation after that period.</p>
-    </section>
-    <section class="document-flow" aria-labelledby="arrangement-b">
+    </LearningCard>
+    <LearningCard labelledby="arrangement-b">
       <h3 id="arrangement-b">Arrangement B</h3>
       <p>A second record explicitly names <strong>Priya as borrower and the same Sam as guarantor</strong>, with North Bank as lender, in arrangement B during 15 September–31 December 2026.</p>
       <p>“The same Sam” is a supplied identity fact, not a conclusion drawn from a matching name.</p>
-    </section>
+    </LearningCard>
   </div>
   <LearningDiagram kind="roles" caption="One person participates differently in two stated arrangements. A role belongs with its arrangement; the lender organisation can participate in both." />
   <p>During the overlapping period, Sam is borrower in A and guarantor in B. Those are compatible claims about one person. Jo is also a borrower in A, so a model that permits exactly one participant in that role would lose a supplied fact. North Bank is an organisation, not a person, but it too has identified participation in each arrangement.</p>

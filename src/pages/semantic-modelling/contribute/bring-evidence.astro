@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 ---
@@ -31,7 +32,7 @@ import LearningIllustration from '@/components/modelling/LearningIllustration.as
 
   <section aria-labelledby="envelope">
     <h2 id="envelope">Give the evidence an interpretable envelope</h2>
-    <figure class="learning-example document-flow" aria-labelledby="envelope-caption">
+    <LearningCard labelledby="envelope-caption" as="figure">
       <figcaption id="envelope-caption">The evidence envelope — a worked example, not an upload form</figcaption>
       <dl>
         <dt>Origin</dt><dd>The Harbour Court teaching case; no real customer, property transaction or source organisation.</dd>
@@ -42,7 +43,7 @@ import LearningIllustration from '@/components/modelling/LearningIllustration.as
         <dt>Restrictions</dt><dd>Entirely invented wording. A real source would need its sharing and reuse conditions checked before submission.</dd>
         <dt>Interpretation and limit</dt><dd>The passage supports a claim of no physical access to the enclosed area during this visit. It does not support a claim about that area's condition.</dd>
       </dl>
-    </figure>
+    </LearningCard>
     <p>For a real source, origin includes its organisation, owner or steward; version includes the edition and relevant dates; restrictions include permission, licence, confidentiality and allowed reuse. Preserve any limits on the source's authority for the proposed purpose. A well-described source can still be wrong, outdated or inappropriate evidence for a particular claim.</p>
   </section>
 

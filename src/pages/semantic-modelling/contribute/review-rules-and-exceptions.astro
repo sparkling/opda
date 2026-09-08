@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 ---
 
@@ -13,7 +14,7 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 
   <section aria-labelledby="rule-specimen">
     <h2 id="rule-specimen">Read the condition before looking for the required information</h2>
-    <figure class="learning-example document-flow" aria-labelledby="requirement-caption">
+    <LearningCard labelledby="requirement-caption" as="figure">
       <figcaption id="requirement-caption">Fictional requirement R — report the access limitation</figcaption>
       <blockquote><p>When a report states that inspection access was limited, it must identify at least one limitation being reported for that inspection.</p></blockquote>
       <dl>
@@ -22,7 +23,7 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
         <dt>What is required</dt><dd>A description identifying at least one reported access limitation; “limited” alone does not identify it.</dd>
         <dt>Applicability convention for this exercise</dt><dd>Use explicit evidence about the trigger. When that evidence is absent, say “applicability not established”. Do not infer a pass, failure or formal validation result.</dd>
       </dl>
-    </figure>
+    </LearningCard>
     <LearningDiagram kind="rule" caption="First establish whether the stated condition applies; then examine the information that the requirement asks for." />
     <p>For a fully supplied record, we can inspect what it definitely contains or omits. For an excerpt, a missing passage may simply be outside the excerpt. That difference is part of the test premises. Without it, a reviewer could call a complete source defective because a short quotation did not include every section.</p>
   </section>

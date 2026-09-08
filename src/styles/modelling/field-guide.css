@@ -5,16 +5,15 @@
 .learning-document .learning-editorial figcaption {
   margin-block-start: var(--space-3);
   color: var(--color-text-muted);
-  font-size: var(--text-sm);
+  font: inherit;
 }
 .learning-document .learning-comparison {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-7) var(--space-8);
-  max-inline-size: none;
-  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+  gap: var(--space-5);
+  align-items: stretch;
 }
-.learning-document :is(.learning-comparison > *, .learning-example, .learning-extract) {
+.learning-document :is(.learning-example, .learning-extract) {
   min-inline-size: 0;
   padding: 0;
   border: 0;
@@ -32,20 +31,13 @@
   padding: 0;
 }
 .learning-document .learning-extract figcaption > :first-child { margin-block-start: 0; }
-.prose.editorial-content.learning-document .learning-comparison dl:not([class]):has(> dt) {
-  display: block;
-}
-.learning-document .learning-comparison dt { margin-block-start: var(--space-5); }
-.learning-document .learning-comparison dt:first-child { margin-block-start: 0; }
-.prose.editorial-content.learning-document .learning-comparison dd { margin-block-start: var(--space-2); }
-.prose.editorial-content.learning-document .learning-comparison p { text-align: start; hyphens: manual; }
-/* Teaching visuals and callouts follow the reading measure; tabular comparisons
-   retain the wider article track. Ontology-reference diagrams are unchanged. */
-.prose.editorial-content.learning-document :is(.callout, .learning-editorial, .learning-figure) {
+/* Teaching visuals, specimen cards and callouts follow the reading measure.
+   Tables retain the wider article track; ontology-reference pages are unchanged. */
+.prose.editorial-content.learning-document :is(.callout, .learning-editorial, .learning-figure, .learning-record, .learning-comparison) {
   max-inline-size: min(100%, var(--editorial-text-max));
   margin-inline: 0 auto;
 }
-.prose.editorial-content.learning-document :is(.learning-comparison, .learning-table) {
+.prose.editorial-content.learning-document .learning-table {
   max-inline-size: none;
 }
 .prose.editorial-content.learning-document :is(.callout, .learning-extract, .learning-example) > :is(p, ul, ol, dl, blockquote, figcaption) {
@@ -54,9 +46,55 @@
 .learning-document :is(.learning-comparison, .learning-example, .learning-extract, .learning-figure, .learning-editorial) {
   margin-block: var(--space-6);
 }
-.learning-document .learning-comparison > * { margin-block: 0; }
-@container learning-chapter (min-width: 72rem) {
-  .learning-document .learning-comparison { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.prose.editorial-content.learning-document .learning-record { margin-block: var(--space-6); }
+.prose.editorial-content.learning-document .learning-comparison > .learning-record { margin-block: 0; }
+.learning-document .learning-record {
+  display: block;
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-height: 0;
+  container: learning-record / inline-size;
+}
+.prose.editorial-content.learning-document .learning-record > :is(h3, figcaption):first-child {
+  margin: 0;
+  padding-block-end: var(--space-4);
+  border-block-end: 1px solid var(--color-border);
+  color: var(--color-text-strong);
+  font: var(--h3);
+  text-wrap: pretty;
+}
+.prose.editorial-content.learning-document .learning-record :is(p, blockquote) {
+  font: inherit;
+  color: var(--color-text);
+  text-align: start;
+  hyphens: manual;
+}
+.prose.editorial-content.learning-document .learning-record dl:not([class]):has(> dt) {
+  display: grid;
+  grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr);
+  gap: 0;
+}
+.prose.editorial-content.learning-document .learning-record dl > :is(dt, dd) {
+  margin: 0;
+  padding-block: var(--space-3);
+  border-block-start: 1px solid var(--color-border);
+}
+.prose.editorial-content.learning-document .learning-record dl > dt { padding-inline-end: var(--space-5); }
+.prose.editorial-content.learning-document .learning-record dl > :is(dt:first-child, dt:first-child + dd) {
+  border-block-start: 0;
+  padding-block-start: 0;
+}
+.prose.editorial-content.learning-document .learning-record dl > :is(dt:nth-last-child(2), dd:last-child) { padding-block-end: 0; }
+@container learning-record (max-width: 38rem) {
+  .prose.editorial-content.learning-document .learning-record dl:not([class]):has(> dt) { display: block; }
+  .prose.editorial-content.learning-document .learning-record dl > dt {
+    padding-inline-end: 0;
+    padding-block-end: var(--space-1);
+  }
+  .prose.editorial-content.learning-document .learning-record dl > dd {
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
 }
 .learning-document .learning-practice {
   padding: 0;
@@ -120,16 +158,11 @@
 .learning-drawing .fg-interval { fill:none; stroke:var(--fg-accent); stroke-width:12; stroke-linecap:round; }
 .learning-document .learning-figure figcaption {
   max-inline-size: var(--editorial-text-max, 64rem);
-  font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
-  color: var(--color-text-muted);
+  margin-block-start: var(--space-4);
+  font: inherit;
   text-align: start;
 }
-.learning-figure figcaption strong {
-  display: block;
-  margin-block-end: var(--space-2);
-  color: var(--color-text-strong);
-  font-weight: 650;
-}
+.learning-document .learning-figure figcaption > .callout { margin-block: 0; }
 .learning-equivalent-wrap {
   position: absolute;
   inline-size: 1px;

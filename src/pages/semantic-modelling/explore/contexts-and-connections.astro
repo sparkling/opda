@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 import { contexts, contextRoute, contextMap, candidateManifest } from '@/lib/property-pack-model.mjs';
@@ -24,16 +25,16 @@ const propertyContexts = contexts.filter((context) => context.kind === 'bounded-
   <h2 id="mapping-example">Compare full definitions before drawing a bridge</h2>
   <p>The following is a fictional vocabulary comparison, not a mapping in the candidate. Both lists concern physical access during one identified visit to the same nonempty set of identified agreed areas, and use the same meaning of “accessed”. Their scopes differ in one important respect.</p>
   <div class="learning-comparison">
-    <section class="document-flow" aria-labelledby="source-choice">
+    <LearningCard labelledby="source-choice">
       <h3 id="source-choice">Source vocabulary · teaching version 1</h3>
       <p><strong>Some access:</strong> at least one, but not all, of the identified agreed areas was accessed.</p>
       <p>Includes access to two of three areas. Excludes access to none and access to all.</p>
-    </section>
-    <section class="document-flow" aria-labelledby="recipient-choice">
+    </LearningCard>
+    <LearningCard labelledby="recipient-choice">
       <h3 id="recipient-choice">Recipient vocabulary · teaching version 1</h3>
       <p><strong>Restricted access:</strong> not all of the identified agreed areas were accessed.</p>
       <p>Includes access to two of three areas and access to none. Excludes access to all.</p>
-    </section>
+    </LearningCard>
   </div>
   <LearningDiagram kind="mapping" caption="A deliberately limited fictional correspondence: ‘some access’ has narrower meaning than ‘restricted access’, which also includes none. The connection is not an accepted candidate mapping." />
   <p>Every “some access” case meets the recipient's “restricted access” definition under these premises. The reverse does not hold: a “restricted” record could mean zero areas were accessed. Treating the concepts as exact substitutes would lose that distinction in one direction and invent some access in the other.</p>

@@ -1,5 +1,6 @@
 ---
 import { createHash } from 'node:crypto';
+import Callout from '@/components/Callout.astro';
 import { learningDiagramSource, type LearningDiagramKind } from './learning/diagram-sources';
 import '@/styles/modelling/field-guide.css';
 
@@ -11,9 +12,10 @@ const figure = learningDiagramSource(kind, instance);
 ---
 <figure class="learning-figure" data-learning-diagram={kind} aria-labelledby={instance + '-caption'}>
   <div class="learning-image" set:html={figure.svg} />
-  <figcaption id={instance + '-caption'}>
-    <strong>{figure.title}</strong>
-    {caption ?? figure.description}
-  </figcaption>
   <div class="learning-equivalent-wrap" set:html={figure.equivalent} />
+  <figcaption id={instance + '-caption'}>
+    <Callout title={figure.title} tone="information">
+      <p>{caption ?? figure.description}</p>
+    </Callout>
+  </figcaption>
 </figure>

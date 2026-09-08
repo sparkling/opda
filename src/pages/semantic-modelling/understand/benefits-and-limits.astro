@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import Callout from '@/components/Callout.astro';
 ---
 
@@ -25,22 +26,22 @@ import Callout from '@/components/Callout.astro';
       measuring standard. Now consider what happens when the accounts are exchanged.
     </p>
     <div class="learning-comparison">
-      <section class="document-flow" aria-labelledby="distinction-lost">
+      <LearningCard labelledby="distinction-lost">
         <h3 id="distinction-lost">Exchange A · The basis is lost</h3>
         <dl>
           <dt>What arrives</dt><dd>Area: 68 m². Other area: 72 m².</dd>
           <dt>What the recipient can conclude</dt><dd>Two different numbers were supplied. Their comparability is not established.</dd>
           <dt>Risk</dt><dd>A recipient may treat them as incompatible measurements of the same area, or silently keep the larger value.</dd>
         </dl>
-      </section>
-      <section class="document-flow" aria-labelledby="distinction-kept">
+      </LearningCard>
+      <LearningCard labelledby="distinction-kept">
         <h3 id="distinction-kept">Exchange B · The basis survives</h3>
         <dl>
           <dt>What arrives</dt><dd>The same dwelling; 68 m² excluding the enclosed 4 m² area; 72 m² including it; separate references to accounts A and B.</dd>
           <dt>What the recipient can conclude</dt><dd>The stated inclusion difference explains the four-square-metre difference in this example.</dd>
           <dt>Remaining question</dt><dd>Which basis is appropriate for the intended use? The exchange does not decide that.</dd>
         </dl>
-      </section>
+      </LearningCard>
     </div>
     <p>
       The second exchange supports a better explanation because it preserves subject,

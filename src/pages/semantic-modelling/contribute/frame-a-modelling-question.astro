@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 ---
 
 <ModellingLayout title="Turn experience into a modelling question" description="Start with a decision, misunderstanding or exception. Show what the model must help someone distinguish, before proposing a field or a software feature." proseClass="prose wide modelling-document learning-document">
@@ -13,7 +14,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   <section aria-labelledby="question-specimen">
     <h2 id="question-specimen">From a recurring problem to an answerable question</h2>
     <p>Consider a fictional property-data team comparing floor-area accounts. One gives 68 m² and another 72 m² for Flat 1 at Harbour Court. Someone suggests adding a warning whenever the numbers differ. Before deciding whether a warning helps, the model needs to make the accounts comparable.</p>
-    <figure class="learning-example document-flow" aria-labelledby="note-caption">
+    <LearningCard labelledby="note-caption" as="figure">
       <figcaption id="note-caption">A worked contribution note — fictional, not submitted</figcaption>
       <dl>
         <dt>The decision</dt><dd>A recipient needs to understand whether two area accounts describe the same measured extent.</dd>
@@ -23,7 +24,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
         <dt>The question</dt><dd>What must remain explicit about each area account so a recipient can distinguish a different inclusion basis from an unexplained discrepancy?</dd>
         <dt>Available evidence</dt><dd>Invented account A excludes an enclosed 4 m² area; account B includes it. No industry measuring standard is claimed.</dd>
       </dl>
-    </figure>
+    </LearningCard>
     <p>The question does not ask which number to trust. Under these supplied premises, the 4 m² inclusion difference explains the values. The useful requirement is that the explanation survives an exchange. In the difficult case, the answer is not available: a recipient needs the missing basis before deciding whether the values disagree.</p>
     <p>Modellers sometimes call a question the model should be able to answer a <em>competency question</em>. The ordinary-language question is the important part. It can be tested against a proposed model and examples without requiring you to write a technical query.</p>
   </section>
@@ -31,16 +32,16 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   <section aria-labelledby="avoid-solution-first">
     <h2 id="avoid-solution-first">Keep the need separate from your first solution</h2>
     <div class="learning-comparison">
-      <section class="document-flow" aria-labelledby="feature-request">
+      <LearningCard labelledby="feature-request">
         <h3 id="feature-request">An implementation request</h3>
         <blockquote><p>Add a mandatory “verified area” field and show a green tick when it has a value.</p></blockquote>
         <p>This proposes a field and a display. It leaves “verified”, the measured subject and the basis of comparison unresolved. A value in a field would not establish that the measurement was appropriate or correct.</p>
-      </section>
-      <section class="document-flow" aria-labelledby="meaning-request">
+      </LearningCard>
+      <LearningCard labelledby="meaning-request">
         <h3 id="meaning-request">The modelling question behind it</h3>
         <blockquote><p>Which area account is being assessed, what assessment is claimed, by whom and for which purpose? What evidence supports that assessment?</p></blockquote>
         <p>This identifies meanings an implementation might need to preserve. Whether a product displays them as fields, a document or a warning is a later design choice.</p>
-      </section>
+      </LearningCard>
     </div>
     <p>The feature request is not foolish: it may reveal a real operational difficulty. Translating it into a modelling question prevents the proposed interface from deciding the meaning prematurely. Keep the original motivation alongside the question so a technically elegant model does not lose the practical problem.</p>
   </section>

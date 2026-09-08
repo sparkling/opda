@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import Callout from '@/components/Callout.astro';
 ---
@@ -11,7 +12,7 @@ import Callout from '@/components/Callout.astro';
 
   <h2 id="term-specimen">Inspect a term, not just a word list</h2>
   <p>This specimen belongs to a fictional teaching vocabulary about physical access during inspections. It is not an approved OPDA value or a professional inspection standard.</p>
-  <section class="learning-example document-flow" aria-labelledby="some-access">
+  <LearningCard labelledby="some-access">
     <h3 id="some-access">Concept: access to some but not all agreed areas</h3>
     <dl>
       <dt>Preferred label</dt><dd>Access to some agreed areas.</dd>
@@ -21,7 +22,7 @@ import Callout from '@/components/Callout.astro';
       <dt>Exclusions</dt><dd>Access to all agreed areas; access to none; permission to read or share a report.</dd>
       <dt>Teaching code</dt><dd>SOME. The code identifies this choice within this fictional list; its letters do not define the meaning.</dd>
     </dl>
-  </section>
+  </LearningCard>
   <p>The definition does work the label cannot do alone. “Partial” might otherwise mean part of a day, some documents or limited visibility within every area. The example shows an ordinary case; the exclusions block plausible misunderstandings. A code helps exchange the choice, but an inherited code such as “P” could mean something else in another source.</p>
   <p>A preferred-label edit from “Access to some agreed areas” to “Some agreed areas accessed” could leave the meaning unchanged. Extending the definition to include access to none would change meaning, even if the code and displayed label stayed the same. Review the definition, not just the text diff.</p>
 
@@ -44,16 +45,16 @@ import Callout from '@/components/Callout.astro';
   <LearningDiagram kind="vocabulary" caption="Names, scoped choices, topic organisation and independent facets answer different questions. The all/some/none access choices rely on a nonempty identified inspection scope." />
 
   <h2 id="hierarchy">A topic tree is not a diagram of a building's parts</h2>
-  <section class="learning-example document-flow" aria-labelledby="topics">
+  <LearningCard labelledby="topics">
     <h3 id="topics">A fictional report-topic taxonomy</h3>
     <ul><li>Building fabric<ul><li>Roof condition</li><li>Wall condition</li></ul></li></ul>
     <p>“Roof condition” is a narrower topic beneath “Building fabric”. This organises what reports discuss. It does not identify a roof, make a report a kind of building or state that a roof-condition concept is a physical part.</p>
-  </section>
-  <section class="learning-example document-flow" aria-labelledby="facets">
+  </LearningCard>
+  <LearningCard labelledby="facets">
     <h3 id="facets">Independent ways to describe a report</h3>
     <dl><dt>Topic</dt><dd>Roof condition.</dd><dt>Document status</dt><dd>Draft, under this example's document convention.</dd><dt>Information type</dt><dd>Inspection account.</dd></dl>
     <p>The same report can carry all three classifications. “Draft” need not sit beneath “Roof condition” in a single tree. Each facet asks a different question.</p>
-  </section>
+  </LearningCard>
   <p>A broader/narrower topic relationship helps someone browse from a general subject to a more specific one. A kind-of relationship makes a different claim about what things are. A physical part-of relationship makes another. One drawing convention should not let those meanings slide into each other unnoticed.</p>
 
   <section class="learning-example document-flow" aria-labelledby="vocabulary-practice">

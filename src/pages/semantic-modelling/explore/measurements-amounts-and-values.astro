@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 import Callout from '@/components/Callout.astro';
@@ -11,14 +12,14 @@ import Callout from '@/components/Callout.astro';
   <LearningIllustration scene="surveying" alt="A surveying desk with aligned floor-plan overlays, a measuring tool and an enclosed-area detail." />
   <p>For this example, the same dwelling consists of a main area of 68 m² and an adjoining enclosed area of exactly 4 m². The areas do not overlap. There has been no physical change between the two accounts; they use the same source dimensions and differ only in the inclusion convention stated below. These are complete fictional premises, not an industry measuring standard. They do not imply that the enclosed area was physically accessed during the story's inspection.</p>
   <div class="learning-comparison">
-    <section class="document-flow" aria-labelledby="account-a">
+    <LearningCard labelledby="account-a">
       <h3 id="account-a">Account A: main area only</h3>
       <dl><dt>Subject</dt><dd>Flat 1 at Harbour Court.</dd><dt>Value and unit</dt><dd>68 m².</dd><dt>Stated basis</dt><dd>Main area; excludes the enclosed 4 m² area.</dd><dt>Source</dt><dd>Fictional area account A, using the supplied plan dimensions.</dd></dl>
-    </section>
-    <section class="document-flow" aria-labelledby="account-b">
+    </LearningCard>
+    <LearningCard labelledby="account-b">
       <h3 id="account-b">Account B: main and enclosed areas</h3>
       <dl><dt>Subject</dt><dd>The same Flat 1 at Harbour Court.</dd><dt>Value and unit</dt><dd>72 m².</dd><dt>Stated basis</dt><dd>Main area plus the enclosed 4 m² area.</dd><dt>Source</dt><dd>Fictional area account B, using the same supplied plan dimensions.</dd></dl>
-    </section>
+    </LearningCard>
   </div>
   <LearningDiagram kind="measurement" caption="Schematic, not to scale: the same main area is 68 m² in both accounts. A excludes the separate enclosed 4 m² area; B includes it, producing 72 m²." />
   <p>The arithmetic is simple once the meaning is visible: 68 + 4 = 72. The stated inclusion difference fully explains these values under the supplied premises. Both accounts can be accurate statements of their own quantities. We have not shown that either basis is appropriate for a particular professional, contractual or legal use.</p>

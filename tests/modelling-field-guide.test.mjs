@@ -66,13 +66,41 @@ test('field-guide illustrations, diagrams and callouts share the reading width; 
   const css = read('src/styles/modelling/field-guide.css');
   assert.match(css, /\.learning-comparison/u);
   assert.match(css, /container-type: inline-size/u);
-  assert.match(css, /\.prose\.editorial-content\.learning-document :is\(\.callout, \.learning-editorial, \.learning-figure\)\s*\{[^}]*max-inline-size: min\(100%, var\(--editorial-text-max\)\)[^}]*margin-inline: 0 auto/su);
-  assert.match(css, /:is\(\.learning-comparison, \.learning-table\)\s*\{\s*max-inline-size: none/su);
+  assert.match(css, /\.prose\.editorial-content\.learning-document :is\(\.callout, \.learning-editorial, \.learning-figure, \.learning-record, \.learning-comparison\)\s*\{[^}]*max-inline-size: min\(100%, var\(--editorial-text-max\)\)[^}]*margin-inline: 0 auto/su);
+  assert.match(css, /\.learning-table\s*\{\s*max-inline-size: none/su);
   assert.doesNotMatch(css, /max-inline-size: (54|60)rem/u);
   assert.doesNotMatch(css, /\.learning-specimen[\s\S]*?background: var\(--color-surface-alt\)/u);
   const editorial = read('src/styles/editorial-content.css');
   assert.match(editorial, /--editorial-text-max: 64rem/u);
   assert.match(editorial, /:is\(h2, h3, h4\):first-child/u);
+});
+
+test('example records reuse the shared card surface with readable responsive facts', () => {
+  const card = read('src/components/modelling/LearningCard.astro');
+  assert.match(card, /class="card learning-record document-flow"/u);
+  assert.match(card, /aria-labelledby=\{labelledby\}/u);
+  assert.match(card, /<slot\s*\/>/u);
+  assert.doesNotMatch(card, /<a\b|<style/u);
+  const css = read('src/styles/modelling/field-guide.css');
+  assert.match(css, /container: learning-record \/ inline-size/u);
+  assert.match(css, /\.learning-record\s*\{[^}]*inline-size: 100%[^}]*min-inline-size: 0/su);
+  assert.match(css, /\.learning-record \{ margin-block: var\(--space-6\); \}/u);
+  assert.match(css, /\.learning-comparison > \.learning-record \{ margin-block: 0; \}/u);
+  assert.match(css, /@container learning-record/u);
+  assert.match(css, /grid-template-columns: minmax\(9rem, 12rem\) minmax\(0, 1fr\)/u);
+  assert.doesNotMatch(css, /:is\(\.learning-comparison > \*/u);
+  for (const path of ['explore/measurements-amounts-and-values', 'explore/names-and-choices']) {
+    assert.match(read('src/pages/semantic-modelling/' + path + '.astro'), /<LearningCard labelledby=/u);
+  }
+});
+
+test('diagram interpretations use the normal-sized shared callout instead of small captions', () => {
+  const diagram = read('src/components/modelling/LearningDiagram.astro');
+  assert.match(diagram, /import Callout/u);
+  assert.match(diagram, /<Callout title=\{figure.title\} tone="information"/u);
+  assert.match(diagram, /<p>\{caption \?\? figure.description\}<\/p>/u);
+  const css = read('src/styles/modelling/field-guide.css');
+  assert.doesNotMatch(css, /\.learning-figure[^{}]*figcaption\s*\{[^}]*var\(--text-sm\)/su);
 });
 
 test('authored callouts share the design-system component without a second visual skin', () => {

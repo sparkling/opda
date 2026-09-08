@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 import Callout from '@/components/Callout.astro';
@@ -98,7 +99,7 @@ import Callout from '@/components/Callout.astro';
       complete account, shown three ways.
     </p>
     <LearningIllustration scene="technology" alt="Two differently arranged representations of a property situation, with the same relationship pieces kept between them." />
-    <section class="learning-example document-flow" aria-labelledby="form-view">
+    <LearningCard labelledby="form-view">
       <h3 id="form-view">1. A readable form</h3>
       <dl>
         <dt>Report version</dt><dd>Version 2</dd>
@@ -108,8 +109,8 @@ import Callout from '@/components/Callout.astro';
         <dt>Reason for the revision</dt><dd>Corrected description of an access limitation; no new visit.</dd>
       </dl>
       <p>A form can preserve these connections. It needs sufficiently clear labels and references, not merely a field called “date”.</p>
-    </section>
-    <section class="learning-example document-flow" aria-labelledby="nested-view">
+    </LearningCard>
+    <LearningCard labelledby="nested-view">
       <h3 id="nested-view">2. A nested description</h3>
       <ul>
         <li>Report version 2
@@ -126,7 +127,7 @@ import Callout from '@/components/Callout.astro';
         </li>
       </ul>
       <p>The indentation chooses a reading order. The reference to the same inspection prevents the repeated description from implying a second event. A tree can contain references; nesting is not a prohibition on linking.</p>
-    </section>
+    </LearningCard>
     <section class="learning-example document-flow" aria-labelledby="model-view">
       <h3 id="model-view">3. A connected account</h3>
       <LearningDiagram kind="representations" caption="The connected account keeps two report versions attached to one inspection of Flat 1." />

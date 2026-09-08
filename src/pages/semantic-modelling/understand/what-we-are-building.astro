@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import Callout from '@/components/Callout.astro';
 ---
 
@@ -37,7 +38,7 @@ import Callout from '@/components/Callout.astro';
       dictionary tells a recipient exactly which date a report element carries.
       Neither answer can safely be inferred from the word “survey”.
     </p>
-    <section class="learning-example document-flow" aria-labelledby="glossary-specimen">
+    <LearningCard labelledby="glossary-specimen">
       <h3 id="glossary-specimen">Business glossary · Inspection</h3>
       <dl>
         <dt>Definition</dt>
@@ -53,8 +54,8 @@ import Callout from '@/components/Callout.astro';
         <dt>Review responsibility</dt>
         <dd>In a real package, name the context responsible for the definition and record the evidence and review status.</dd>
       </dl>
-    </section>
-    <section class="learning-example document-flow" aria-labelledby="dictionary-specimen">
+    </LearningCard>
+    <LearningCard labelledby="dictionary-specimen">
       <h3 id="dictionary-specimen">Data dictionary · Report issue date</h3>
       <dl>
         <dt>Meaning</dt>
@@ -68,7 +69,7 @@ import Callout from '@/components/Callout.astro';
       </dl>
       <h4>Separate teaching record</h4>
       <p>Report version 2 · issue date <time datetime="2026-08-20">20 August 2026</time> · source: the fictional report's version statement.</p>
-    </section>
+    </LearningCard>
     <p>
       The example value is not part of the dictionary element's definition. If a
       later report is issued in September, the value changes but the meaning of
@@ -85,7 +86,7 @@ import Callout from '@/components/Callout.astro';
       when the scope warrants one. A hierarchy and a choice list are not interchangeable,
       even when both are displayed as indented words on a screen.
     </p>
-    <section class="learning-example document-flow" aria-labelledby="taxonomy-specimen">
+    <LearningCard labelledby="taxonomy-specimen">
       <h3 id="taxonomy-specimen">Topic taxonomy · Inspection subjects</h3>
       <ul>
         <li>Building fabric
@@ -97,8 +98,8 @@ import Callout from '@/components/Callout.astro';
       </ul>
       <p>In this fictional topic scheme, <strong>Roof condition</strong> is a narrower inspection topic beneath <strong>Building fabric</strong>.</p>
       <p>This organises subjects people discuss. It does not say that a roof-condition topic is a physical part of a building, or that every narrower topic is a kind of its broader topic.</p>
-    </section>
-    <section class="learning-example document-flow" aria-labelledby="vocabulary-specimen">
+    </LearningCard>
+    <LearningCard labelledby="vocabulary-specimen">
       <h3 id="vocabulary-specimen">Controlled vocabulary · Physical access outcome</h3>
       <p><strong>Scope:</strong> physical access to a nonempty, identified set of agreed inspection areas during this visit.</p>
       <dl>
@@ -107,7 +108,7 @@ import Callout from '@/components/Callout.astro';
         <dt>None of the agreed areas</dt><dd>No area in that set was physically accessed.</dd>
       </dl>
       <p>With that scope and sufficient evidence, exactly one outcome applies. An empty set is excluded so that “all” and “none” cannot describe the same case.</p>
-    </section>
+    </LearningCard>
     <p>
       Suppose the agreed areas are the living room, bedroom and enclosed area.
       The first two were accessed; the enclosed area was locked. “Some, but not all”
@@ -127,7 +128,7 @@ import Callout from '@/components/Callout.astro';
       to describe. A <a href="/glossary#relationship">relationship</a> definition
       explains a particular connection between subjects.
     </p>
-    <section class="learning-example document-flow" aria-labelledby="resource-specimen">
+    <LearningCard labelledby="resource-specimen">
       <h3 id="resource-specimen">Resource definition · Inspection</h3>
       <dl>
         <dt>What it defines</dt>
@@ -141,8 +142,8 @@ import Callout from '@/components/Callout.astro';
       </dl>
       <h4>Separate teaching instance</h4>
       <p>The examination of Flat 1 at Harbour Court on 12 August 2026 is an inspection under this definition. It is one particular event, not the definition itself.</p>
-    </section>
-    <section class="learning-example document-flow" aria-labelledby="relationship-specimen">
+    </LearningCard>
+    <LearningCard labelledby="relationship-specimen">
       <h3 id="relationship-specimen">Relationship definition · Describes</h3>
       <dl>
         <dt>Starting subject</dt><dd>A particular report version.</dd>
@@ -153,7 +154,7 @@ import Callout from '@/components/Callout.astro';
       <h4>Separate teaching statement</h4>
       <p>Report version 2 describes the 12 August inspection.</p>
       <p>Report version 1 also describes that inspection. Both reports can connect to one event without becoming the same document version.</p>
-    </section>
+    </LearningCard>
     <p>
       “This event is an Inspection” places an example in the defined class.
       “This report describes this event” connects two particular subjects.

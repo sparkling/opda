@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 ---
 
 <ModellingLayout title="Review a definition" description="Test what a definition includes, excludes and leaves ambiguous. Compare plausible revisions, then use an ordinary case and a counterexample to explain what should change." proseClass="prose wide modelling-document learning-document">
@@ -29,16 +30,16 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   <section aria-labelledby="revision">
     <h2 id="revision">A repair needs a second test</h2>
     <div class="learning-comparison">
-      <section class="document-flow" aria-labelledby="inspection-definition">
+      <LearningCard labelledby="inspection-definition">
         <h3 id="inspection-definition">Illustrative revision: inspection date</h3>
         <blockquote><p>The date on which the identified inspection occurred.</p></blockquote>
         <p>It separates the event from its report. It may still exclude an inspection spanning several days.</p>
-      </section>
-      <section class="document-flow" aria-labelledby="report-definition">
+      </LearningCard>
+      <LearningCard labelledby="report-definition">
         <h3 id="report-definition">Illustrative revision: report issue date</h3>
         <blockquote><p>The date on which the identified version of the report was issued.</p></blockquote>
         <p>It ties the date to a version. It does not silently make a later recording timestamp the issue date.</p>
-      </section>
+      </LearningCard>
     </div>
     <p>If the inspection spans two days, that is a genuine counterexample to a single-day assumption, not a reason to undo the useful event/report distinction. Ask whether the agreed scope needs an occurrence period and what establishes its boundaries. The <a href="/semantic-modelling/explore/dates-periods-and-applicability">dates and periods chapter</a> explains why an interval and its duration answer different questions.</p>
     <p>Changes in wording can be small while changes in meaning are large. Replacing “issued” with “entered into our system” introduces a different event and an organisation-specific setting. Conversely, adding an alternative label need not change the defined meaning at all. State which kind of edit you are proposing.</p>

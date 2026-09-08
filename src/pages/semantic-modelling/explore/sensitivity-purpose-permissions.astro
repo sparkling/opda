@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 ---
 
@@ -23,7 +24,7 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 
   <h2 id="permission-specimen">A proposal we can actually review</h2>
   <p>The next specimen is an invented, unapproved permission description for a modelling exercise. It is not a real grant, scheme policy or statement of legal sufficiency. The source note expressly covers only the described action; no extension by role is allowed in these teaching premises.</p>
-  <section class="learning-example document-flow" aria-labelledby="description-p">
+  <LearningCard labelledby="description-p">
     <h3 id="description-p">Draft permission description P</h3>
     <dl>
       <dt>Participant</dt><dd>Nia, separately identified; seller in fictional transaction T.</dd>
@@ -34,7 +35,7 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
       <dt>Source and standing</dt><dd>Fictional drafting note N, version 1; a proposal awaiting appropriate review, not an approved entitlement.</dd>
       <dt>Not supplied</dt><dd>Evidence that the source has authority to grant this permission, any applicable legal basis, and any separate consent evidence.</dd>
     </dl>
-  </section>
+  </LearningCard>
   <p>Even with those limits, P is more reviewable than “the seller may see the report”. We can inspect the participant, information, action, purpose and period. We can also point precisely to what is not established. A detailed description can still be unauthorised; completeness of its fields is not approval.</p>
 
   <section class="learning-example document-flow" aria-labelledby="permissions-practice">

@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningCard from '@/components/modelling/LearningCard.astro';
 import Callout from '@/components/Callout.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
@@ -17,7 +18,7 @@ const reviewedCandidate = candidateManifest.candidate_id === 'property-pack-0.1'
     <h2 id="candidate-reading">Start with the page you have been asked to review</h2>
     <p>You do not need to finish the introductory chapters first. Keep the candidate's identity and version, read its definition, then choose one claim to examine. A good review can begin with one familiar subject and a well-explained counterexample.</p>
     <p>The <a href={propertyHref}>Property resource page</a> is a real candidate definition. The identity card below reads the same maintained candidate data as that page; it is not a separately maintained model. Everything in the later <a href="#fictional-revision">change comparison</a> is an invented teaching package, not actual candidate history.</p>
-    <figure class="learning-example document-flow" aria-labelledby="candidate-card">
+    <LearningCard labelledby="candidate-card" as="figure">
       <figcaption id="candidate-card">Actual candidate — identify the proposal before judging it</figcaption>
       <dl>
         <dt>Candidate</dt><dd><code>{candidateManifest.candidate_id}</code></dd>
@@ -29,7 +30,7 @@ const reviewedCandidate = candidateManifest.candidate_id === 'property-pack-0.1'
         <dt>Definition</dt><dd>{property.definition}</dd>
         <dt>Identity criterion</dt><dd>{property.identity_criterion}</dd>
       </dl>
-    </figure>
+    </LearningCard>
     {!reviewedCandidate && <Callout title="The candidate has changed" tone="caution"><p>The detailed reading below was checked against property-pack-0.1, version 0.1.0-draft. Recheck the linked resource, constraints and evidence before applying those observations to the version displayed above.</p></Callout>}
     <p>“Class” describes the kind of model construct on this page. It is not the foundational judgement called an OntoUML <em>Kind</em>. Nor is this a record of Flat 1, an individual building or a live transaction. The definition proposes what a category includes; the Harbour Court story supplies fictional examples with which to practise reasoning.</p>
   </section>
@@ -70,8 +71,8 @@ const reviewedCandidate = candidateManifest.candidate_id === 'property-pack-0.1'
     <p>Leave the real candidate here. The following <strong>teaching draft A and teaching draft B</strong> are invented model versions. They are not Property Pack releases, report versions or a live website comparison feature. The change addresses the ambiguous access choices discussed in <a href="/semantic-modelling/contribute/review-vocabularies-and-mappings">reviewing vocabularies</a>.</p>
     <LearningIllustration scene="technology" alt="Different representations laid out for comparison, with the connections between their subjects preserved." />
     <div class="learning-comparison">
-      <section class="document-flow" aria-labelledby="draft-a"><h3 id="draft-a">Teaching draft A</h3><p><strong>Access outcome:</strong> “Whether the inspection was completed.”</p><p><strong>Choices:</strong> Completed; Limited access; Not inspected.</p><p><strong>Relationship:</strong> “Report has access outcome”, without identifying the visit or agreed areas.</p></section>
-      <section class="document-flow" aria-labelledby="draft-b"><h3 id="draft-b">Teaching draft B</h3><p><strong>Physical-access outcome:</strong> “How much of the identified nonempty set of agreed areas was physically accessed during this visit.”</p><p><strong>Choices:</strong> All; Some but not all; None — with the full definitions established in the vocabulary.</p><p><strong>Relationship:</strong> A report version records an access-outcome statement about an identified inspection and its agreed areas.</p></section>
+      <LearningCard labelledby="draft-a"><h3 id="draft-a">Teaching draft A</h3><p><strong>Access outcome:</strong> “Whether the inspection was completed.”</p><p><strong>Choices:</strong> Completed; Limited access; Not inspected.</p><p><strong>Relationship:</strong> “Report has access outcome”, without identifying the visit or agreed areas.</p></LearningCard>
+      <LearningCard labelledby="draft-b"><h3 id="draft-b">Teaching draft B</h3><p><strong>Physical-access outcome:</strong> “How much of the identified nonempty set of agreed areas was physically accessed during this visit.”</p><p><strong>Choices:</strong> All; Some but not all; None — with the full definitions established in the vocabulary.</p><p><strong>Relationship:</strong> A report version records an access-outcome statement about an identified inspection and its agreed areas.</p></LearningCard>
     </div>
     <table class="learning-table">
       <caption>What changes — and what correctly stays unchanged</caption>

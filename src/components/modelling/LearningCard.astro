@@ -1,0 +1,13 @@
+---
+/** A non-interactive specimen, using the design system's shared card surface. */
+interface Props {
+  labelledby: string;
+  as?: 'section' | 'figure';
+}
+const { labelledby, as: Element = 'section' } = Astro.props;
+if (!/^[a-zA-Z][\w-]*$/.test(labelledby)) throw new Error('A learning card needs its visible heading ID');
+if (!['section', 'figure'].includes(Element)) throw new Error('Invalid learning card element');
+---
+<Element class="card learning-record document-flow" aria-labelledby={labelledby}>
+  <slot />
+</Element>
