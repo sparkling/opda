@@ -152,7 +152,11 @@ const webpSize = (bytes) => {
 
 test('editorial scenes have matched light/dark assets and intrinsic geometry', () => {
   const manifest = JSON.parse(read('public/images/modelling/field-guide/manifest.json'));
-  assert.deepEqual(Object.keys(manifest.scenes).sort(), ['agency', 'conveyancing', 'data-services', 'finance', 'surveying', 'technology']);
+  assert.deepEqual(Object.keys(manifest.scenes).sort(), [
+    'agency', 'context-bridges', 'conveyancing', 'data-services', 'dates-and-history',
+    'definition-review', 'finance', 'model-collection', 'rule-testing',
+    'sensitive-information', 'surveying', 'technology', 'vocabulary', 'workshop',
+  ]);
   for (const scene of Object.values(manifest.scenes)) {
     assert.ok(scene.prompt && scene.caption);
     assert.equal(scene.dark.editedFrom, scene.light.source);
@@ -169,4 +173,23 @@ test('editorial scenes have matched light/dark assets and intrinsic geometry', (
   assert.match(component, /Object\.hasOwn\(manifest\.scenes, scene\)/u);
   assert.match(component, /CampaignThemeImage/u);
   assert.match(component, /width=\{illustration\.light\.width\} height=\{illustration\.light\.height\}/u);
+});
+
+test('field-guide illustration uses resolve to the shared collection with contextual alternatives', () => {
+  const manifest = JSON.parse(read('public/images/modelling/field-guide/manifest.json'));
+  const usedScenes = new Set();
+  for (const section of ['understand', 'explore', 'contribute']) {
+    const directory = 'src/pages/semantic-modelling/' + section + '/';
+    for (const file of readdirSync(new URL('../' + directory, import.meta.url)).filter((name) => name.endsWith('.astro'))) {
+      const source = read(directory + file);
+      for (const [tag] of source.matchAll(/<LearningIllustration\b[^>]*\/>/gu)) {
+        const scene = tag.match(/\bscene="([^"]+)"/u)?.[1];
+        const alt = tag.match(/\balt="([^"]+)"/u)?.[1];
+        assert.ok(Object.hasOwn(manifest.scenes, scene), file + ' uses an unknown scene');
+        assert.ok(alt?.trim(), file + ' needs a contextual alternative');
+        usedScenes.add(scene);
+      }
+    }
+  }
+  assert.deepEqual([...usedScenes].sort(), Object.keys(manifest.scenes).sort());
 });

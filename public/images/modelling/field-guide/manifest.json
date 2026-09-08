@@ -14,9 +14,24 @@
     "format": "webp",
     "quality": 76,
     "effort": 6,
-    "operation": "Whole-image resize preserving intrinsic aspect ratio. No crop, CSS filter or forced frame. Requested 4:1; generated approximately 2.5:1, retained without distortion."
+    "operation": "Whole-image resize preserving intrinsic aspect ratio. No crop, CSS filter or forced frame. Requested 4:1; generated approximately 2.5:1, retained without distortion.",
+    "scope": "Original six scenes; additions use the expansion export settings."
   },
   "altPolicy": "Each use supplies a contextual text alternative. Editorial illustrations orient readers; the diagrams and HTML specimens carry the exact modelling claims.",
+  "expansion": {
+    "created": "2026-09-08",
+    "provider": "OpenAI built-in image generation",
+    "artDirection": "OPDA editorial-watercolour design system",
+    "lightPrompt": "Use case: illustration-story.\nAsset type: one OPDA editorial watercolour illustration for a non-technical modelling field guide.\nComposition: one distinct, shallow arrangement in an ultra-wide 4:1 panorama, complete subjects and recognisable silhouettes, composed side-to-side for a shallow website strip. Generate a single complete illustration, not a webpage, montage or grid.\nStyle: expressive finely detailed organic deep-purple pen-and-ink contours, soft pastel translucent watercolour and softly opaque gouache, visible pigment variation and clean paper highlights; warm, colourful, humane, refined professional magazine drawing. Match a cohesive architectural-sketchbook editorial series.\nLight palette: cool off-white #F9F9F9 paper, deep purple #231F2F ink, substantial OPDA yellow/gold #FEC92B, petrol/teal #0E8478 and blue-violet #6C5BD4, supporting rose and coral. No beige or sepia cast.\nConstraints: no text, letters, numbers, labels, signatures, logo, wordmark, watermark, personal information; no photography, 3D, glossy rendering, neon, glow, puzzle pieces, floating icons, handshake, decorative arrows or generic clipart. This is an editorial scene, NOT a formal diagram or evidence.\n",
+    "darkEditPrompt": "Use case: style-transfer.\nAsset type: dark-mode counterpart of an OPDA editorial watercolour illustration.\nInput image: the supplied approved light illustration is the EDIT TARGET.\nChange only paper, ink and pigment palette. Preserve the exact objects and people, identity, count, arrangement, relative sizes, proportions, poses, perspective, framing, crop, negative space and image aspect ratio.\nDark palette: flat deep-purple paper #131224 reaching every edge; rich pastel gold, petrol teal, violet, rose and coral watercolour and softly opaque gouache, with pale lavender and off-white fine ink where needed for legibility. Paper must be deep purple, not black, grey or brown. Keep a calm, colourful, humane magazine illustration.\nNo redesign, additions, removals, relayout, night scenery, stars, inversion filter, glow, fluorescent outlines, neon, text, labels, signatures or watermarks. This is a palette edit, not a new scene.",
+    "export": {
+      "width": 1200,
+      "format": "webp",
+      "quality": 76,
+      "effort": 6,
+      "operation": "Whole-image proportional resize; no crop, CSS filter or forced frame. Native ratios of approximately 2.5:1 or 3:1 are retained. Each asset records its source and export geometry."
+    }
+  },
   "scenes": {
     "agency": {
       "prompt": "An estate agency work surface viewed at a shallow isometric angle: a small British terraced home cutaway on the left, two distinct blank listing sheets with differently coloured corner tabs in the centre, a key on the right. Explore which dwelling a listing describes. No people or hands. Sweeping horizontal composition; tangible paper layers, not a computer dashboard.",
@@ -166,6 +181,246 @@
         "height": 480,
         "bytes": 56904,
         "editedFrom": "exec-599657f1-4cd1-4ed4-947b-a0b00c85f355.png"
+      }
+    },
+    "workshop": {
+      "promptSet": "expansion",
+      "prompt": "Four varied adult property practitioners seated naturally around a low wide workshop table, seen at an elevated three-quarter angle. One modest British residential building maquette and several distinct unlettered paper sketches sit between them. Each person studies or points gently to a different detail. Show human expertise and discussion, not a presentation by a computer. Small natural figures, full tabletop, open cool-white background; no screens, voting symbols or approval badges.",
+      "caption": "Practical knowledge gives the modelling discussion something concrete to examine.",
+      "light": {
+        "scene": "workshop",
+        "mode": "light",
+        "source": "exec-e4ca25c7-e175-478d-b85f-97e84388b349.png",
+        "sourceSha256": "216f84b4386c5d9650e47016c0c31d0dd8ff7c90efca79fd10143a63a14d2564",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/workshop-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 126238
+      },
+      "dark": {
+        "scene": "workshop",
+        "mode": "dark",
+        "source": "exec-b3a20053-c3e0-43f2-b101-bfe62e5c1827.png",
+        "sourceSha256": "db479ddb8de8c5aeb3c19eadeb0f57bfabc0bcad0fa9208a8778acbee28b30ee",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/workshop-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 141340,
+        "editedFrom": "exec-e4ca25c7-e175-478d-b85f-97e84388b349.png"
+      }
+    },
+    "model-collection": {
+      "promptSet": "expansion",
+      "prompt": "A carefully arranged editor's collection laid horizontally across an open workbench: a small architectural cutaway house at one end, an open index-card box, a folded topic tree made from physical paper tabs, blank document sheets, and a small set of connected wooden beads at the other. Distinct meaningful objects, clean separation and tactile paper, representing several complementary views of a property agreement without implying they are identical. No people, hands, abstract floating symbols or interface.",
+      "caption": "Different views help people inspect the same proposed agreement.",
+      "light": {
+        "scene": "model-collection",
+        "mode": "light",
+        "source": "exec-29f6643c-3319-479f-afc6-8694539e8568.png",
+        "sourceSha256": "e1cafb571d147f9e147bf474878d27cedc483f12c9fb6ae7ea9f6ac178af7f49",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "file": "/images/modelling/field-guide/model-collection-light.webp",
+        "width": 1200,
+        "height": 400,
+        "bytes": 86124
+      },
+      "dark": {
+        "scene": "model-collection",
+        "mode": "dark",
+        "source": "exec-580efcf4-3a3c-4537-802f-6ba9baaa5e61.png",
+        "sourceSha256": "10175de93b3381a9beac21d16ed9dd7c3cc5d12ee88a8dc27fe4330f999e3592",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "file": "/images/modelling/field-guide/model-collection-dark.webp",
+        "width": 1200,
+        "height": 400,
+        "bytes": 88038,
+        "editedFrom": "exec-29f6643c-3319-479f-afc6-8694539e8568.png"
+      }
+    },
+    "definition-review": {
+      "promptSet": "expansion",
+      "prompt": "Close editorial still life of a definition review: two open unlettered notebooks alongside a small model doorway, a magnifying glass over one drawn doorway detail, a purple pencil and loose petrol and coral paper tabs. One notebook drawing shows the whole residential building, the other isolates an entrance; both keep the subject recognisable. Low shallow perspective with purposeful paper overlaps. The picture invites a careful question rather than a pass/fail verdict. No people or hands.",
+      "caption": "A useful review asks what the words include, exclude and leave unresolved.",
+      "light": {
+        "scene": "definition-review",
+        "mode": "light",
+        "source": "exec-00cb3e49-d57d-4fb9-bb7c-fcec91a250de.png",
+        "sourceSha256": "fd585ee787aa241beb3e2aefc9148e56cee5278a173553d5ed4ab3367dcd3a69",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/definition-review-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 136924
+      },
+      "dark": {
+        "scene": "definition-review",
+        "mode": "dark",
+        "source": "exec-fbbd03f8-f419-48f5-996f-3e569714ae49.png",
+        "sourceSha256": "d0627c705287875c3c27acce3f5bdd60a00f4a31d6fd9e867257dc8e3cc51630",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/definition-review-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 147170,
+        "editedFrom": "exec-00cb3e49-d57d-4fb9-bb7c-fcec91a250de.png"
+      }
+    },
+    "vocabulary": {
+      "promptSet": "expansion",
+      "prompt": "A beautiful horizontal archive of tangible vocabulary specimens: an open violet index-card drawer with petrol, coral and gold divider tabs, a fan of blank illustrated cards showing recognisably different dwelling silhouettes, and two small wooden sorting trays. Cards remain visibly distinct while organised together. Fine architectural sketches, tactile edges, paper and pigment. No letters, words, numbers, checkmarks, arrows, people or hands; no suggestion of an approved code list.",
+      "caption": "Names, definitions and organised choices do different jobs.",
+      "light": {
+        "scene": "vocabulary",
+        "mode": "light",
+        "source": "exec-11728d11-9eb2-4605-b080-ba51c0a378ce.png",
+        "sourceSha256": "e2ebaa0a5ba778b1e1bc77c2fbfa5ed6cb8071072a4b893e4a8a53ece0a1eeb7",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/vocabulary-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 136804
+      },
+      "dark": {
+        "scene": "vocabulary",
+        "mode": "dark",
+        "source": "exec-40bdc08d-6fec-4b87-9f71-960eef22fc5a.png",
+        "sourceSha256": "dfee7e526e2f91bc3c46bf453a30fc423b5a47b490e5b0811c00bbb0625cdf08",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/vocabulary-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 145998,
+        "editedFrom": "exec-11728d11-9eb2-4605-b080-ba51c0a378ce.png"
+      }
+    },
+    "dates-and-history": {
+      "promptSet": "expansion",
+      "prompt": "An elongated still life about a building and changing accounts: a small British house maquette stays at the centre while two visibly distinct blank report folders and a shallow open calendar with entirely unnumbered squares sit on either side. A delicate brass clock has plain unnumbered ticks. Different coloured page tabs distinguish the two reports. Quiet thoughtful composition, no flowing arrows, approval symbols, people, hands or text. Do not duplicate the house.",
+      "caption": "The event and the documents describing it can have different dates.",
+      "light": {
+        "scene": "dates-and-history",
+        "mode": "light",
+        "source": "exec-df748552-c3e6-4ee0-959d-baf37abe05ec.png",
+        "sourceSha256": "7c5329e2fc5b4b74bf214ce30ba380549db3d48c554097eb2bda414589b17e99",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "file": "/images/modelling/field-guide/dates-and-history-light.webp",
+        "width": 1200,
+        "height": 400,
+        "bytes": 79364
+      },
+      "dark": {
+        "scene": "dates-and-history",
+        "mode": "dark",
+        "source": "exec-35ebc018-5b99-4fc6-8533-fe983bee0035.png",
+        "sourceSha256": "2316b645feda58c84c0b9c4602b243c2664745234dfeb7779feea212878d42fa",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "file": "/images/modelling/field-guide/dates-and-history-dark.webp",
+        "width": 1200,
+        "height": 400,
+        "bytes": 88616,
+        "editedFrom": "exec-df748552-c3e6-4ee0-959d-baf37abe05ec.png"
+      }
+    },
+    "rule-testing": {
+      "promptSet": "expansion",
+      "prompt": "An architect's horizontal review bench with a simple open-front dwelling maquette, a removable coral enclosed-room panel resting beside it, three unlettered case sheets with different small floor-plan sketches, and a petrol transparent ruler. The contrasting cases invite someone to test the scope of a rule. Preserve physical plausibility and distinct case drawings. No checkmarks, pass/fail stamps, symbols, numbers, letters, people or hands. Not a precise measured plan.",
+      "caption": "An ordinary case and a difficult case can expose the limits of a proposed rule.",
+      "light": {
+        "scene": "rule-testing",
+        "mode": "light",
+        "source": "exec-de96ad4d-a730-43ff-bdcd-d5d681ea2a7f.png",
+        "sourceSha256": "352be700786aad4659ae09f8258c4a80242075fd2b195929b8a593d759bf5430",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/rule-testing-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 121184
+      },
+      "dark": {
+        "scene": "rule-testing",
+        "mode": "dark",
+        "source": "exec-30b38ac9-a856-4bf7-bbc9-8d8028a64e0e.png",
+        "sourceSha256": "f4cddc0893862b0f2fdd58d02f99078bc3de6858858bb0ebfb86da6ca3ffbc3b",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/rule-testing-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 124822,
+        "editedFrom": "exec-de96ad4d-a730-43ff-bdcd-d5d681ea2a7f.png"
+      }
+    },
+    "context-bridges": {
+      "promptSet": "expansion",
+      "prompt": "A poetic but grounded miniature architectural landscape: two distinct small British property-work neighbourhood models separated by a narrow petrol-coloured channel, joined by one clearly constructed slim pedestrian bridge. The neighbourhoods retain distinct coral and violet architectural characters rather than merging; gold details guide attention to the connection. Very shallow wide isometric composition on clean cool-white paper, no backdrop city skyline. No maps, labels, traffic signs, exact named places, people or arrows. This is a metaphor for connecting distinct meanings, not a literal context map.",
+      "caption": "A connection can preserve a difference rather than erase it.",
+      "light": {
+        "scene": "context-bridges",
+        "mode": "light",
+        "source": "exec-39373410-4df8-442a-88bb-da930741a7da.png",
+        "sourceSha256": "67fb2054c456ff0052ba250f97d846b6d58234d9d5bf3655efbbdd1698f4996c",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/context-bridges-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 121074
+      },
+      "dark": {
+        "scene": "context-bridges",
+        "mode": "dark",
+        "source": "exec-e047dc20-d951-4afb-9371-a73810231c37.png",
+        "sourceSha256": "fbaa21540263cb9eb69dac99ada7ec02fce0fb404a7eec0e2018dcb2891887b5",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/context-bridges-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 119032,
+        "editedFrom": "exec-39373410-4df8-442a-88bb-da930741a7da.png"
+      }
+    },
+    "sensitive-information": {
+      "promptSet": "expansion",
+      "prompt": "An editorial work surface showing a small residential house model beside two separate paper folders: an open petrol folder reveals an unlettered architectural sketch; a closed violet folder tied with a coral paper band keeps its pages covered. A small gold document clip and a partly covering tracing-paper sheet reinforce deliberate scope. Delicate detailed ink, soft pastel surfaces, shallow horizontal arrangement. No padlocks, shields, security badges, green ticks, login UI, text, people or hands. Depict careful information handling, not an operating security system.",
+      "caption": "Describe the relevant information and its limits without exposing restricted material.",
+      "light": {
+        "scene": "sensitive-information",
+        "mode": "light",
+        "source": "exec-9cee9f92-8689-4a49-80c4-3c0c1f167c06.png",
+        "sourceSha256": "2cc0a318a4e48a32bb70c262feca85dcadccdddfdcaf1dcad1a1445c9355ce85",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/sensitive-information-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 83830
+      },
+      "dark": {
+        "scene": "sensitive-information",
+        "mode": "dark",
+        "source": "exec-6c6a92b9-96f7-4b49-a14a-20e7abf20da4.png",
+        "sourceSha256": "e037f25797b7ae8ba9a0662d8ad4297169967d19c646dcc40c868ea138ad5f2c",
+        "sourceWidth": 1983,
+        "sourceHeight": 793,
+        "file": "/images/modelling/field-guide/sensitive-information-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 99998,
+        "editedFrom": "exec-9cee9f92-8689-4a49-80c4-3c0c1f167c06.png"
       }
     }
   }
