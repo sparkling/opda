@@ -2,7 +2,6 @@
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import LearningCard from '@/components/modelling/LearningCard.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
-import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 import SubpageCards from '@/components/modelling/SubpageCards.astro';
 import { contexts, contextRoute, contextMap, candidateManifest } from '@/lib/property-pack-model.mjs';
 const propertyContexts = contexts.filter((context) => context.kind === 'bounded-context');
@@ -12,7 +11,6 @@ const propertyContexts = contexts.filter((context) => context.kind === 'bounded-
   <h2 id="meaning"><span id="same-label" aria-hidden="true"></span>The same word can be doing different work</h2>
   <p>“Completion” could label a transaction event or the finishing of a document-preparation task. “Property” could point to a dwelling, a building or a record of rights. A shared label is not enough to make those meanings interchangeable. The practical question is what a recipient will conclude after information crosses the boundary.</p>
   <p>A <a href="/glossary#bounded-context">bounded context</a> is an explicit boundary within which meanings and their ownership are maintained consistently. Its <a href="/glossary#semantic-home">semantic home</a> identifies responsibility for a definition. This is not permission to invent conflicting facts: it is a way to preserve legitimate differences in the questions a model answers.</p>
-  <LearningIllustration scene="context-bridges" alt="Watercolour metaphor of coral and violet neighbourhoods joined by a narrow bridge across a teal channel; each side remains distinct. This is not the OPDA context map." />
 
   <h2 id="boundary"><span id="discover-boundaries" aria-hidden="true"></span><span id="contexts" aria-hidden="true"></span><span id="homes" aria-hidden="true"></span><span id="semantic-home" aria-hidden="true"></span>Work within the documented boundaries</h2>
   <p>The boundaries for this development phase are established inputs, not something each reader or workshop must rediscover. OPDA's maintained <a href="/development/property-pack/contexts#homes">contextual-boundary register</a> names these {propertyContexts.length} property semantic homes:</p>
@@ -58,7 +56,6 @@ const propertyContexts = contexts.filter((context) => context.kind === 'bounded-
 
   <section class="learning-example document-flow" aria-labelledby="transfer">
     <h2 id="transfer">Practice: when “completion” does not correspond</h2>
-    <LearningIllustration scene="conveyancing" alt="Two distinct document bundles with separate event markers and a title-boundary drawing, keeping their dated subjects apart." />
     <p>In fictional glossary A version 1, “completion” means the transaction-transfer event identified as C in transaction T. In fictional task list B version 1, “completion” means the event of finishing preparation of document bundle D. The teaching record explicitly states that preparation finished on 7 September and C occurred on 10 September. These definitions do not claim to set professional or legal terminology.</p>
     <h3>Worked response</h3>
     <p>The supplied definitions identify different events, so an exact correspondence is not supported. Retain the task and transaction-event identities, their dates and any supported relationship between them. The shared word does not turn 7 September into the transaction's completion date.</p>

@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import PageIllustration from '@/components/modelling/PageIllustration.astro';
 import '@/styles/modelling/judgement.css';
 
 interface Props {
@@ -32,5 +33,6 @@ const updatedLabel = new Intl.DateTimeFormat('en-GB', {
     </p>
     <p class="og-basis"><a href="/semantic-modelling/method/standards-and-decisions#authority">Method basis</a><span aria-hidden="true"> · </span><span>Updated <time datetime={updated}>{updatedLabel}</time></span></p>
   </header>
+  <PageIllustration />
   <div class="og-content document-flow"><slot /></div>
 </Layout>

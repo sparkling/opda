@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync } from 'node:fs';
 import test from 'node:test';
 
@@ -175,9 +176,8 @@ test('editorial scenes have matched light/dark assets and intrinsic geometry', (
   assert.match(component, /width=\{illustration\.light\.width\} height=\{illustration\.light\.height\}/u);
 });
 
-test('field-guide illustration uses resolve to the shared collection with contextual alternatives', () => {
+test('retained field-guide illustration uses resolve with contextual alternatives', () => {
   const manifest = JSON.parse(read('public/images/modelling/field-guide/manifest.json'));
-  const usedScenes = new Set();
   for (const section of ['understand', 'explore', 'contribute']) {
     const directory = 'src/pages/semantic-modelling/' + section + '/';
     for (const file of readdirSync(new URL('../' + directory, import.meta.url)).filter((name) => name.endsWith('.astro'))) {
@@ -187,9 +187,82 @@ test('field-guide illustration uses resolve to the shared collection with contex
         const alt = tag.match(/\balt="([^"]+)"/u)?.[1];
         assert.ok(Object.hasOwn(manifest.scenes, scene), file + ' uses an unknown scene');
         assert.ok(alt?.trim(), file + ' needs a contextual alternative');
-        usedScenes.add(scene);
       }
     }
   }
-  assert.deepEqual([...usedScenes].sort(), Object.keys(manifest.scenes).sort());
+});
+
+test('every live modelling page has its own relevant, paired header artwork', () => {
+  const root = new URL('../src/pages/semantic-modelling/', import.meta.url);
+  const walk = (directory) => readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const url = new URL(entry.name + (entry.isDirectory() ? '/' : ''), directory);
+    return entry.isDirectory() ? walk(url) : entry.name.endsWith('.astro') ? [url] : [];
+  });
+  const pages = new Map(walk(root).flatMap((file) => {
+    const source = readFileSync(file, 'utf8');
+    if (source.includes('Astro.redirect')) return [];
+    const suffix = file.pathname.slice(root.pathname.length).replace(/(?:\/)?index\.astro$|\.astro$/u, '');
+    return [[('/semantic-modelling/' + suffix).replace(/\/$/u, ''), source]];
+  }));
+  const directory = new URL('../public/images/modelling/page-headers/', import.meta.url);
+  const records = readdirSync(directory, { withFileTypes: true }).filter((entry) => entry.isDirectory())
+    .flatMap((entry) => {
+      const text = readFileSync(new URL(entry.name + '/manifest.json', directory), 'utf8');
+      const manifest = JSON.parse(text);
+      assert.ok(text.split('\n').length < 500, entry.name + ' manifest exceeds file limit');
+      assert.ok(manifest.lightPrompt && manifest.darkPrompt, entry.name + ' needs reproducible prompts');
+      return manifest.pages;
+    });
+  assert.deepEqual(records.map(({ route }) => route).sort(), [...pages.keys()].sort());
+  const files = new Set();
+  const sourceHashes = new Set();
+  const exportHashes = new Set();
+  const prompts = new Set();
+  for (const record of records) {
+    assert.ok(record.title && pages.get(record.route).includes(record.title), record.route + ' title mismatch');
+    assert.ok(record.alt?.trim() && record.prompt?.trim(), record.route + ' needs a relevant alternative and scene brief');
+    assert.ok(!prompts.has(record.prompt), record.route + ' reuses a scene brief');
+    prompts.add(record.prompt);
+    assert.equal(record.dark.editedFrom, record.light.source);
+    for (const mode of ['light', 'dark']) {
+      const asset = record[mode];
+      assert.match(asset.file, /^\/images\/modelling\/page-headers\/[a-z-]+\/[a-z-]+\.webp$/u);
+      assert.match(asset.sourceSha256, /^[a-f0-9]{64}$/u);
+      const bytes = readFileSync(new URL('../public' + asset.file, import.meta.url));
+      const exportHash = createHash('sha256').update(bytes).digest('hex');
+      assert.ok(!files.has(asset.file), record.route + ' reuses an image URL');
+      assert.ok(!sourceHashes.has(asset.sourceSha256), record.route + ' reuses generated artwork');
+      assert.ok(!exportHashes.has(exportHash), record.route + ' duplicates another exported image');
+      files.add(asset.file);
+      sourceHashes.add(asset.sourceSha256);
+      exportHashes.add(exportHash);
+      assert.deepEqual(webpSize(bytes), [asset.width, asset.height]);
+      assert.equal(asset.width, record.light.width);
+      // Native palette edits can differ by one source pixel. Preserve the whole
+      // image instead of cropping or stretching it to force identical rounding.
+      assert.ok(Math.abs(asset.height - record.light.height) <= 1, asset.file + ' changes the composition ratio');
+      assert.equal(bytes.length, asset.bytes);
+      assert.ok(bytes.length <= 150_000, asset.file + ' exceeds the editorial asset budget');
+      assert.ok(asset.width <= 1200 && asset.width / asset.height >= 2, asset.file + ' is not a shallow landscape');
+      assert.ok(Math.abs(asset.width / asset.height - asset.sourceWidth / asset.sourceHeight) < 0.01,
+        asset.file + ' must preserve the uncropped source proportions');
+    }
+  }
+});
+
+test('both modelling templates share the top illustration and natural reading-width layout', () => {
+  for (const name of ['ModellingLayout', 'OntologyChapter']) {
+    const layout = read('src/layouts/' + name + '.astro');
+    const imagePosition = layout.indexOf('<PageIllustration');
+    assert.ok(imagePosition > layout.indexOf('<h1>') && imagePosition < layout.indexOf('<slot'), name + ' must show the image before the page content');
+    assert.equal([...layout.matchAll(/<PageIllustration\b/gu)].length, 1);
+  }
+  const component = read('src/components/modelling/PageIllustration.astro');
+  assert.match(component, /CampaignThemeImage/u);
+  assert.match(component, /Astro\.url\.pathname/u);
+  assert.match(component, /max-inline-size: min\(100%, var\(--editorial-text-max, 64rem\)\)/u);
+  assert.match(component, /margin-inline: 0 auto/u);
+  assert.match(component, /block-size: auto/u);
+  assert.match(component, /loading="eager"/u);
+  assert.doesNotMatch(component, /object-fit:\s*cover|aspect-ratio:|filter:|overflow:\s*hidden/u);
 });

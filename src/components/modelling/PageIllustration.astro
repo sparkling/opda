@@ -1,0 +1,45 @@
+---
+import CampaignThemeImage from '../campaign/CampaignThemeImage.astro';
+
+interface ImageAsset {
+  file: string;
+  width: number;
+  height: number;
+}
+interface PageArtwork {
+  route: string;
+  alt: string;
+  light: ImageAsset;
+  dark: ImageAsset;
+}
+
+// Build-time manifests keep page-specific art out of the two page templates.
+// Only the selected image's attributes are rendered into the page.
+const collections = import.meta.glob<{ pages: PageArtwork[] }>(
+  '/public/images/modelling/page-headers/*/manifest.json',
+  { eager: true, import: 'default' },
+);
+const route = Astro.url.pathname.replace(/\/+$/u, '');
+const artwork = Object.values(collections).flatMap(({ pages }) => pages)
+  .find((page) => page.route === route);
+if (!artwork?.alt.trim()) throw new Error(`Missing modelling page illustration: ${route}`);
+---
+
+<figure class="modelling-page-illustration" data-modelling-illustration={route}>
+  <CampaignThemeImage lightSrc={artwork.light.file} darkSrc={artwork.dark.file}
+    alt={artwork.alt} width={artwork.light.width} height={artwork.light.height}
+    loading="eager" />
+</figure>
+
+<style>
+  .modelling-page-illustration {
+    inline-size: 100%;
+    max-inline-size: min(100%, var(--editorial-text-max, 64rem));
+    margin-inline: 0 auto;
+  }
+  .modelling-page-illustration :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+  }
+</style>

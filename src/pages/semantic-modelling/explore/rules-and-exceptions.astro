@@ -1,6 +1,5 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import Callout from '@/components/Callout.astro';
 ---
@@ -42,7 +41,6 @@ import Callout from '@/components/Callout.astro';
   <p>A count requirement can say “at least one”, “no more than one” or “exactly one”. Those are different obligations. R requires at least one identified limitation, so two distinct named limitations do not violate its count. Repeating the same text twice does not supply two distinct limitations.</p>
   <p>A permitted-value requirement has its own scope. Suppose another fictional profile requires exactly one known physical-access outcome for a visit, chosen from the <a href="/semantic-modelling/explore/names-and-choices#choices">defined all/some/none list</a>. A record assigning both “All” and “None” to the same nonempty scope and visit would not meet that profile's requirement. Two outcomes for two different visits would be a different case, not automatically inconsistent.</p>
   <p>Completeness asks whether required information is supplied. Consistency asks whether the relevant statements can fit together under their definitions and scope. Allowed values ask whether a stated choice belongs to the permitted set. None says an apparently complete, consistent record must be an accurate account of the world.</p>
-  <LearningIllustration scene="rule-testing" alt="Watercolour review bench with an open-front dwelling model, a separate wall panel and three different floor-plan studies, inviting comparison of ordinary and difficult cases." />
 
   <section class="learning-example document-flow" aria-labelledby="change-premise">
     <h2 id="change-premise">Practice: change one premise</h2>

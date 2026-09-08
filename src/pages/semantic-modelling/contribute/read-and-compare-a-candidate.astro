@@ -3,7 +3,6 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import LearningCard from '@/components/modelling/LearningCard.astro';
 import Callout from '@/components/Callout.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
-import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 import { candidateManifest, kindLabels, resourceByKey, resourceRoute } from '@/lib/property-pack-model.mjs';
 
 const property = resourceByKey.get('common:Property');
@@ -69,7 +68,6 @@ const reviewedCandidate = candidateManifest.candidate_id === 'property-pack-0.1'
   <section aria-labelledby="fictional-revision">
     <h2 id="fictional-revision">Now compare a fictional change across the agreement</h2>
     <p>Leave the real candidate here. The following <strong>teaching draft A and teaching draft B</strong> are invented model versions. They are not Property Pack releases, report versions or a live website comparison feature. The change addresses the ambiguous access choices discussed in <a href="/semantic-modelling/contribute/review-vocabularies-and-mappings">reviewing vocabularies</a>.</p>
-    <LearningIllustration scene="technology" alt="Different representations laid out for comparison, with the connections between their subjects preserved." />
     <div class="learning-comparison">
       <LearningCard labelledby="draft-a"><h3 id="draft-a">Teaching draft A</h3><p><strong>Access outcome:</strong> “Whether the inspection was completed.”</p><p><strong>Choices:</strong> Completed; Limited access; Not inspected.</p><p><strong>Relationship:</strong> “Report has access outcome”, without identifying the visit or agreed areas.</p></LearningCard>
       <LearningCard labelledby="draft-b"><h3 id="draft-b">Teaching draft B</h3><p><strong>Physical-access outcome:</strong> “How much of the identified nonempty set of agreed areas was physically accessed during this visit.”</p><p><strong>Choices:</strong> All; Some but not all; None — with the full definitions established in the vocabulary.</p><p><strong>Relationship:</strong> A report version records an access-outcome statement about an identified inspection and its agreed areas.</p></LearningCard>
