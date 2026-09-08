@@ -62,11 +62,12 @@ test('the property story draws both report versions describing one inspection', 
   assert.match(source, /Nothing here asserts a second visit or an inspection of Flat 2/u);
 });
 
-test('editorial layouts constrain reading text, not comparisons and diagrams', () => {
+test('field-guide illustrations, diagrams and callouts share the reading width; tables stay wide', () => {
   const css = read('src/styles/modelling/field-guide.css');
   assert.match(css, /\.learning-comparison/u);
   assert.match(css, /container-type: inline-size/u);
-  assert.match(css, /max-inline-size: none/u);
+  assert.match(css, /\.prose\.editorial-content\.learning-document :is\(\.callout, \.learning-editorial, \.learning-figure\)\s*\{[^}]*max-inline-size: min\(100%, var\(--editorial-text-max\)\)[^}]*margin-inline: 0 auto/su);
+  assert.match(css, /:is\(\.learning-comparison, \.learning-table\)\s*\{\s*max-inline-size: none/su);
   assert.doesNotMatch(css, /max-inline-size: (54|60)rem/u);
   assert.doesNotMatch(css, /\.learning-specimen[\s\S]*?background: var\(--color-surface-alt\)/u);
   const editorial = read('src/styles/editorial-content.css');

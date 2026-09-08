@@ -1,7 +1,6 @@
 /* Field-guide composition: scope excludes the ontology engineering reference.
    Existing editorial-content.css owns type, prose measure and section rhythm. */
 .learning-document { min-width: 0; container: learning-chapter / inline-size; }
-.learning-document .learning-editorial { max-inline-size: none; margin-inline: 0 auto; }
 .learning-document .learning-editorial img { display: block; inline-size: 100%; block-size: auto; }
 .learning-document .learning-editorial figcaption {
   margin-block-start: var(--space-3);
@@ -40,8 +39,13 @@
 .learning-document .learning-comparison dt:first-child { margin-block-start: 0; }
 .prose.editorial-content.learning-document .learning-comparison dd { margin-block-start: var(--space-2); }
 .prose.editorial-content.learning-document .learning-comparison p { text-align: start; hyphens: manual; }
-/* A comparison or figure can fill the article. Its reading copy cannot. */
-.prose.editorial-content.learning-document :is(.callout, .learning-comparison, .learning-table, .learning-figure, .learning-editorial) {
+/* Teaching visuals and callouts follow the reading measure; tabular comparisons
+   retain the wider article track. Ontology-reference diagrams are unchanged. */
+.prose.editorial-content.learning-document :is(.callout, .learning-editorial, .learning-figure) {
+  max-inline-size: min(100%, var(--editorial-text-max));
+  margin-inline: 0 auto;
+}
+.prose.editorial-content.learning-document :is(.learning-comparison, .learning-table) {
   max-inline-size: none;
 }
 .prose.editorial-content.learning-document :is(.callout, .learning-extract, .learning-example) > :is(p, ul, ol, dl, blockquote, figcaption) {
