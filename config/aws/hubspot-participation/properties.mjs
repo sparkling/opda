@@ -50,7 +50,7 @@ export const PARTICIPATION_PROPERTIES = freeze([
   },
   {
     name: 'opda_review_status', label: 'Application review status', type: 'enumeration', fieldType: 'select',
-    description: 'AWS-owned review snapshot. Editing this CRM property never approves website access.',
+    description: 'Staff review decision. Set Approved in HubSpot to enable ordinary website sign-in; Under review, Rejected or Withdrawn removes access. Email verification is still required. No administrator or Microsoft access is granted.',
     options: choices([
       ['received', 'Received'], ['under_review', 'Under review'], ['approved', 'Approved'],
       ['rejected', 'Rejected'], ['withdrawn', 'Withdrawn'],

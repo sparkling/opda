@@ -9,7 +9,6 @@ implements: []
 ---
 
 # Integrate HubSpot with working-group signup and Cognito authentication
-
 ## Context and Problem Statement
 
 OPDA needs a CRM for roughly 1,000 participants, retaining join data, human approval,
@@ -36,6 +35,11 @@ The frozen migration includes contacts created by 18:26:22 UTC that day; it does
 not automatically approve future contacts, establish marketing consent or grant
 website administration. All 1,001 current contacts passed the primary-email preflight.
 
+The operator subsequently requested approval directly in HubSpot. This amendment
+replaces the proposed bespoke ordinary-participant action page with manual CRM
+review decisions, authenticated webhooks and AWS enforcement. It does not grant CRM
+editors website administration or make anonymous CRM writes trusted approvals.
+
 ## Decision Drivers
 
 Reuse the CRM; require approval and verified identity; keep public reading and
@@ -59,7 +63,7 @@ avoid paid automation tiers; keep AWS costs and private recovery proportionate.
 ## Decision Outcome
 
 Use **HubSpot for CRM, Cognito for authentication, and DynamoDB for website eligibility**.
-Implement a narrow signup/synchronisation bridge and access-action page, not a custom CRM.
+Implement narrow signup and approval bridges, not a custom CRM or ordinary-approval page.
 HubSpot is not called during participant login or protected requests. Its outage must not break
 the public site or revoke eligible access merely because CRM synchronisation is late.
 
@@ -86,7 +90,7 @@ contact and lifecycle data, not replace Cognito with HubSpot authentication.
 | System | Owns | Does not own |
 |---|---|---|
 | Existing AWS intake table | Validated original submissions, collection evidence and initial retention | Credentials, approvals or grants from anonymous input |
-| HubSpot Contacts | Staff-maintained contact details, requested participation, contribution preferences and CRM notes/tasks | Verified login identity or effective access permissions |
+| HubSpot Contacts | Staff-maintained contact details, requested participation, contribution preferences, manual ordinary-participant review decisions and CRM notes/tasks | Verified login identity, administrative grants or effective AWS access state |
 | New AWS participant register | Stable participant ID, application links, trusted decisions, approved groups, enrolment, active flag, identity binding, grants, audit and sync operations | Passwords, a second editable CRM directory, or a property-data model |
 | Cognito user pool | Credentials, verified identity attributes, MFA and authentication | Application evidence, CRM notes or approval inferred from an email address |
 
@@ -114,10 +118,10 @@ An initially created contact is an unverified applicant, not an approved member.
 | `workingGroups` | **New:** `opda_requested_working_groups` | `enumeration` / `checkbox`; requested groups, not approved groups or Microsoft grants. |
 | `contributions` | **New:** `opda_contribution_preferences` | `enumeration` / `checkbox`; all six current choices. |
 | `relevantPerspective` | **New:** `opda_relevant_perspective` | `string` / `textarea`; retain the 600-character limit and existing privacy warning. |
-| Review outcome | **New:** `opda_review_status` | `enumeration` / `select`; AWS-owned snapshot: `received`, `under_review`, `approved`, `rejected`, `withdrawn`. |
+| Review outcome | **New:** `opda_review_status` | `enumeration` / `select`; staff-owned decision: `received`, `under_review`, `approved`, `rejected`, `withdrawn`. A current manual edit with recorded CRM actor is required. |
 | Account setup | **New:** `opda_enrolment_status` | `enumeration` / `select`; AWS-owned snapshot: `not_invited`, `invited`, `complete`, `expired`. |
 | Enabled flag | **New:** `opda_active` | `bool` / `booleancheckbox`; AWS-owned snapshot; pending applicants are disabled, the approved migration is enabled but unenrolled. Not sufficient for login by itself. |
-| `acknowledgement`, `privacyNoticeVersion` | AWS evidence, visible through the restricted application/access page | Keep the boolean and exact notice version with server receipt time; not a HubSpot marketing subscription. |
+| `acknowledgement`, `privacyNoticeVersion` | Restricted AWS collection evidence | Keep the boolean and exact notice version with server receipt time; not a HubSpot marketing subscription. |
 | `website`, `startedAt` | **Do not synchronise or retain** | Honeypot and transient client timer, not a company website or application timestamp. |
 
 HubSpot's default contact properties distinguish company-name text from associated
@@ -146,12 +150,12 @@ reviewed set deliberately, rather than accidentally appending stale choices.
 Unknown values must fail validation and become a review issue, not disappear.
 
 AWS retains the participant-to-HubSpot contact mapping without spending another
-custom-property slot; the managed access-page link carries an opaque reference.
+custom-property slot or putting an access credential in a CRM link.
 AWS additionally retains all source registration IDs, form/option-set version,
 receipt/decision/invitation/completion timestamps, approved group IDs, actor and
 reason, suspension state, verified email/subject evidence, `accessVersion`, retention basis/deadline,
 sync errors and last successful sync time. Not every audit field needs a CRM
-property. Show approved groups and live access on the restricted action page;
+property. Approved groups and privileged grants remain separately governed;
 add a CRM approved-groups field later only if staff filtering warrants it.
 
 Legacy records already contain trimmed/lowercased email and trimmed text, not
@@ -184,9 +188,10 @@ Recheck capacity for later additions; never remove fields or buy an upgrade impl
    not additional CRM objects. Permit at most one automatic CRM creation/task
    per email in 24 hours and 100 new contacts/day. Excess stays in the AWS review
    backlog; operators may adjust the limit without losing intake or auto-approving.
-5. Staff work with contacts in HubSpot. Trusted access actions update AWS and an
-   outbound sync marker atomically. A worker projects the confirmed result back
-   to HubSpot; no database-plus-API dual write is represented as one transaction.
+5. Staff change Application review status in HubSpot. The separate approval worker
+   commits eligibility, actor audit and decision version atomically in AWS, then
+   projects active/enrolment status. External effects have durable retry state;
+   no database-plus-API dual write is represented as one transaction.
 
 An automatically allocated pending participant reference identifies a record,
 not a proven person. It cannot activate anything. Before approval, resolve
@@ -199,71 +204,65 @@ creation. An email match, contact merge or copied access-page link must not
 merge website identities. Pause ambiguous mappings for human resolution; no
 automatic alias transfer, identity re-binding or invitation resend.
 
-Run hourly reconciliation over pending operations and mapped CRM profiles;
-include an intake completeness/retention sweep in its daily run. Event-driven
-signup normally arrives sooner; CRM freshness target is one hour, not a guarantee.
+Run approval/profile reconciliation every 15 minutes as recovery for missed webhooks.
+Event-driven changes normally arrive sooner; latency is not guaranteed during an
+outage. The separate daily intake completeness/retention sweep remains a delivery item.
 Alert on dead letters, credential/configuration failures and work pending over a day.
 Respect `429` and `Retry-After`, back off with jitter, and retain failed work for
 safe replay. Expired/erased records must not be recreated by replay or backfill.
 
-Use per-field ownership, not timestamp-based last-write-wins. Do not overwrite
-HubSpot-owned profile edits with AWS snapshots. For AWS-owned status fields,
-reconcile from the current AWS record; CRM edits to those mirrors never become
-commands. Display live state and last-confirmed CRM sync time on the action
-page. Describe HubSpot status properties explicitly as delayed snapshots.
+Use per-field ownership, not timestamp-based last-write-wins. Never project AWS
+snapshots over staff-owned profiles or review decisions. Only active/enrolment are
+AWS-owned status mirrors; editing those mirrors does not change access.
 
-No HubSpot workflows, incoming webhooks or app cards are required for version
-one. Polling is acceptable for CRM freshness **because it is not the revocation
-mechanism**. A later webhook may improve latency, but must validate its supported
-signature and tenant and only request reconciliation, not grant access.
+### 5. Human approval in HubSpot, with event-driven AWS enforcement
 
-### 5. Human approval and the small access-action surface
+Staff use **Application review status → Approved** on the contact. The worker enables
+ordinary email-code sign-in. Received, Under review, Rejected or Withdrawn removes
+ordinary access. No extra Active checkbox, paid workflow, bulk invitation or bespoke
+approval screen is required. Enrolment completes only after mailbox proof at sign-in.
 
-Use HubSpot's contact list, views, notes and tasks for CRM work. Provide only a
-restricted `/admin/participant-access` page and associated API for review,
-approval/rejection, approved groups, invitation, suspension/reactivation and
-identity correction. Link it from an OPDA-managed contact note using an opaque
-reference, never email, an invitation code or a bearer credential in the URL.
-Following a link authorises nothing; the server resolves and checks every target.
+The existing legacy private app supports property-change webhooks. Configure its
+HTTPS target and subscriptions in HubSpot's private-app UI, not the public-app API.
+Watch review status, email, deletion/privacy deletion, merge and restore events.
+The receiver verifies the app's documented v1 signature over the exact raw bytes,
+pins portal/app IDs and durably enqueues bounded contact-ID hints before replying.
+It has no participant-table or Cognito permissions. The signing secret is separate
+from the contact API token in Secrets Manager. No secrets or contact values enter
+queue payloads or logs. [Private-app webhooks](https://developers.hubspot.com/docs/apps/legacy-apps/private-apps/overview)
 
-The action page separates original applications from current CRM values and shows effective state,
-pending operations and reasons for ineligibility. Confirm sensitive actions and return the AWS result,
-distinguishing invitation requested/sent from delivered or account setup complete.
-Rejections and requests for more information are human communications; they must
-not trigger unrequested automatic messages to an unverified address.
+The signature authenticates the app, not the approver. A separate worker fetches
+the current contact and review/email property histories. Approval requires a
+current `CRM_UI` review entry with HubSpot-recorded user ID and matching current
+value after the review cutover. Imports, forms, workflows, integrations and a
+user-entered approver name cannot approve. The contact's email must predate its
+first approval. Invalid or contradictory recent review history cannot grant access.
+[Property history](https://developers.hubspot.com/docs/api-reference/latest/crm/objects/contacts/guide),
+[Change sources](https://knowledge.hubspot.com/properties/hubspots-change-sources)
 
-| Actor | Authority |
-|---|---|
-| Ordinary participant | Their own eligible member actions; no CRM or access administration. |
-| HubSpot editor | CRM profile work under HubSpot permissions; no implied AWS access grant. |
-| AWS `participant-manager` | Review/invite/suspend ordinary participants through the action API; no administrative grants or privileged-user changes. |
-| AWS `access-admin` | Manage grants, privileged users and identity corrections under step-up; no self-promotion or first-user-wins rule. |
+This deliberately trusts authorised HubSpot contact editors for **ordinary**
+participant approval. Use named staff accounts and MFA; a shared CRM account cannot
+provide individual attribution. HubSpot property restrictions alone are not a
+security boundary. Administrative grants and identity correction remain separate,
+audited AWS operations under operator authority and step-up; CRM never grants them.
+[Property-access limitations](https://knowledge.hubspot.com/properties/restrict-view-edit-access-for-properties)
 
-Neither administrative role may approve, invite, reactivate, rebind or grant
-access to its own identity. Identity correction first suspends/revokes the old
-binding, then requires verified re-enrolment, not a direct CRM email replacement.
+Delivery can be duplicate, delayed or out of order, and v1 signatures have no
+timestamp-bound replay protection. Treat every event as a fresh-read hint, not a
+command. Conditional decision versions and an atomic audit prevent old approvals
+from restoring withdrawn access. One worker serialises provider effects, SQS retries
+failures, and 15-minute complete-inventory reconciliation repairs missed events.
+[Webhook delivery semantics](https://developers.hubspot.com/docs/api-reference/legacy/webhooks/guide)
 
-Bootstrap the operator-designated administrator through an audited AWS procedure
-and verified Cognito binding. Keep the supplied administrator email in private
-deployment inputs, not this ADR, a public allowlist or frontend code. Retain
-MFA-protected break-glass recovery and prevent accidental removal of the last
-active administrator. HubSpot users should have named accounts and MFA; sharing
-a CRM login must not conceal the actor for a website approval.
-
-Authorise both the action HTML and API before disclosing data, including direct
-origin access. Use no-store responses, strict input validation, CSRF/Origin
-checks, optimistic versions and atomic decision/audit writes. The actor's current
-grant/version must still hold when a privileged mutation commits. Require staff
-TOTP MFA and fresh server-verified step-up for access administrators/managers.
-Prove first-login and recovery challenges in a spike; MFA configuration or a JWT
-alone is insufficient. Use strict CSP, no third-party admin scripts and assess
-residual same-origin XSS. MFA is optional for ordinary participants.
-[Cognito MFA behaviour](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-mfa.html)
-
-Even HubSpot's paid property restrictions are explicitly not a complete security
-measure. Consequently, an editable `approved` or `active` value, webhook app
-signature, workflow or user-entered approver name is not a trusted human decision.
-[HubSpot property-access limitations](https://knowledge.hubspot.com/properties/restrict-view-edit-access-for-properties)
+Never adopt an existing Cognito account by matching email. Reserve the immutable
+participant/contact/email binding before suppressed provisioning, create its AWS
+record inactive, reread the CRM decision, then activate transactionally. Check
+source expiry/deletion and suppressions before initial activation. Contact deletion
+or identity ambiguity suspends an existing mapping; restores and merges cannot
+transfer identity or replay an old approval. Independent AWS security suspensions,
+erasure and expiry cannot be cleared by CRM approval. Existing frozen imports stay
+approved until a new decision; the six non-CRM legacy approvals are not revoked
+merely because they are absent from HubSpot.
 
 ### 6. Cognito enrolment, eligibility and revocation
 
@@ -349,7 +348,7 @@ Verify portal/app IDs and exact scopes, including implicit `oauth`, before each 
 
 The public form role remains write-only to intake. The CRM bridge can read
 in-scope applications and synchronise profiles but cannot approve,
-activate, change grants or administer Cognito. The access service alone can
+activate, change grants or administer Cognito. The isolated approval service alone can
 change eligibility and provision identities. Backup roles cannot administer
 accounts. Separate eligibility/audit keys from projection/sync keys and enforce
 the bridge's write prohibition in IAM, not merely in application code.
@@ -378,8 +377,9 @@ TTL is asynchronous. For a shared contact with another legitimate OPDA purpose,
 remove participation fields/notes when due rather than deleting unrelated data.
 The daily sweep uses AWS retention deadlines and durable suppression records to
 drive CRM removal; the existing publisher intentionally ignores TTL removals.
-Withdrawal suspends access through the trusted command; deleting a CRM contact
-alone is not a documented access-revocation mechanism.
+Withdrawal and contact deletion are reconciled into AWS suspension. Revocation is
+effective after AWS commits it, not synchronously with the CRM click; API outages
+can delay this. Urgent security suspension uses the independent AWS access boundary.
 
 Keep intake PITR at seven days; enable 35-day PITR on the new participant table.
 Export intake and participant records daily at a native point in time to a
@@ -413,7 +413,7 @@ under a documented retention basis, then expire it too.
 
 ### 9. Cost, delivery and acceptance boundary
 
-Use regional serverless participant/session stores, a sync consumer, action backend
+Use regional serverless participant/session stores, isolated signup/approval consumers
 and scheduled maintenance. No custom CRM, SQL, VPC/NAT, Redis or workflow engine.
 
 Free/Starter private apps allow 100 requests per ten seconds per app and 250,000
@@ -441,8 +441,8 @@ Deliver in independent, verified slices:
 2. Implement receipt-preserving AWS-to-HubSpot sync with synthetic data first;
    reconcile new applications without automatic approval. The explicitly approved
    existing-contact snapshot is the bounded exception, not a standing CRM rule.
-3. Add the AWS register and action page; prove approval, invitation, email
-   verification, enrolment, staff MFA, suspension and backup recovery in a spike.
+3. Add the AWS register and signed approval webhooks; prove manual approval,
+   email verification, enrolment, suspension, safe retries and backup recovery.
 4. Migrate sessions and **Artalk** together: proxy authenticated comment actions
    through the OPDA session backend, checking AWS eligibility on every action.
    The fork accepts only short-lived server-to-server assertions from that proxy
@@ -477,9 +477,9 @@ Infrastructure and website CI deployed `95242916` on 2026-09-08. Schema/app pref
 - Verified S3 recovery point, 2026-09-08 19:56:51 UTC: 3,023 register items covering 1,007 accounts,
   empty intake, 1,001 CRM profiles and 16 definitions. Counts/digests passed; no sessions or credentials.
 
-Outstanding: a quarantine restore drill, staff action page/API and MFA/grants, automated status
-projection, retention/reconciliation sweeps and authenticated comment writes. Comments are public
-read-only; CRM projection is operator-run. These are explicit boundaries, not implied live capabilities.
+The webhook amendment is under implementation and not yet live-verified. Outstanding:
+operator email-code completion, a quarantine restore drill, privileged access/MFA procedures,
+retention sweeps and authenticated comment writes. Comments remain public read-only.
 
 ## More Information
 

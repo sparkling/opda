@@ -1,20 +1,7 @@
-# Site stack — opda.org.uk AWS hosting (ADR-0038 / ADR-0040 / ADR-0079)
-#
-# The eu-west-2 stack: everything except the us-east-1 ACM certificate, which
-# arrives as a parameter from the edge stack (exports do not cross regions).
-#
-#   - Private S3 site bucket + public CloudFront distribution (OAC)
-#   - /_auth/* routed to the regional Cognito participant session service
-#   - /api/v2/* routed to the Artalk comments origin
-#   - Route 53 apex alias records
-#
-# The Artalk runtime (VPC, ECS Fargate, ECR, Litestream bucket, the
-# comments-origin DNS updater) lives in the comments stack; this stack only
-# carries the CloudFront origin + behavior pointing at it.
-#
-# Deployed by CI (.github/workflows/infra.yml). During the ADR-0079 transition,
-# CI removes CloudFront's gate association before reconciling the certificate-only
-# edge stack, so Lambda@Edge replicas are no longer attached when deleted.
+# Regional site, public APIs and participant services (ADR-0038/0040/0079/0084).
+# CI passes the us-east-1 certificate ARN and packages local nested templates.
+# Artalk runtime is independent; only its CloudFront origin/behavior live here.
+# CI detaches the old viewer gate before reconciling the certificate-only edge.
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
   opda.org.uk site resources (eu-west-2): S3 + CloudFront, Route 53 records,
@@ -44,8 +31,6 @@ Resources:
     Metadata:
       cfn-lint:
         config:
-          # A local nested-template URL is intentional: the infra workflow
-          # runs `aws cloudformation package` before deployment.
           ignore_checks: [W3002]
     Properties:
       TemplateURL: auth-session-stack.yaml
@@ -58,8 +43,6 @@ Resources:
     Metadata:
       cfn-lint:
         config:
-          # A local nested-template URL is intentional: the infra workflow
-          # runs `aws cloudformation package` before deployment.
           ignore_checks: [W3002]
     Properties:
       TemplateURL: working-group-interest-stack.yaml
@@ -69,8 +52,6 @@ Resources:
     Metadata:
       cfn-lint:
         config:
-          # A local nested-template URL is intentional: the infra workflow
-          # runs `aws cloudformation package` before deployment.
           ignore_checks: [W3002]
     Properties:
       TemplateURL: newsletter-subscription-stack.yaml
@@ -80,8 +61,6 @@ Resources:
     Metadata:
       cfn-lint:
         config:
-          # A local nested-template URL is intentional: the infra workflow
-          # runs `aws cloudformation package` before deployment.
           ignore_checks: [W3002]
     Properties:
       TemplateURL: submission-events-stack.yaml
@@ -104,6 +83,26 @@ Resources:
           Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableName'
         ParticipantsTableArn:
           Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableArn'
+        BridgeSecretArn: !Ref HubSpotBridgeSecretArn
+
+  HubSpotApprovalApplication:
+    Type: AWS::CloudFormation::Stack
+    Metadata:
+      cfn-lint:
+        config: { ignore_checks: [W3002] }
+    Properties:
+      TemplateURL: hubspot-approval-stack.yaml
+      Parameters:
+        RegistrationsTableName: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName
+        RegistrationsTableArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableArn
+        ParticipantsTableName:
+          Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableName'
+        ParticipantsTableArn:
+          Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableArn'
+        UserPoolId:
+          Fn::ImportValue: !Sub '${IdentityStackName}-UserPoolId'
+        UserPoolArn:
+          Fn::ImportValue: !Sub '${IdentityStackName}-UserPoolArn'
         BridgeSecretArn: !Ref HubSpotBridgeSecretArn
 
   ParticipantBackupApplication:
@@ -426,6 +425,16 @@ Resources:
             HostedZoneId: Z2FDTNDATAQYW2
 
 Outputs:
+  HubSpotApprovalApiEndpoint:
+    Value: !GetAtt HubSpotApprovalApplication.Outputs.ApiEndpoint
+  HubSpotApprovalWebhookUrl:
+    Value: !GetAtt HubSpotApprovalApplication.Outputs.WebhookUrl
+  HubSpotApprovalWorkerName:
+    Value: !GetAtt HubSpotApprovalApplication.Outputs.WorkerFunctionName
+  HubSpotApprovalQueueUrl:
+    Value: !GetAtt HubSpotApprovalApplication.Outputs.ApprovalQueueUrl
+  HubSpotApprovalFailureQueueUrl:
+    Value: !GetAtt HubSpotApprovalApplication.Outputs.FailureQueueUrl
   ParticipantBackupFunctionName:
     Value: !GetAtt ParticipantBackupApplication.Outputs.FunctionName
   HubSpotSignupWorkerName:

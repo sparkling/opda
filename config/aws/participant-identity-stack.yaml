@@ -152,6 +152,10 @@ Resources:
 Outputs:
   UserPoolId:
     Value: !Ref UserPool
+    Export: { Name: !Sub '${AWS::StackName}-UserPoolId' }
+  UserPoolArn:
+    Value: !GetAtt UserPool.Arn
+    Export: { Name: !Sub '${AWS::StackName}-UserPoolArn' }
   CognitoIssuer:
     Value: !Sub 'https://cognito-idp.${AWS::Region}.${AWS::URLSuffix}/${UserPool}'
     Export: { Name: !Sub '${AWS::StackName}-CognitoIssuer' }

@@ -155,9 +155,8 @@ async function projectStatus(api, plan, current) {
       if (op?.phase !== 'complete' || current.get(contact.contactId) !== contact.email) continue;
       const participant = await get(`USER#${op.cognitoSub}`);
       if (participant?.participantId !== op.participantId || participant.hubspotContactId !== contact.contactId) continue;
-      // Projection only: current AWS decisions, never imported CRM access flags.
+      // Review is now staff-owned in HubSpot. Never overwrite their decision.
       inputs.push({ id: contact.contactId, properties: {
-        opda_review_status: participant.reviewStatus,
         opda_enrolment_status: participant.enrolmentStatus,
         opda_active: String(participant.active && !participant.suspended),
       } });

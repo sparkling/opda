@@ -1,0 +1,358 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Isolated signed HubSpot approval intake and serialized participant identity reconciliation.
+
+Parameters:
+  RegistrationsTableName:
+    Type: String
+  RegistrationsTableArn:
+    Type: String
+  ParticipantsTableName:
+    Type: String
+  ParticipantsTableArn:
+    Type: String
+  UserPoolId:
+    Type: String
+  UserPoolArn:
+    Type: String
+  BridgeSecretArn:
+    Type: String
+    AllowedPattern: 'arn:aws:secretsmanager:eu-west-2:[0-9]{12}:secret:opda/hubspot/participant-crm-bridge-[A-Za-z0-9]{6}'
+  SigningSecretName:
+    Type: String
+    Default: opda/hubspot/approval-webhook
+    AllowedValues: [opda/hubspot/approval-webhook]
+    Description: Existing dedicated signing credential name, never its value or the CRM bridge token.
+  AlarmTopicArn:
+    Type: String
+    Default: ''
+
+Conditions:
+  HasAlarmTopic: !Not [!Equals [!Ref AlarmTopicArn, '']]
+
+Resources:
+  FailureQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: opda-hubspot-approval-failures
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+
+  ApprovalQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: opda-hubspot-approvals
+      MessageRetentionPeriod: 1209600
+      VisibilityTimeout: 1800
+      ReceiveMessageWaitTimeSeconds: 20
+      SqsManagedSseEnabled: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt FailureQueue.Arn
+        maxReceiveCount: 5
+
+  QueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref ApprovalQueue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: RequireTransportEncryption
+            Effect: Deny
+            Principal: '*'
+            Action: sqs:*
+            Resource: !GetAtt ApprovalQueue.Arn
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } }
+
+  FailureQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref FailureQueue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: RequireTransportEncryption
+            Effect: Deny
+            Principal: '*'
+            Action: sqs:*
+            Resource: !GetAtt FailureQueue.Arn
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } }
+
+  ReceiverLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/opda-hubspot-approval-webhook
+      RetentionInDays: 14
+
+  WorkerLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/opda-hubspot-approval
+      RetentionInDays: 14
+
+  ReceiverRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: signed-approval-intake-only
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-hubspot-approval-webhook:*'
+              - Sid: ExactSigningCredential
+                Effect: Allow
+                Action: [secretsmanager:GetSecretValue]
+                Resource: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${SigningSecretName}-??????'
+              - Sid: SendDedicatedQueueOnly
+                Effect: Allow
+                Action: [sqs:SendMessage]
+                Resource: !GetAtt ApprovalQueue.Arn
+
+  WorkerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: reviewed-participant-identity-only
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-hubspot-approval:*'
+              - Sid: ConsumeDedicatedQueueOnly
+                Effect: Allow
+                Action: [sqs:ReceiveMessage, sqs:DeleteMessage, sqs:GetQueueAttributes, sqs:ChangeMessageVisibility]
+                Resource: !GetAtt ApprovalQueue.Arn
+              - Sid: OriginalIntakeReadOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:ConditionCheckItem]
+                Resource: !Ref RegistrationsTableArn
+              - Sid: ParticipantSourceReadOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:ConditionCheckItem]
+                Resource: !Ref ParticipantsTableArn
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['CRM#*', 'USER#*', 'EMAIL#*', 'SYNC#*', 'IMPORT#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              - Sid: RecoveryScanOnly
+                Effect: Allow
+                Action: [dynamodb:Scan]
+                Resource: !Ref ParticipantsTableArn
+              # IAM authorizes TransactWriteItems through its underlying item actions.
+              - Sid: ApprovalIdentityWritesOnly
+                Effect: Allow
+                Action: [dynamodb:PutItem, dynamodb:UpdateItem, dynamodb:ConditionCheckItem]
+                Resource: !Ref ParticipantsTableArn
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['CRM#*', 'USER#*', 'EMAIL#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              - Sid: ExactBridgeCredential
+                Effect: Allow
+                Action: [secretsmanager:GetSecretValue]
+                Resource: !Ref BridgeSecretArn
+              - Sid: ExactParticipantPoolOnly
+                Effect: Allow
+                Action: [cognito-idp:AdminCreateUser, cognito-idp:AdminGetUser, cognito-idp:AdminEnableUser, cognito-idp:AdminDisableUser, cognito-idp:AdminUserGlobalSignOut]
+                Resource: !Ref UserPoolArn
+
+  Receiver:
+    Type: AWS::Serverless::Function
+    DependsOn: ReceiverLogGroup
+    Properties:
+      FunctionName: opda-hubspot-approval-webhook
+      CodeUri: ./
+      Handler: hubspot-approval/webhook.handler
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      MemorySize: 128
+      Timeout: 10
+      ReservedConcurrentExecutions: 2
+      Role: !GetAtt ReceiverRole.Arn
+      Environment:
+        Variables:
+          SIGNING_SECRET_ARN: !Ref SigningSecretName
+          APPROVAL_QUEUE_URL: !Ref ApprovalQueue
+
+  Worker:
+    Type: AWS::Serverless::Function
+    DependsOn: WorkerLogGroup
+    Properties:
+      FunctionName: opda-hubspot-approval
+      CodeUri: ./
+      Handler: hubspot-approval/index.handler
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      MemorySize: 256
+      Timeout: 300
+      ReservedConcurrentExecutions: 1
+      Role: !GetAtt WorkerRole.Arn
+      Environment:
+        Variables:
+          REGISTRATIONS_TABLE_NAME: !Ref RegistrationsTableName
+          PARTICIPANTS_TABLE_NAME: !Ref ParticipantsTableName
+          BRIDGE_SECRET_ARN: !Ref BridgeSecretArn
+          USER_POOL_ID: !Ref UserPoolId
+          APPROVAL_QUEUE_ARN: !GetAtt ApprovalQueue.Arn
+          REVIEW_CUTOVER: '2026-09-08T21:00:00.000Z'
+
+  ApprovalMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !GetAtt ApprovalQueue.Arn
+      FunctionName: !Ref Worker
+      BatchSize: 1
+      FunctionResponseTypes: [ReportBatchItemFailures]
+
+  RecoverySchedule:
+    Type: AWS::Events::Rule
+    Properties:
+      ScheduleExpression: rate(15 minutes)
+      State: ENABLED
+      Targets:
+        - Id: RecoverApprovalState
+          Arn: !GetAtt Worker.Arn
+          Input: '{"source":"opda.hubspot-approval","detail-type":"reconcile"}'
+
+  RecoveryInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Worker
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt RecoverySchedule.Arn
+
+  Api:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: opda-hubspot-approval
+      Description: Direct HTTPS approval delivery; Lambda verifies the HubSpot signature before queueing.
+      ProtocolType: HTTP
+
+  Integration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref Api
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt Receiver.Arn
+      PayloadFormatVersion: '2.0'
+      TimeoutInMillis: 10000
+
+  ApprovalRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref Api
+      RouteKey: POST /hubspot/approval
+      Target: !Sub 'integrations/${Integration}'
+
+  Stage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref Api
+      StageName: $default
+      AutoDeploy: true
+      DefaultRouteSettings:
+        DetailedMetricsEnabled: false
+        ThrottlingBurstLimit: 10
+        ThrottlingRateLimit: 2
+
+  ReceiverInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Receiver
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/POST/hubspot/approval'
+
+  DeadLetterAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Approval work exhausted retries; investigate before safe replay.
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions: [{ Name: QueueName, Value: !GetAtt FailureQueue.QueueName }]
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: !If [HasAlarmTopic, [!Ref AlarmTopicArn], !Ref AWS::NoValue]
+
+  PendingAgeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Approval delivery is older than the 15-minute recovery interval; investigate queue and reconciliation progress.
+      Namespace: AWS/SQS
+      MetricName: ApproximateAgeOfOldestMessage
+      Dimensions: [{ Name: QueueName, Value: !GetAtt ApprovalQueue.QueueName }]
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 900
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: !If [HasAlarmTopic, [!Ref AlarmTopicArn], !Ref AWS::NoValue]
+
+  ReceiverErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Approval HTTP API returned a 5xx response, including handled credential or queue failures.
+      Namespace: AWS/ApiGateway
+      MetricName: 5xx
+      Dimensions: [{ Name: ApiId, Value: !Ref Api }, { Name: Stage, Value: $default }]
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: !If [HasAlarmTopic, [!Ref AlarmTopicArn], !Ref AWS::NoValue]
+
+  WorkerErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Approval reconciliation errors need investigation; failed queue work remains retryable.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions: [{ Name: FunctionName, Value: !Ref Worker }]
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: !If [HasAlarmTopic, [!Ref AlarmTopicArn], !Ref AWS::NoValue]
+
+Outputs:
+  ApiEndpoint:
+    Value: !GetAtt Api.ApiEndpoint
+  WebhookUrl:
+    Value: !Sub '${Api.ApiEndpoint}/hubspot/approval'
+  WebhookFunctionName:
+    Value: !Ref Receiver
+  WorkerFunctionName:
+    Value: !Ref Worker
+  ApprovalQueueArn:
+    Value: !GetAtt ApprovalQueue.Arn
+  ApprovalQueueUrl:
+    Value: !Ref ApprovalQueue
+  FailureQueueUrl:
+    Value: !Ref FailureQueue

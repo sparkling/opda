@@ -22,6 +22,9 @@ on:
     paths:
       - 'config/aws/**'
       - '.github/workflows/infra.yml'
+      - 'tests/hubspot-approval-*.test.mjs'
+      - 'tests/auth-session.test.mjs'
+      - 'tests/hubspot-sync.test.mjs'
   # Manual escape hatch, and the sequencing tool for the rare coupled case
   # (infra change that replaces the site bucket/distribution → run this, then
   # the site deploy) — ADR-0040 §5.
@@ -41,6 +44,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Test participant approval boundary
+        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs
 
       - name: Lint templates
         run: |
