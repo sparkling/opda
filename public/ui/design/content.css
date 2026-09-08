@@ -317,6 +317,8 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin: 0;
+  padding-block: 0;
+  border-block: 0;
 }
 .callout--information .callout__label,
 .callout--note .callout__label { color: var(--color-status-info); }

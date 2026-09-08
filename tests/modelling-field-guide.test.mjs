@@ -39,6 +39,29 @@ test('field-guide visual projection is scoped and never accepts external HTML', 
   assert.match(css, /@media print/u);
 });
 
+test('light and dark learning figures preserve the same claims and connector geometry', () => {
+  for (const file of readdirSync(sourceDirectory).filter((name) => name.endsWith('.html'))) {
+    const source = readFileSync(new URL(file, sourceDirectory), 'utf8');
+    const specimens = [...source.matchAll(/<svg\b[\s\S]*?<\/svg>/gu)]
+      .map(([svg]) => svg.replaceAll('-light', '-theme').replaceAll('-dark', '-theme'));
+    assert.equal(specimens.length, 2, file + ' needs two theme specimens');
+    assert.equal(specimens[0], specimens[1], file + ' changes meaning between themes');
+  }
+});
+
+test('the property story draws both report versions describing one inspection', () => {
+  const source = read('docs/working/modelling-learning/property-story.html');
+  const [svg] = source.match(/<svg\b[\s\S]*?<\/svg>/u);
+  for (const label of ['Report version 1', 'Report version 2', 'Inspection', 'Flat 1', 'Flat 2', 'Harbour Court']) {
+    assert.ok(svg.includes('>' + label + '</text>'), 'Missing subject: ' + label);
+  }
+  assert.equal([...svg.matchAll(/>describes<\/text>/gu)].length, 2);
+  assert.match(svg, />revises<\/text>/u);
+  assert.match(svg, />concerns<\/text>/u);
+  assert.equal([...svg.matchAll(/marker-end=/gu)].length, 4);
+  assert.match(source, /Nothing here asserts a second visit or an inspection of Flat 2/u);
+});
+
 test('editorial layouts constrain reading text, not comparisons and diagrams', () => {
   const css = read('src/styles/modelling/field-guide.css');
   assert.match(css, /\.learning-comparison/u);

@@ -33,13 +33,13 @@
   padding: 0;
 }
 .learning-document .learning-extract figcaption > :first-child { margin-block-start: 0; }
-.learning-document .learning-comparison dl:not([class]):has(> dt) {
+.prose.editorial-content.learning-document .learning-comparison dl:not([class]):has(> dt) {
   display: block;
 }
 .learning-document .learning-comparison dt { margin-block-start: var(--space-5); }
 .learning-document .learning-comparison dt:first-child { margin-block-start: 0; }
-.learning-document .learning-comparison dd { margin-block-start: var(--space-2); }
-.learning-document .learning-comparison p { text-align: start; hyphens: manual; }
+.prose.editorial-content.learning-document .learning-comparison dd { margin-block-start: var(--space-2); }
+.prose.editorial-content.learning-document .learning-comparison p { text-align: start; hyphens: manual; }
 /* A comparison or figure can fill the article. Its reading copy cannot. */
 .prose.editorial-content.learning-document :is(.callout, .learning-comparison, .learning-table, .learning-figure, .learning-editorial) {
   max-inline-size: none;
@@ -144,12 +144,12 @@
 }
 @media (max-width: 48rem) {
   .learning-document .learning-index { grid-template-columns: minmax(0, 1fr); }
-  .learning-document p:not([class]) { text-align: start; hyphens: manual; }
+  .prose.editorial-content.learning-document p:not([class]) { text-align: start; hyphens: manual; }
 }
 @container learning-chapter (max-width: 48rem) {
-  .learning-document dl:not([class]):has(> dt) { display: block; }
+  .prose.editorial-content.learning-document dl:not([class]):has(> dt) { display: block; }
   .learning-document dl:not([class]) > dd + dt { margin-block-start: var(--space-5); }
-  .learning-document dl:not([class]) > dd { margin-block-start: var(--space-2); }
+  .prose.editorial-content.learning-document dl:not([class]) > dd { margin-block-start: var(--space-2); }
 }
 @media (forced-colors: active) {
   .learning-image { display: none; }
