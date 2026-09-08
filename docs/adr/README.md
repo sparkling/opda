@@ -110,6 +110,12 @@ modelling website remains unchanged:
 |---|---|---|
 | [ADR-0083](./ADR-0083-rebuild-proportionate-risk-based-ci-cd.md) | Rebuild proportionate risk-based CI/CD | proposed |
 
+## September 2026 participant administration
+
+| # | Title | Status |
+|---|---|---|
+| [ADR-0084](./ADR-0084-integrate-hubspot-with-signup-and-cognito.md) | Integrate HubSpot with working-group signup and Cognito authentication | proposed |
+
 ## Authoring a new ADR
 
 1. Run `/ruflo-adr:adr-create "<short title>"` — the skill picks the
