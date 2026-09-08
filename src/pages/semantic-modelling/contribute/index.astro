@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import SubpageCards from '@/components/modelling/SubpageCards.astro';
 ---
 
 <ModellingLayout title="Review and contribute" description="Bring a question before a model exists, examine a candidate now, or challenge one definition, connection, choice or rule. Your knowledge of property work is modelling input." proseClass="prose wide modelling-document learning-document">
@@ -16,24 +17,16 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
 
   <section aria-labelledby="choose">
     <h2 id="choose"><span id="review-questions" aria-hidden="true"></span>Choose the question in front of you</h2>
-    <dl>
-      <dt><a href="/semantic-modelling/contribute/frame-a-modelling-question">Turn experience into a modelling question</a></dt>
-      <dd>Start before a candidate exists: move from “our data is wrong” to an answerable question with an ordinary case and a difficult variation.</dd>
-      <dt><a href="/semantic-modelling/contribute/review-a-definition">Review a definition</a></dt>
-      <dd>Test what wording includes, excludes or confuses. Compare plausible revisions rather than just choosing a nicer label.</dd>
-      <dt id="read-diagrams"><a href="/semantic-modelling/contribute/review-diagrams-and-relationships">Review a diagram and its relationships</a></dt>
-      <dd>Read connections as sentences, then locate a missing version, an unjustified identity or a role without its setting.</dd>
-      <dt><a href="/semantic-modelling/contribute/review-vocabularies-and-mappings">Review choices and mappings</a></dt>
-      <dd>Find overlap and missing cases; explain when a proposed correspondence loses or invents meaning.</dd>
-      <dt><a href="/semantic-modelling/contribute/review-rules-and-exceptions">Test a rule with ordinary and difficult cases</a></dt>
-      <dd>Establish applicability before judging the result. Say whether the problem lies in a rule, a record or missing evidence.</dd>
-      <dt id="bring-evidence"><a href="/semantic-modelling/contribute/bring-evidence">Bring evidence others can interpret</a></dt>
-      <dd>Prepare the relevant passage, source version, purpose and restrictions without overstating what the source proves.</dd>
-      <dt><a href="/semantic-modelling/contribute/read-and-compare-a-candidate">Read a candidate and compare a change</a></dt>
-      <dd>Use the actual Property Pack resource page, then a separately labelled fictional revision across the agreement's views.</dd>
-      <dt id="after-review"><a href="/semantic-modelling/contribute/what-happens-next">Follow feedback, disagreement and revision</a></dt>
-      <dd>Recognise a reasoned response, understand what changed and keep unresolved meaning visible.</dd>
-    </dl>
+    <SubpageCards labelledby="choose">
+      <li><a class="card" href="/semantic-modelling/contribute/frame-a-modelling-question"><h3>Turn experience into a modelling question</h3><p>Start before a candidate exists: move from “our data is wrong” to an answerable question with an ordinary case and a difficult variation.</p></a></li>
+      <li><a class="card" href="/semantic-modelling/contribute/review-a-definition"><h3>Review a definition</h3><p>Test what wording includes, excludes or confuses. Compare plausible revisions rather than just choosing a nicer label.</p></a></li>
+      <li id="read-diagrams"><a class="card" href="/semantic-modelling/contribute/review-diagrams-and-relationships"><h3>Review a diagram and its relationships</h3><p>Read connections as sentences, then locate a missing version, an unjustified identity or a role without its setting.</p></a></li>
+      <li><a class="card" href="/semantic-modelling/contribute/review-vocabularies-and-mappings"><h3>Review choices and mappings</h3><p>Find overlap and missing cases; explain when a proposed correspondence loses or invents meaning.</p></a></li>
+      <li><a class="card" href="/semantic-modelling/contribute/review-rules-and-exceptions"><h3>Test a rule with ordinary and difficult cases</h3><p>Establish applicability before judging the result. Say whether the problem lies in a rule, a record or missing evidence.</p></a></li>
+      <li id="bring-evidence"><a class="card" href="/semantic-modelling/contribute/bring-evidence"><h3>Bring evidence others can interpret</h3><p>Prepare the relevant passage, source version, purpose and restrictions without overstating what the source proves.</p></a></li>
+      <li><a class="card" href="/semantic-modelling/contribute/read-and-compare-a-candidate"><h3>Read a candidate and compare a change</h3><p>Use the actual Property Pack resource page, then a separately labelled fictional revision across the agreement's views.</p></a></li>
+      <li id="after-review"><a class="card" href="/semantic-modelling/contribute/what-happens-next"><h3>Follow feedback, disagreement and revision</h3><p>Recognise a reasoned response, understand what changed and keep unresolved meaning visible.</p></a></li>
+    </SubpageCards>
     <p>These are working references, not enrolment stages. Use <a href="/search">site search</a> to find a familiar subject, <a href="/semantic-modelling/explore">Explore the model</a> when you want a distinction explained in more depth, or the separate <a href="/semantic-modelling/method">Ontology modelling</a> route when your task is to make formal modelling decisions.</p>
   </section>
 

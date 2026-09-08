@@ -1,6 +1,7 @@
 ---
 import OntologyChapter from '@/layouts/OntologyChapter.astro';
 import JudgementCover from '@/components/modelling/judgement/JudgementCover.astro';
+import SubpageCards from '@/components/modelling/SubpageCards.astro';
 import { ONTOLOGY_JUDGEMENT_CHAPTERS, ONTOLOGY_REFERENCE_CHAPTERS } from '@/lib/modelling-navigation';
 
 const chapterQuestions = [
@@ -34,17 +35,17 @@ const referencePurposes = [
   <section aria-labelledby="judgement">
     <h2 id="judgement">Six chapters in modelling judgement</h2>
     <p>The running case is fictional Harbour Court: one building, two dwellings, concurrent buyer and seller roles, an inspection and revised reports. The facts are deliberately small; the questions are not. Follow them from foundational analysis to a candidate that a domain expert can challenge.</p>
-    <ol class="og-atlas">
+    <SubpageCards labelledby="judgement" ordered>
       {ONTOLOGY_JUDGEMENT_CHAPTERS.map((chapter, index) => (
         <li>
-          <span class="og-atlas__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-          <div>
-            <h3><a href={chapter.url}>{chapter.title}</a></h3>
+          <a class="card" href={chapter.url}>
+            <span class="modelling-subpages__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <h3>{chapter.title}</h3>
             <p>{chapterQuestions[index]}</p>
-          </div>
+          </a>
         </li>
       ))}
-    </ol>
+    </SubpageCards>
   </section>
 
   <section class="og-contrast" aria-labelledby="one-field">
@@ -63,14 +64,14 @@ const referencePurposes = [
   <section aria-labelledby="references">
     <h2 id="references">Keep the authoring references close</h2>
     <p>The chapters explain why a decision matters. These references specify how the selected method expresses, checks and records it. Use the relevant profile alongside the example rather than replacing reasoning with a checklist.</p>
-    <dl class="og-reference-index">
+    <SubpageCards labelledby="references">
       {ONTOLOGY_REFERENCE_CHAPTERS.map((chapter, index) => (
-        <div>
-          <dt><a href={chapter.url}>{chapter.title}</a></dt>
-          <dd>{referencePurposes[index]}</dd>
-        </div>
+        <li><a class="card" href={chapter.url}>
+          <h3>{chapter.title}</h3>
+          <p>{referencePurposes[index]}</p>
+        </a></li>
       ))}
-    </dl>
+    </SubpageCards>
   </section>
 
   <section class="og-review" aria-labelledby="useful-result">

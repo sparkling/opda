@@ -103,6 +103,23 @@ test('diagram interpretations use the normal-sized shared callout instead of sma
   assert.doesNotMatch(css, /\.learning-figure[^{}]*figcaption\s*\{[^}]*var\(--text-sm\)/su);
 });
 
+test('modelling parent-page destinations share readable linked-card navigation', () => {
+  const component = read('src/components/modelling/SubpageCards.astro');
+  assert.match(component, /class="card-grid modelling-subpages"/u);
+  assert.match(component, /aria-labelledby=\{labelledby\}/u);
+  assert.match(component, /ordered \? 'ol' : 'ul'/u);
+  assert.match(component, /<slot\s*\/>/u);
+  assert.match(component, /minmax\(min\(100%, 26rem\), 1fr\)/u);
+  assert.match(component, /font: 400 var\(--text-lg\)/u);
+  assert.doesNotMatch(component, /var\(--text-(?:xs|sm)\)/u);
+  for (const path of ['index', 'understand/index', 'explore/index', 'contribute/index', 'method/index']) {
+    const source = read('src/pages/semantic-modelling/' + path + '.astro');
+    assert.match(source, /<SubpageCards labelledby=/u, path);
+    assert.match(source, /<a class="card" href=/u, path);
+    assert.doesNotMatch(source, /class="(?:learning-index|og-atlas|og-reference-index)"/u, path);
+  }
+});
+
 test('authored callouts share the design-system component without a second visual skin', () => {
   const component = read('src/components/Callout.astro');
   assert.match(component, /callout--/u);

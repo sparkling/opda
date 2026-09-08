@@ -108,16 +108,6 @@
 .learning-document .learning-table table { inline-size: 100%; }
 .learning-document .learning-table :is(th, td) { vertical-align: top; }
 .learning-document .learning-note { color: var(--color-text-muted); }
-.learning-document .learning-index {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
-  gap: var(--space-5) var(--space-8);
-}
-.learning-document .learning-index li { min-width: 0; margin: 0; }
-.learning-document .learning-index a { font-weight: 650; }
-.learning-document .learning-index p { margin-block-start: var(--space-2); }
 .learning-figure {
   --fg-paper: var(--color-surface);
   --fg-node: var(--color-surface-alt);
@@ -180,7 +170,6 @@
   }
 }
 @media (max-width: 48rem) {
-  .learning-document .learning-index { grid-template-columns: minmax(0, 1fr); }
   .prose.editorial-content.learning-document p:not([class]) { text-align: start; hyphens: manual; }
 }
 @container learning-chapter (max-width: 48rem) {

@@ -1,6 +1,7 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import Callout from '@/components/Callout.astro';
+import SubpageCards from '@/components/modelling/SubpageCards.astro';
 ---
 
 <ModellingLayout title="Explore the model" description="Learn the distinctions that make property information usable: which subject, role, quantity, time, claim or meaning are we actually describing? Start with the question on your desk." proseClass="prose wide modelling-document learning-document">
@@ -12,17 +13,17 @@ import Callout from '@/components/Callout.astro';
   <p>The useful habit is to name the aspect you mean. A corrected report can change the available evidence without changing the inspection event. A role can change in one arrangement while the same person participates differently in another. A model makes those distinctions explicit enough to inspect.</p>
 
   <h2 id="chapters">Find the distinction you need</h2>
-  <dl>
-    <dt><a href="/semantic-modelling/explore/things-and-identities">Things, identities and relationships</a></dt><dd>What exactly is being described? Separate a dwelling from its building, address and documents; read the meaning and direction of a connection.</dd>
-    <dt><a href="/semantic-modelling/explore/people-roles-and-change">People, roles and change</a></dt><dd>Who participates, in which arrangement? Compare multiple roles, listing states, report corrections and new events.</dd>
-    <dt><a href="/semantic-modelling/explore/measurements-amounts-and-values">Measurements, amounts and values</a></dt><dd>What does the number mean? Explain an area inclusion difference and distinguish an asking price, transaction price and valuation opinion.</dd>
-    <dt><a href="/semantic-modelling/explore/dates-periods-and-applicability">Dates, periods and applicability</a></dt><dd>What does the date locate? Keep an event's occurrence separate from document issue, recording and a statement's applicability.</dd>
-    <dt><a href="/semantic-modelling/explore/claims-evidence-and-uncertainty">Claims, evidence and uncertainty</a></dt><dd>What supports the statement? Follow sources and distinguish missing, unknown, inapplicable, withheld, negative and conflicting information.</dd>
-    <dt><a href="/semantic-modelling/explore/names-and-choices">Names, choices and classification</a></dt><dd>What do the words and choices mean? Inspect labels, definitions, closed lists, topics and independent facets.</dd>
-    <dt><a href="/semantic-modelling/explore/contexts-and-connections">Connect meanings across contexts</a></dt><dd>Where does meaning belong? Use the established semantic homes and test what a proposed correspondence preserves or loses.</dd>
-    <dt><a href="/semantic-modelling/explore/rules-and-exceptions">Rules, requirements and exceptions</a></dt><dd>When does a requirement apply? Distinguish an unmet requirement from a bad rule or missing evidence.</dd>
-    <dt><a href="/semantic-modelling/explore/sensitivity-purpose-permissions">Sensitivity, purpose and permissions</a></dt><dd>Which handling distinctions matter? Separate participation, purpose and scoped permission descriptions from downstream enforcement.</dd>
-  </dl>
+  <SubpageCards labelledby="chapters">
+    <li><a class="card" href="/semantic-modelling/explore/things-and-identities"><h3>Things, identities and relationships</h3><p>What exactly is being described? Separate a dwelling from its building, address and documents; read the meaning and direction of a connection.</p></a></li>
+    <li><a class="card" href="/semantic-modelling/explore/people-roles-and-change"><h3>People, roles and change</h3><p>Who participates, in which arrangement? Compare multiple roles, listing states, report corrections and new events.</p></a></li>
+    <li><a class="card" href="/semantic-modelling/explore/measurements-amounts-and-values"><h3>Measurements, amounts and values</h3><p>What does the number mean? Explain an area inclusion difference and distinguish an asking price, transaction price and valuation opinion.</p></a></li>
+    <li><a class="card" href="/semantic-modelling/explore/dates-periods-and-applicability"><h3>Dates, periods and applicability</h3><p>What does the date locate? Keep an event's occurrence separate from document issue, recording and a statement's applicability.</p></a></li>
+    <li><a class="card" href="/semantic-modelling/explore/claims-evidence-and-uncertainty"><h3>Claims, evidence and uncertainty</h3><p>What supports the statement? Follow sources and distinguish missing, unknown, inapplicable, withheld, negative and conflicting information.</p></a></li>
+    <li><a class="card" href="/semantic-modelling/explore/names-and-choices"><h3>Names, choices and classification</h3><p>What do the words and choices mean? Inspect labels, definitions, closed lists, topics and independent facets.</p></a></li>
+    <li><a class="card" href="/semantic-modelling/explore/contexts-and-connections"><h3>Connect meanings across contexts</h3><p>Where does meaning belong? Use the established semantic homes and test what a proposed correspondence preserves or loses.</p></a></li>
+    <li><a class="card" href="/semantic-modelling/explore/rules-and-exceptions"><h3>Rules, requirements and exceptions</h3><p>When does a requirement apply? Distinguish an unmet requirement from a bad rule or missing evidence.</p></a></li>
+    <li><a class="card" href="/semantic-modelling/explore/sensitivity-purpose-permissions"><h3>Sensitivity, purpose and permissions</h3><p>Which handling distinctions matter? Separate participation, purpose and scoped permission descriptions from downstream enforcement.</p></a></li>
+  </SubpageCards>
 
   <h2 id="read-a-connection">Read a connection as a sentence</h2>
   <p>“Flat 1 — report version 2” makes the reader guess. “Report version 2 describes the inspection concerning Flat 1” names the report, event and dwelling and says how they connect. Now ask what else the statement needs: a source, period, measurement basis or arrangement?</p>

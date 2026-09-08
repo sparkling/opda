@@ -1,6 +1,7 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+import SubpageCards from '@/components/modelling/SubpageCards.astro';
 ---
 
 <ModellingLayout title="Make meaning a shared resource" description="Understand the model, use your professional judgement to improve it, or study the ontology-modelling discipline behind it. Two audiences, one connected agreement." proseClass="prose wide modelling-document learning-document">
@@ -35,20 +36,26 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
   </div>
 
   <h2 id="field-guide">A field guide with three useful starting points</h2>
-  <ol class="learning-index">
+  <SubpageCards labelledby="field-guide" ordered>
     <li>
-      <h3><a href="/semantic-modelling/understand">Understand shared meaning</a></h3>
-      <p>Five chapters explain what we are building, its benefits and limits, the six views of an agreement, a connected property story and how the modelling work is done.</p>
+      <a class="card" href="/semantic-modelling/understand">
+        <h3>Understand shared meaning</h3>
+        <p>Five chapters explain what we are building, its benefits and limits, the six views of an agreement, a connected property story and how the modelling work is done.</p>
+      </a>
     </li>
     <li>
-      <h3><a href="/semantic-modelling/explore">Explore the model</a></h3>
-      <p>Nine chapters examine identities, roles, measurements, time, evidence, vocabulary, connections, rules and permission descriptions. Each develops the distinction through concrete cases.</p>
+      <a class="card" href="/semantic-modelling/explore">
+        <h3>Explore the model</h3>
+        <p>Nine chapters examine identities, roles, measurements, time, evidence, vocabulary, connections, rules and permission descriptions. Each develops the distinction through concrete cases.</p>
+      </a>
     </li>
     <li>
-      <h3><a href="/semantic-modelling/contribute">Review and contribute</a></h3>
-      <p>Eight working references help you frame a question, review a definition or diagram, test choices and rules, bring evidence, inspect a candidate and follow a reasoned revision.</p>
+      <a class="card" href="/semantic-modelling/contribute">
+        <h3>Review and contribute</h3>
+        <p>Eight working references help you frame a question, review a definition or diagram, test choices and rules, bring evidence, inspect a candidate and follow a reasoned revision.</p>
+      </a>
     </li>
-  </ol>
+  </SubpageCards>
   <p>
     This is a reference to use, not a course you must finish before taking part.
     The examples show their premises and worked responses. Changed-premise cases

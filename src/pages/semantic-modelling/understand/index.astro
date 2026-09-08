@@ -1,6 +1,7 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import Callout from '@/components/Callout.astro';
+import SubpageCards from '@/components/modelling/SubpageCards.astro';
 ---
 
 <ModellingLayout
@@ -28,28 +29,38 @@ import Callout from '@/components/Callout.astro';
 
   <section aria-labelledby="route">
     <h2 id="route">Five questions to explore</h2>
-    <ol class="modelling-steps">
+    <SubpageCards labelledby="route" ordered>
       <li>
-        <h3><a href="/semantic-modelling/understand/shared-meaning">Why does shared meaning matter?</a></h3>
-        <p>See why a correctly formatted value can answer the wrong question. Read the same fictional account as a form, a nested description and connected statements.</p>
+        <a class="card" href="/semantic-modelling/understand/shared-meaning">
+          <h3>Why does shared meaning matter?</h3>
+          <p>See why a correctly formatted value can answer the wrong question. Read the same fictional account as a form, a nested description and connected statements.</p>
+        </a>
       </li>
       <li>
-        <h3><a href="/semantic-modelling/understand/what-we-are-building">What are we building?</a></h3>
-        <p>Inspect six real teaching specimens: a glossary entry, dictionary element, taxonomy, controlled vocabulary, resource definition and relationship definition.</p>
+        <a class="card" href="/semantic-modelling/understand/what-we-are-building">
+          <h3>What are we building?</h3>
+          <p>Inspect six real teaching specimens: a glossary entry, dictionary element, taxonomy, controlled vocabulary, resource definition and relationship definition.</p>
+        </a>
       </li>
       <li>
-        <h3><a href="/semantic-modelling/understand/benefits-and-limits">What are the benefits and limits?</a></h3>
-        <p>Compare an exchange that preserves a useful distinction with one that loses it. Examine the costs and reasonable objections, including schemas, identifiers and AI.</p>
+        <a class="card" href="/semantic-modelling/understand/benefits-and-limits">
+          <h3>What are the benefits and limits?</h3>
+          <p>Compare an exchange that preserves a useful distinction with one that loses it. Examine the costs and reasonable objections, including schemas, identifiers and AI.</p>
+        </a>
       </li>
       <li>
-        <h3><a href="/semantic-modelling/understand/a-property-story">How do the distinctions work together?</a></h3>
-        <p>Follow Harbour Court's inspection, report correction and proposed sale. Use supplied evidence to reach a conclusion, then see where a harder case needs more information.</p>
+        <a class="card" href="/semantic-modelling/understand/a-property-story">
+          <h3>How do the distinctions work together?</h3>
+          <p>Follow Harbour Court's inspection, report correction and proposed sale. Use supplied evidence to reach a conclusion, then see where a harder case needs more information.</p>
+        </a>
       </li>
       <li>
-        <h3><a href="/semantic-modelling/understand/how-the-work-is-done">How is the modelling work done?</a></h3>
-        <p>See how questions and authorised evidence inform an assisted draft, human judgement and a visible revision. Find what you can contribute before a candidate exists.</p>
+        <a class="card" href="/semantic-modelling/understand/how-the-work-is-done">
+          <h3>How is the modelling work done?</h3>
+          <p>See how questions and authorised evidence inform an assisted draft, human judgement and a visible revision. Find what you can contribute before a candidate exists.</p>
+        </a>
       </li>
-    </ol>
+    </SubpageCards>
     <p>
       Read in this order if the idea is new to you, or enter at the question you
       already have. These are reference chapters, not enrolment stages. If you have

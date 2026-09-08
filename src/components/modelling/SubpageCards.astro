@@ -1,0 +1,55 @@
+---
+/** Chapter destinations reuse the shared card surface and native link behaviour. */
+interface Props {
+  labelledby: string;
+  ordered?: boolean;
+}
+const { labelledby, ordered = false } = Astro.props;
+if (!/^[a-zA-Z][\w-]*$/.test(labelledby)) throw new Error('Subpage cards need their visible section heading ID');
+const List = ordered ? 'ol' : 'ul';
+---
+
+<List class="card-grid modelling-subpages" role="list" aria-labelledby={labelledby}>
+  <slot />
+</List>
+
+<style is:global>
+  .prose.editorial-content .modelling-subpages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+    gap: var(--space-5);
+    inline-size: 100%;
+    max-inline-size: min(100%, var(--editorial-text-max, 64rem));
+    margin-block: var(--space-6);
+    margin-inline: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+  .prose.editorial-content .modelling-subpages > li {
+    display: flex;
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .prose.editorial-content .modelling-subpages .card { inline-size: 100%; }
+  .prose.editorial-content .modelling-subpages .card > h3 {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--color-link);
+    font: var(--h3);
+    text-align: start;
+    text-wrap: pretty;
+  }
+  .prose.editorial-content .modelling-subpages .card > p {
+    margin: 0;
+    color: var(--color-text);
+    font: 400 var(--text-lg) / var(--leading-normal) var(--font-reading);
+    text-align: start;
+    hyphens: manual;
+  }
+  .modelling-subpages__number { color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+  @media print {
+    .modelling-subpages > li { break-inside: avoid; }
+  }
+</style>
