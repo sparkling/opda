@@ -227,7 +227,7 @@ test('category pages are direct links whose active trails reveal children', asyn
     .toHaveAttribute('href', '/semantic-modelling/method');
   await expect(page.locator('nav[aria-label="Breadcrumb"]')).toHaveCount(0);
   await expect(page.locator('nav.page-footer a').last())
-    .toHaveAttribute('href', '/semantic-modelling/method/from-question-to-candidate');
+    .toHaveAttribute('href', '/semantic-modelling/method/foundational-analysis');
   clean();
 });
 

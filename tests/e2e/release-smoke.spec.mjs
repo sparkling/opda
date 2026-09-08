@@ -16,7 +16,11 @@ test('primary navigation preserves the selected colour mode', async ({ page }) =
   await visit(page, '/programme');
   await page.getByRole('button', { name: 'Switch to dark mode' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-  await page.getByRole('link', { name: 'Governance', exact: true }).first().click();
+  const navigationToggle = page.getByRole('button', { name: 'Open site navigation' });
+  if (await navigationToggle.isVisible()) await navigationToggle.click();
+  const primaryNavigation = page.getByRole('navigation', { name: 'Primary', exact: true });
+  await expect(primaryNavigation).toBeVisible();
+  await primaryNavigation.getByRole('link', { name: 'Governance', exact: true }).click();
   await expect(page).toHaveURL(/\/governance$/u);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   clean();
@@ -34,7 +38,7 @@ test('join page exposes the complete registration boundary', async ({ page }) =>
 test('search returns a navigable result', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/search?q=ontology');
-  const search = page.getByRole('search').getByRole('textbox');
+  const search = page.getByRole('search').getByRole('searchbox', { name: 'Search documentation' });
   await expect(search).toHaveValue('ontology');
   await expect(page.locator('[data-search-results] a').first()).toBeVisible();
   clean();
