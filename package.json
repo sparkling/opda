@@ -59,7 +59,8 @@
     "notebooklm:execute": "node scripts/run-notebooklm-preparation.mjs",
     "publish:resources": "bash scripts/publish-resources.sh",
     "deploy": "bash deploy.sh",
-    "deploy:ci": "git push origin main"
+    "deploy:ci": "git push origin main",
+    "test:participant-import": "node --test tests/participant-import.test.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.2.4",
@@ -75,6 +76,12 @@
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.1127.0",
+    "@aws-sdk/client-dynamodb": "^3.1127.0",
+    "@aws-sdk/client-s3": "^3.1127.0",
+    "@aws-sdk/client-secrets-manager": "^3.1127.0",
+    "@aws-sdk/credential-providers": "^3.1127.0",
+    "@aws-sdk/lib-dynamodb": "^3.1127.0",
     "@axe-core/playwright": "4.11.0",
     "@playwright/test": "1.62.1",
     "@tailwindcss/cli": "^4.3.2",

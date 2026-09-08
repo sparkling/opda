@@ -120,6 +120,42 @@ Resources:
                 Resource:
                   - 'arn:aws:s3:::opda-*'
                   - 'arn:aws:s3:::opda-*/*'
+              - Sid: CreateParticipantIdentityPool
+                Effect: Allow
+                Action: cognito-idp:CreateUserPool
+                Resource: '*'
+                Condition:
+                  StringEquals:
+                    aws:RequestedRegion: eu-west-2
+                    aws:RequestTag/Project: opda
+              - Sid: ManageParticipantIdentityPool
+                Effect: Allow
+                Action:
+                  - cognito-idp:DescribeUserPool
+                  - cognito-idp:UpdateUserPool
+                  - cognito-idp:DeleteUserPool
+                  - cognito-idp:TagResource
+                  - cognito-idp:UntagResource
+                  - cognito-idp:ListTagsForResource
+                  - cognito-idp:CreateUserPoolClient
+                  - cognito-idp:UpdateUserPoolClient
+                  - cognito-idp:DeleteUserPoolClient
+                  - cognito-idp:DescribeUserPoolClient
+                  - cognito-idp:CreateUserPoolDomain
+                  - cognito-idp:UpdateUserPoolDomain
+                  - cognito-idp:DeleteUserPoolDomain
+                  - cognito-idp:CreateManagedLoginBranding
+                  - cognito-idp:UpdateManagedLoginBranding
+                  - cognito-idp:DeleteManagedLoginBranding
+                  - cognito-idp:DescribeManagedLoginBranding
+                  - cognito-idp:DescribeManagedLoginBrandingByClient
+                Resource: !Sub 'arn:aws:cognito-idp:eu-west-2:${AWS::AccountId}:userpool/*'
+              - Sid: DescribeParticipantIdentityDomain
+                Effect: Allow
+                Action: cognito-idp:DescribeUserPoolDomain
+                Resource: '*'
+                Condition:
+                  StringEquals: { 'aws:RequestedRegion': eu-west-2 }
               - Sid: StackResourceFamilies
                 Effect: Allow
                 Action:

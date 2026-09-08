@@ -1,0 +1,173 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: OPDA approved participant identity and private recovery stores (ADR-0084).
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: opda.org.uk
+
+Resources:
+  Participants:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName: opda-participants
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: pk, AttributeType: S }]
+      KeySchema: [{ AttributeName: pk, KeyType: HASH }]
+      SSESpecification: { SSEEnabled: true }
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+        RecoveryPeriodInDays: 35
+      DeletionProtectionEnabled: true
+
+  Sessions:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: opda-participant-sessions
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: pk, AttributeType: S }]
+      KeySchema: [{ AttributeName: pk, KeyType: HASH }]
+      SSESpecification: { SSEEnabled: true }
+      TimeToLiveSpecification: { AttributeName: expiresAt, Enabled: true }
+
+  RecoveryBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !Sub 'opda-participant-recovery-${AWS::AccountId}-${AWS::Region}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: { SSEAlgorithm: AES256 }
+      VersioningConfiguration: { Status: Enabled }
+      LifecycleConfiguration:
+        Rules:
+          - Id: recovery-retention
+            Status: Enabled
+            Prefix: recovery/
+            ExpirationInDays: 35
+            NoncurrentVersionExpiration: { NoncurrentDays: 35 }
+            AbortIncompleteMultipartUpload: { DaysAfterInitiation: 1 }
+
+  RecoveryBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref RecoveryBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: RequireTransportEncryption
+            Effect: Deny
+            Principal: '*'
+            Action: s3:*
+            Resource: [!GetAtt RecoveryBucket.Arn, !Sub '${RecoveryBucket.Arn}/*']
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } }
+
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      UserPoolName: opda-website-participants
+      UserPoolTier: ESSENTIALS
+      DeletionProtection: ACTIVE
+      UsernameConfiguration: { CaseSensitive: false }
+      UsernameAttributes: [email]
+      AutoVerifiedAttributes: [email]
+      AdminCreateUserConfig: { AllowAdminCreateUserOnly: true }
+      MfaConfiguration: 'OFF'
+      Policies:
+        SignInPolicy: { AllowedFirstAuthFactors: [EMAIL_OTP] }
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Required: true
+          Mutable: false
+        - Name: name
+          AttributeDataType: String
+          Required: false
+          Mutable: true
+        - Name: participant_id
+          AttributeDataType: String
+          Required: false
+          Mutable: false
+      # No bulk invitations. Cognito sends only user-requested sign-in codes.
+      # Default delivery permits 50 messages/day. SES production delivery is a
+      # separately verified capacity change, not an assumed sandbox capability.
+      EmailConfiguration: { EmailSendingAccount: COGNITO_DEFAULT }
+      EmailAuthenticationSubject: Your OPDA sign-in code
+      EmailAuthenticationMessage: 'Your OPDA sign-in code is {####}. If you did not request this, ignore this message.'
+      AccountRecoverySetting:
+        RecoveryMechanisms: [{ Name: admin_only, Priority: 1 }]
+      UserPoolTags: { Project: opda, Purpose: participant-login }
+
+  WebClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientName: opda-website
+      GenerateSecret: false
+      ExplicitAuthFlows: [ALLOW_USER_AUTH]
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows: [code]
+      AllowedOAuthScopes: [openid, email, profile]
+      CallbackURLs: [!Sub 'https://${DomainName}/_auth/callback']
+      LogoutURLs: [!Sub 'https://${DomainName}/']
+      SupportedIdentityProviders: [COGNITO]
+      PreventUserExistenceErrors: ENABLED
+      EnableTokenRevocation: true
+      IdTokenValidity: 60
+      AccessTokenValidity: 60
+      RefreshTokenValidity: 1
+      TokenValidityUnits: { IdToken: minutes, AccessToken: minutes, RefreshToken: days }
+      ReadAttributes: [email, email_verified, name, sub]
+      WriteAttributes: [name]
+
+  LoginDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref UserPool
+      Domain: !Sub 'opda-participants-${AWS::AccountId}'
+      ManagedLoginVersion: 2
+
+  LoginBranding:
+    Type: AWS::Cognito::ManagedLoginBranding
+    DependsOn: LoginDomain
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientId: !Ref WebClient
+      UseCognitoProvidedValues: true
+
+Outputs:
+  UserPoolId:
+    Value: !Ref UserPool
+  CognitoIssuer:
+    Value: !Sub 'https://cognito-idp.${AWS::Region}.${AWS::URLSuffix}/${UserPool}'
+    Export: { Name: !Sub '${AWS::StackName}-CognitoIssuer' }
+  CognitoDomain:
+    Value: !Sub 'https://${LoginDomain}.auth.${AWS::Region}.amazoncognito.com'
+    Export: { Name: !Sub '${AWS::StackName}-CognitoDomain' }
+  CognitoClientId:
+    Value: !Ref WebClient
+    Export: { Name: !Sub '${AWS::StackName}-CognitoClientId' }
+  ParticipantsTableName:
+    Value: !Ref Participants
+    Export: { Name: !Sub '${AWS::StackName}-ParticipantsTableName' }
+  ParticipantsTableArn:
+    Value: !GetAtt Participants.Arn
+    Export: { Name: !Sub '${AWS::StackName}-ParticipantsTableArn' }
+  SessionsTableName:
+    Value: !Ref Sessions
+    Export: { Name: !Sub '${AWS::StackName}-SessionsTableName' }
+  SessionsTableArn:
+    Value: !GetAtt Sessions.Arn
+    Export: { Name: !Sub '${AWS::StackName}-SessionsTableArn' }
+  RecoveryBucketName:
+    Value: !Ref RecoveryBucket
