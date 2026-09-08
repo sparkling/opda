@@ -225,4 +225,12 @@ test('infrastructure uses a dedicated SNS-filtered queue and cannot write eligib
   assert.doesNotMatch(template, /cognito-idp:|opda-public-submission-events\n/);
   assert.match(template, /maxReceiveCount: 8/);
   assert.match(template, /BridgeSecretArn:/);
+  // SQS rejects multiple resource ARNs in a statement, even when the
+  // CloudFormation QueuePolicy is attached to both queues.
+  const queuePolicies = template.slice(template.indexOf('  QueuePolicy:'), template.indexOf('  SignupSubscription:'));
+  assert.doesNotMatch(queuePolicies, /Resource: \[/);
+  assert.match(queuePolicies, /Queues: \[!Ref SignupQueue\]/);
+  assert.match(queuePolicies, /Queues: \[!Ref FailureQueue\]/);
+  assert.equal((queuePolicies.match(/aws:SourceArn/g) ?? []).length, 2);
+  assert.equal((queuePolicies.match(/aws:SecureTransport/g) ?? []).length, 2);
 });

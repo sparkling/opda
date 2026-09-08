@@ -50,7 +50,7 @@ Resources:
   QueuePolicy:
     Type: AWS::SQS::QueuePolicy
     Properties:
-      Queues: [!Ref SignupQueue, !Ref FailureQueue]
+      Queues: [!Ref SignupQueue]
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -58,7 +58,7 @@ Resources:
             Effect: Allow
             Principal: { Service: sns.amazonaws.com }
             Action: sqs:SendMessage
-            Resource: [!GetAtt SignupQueue.Arn, !GetAtt FailureQueue.Arn]
+            Resource: !GetAtt SignupQueue.Arn
             Condition:
               ArnEquals: { 'aws:SourceArn': !Ref SourceTopicArn }
               StringEquals: { 'aws:SourceAccount': !Ref AWS::AccountId }
@@ -66,12 +66,34 @@ Resources:
             Effect: Deny
             Principal: '*'
             Action: sqs:*
-            Resource: [!GetAtt SignupQueue.Arn, !GetAtt FailureQueue.Arn]
+            Resource: !GetAtt SignupQueue.Arn
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } }
+
+  FailureQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref FailureQueue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: DedicatedTopicRedrive
+            Effect: Allow
+            Principal: { Service: sns.amazonaws.com }
+            Action: sqs:SendMessage
+            Resource: !GetAtt FailureQueue.Arn
+            Condition:
+              ArnEquals: { 'aws:SourceArn': !Ref SourceTopicArn }
+              StringEquals: { 'aws:SourceAccount': !Ref AWS::AccountId }
+          - Sid: RequireTransportEncryption
+            Effect: Deny
+            Principal: '*'
+            Action: sqs:*
+            Resource: !GetAtt FailureQueue.Arn
             Condition: { Bool: { 'aws:SecureTransport': 'false' } }
 
   SignupSubscription:
     Type: AWS::SNS::Subscription
-    DependsOn: QueuePolicy
+    DependsOn: [QueuePolicy, FailureQueuePolicy]
     Properties:
       TopicArn: !Ref SourceTopicArn
       Protocol: sqs
