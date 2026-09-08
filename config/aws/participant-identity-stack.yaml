@@ -171,3 +171,4 @@ Outputs:
     Export: { Name: !Sub '${AWS::StackName}-SessionsTableArn' }
   RecoveryBucketName:
     Value: !Ref RecoveryBucket
+    Export: { Name: !Sub '${AWS::StackName}-RecoveryBucketName' }

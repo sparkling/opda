@@ -15,8 +15,10 @@ test('the CloudFront site stays public while sign-in is a separate regional serv
   assert.match(site, /AuthSessionApplication:[\s\S]*TemplateURL: auth-session-stack\.yaml/u);
   assert.doesNotMatch(edge, /AWS::Serverless::Function|GateFunction(?:Role|VersionArn)?|CodeUri:\s*edge-gate\//u);
   assert.doesNotMatch(workflow, /GateFunctionVersionArn|members\.txt|edge-packaged/u);
-  assert.match(workflow, /Auth0ClientId="\$\{\{ vars\.OPDA_AUTH0_CLIENT_ID \}\}"/u);
-  assert.match(workflow, /MemberEmails="\$\{\{ vars\.OPDA_MEMBER_EMAILS \}\}"/u);
+  assert.match(workflow, /--stack-name opda-participant-identity/u);
+  assert.doesNotMatch(workflow, /OPDA_AUTH0_CLIENT_ID|OPDA_MEMBER_EMAILS/u);
+  assert.ok(workflow.indexOf('name: Deploy comments stack') < workflow.indexOf('name: Deploy site stack'),
+    'the origin read-only barrier must deploy before the Cognito session cutover');
   await assert.rejects(
     access(new URL('../config/aws/edge-gate/index.mjs', import.meta.url)),
     { code: 'ENOENT' },
@@ -51,9 +53,11 @@ test('the auth service exposes only the four GET session routes with bounded cap
   assert.match(stack, /ReservedConcurrentExecutions: 5/u);
   assert.match(stack, /ThrottlingBurstLimit: 20/u);
   assert.match(stack, /ThrottlingRateLimit: 10/u);
-  assert.match(stack, /AUTH0_DOMAIN: !Ref Auth0Domain/u);
-  assert.match(stack, /AUTH0_CLIENT_ID: !Ref Auth0ClientId/u);
-  assert.match(stack, /MEMBER_EMAILS: !Ref MemberEmails/u);
+  for (const variable of ['COGNITO_ISSUER', 'COGNITO_DOMAIN', 'COGNITO_CLIENT_ID', 'PARTICIPANTS_TABLE_NAME', 'SESSIONS_TABLE_NAME']) {
+    assert.match(stack, new RegExp(`${variable}:\\n\\s+Fn::ImportValue:`, 'u'));
+  }
+  assert.match(stack, /dynamodb:ConditionCheckItem/u);
+  assert.doesNotMatch(stack, /AUTH0_|MEMBER_EMAILS/u);
   assert.match(stack, /SITE_ORIGIN: !Sub 'https:\/\/\$\{DomainName\}'/u);
   assert.doesNotMatch(stack, /CLIENT_SECRET|client_secret|AWS::ApiGatewayV2::DomainName|CorsConfiguration/u);
 });
@@ -177,8 +181,8 @@ test('CI packages the regional Lambda and nested template before site deployment
   assert.match(workflow, /cloudformation package --region eu-west-2[\s\S]*config\/aws\/site-stack\.yaml/u);
   assert.match(workflow, /--template-file \/tmp\/site-packaged\.yaml/u);
   assert.match(workflow, /CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND/u);
-  assert.match(workflow, /OPDA_AUTH0_CLIENT_ID/u);
-  assert.match(workflow, /OPDA_MEMBER_EMAILS/u);
+  assert.match(workflow, /participant-identity-stack\.yaml/u);
+  assert.doesNotMatch(workflow, /OPDA_AUTH0_CLIENT_ID|OPDA_MEMBER_EMAILS/u);
 });
 
 test('deployment has no external abuse-control or runtime-secret dependency', async () => {

@@ -1,27 +1,17 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >-
-  Path-scoped Auth0 OAuth session service for OPDA member comments. The public
-  site remains ungated; CloudFront routes only /_auth/* here (ADR-0038/ADR-0079).
+  Path-scoped Cognito OAuth and opaque participant sessions. The public site
+  remains ungated; CloudFront routes only /_auth/* here (ADR-0084).
 
 Parameters:
   DomainName:
     Type: String
     Default: opda.org.uk
-  Auth0Domain:
+  IdentityStackName:
     Type: String
-    AllowedPattern: '^[A-Za-z0-9][A-Za-z0-9.-]*[A-Za-z0-9]$'
-    Description: Auth0 tenant hostname without a scheme or path.
-  Auth0ClientId:
-    Type: String
-    MinLength: 1
-    MaxLength: 256
-    Description: Public Auth0 application client ID; OAuth uses PKCE and no client secret.
-  MemberEmails:
-    Type: String
-    MinLength: 3
-    NoEcho: true
-    Description: Comma-separated lower- or mixed-case e-mail allowlist for member comments.
+    Default: opda-participant-identity
+    Description: Regional stack exporting the approved-participant identity stores.
 
 Resources:
   FunctionLogGroup:
@@ -48,6 +38,14 @@ Resources:
               - Effect: Allow
                 Action: [logs:CreateLogStream, logs:PutLogEvents]
                 Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-auth-session:*'
+              - Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:UpdateItem, dynamodb:ConditionCheckItem]
+                Resource:
+                  Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableArn'
+              - Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:DeleteItem]
+                Resource:
+                  Fn::ImportValue: !Sub '${IdentityStackName}-SessionsTableArn'
 
   Function:
     Type: AWS::Serverless::Function
@@ -64,9 +62,16 @@ Resources:
       Role: !GetAtt FunctionRole.Arn
       Environment:
         Variables:
-          AUTH0_DOMAIN: !Ref Auth0Domain
-          AUTH0_CLIENT_ID: !Ref Auth0ClientId
-          MEMBER_EMAILS: !Ref MemberEmails
+          COGNITO_ISSUER:
+            Fn::ImportValue: !Sub '${IdentityStackName}-CognitoIssuer'
+          COGNITO_DOMAIN:
+            Fn::ImportValue: !Sub '${IdentityStackName}-CognitoDomain'
+          COGNITO_CLIENT_ID:
+            Fn::ImportValue: !Sub '${IdentityStackName}-CognitoClientId'
+          PARTICIPANTS_TABLE_NAME:
+            Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableName'
+          SESSIONS_TABLE_NAME:
+            Fn::ImportValue: !Sub '${IdentityStackName}-SessionsTableName'
           SITE_ORIGIN: !Sub 'https://${DomainName}'
 
   Api:

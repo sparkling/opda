@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-09-08
 tags: [aws, hubspot, cognito, identity, participants, recruitment, crm, privacy, backup, proportionality]
 supersedes: []
@@ -31,16 +31,17 @@ at that inspection, and 1,001 contacts. API inventory found `linkedin_account`,
 with two used before setup. The legacy contact ceiling remains unverified.
 
 This concerns participant administration, not SPDTF trust, standards authority or Microsoft access.
-It authorises no live provisioning, data transfer, invitations, purchases or login cutover.
+On 2026-09-08 the operator authorised implementation, live website sign-in, and a
+one-time approval of existing HubSpot contacts. Brief cutover downtime is acceptable.
+The frozen migration includes contacts created by 18:26:22 UTC that day; it does
+not automatically approve future contacts, establish marketing consent or grant
+website administration. All 1,001 current contacts passed the primary-email preflight.
 
 ## Decision Drivers
 
-- Use HubSpot's existing contact management rather than build a second CRM.
-- Allow member actions only after human approval and verified account setup.
-- Keep public documentation and registration independent of login and HubSpot.
-- Preserve every join choice and its provenance without inventing consent.
-- Avoid expensive HubSpot tiers solely for automation or authentication.
-- Keep AWS state small, recoverable to private S3, and proportionate to traffic.
+Reuse the CRM; require approval and verified identity; keep public reading and
+signup independent; preserve collection evidence without inventing consent;
+avoid paid automation tiers; keep AWS costs and private recovery proportionate.
 
 ## Considered Options
 
@@ -50,7 +51,7 @@ It authorises no live provisioning, data transfer, invitations, purchases or log
   register, but couples sign-in to CRM availability, editable fields and API limits.
 - **HubSpot and an AWS register with existing Auth0.** A viable lower-migration
   option. Cognito is selected to meet the requested AWS identity direction, not
-  because HubSpot requires it; retain Auth0 until the safe cutover is ready.
+  because HubSpot requires it. A clean cutover is preferred to parallel providers.
 - **HubSpot CRM plus an AWS eligibility register and Cognito (chosen).** Reuses
   CRM screens while retaining a small, enforceable website access boundary.
 - **Custom AWS CRM plus Cognito.** Technically possible, but duplicates contact
@@ -118,7 +119,7 @@ An initially created contact is an unverified applicant, not an approved member.
 | `relevantPerspective` | **New:** `opda_relevant_perspective` | `string` / `textarea`; retain the 600-character limit and existing privacy warning. |
 | Review outcome | **New:** `opda_review_status` | `enumeration` / `select`; AWS-owned snapshot: `received`, `under_review`, `approved`, `rejected`, `withdrawn`. |
 | Account setup | **New:** `opda_enrolment_status` | `enumeration` / `select`; AWS-owned snapshot: `not_invited`, `invited`, `complete`, `expired`. |
-| Enabled flag | **New:** `opda_active` | `bool` / `booleancheckbox`; AWS-owned snapshot, initially `false`; not sufficient for login by itself. |
+| Enabled flag | **New:** `opda_active` | `bool` / `booleancheckbox`; AWS-owned snapshot; pending applicants are disabled, the approved migration is enabled but unenrolled. Not sufficient for login by itself. |
 | `acknowledgement`, `privacyNoticeVersion` | AWS evidence, visible through the restricted application/access page | Keep the boolean and exact notice version with server receipt time; not a HubSpot marketing subscription. |
 | `website`, `startedAt` | **Do not synchronise or retain** | Honeypot and transient client timer, not a company website or application timestamp. |
 
@@ -276,32 +277,32 @@ The server-side eligibility predicate is:
 | Stage | Website access |
 |---|---|
 | Received / under review | Public pages only; no Cognito account created by submission. |
-| Approved, not enrolled | Explicit invitation and restricted account setup only. |
+| Approved, not enrolled | User-requested email code and restricted account setup only. |
 | Enrolled and active | Permitted member actions, subject to current grants. |
 | Rejected / withdrawn / expired / inactive | No member actions, including with an old session. |
 
-Disable Cognito self-service signup. Reviewers confirm the intended person's
-address before approval. Provision with `AdminCreateUser` + `SUPPRESS`, record
-the subject binding, then explicitly invite using `AdminCreateUser` + `RESEND`
-and `DesiredDeliveryMediums=[EMAIL]`. Cognito's configured SES-backed invitation
-template carries its newly generated temporary password; OPDA does not store it.
-Set the pool temporary-password and invitation validity to seven days. Resend
-reissues the credential/window; an ambiguous send requires operator resolution,
-not a blind retry. Verify SES sending readiness before enablement. Recheck approval
-before sending, never force-transfer aliases, and disable withdrawn orphan accounts.
-Do not mark email verified merely because staff approved it or sent an invitation.
+Disable Cognito self-service signup. Provision approved contacts using
+`AdminCreateUser` + `SUPPRESS`, without a temporary password or `email_verified`.
+Use Essentials managed login with email one-time passwords. There is no bulk
+invitation wave: the person requests a code when choosing to sign in. The
+successful code verifies ownership; staff approval is not email verification.
+An immutable import participant identifier prevents a retry adopting somebody
+else's existing Cognito account. Never force-transfer aliases or silently rebind
+changed CRM addresses. Retain source snapshot, operator decision and import results
+in private versioned S3. A durable DynamoDB marker pins the exact object version
+and byte digest; missing evidence fails closed and cannot recapture a later list.
+Migration evidence does not expire with 35-day recovery copies. Conditional email
+claims and subject writes make retries resumable.
 [AdminCreateUser](https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminCreateUser.html)
 
-Invitees may establish credentials and prove control of the bound email before
-they are fully eligible. Give this ceremony an enrolment-only session whose
-fixed endpoint allowlist exposes no member/admin data. Complete onboarding only
-after verified email, required account acknowledgements and an idempotent backend
-completion transaction which rechecks approval and absence of suspension.
-Record suspension with actor/time/reason separately from `active=false`, which
-also describes a valid invitee. Suspension blocks enrolment/completion; clearing
-it requires an authorised decision and never bypasses incomplete enrolment.
-Invitations expire; resending is an explicit action. Password reset is not
-approval, reactivation or completed participant onboarding.
+Complete ordinary participant onboarding at the first verified email-code callback,
+using a transaction that rechecks approval, active state, identity binding and
+absence of suspension, records mailbox proof and completes enrolment. The approved
+migration starts enabled but unenrolled; login never changes the active flag.
+No extra agreement, group membership or marketing consent is inferred. Suspension
+has its own actor/time/reason; clearing it requires an authorised decision and
+never bypasses incomplete enrolment. Inactive users cannot complete enrolment.
+[Email-code ownership verification](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow-methods.html)
 
 Do not rely on Cognito post-confirmation to enrol admin-created accounts, or on
 pre-authentication as the only access check: the former does not cover this
@@ -309,8 +310,8 @@ account-creation path and the latter does not run on session renewal.
 [Post-confirmation trigger](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-post-confirmation.html),
 [Pre-authentication trigger](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-pre-authentication.html)
 
-Use one confidential Cognito Essentials client and managed login with Authorization
-Code + PKCE, state and nonce checks. Keep tokens server-side; issue an opaque `Secure`,
+Use one public Cognito Essentials client and managed login with Authorization
+Code + PKCE, state and nonce checks; no client secret is needed. Keep tokens server-side; issue an opaque `Secure`,
 `HttpOnly`, `SameSite=Lax`, `__Host-` session cookie. Verify token signature,
 issuer, client/audience, token use and expiry. Use a separate short-lived DynamoDB
 session table; rotate sessions on login/completion and enforce expiry in code.
@@ -331,11 +332,11 @@ cannot replace the live eligibility check.
 
 ### 7. Integration credentials and least privilege
 
-Use single-account private apps with static auth. The CRM bridge and temporary
-schema-bootstrap apps use the supported legacy interface; both tokens were stored
-in AWS Secrets Manager and read back on 2026-09-08. A separate read-only snapshot app
-remains future work. No Marketplace distribution or OAuth callback is needed.
-CLI personal keys and MCP are developer tooling, **not** production credentials.
+Use single-account private apps with static auth, held in AWS Secrets Manager.
+After exporting its logs on 2026-09-08, the temporary schema app was deleted and
+token revocation verified. Its secret has a seven-day recovery window. The bridge
+and all eight properties remain verified. CLI personal keys and MCP are developer
+tooling, **not** production credentials; no Marketplace distribution is needed.
 
 Keep app tokens in AWS Secrets Manager, separate from Cognito/client secrets,
 with explicit creation approval, rotation and revoke/recovery instructions. No
@@ -390,8 +391,8 @@ versions for 35 days;
 restrict deletion/restore roles and prevent public/build-role access.
 [DynamoDB export](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html)
 
-Also take a daily scoped HubSpot API snapshot of mapped OPDA contacts, required
-property definitions/options, OPDA-managed notes/tasks and essential associations.
+Also take a daily scoped HubSpot API snapshot of mapped OPDA contacts and required
+property definitions/options. Notes/tasks and associations require a later extension.
 Record start/end times, counts, object IDs, revisions, failures and a completion
 manifest. This is a recoverable application snapshot, **not** HubSpot PITR or an
 atomic whole-portal backup. Native CRM backup omits associations/activity and is
@@ -413,21 +414,25 @@ under a documented retention basis, then expire it too.
 
 ### 9. Cost, delivery and acceptance boundary
 
-Use the existing region/serverless services, small participant/session stores,
-sync consumer, action backend and scheduled maintenance. No custom CRM, SQL server,
-VPC/NAT, Redis, workflow engine, always-on workers or multi-region deployment.
+Use regional serverless participant/session stores, a sync consumer, action backend
+and scheduled maintenance. No custom CRM, SQL, VPC/NAT, Redis or workflow engine.
 
-Free/Starter privately distributed apps currently allow 100 requests per ten
-seconds per app and 250,000 per day shared by the account; design well below
-these and honour stricter endpoint limits. No paid workflow tier is needed.
+Free/Starter private apps allow 100 requests per ten seconds per app and 250,000
+per account daily. Stay below these and stricter endpoint limits; no paid workflow tier is needed.
 [HubSpot API limits](https://developers.hubspot.com/docs/developer-tooling/platform/usage-guidelines)
 
-For fewer than 1,000 direct Cognito MAUs, Essentials' published 10,000-MAU
+For roughly 1,000 direct Cognito MAUs, Essentials' published 10,000-MAU
 direct/social allowance is relevant; federation terms differ. Price Secrets
 Manager, logging, PITR/exports, encryption, email and alarms in London before
 deployment. Target low tens of US dollars/month incremental, not a quote. Verify
 all editing-seat and renewal costs before a HubSpot upgrade.
 [Cognito pricing](https://aws.amazon.com/cognito/pricing/)
+
+Live inspection found SES in its sandbox with no verified sender. Cognito's default
+delivery is independent of that sandbox but limited to 50 messages daily; never
+describe it as unlimited or ready for a simultaneous 1,001-person launch. Higher
+volume requires verified SES production delivery. Test real code delivery before cutover.
+[Cognito email quotas](https://docs.aws.amazon.com/cognito/latest/developerguide/quotas.html)
 
 Deliver in independent, verified slices:
 
@@ -435,7 +440,8 @@ Deliver in independent, verified slices:
    administrators, privacy/retention wording and scoped app access. Provision
    fields idempotently, rejecting incompatible existing definitions/options.
 2. Implement receipt-preserving AWS-to-HubSpot sync with synthetic data first;
-   reconcile existing applications without auto-approving any contact or roster.
+   reconcile new applications without automatic approval. The explicitly approved
+   existing-contact snapshot is the bounded exception, not a standing CRM rule.
 3. Add the AWS register and action page; prove approval, invitation, email
    verification, enrolment, staff MFA, suspension and backup recovery in a spike.
 4. Migrate sessions and **Artalk** together: proxy authenticated comment actions
@@ -451,34 +457,28 @@ Deliver in independent, verified slices:
 
 ### Consequences
 
-- Good, because staff use an existing CRM instead of a second bespoke application.
-- Good, because credentials, original evidence, CRM profiles and access decisions have explicit owners.
-- Good, because CRM outages or status edits cannot silently determine website access.
-- Good, because the minimal field set preserves every submitted choice without assuming a paid tier.
-- Bad, because a small security-sensitive bridge, identity migration and recovery process remain OPDA responsibilities.
-- Bad, because CRM status snapshots can lag and staff must use the trusted action page for effective changes.
-- Neutral, because HubSpot capacity/processing approval must be verified and Microsoft access remains separately governed.
+Staff retain their existing CRM; ownership and approval stay explicit, and CRM
+outages cannot determine access. OPDA still owns the small integration, identity
+migration and recovery process. CRM snapshots may lag; trusted access actions,
+HubSpot capacity and Microsoft access remain separately governed.
 
 ### Confirmation
 
-**Proposed; credential and property setup completed, runtime not deployed.**
+**Accepted; credential and property setup completed, login migration in implementation.**
 The operator CLI, `scripts/hubspot-participation-admin.mjs`, provides read-only `preflight`.
 `apply-schema` requires confirmation, creates only missing definitions and verifies them.
-No applicant data was transferred, approved or invited. Before enabling integration:
+The operator approved the bounded existing-contact migration; no accounts or bulk
+invitations have yet been created. Before enabling integration:
 
-- Confirm lossless field/option mapping, no honeypot/timer CRM data and no invented historical evidence.
+- Confirm lossless mapping, no honeypot/timer CRM data and no invented evidence.
 - Exercise duplicates, contact merges, ambiguous timeouts, out-of-order events,
   retries, `429`, erased records and queue isolation using synthetic records.
 - Prove pending/incomplete/inactive users and stale sessions cannot perform
   member actions, including direct Artalk/API requests and password resets.
 - Prove CRM edits, professional roles/groups, ownership and HubSpot admin status cannot grant AWS access.
-- Verify exact-target admin authorisation, CSRF, actor revocation, MFA/step-up,
-  safe invitation retries and public-site independence from both providers.
-- Restore a completed S3 snapshot in quarantine, including withdrawal/erasure,
-  duplicate identity and pool-loss cases; do not restore active sessions.
-- Check no personal data/secrets reach builds, public archives or logs. Apply
-  focused unit/contract tests and one end-to-end synthetic journey, not new
-  whole-site release gates. Record capacity, cost and recovery ownership.
+- Verify exact-target admin authorisation, CSRF, revocation, MFA/step-up, safe retries and public-site independence.
+- Restore S3 snapshots in quarantine with erasure, duplicate identity and pool-loss cases; never restore active sessions.
+- Keep personal data/secrets out of builds and logs. Use focused tests and one synthetic journey, not new whole-site gates; record capacity and recovery ownership.
 
 ## More Information
 
@@ -495,5 +495,5 @@ No applicant data was transferred, approved or invited. Before enabling integrat
 Native Astra Ultra and Fable 5.1 findings informed the identity, invitation, abuse,
 retention and migration decisions. Separate review/enrolment/active fields are
 retained over Fable's consolidation suggestion; capacity is a preflight condition.
-Review is not OPDA acceptance. Ruflo MCP returned `Transport closed`; memory/graph
-registration is pending, without CLI fallback.
+The operator subsequently authorised implementation and the bounded contact approval.
+Current migration decisions and live checks are recorded through working Ruflo MCP.

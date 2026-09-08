@@ -12,8 +12,8 @@ import { APP_SCOPES, verifyPrivateApp } from '../config/aws/hubspot-participatio
 import { APPROVAL, CONTACT_PROPERTIES, emailKey, initialParticipant, planApprovedContacts } from '../config/aws/hubspot-participation/import.mjs';
 
 const [action, ...extra] = process.argv.slice(2);
-if (!['plan', 'apply'].includes(action) || extra.length) {
-  console.error('Usage: node scripts/hubspot-participant-import.mjs <plan|apply>'); process.exit(1);
+if (!['plan', 'apply', 'project'].includes(action) || extra.length) {
+  console.error('Usage: node scripts/hubspot-participant-import.mjs <plan|apply|project>'); process.exit(1);
 }
 const cfg = { region: 'eu-west-2', credentials: fromIni({ profile: 'opda' }), maxAttempts: 3 };
 const db = DynamoDBDocumentClient.from(new DynamoDBClient(cfg));
@@ -146,6 +146,32 @@ async function provision(contact, poolId, digest) {
   return participant;
 }
 
+async function projectStatus(api, plan, current) {
+  let projected = 0;
+  for (let start = 0; start < plan.approved.length; start += 50) {
+    const inputs = [];
+    for (const contact of plan.approved.slice(start, start + 50)) {
+      const op = await get(`IMPORT#${APPROVAL.id}#${contact.contactId}`);
+      if (op?.phase !== 'complete' || current.get(contact.contactId) !== contact.email) continue;
+      const participant = await get(`USER#${op.cognitoSub}`);
+      if (participant?.participantId !== op.participantId || participant.hubspotContactId !== contact.contactId) continue;
+      // Projection only: current AWS decisions, never imported CRM access flags.
+      inputs.push({ id: contact.contactId, properties: {
+        opda_review_status: participant.reviewStatus,
+        opda_enrolment_status: participant.enrolmentStatus,
+        opda_active: String(participant.active && !participant.suspended),
+      } });
+    }
+    if (!inputs.length) continue;
+    const result = await api('/crm/v3/objects/contacts/batch/update', { method: 'POST', body: { inputs } });
+    if (result.status !== 'COMPLETE' || result.errors?.length || result.results?.length !== inputs.length) {
+      throw new Error('CRM projection requires reconciliation');
+    }
+    projected += inputs.length;
+  }
+  console.log(JSON.stringify({ statusSnapshotsProjected: projected, profilesChanged: false, accessGrantedByProjection: false }));
+}
+
 try {
   const actor = awsCli(['sts', 'get-caller-identity']);
   if (actor.Account !== '355653384628') throw new Error('Unexpected AWS account');
@@ -165,6 +191,10 @@ try {
     }
     const { plan, digest, versionId } = await frozenSnapshot(api, actor.Arn);
     const current = new Map((await snapshot(api)).approved.map(contact => [contact.contactId, contact.email]));
+    if (action === 'project') {
+      await projectStatus(api, plan, current);
+      process.exit(0);
+    }
     let complete = 0;
     const failures = [];
     for (let start = 0; start < plan.approved.length; start += 4) {
@@ -173,7 +203,7 @@ try {
           if (current.get(contact.contactId) !== contact.email) throw new Error('Source removed or identity changed');
           await provision(contact, outputs.UserPoolId, digest); complete++;
         }
-        catch { failures.push({ contactId: contact.contactId, reason: 'provisioning-needs-review' }); }
+        catch (error) { failures.push({ contactId: contact.contactId, reason: 'provisioning-needs-review', code: error.name }); }
       }));
       if (start % 100 === 0) console.log(JSON.stringify({ processed: Math.min(start + 4, plan.approved.length), complete, failures: failures.length }));
     }

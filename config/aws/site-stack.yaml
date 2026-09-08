@@ -4,7 +4,7 @@
 # arrives as a parameter from the edge stack (exports do not cross regions).
 #
 #   - Private S3 site bucket + public CloudFront distribution (OAC)
-#   - /_auth/* routed to a regional, endpoint-only Auth0 session service
+#   - /_auth/* routed to the regional Cognito participant session service
 #   - /api/v2/* routed to the Artalk comments origin
 #   - Route 53 apex alias records
 #
@@ -29,16 +29,14 @@ Parameters:
   CertificateArn:
     Type: String
     Description: ACM certificate ARN (us-east-1, from the opda-edge stack).
-  Auth0Domain:
+  IdentityStackName:
     Type: String
-    Description: Auth0 tenant hostname used by the explicit member sign-in surface.
-  Auth0ClientId:
+    Default: opda-participant-identity
+    Description: Approved participant identity stack, deployed first in this region.
+  HubSpotBridgeSecretArn:
     Type: String
-    Description: Public Auth0 application client ID; OAuth uses PKCE and no secret.
-  MemberEmails:
-    Type: String
-    NoEcho: true
-    Description: Comma-separated e-mail allowlist for authenticated comments.
+    Default: arn:aws:secretsmanager:eu-west-2:355653384628:secret:opda/hubspot/participant-crm-bridge-IOhsJX
+    Description: ARN only, never the token; runtime reads the existing private app credential.
 
 Resources:
   AuthSessionApplication:
@@ -53,9 +51,7 @@ Resources:
       TemplateURL: auth-session-stack.yaml
       Parameters:
         DomainName: !Ref DomainName
-        Auth0Domain: !Ref Auth0Domain
-        Auth0ClientId: !Ref Auth0ClientId
-        MemberEmails: !Ref MemberEmails
+        IdentityStackName: !Ref IdentityStackName
 
   WorkingGroupInterestApplication:
     Type: AWS::CloudFormation::Stack
@@ -92,6 +88,38 @@ Resources:
       Parameters:
         RegistrationsTableStreamArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableStreamArn
         SubscriptionsTableStreamArn: !GetAtt NewsletterSubscriptionApplication.Outputs.SubscriptionsTableStreamArn
+
+  HubSpotSignupSyncApplication:
+    Type: AWS::CloudFormation::Stack
+    Metadata:
+      cfn-lint:
+        config: { ignore_checks: [W3002] }
+    Properties:
+      TemplateURL: hubspot-sync-stack.yaml
+      Parameters:
+        SourceTopicArn: !GetAtt SubmissionEventsApplication.Outputs.SubmissionEventsTopicArn
+        RegistrationsTableName: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName
+        RegistrationsTableArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableArn
+        ParticipantsTableName:
+          Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableName'
+        ParticipantsTableArn:
+          Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableArn'
+        BridgeSecretArn: !Ref HubSpotBridgeSecretArn
+
+  ParticipantBackupApplication:
+    Type: AWS::CloudFormation::Stack
+    Metadata:
+      cfn-lint:
+        config: { ignore_checks: [W3002] }
+    Properties:
+      TemplateURL: participant-backup-stack.yaml
+      Parameters:
+        ParticipantsTableArn:
+          Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableArn'
+        RegistrationsTableArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableArn
+        RecoveryBucketName:
+          Fn::ImportValue: !Sub '${IdentityStackName}-RecoveryBucketName'
+        HubSpotBridgeSecretArn: !Ref HubSpotBridgeSecretArn
 
   # ---------------- Static site: S3 + CloudFront ----------------
 
@@ -351,7 +379,8 @@ Resources:
           - PathPattern: '/api/v2/*'
             TargetOriginId: comments
             ViewerProtocolPolicy: redirect-to-https
-            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            # Read-only during the Cognito migration: old Artalk JWTs cannot write.
+            AllowedMethods: [GET, HEAD, OPTIONS]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref CommentsOriginRequestPolicy  # no cookies to Artalk
           # Public same-origin API. HTTP API exposes only the registration POST route;
@@ -397,6 +426,14 @@ Resources:
             HostedZoneId: Z2FDTNDATAQYW2
 
 Outputs:
+  ParticipantBackupFunctionName:
+    Value: !GetAtt ParticipantBackupApplication.Outputs.FunctionName
+  HubSpotSignupWorkerName:
+    Value: !GetAtt HubSpotSignupSyncApplication.Outputs.WorkerFunctionName
+  HubSpotSignupQueueUrl:
+    Value: !GetAtt HubSpotSignupSyncApplication.Outputs.SignupQueueUrl
+  HubSpotSignupFailureQueueUrl:
+    Value: !GetAtt HubSpotSignupSyncApplication.Outputs.FailureQueueUrl
   SiteBucketName:
     Value: !Ref SiteBucket
   ResourcesBucketName:
@@ -416,7 +453,7 @@ Outputs:
     Description: Direct HTTP API endpoint for diagnostics; browsers use /_auth/* through CloudFront.
     Value: !GetAtt AuthSessionApplication.Outputs.ApiEndpoint
   AuthSessionCallbackUrl:
-    Description: Must be listed in the Auth0 application's allowed callback URLs.
+    Description: Registered callback for the Cognito website client.
     Value: !Sub 'https://${DomainName}/_auth/callback'
   WorkingGroupInterestFunctionName:
     Value: !GetAtt WorkingGroupInterestApplication.Outputs.FunctionName

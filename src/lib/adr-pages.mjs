@@ -106,5 +106,5 @@ export const ADR_REGISTRY = [
   { id: "adr-0081", number: "0081", title: "Organise OPDA evidence into purpose-specific NotebookLM portfolios", status: "accepted", date: "2026-08-31" },
   { id: "adr-0082", number: "0082", title: "Add a progressively enhanced site-search dialog", status: "implemented", date: "2026-09-02" },
   { id: "adr-0083", number: "0083", title: "Rebuild proportionate risk-based CI/CD", status: "accepted", date: "2026-09-07" },
-  { id: "adr-0084", number: "0084", title: "Integrate HubSpot with working-group signup and Cognito authentication", status: "proposed", date: "2026-09-08" },
+  { id: "adr-0084", number: "0084", title: "Integrate HubSpot with working-group signup and Cognito authentication", status: "accepted", date: "2026-09-08" },
 ];

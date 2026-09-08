@@ -257,7 +257,7 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   }
   assert.doesNotMatch(source, /Turnstile|turnstile|cf-turnstile|turnstileToken/u);
   assert.match(source, /fetch\('\/api\/working-group-interest'/u);
-  assert.match(source, /privacyNoticeVersion:\s*'2026-08-13'/u);
+  assert.match(source, /privacyNoticeVersion:\s*'2026-09-08'/u);
   assert.match(source, /Date\.now\(\)/u);
   assert.match(source, /document\.addEventListener\('astro:page-load', initWorkingGroupForm\)/u);
   assert.match(form, /method="post"[\s\S]*action="\/api\/working-group-interest"/u);
@@ -438,10 +438,11 @@ test('accessibility statement distinguishes its target from verified conformance
 test('privacy page publishes the current notice and operational boundaries', async () => {
   const source = await readFile(paths.privacy, 'utf8');
   for (const text of [
-    'Version 2026-08-13',
-    'Effective 13 August 2026',
+    'Version 2026-09-08',
+    'Effective 8 September 2026',
     'Amazon Web Services',
-    'request-rate controls',
+    'Amazon Cognito',
+    'HubSpot',
     'Microsoft Teams and SharePoint',
     'Expressions of interest that are declined',
     'smartdata@openpropdata.org.uk',
@@ -449,7 +450,7 @@ test('privacy page publishes the current notice and operational boundaries', asy
   ]) {
     assert.match(source, new RegExp(text, 'u'));
   }
-  assert.doesNotMatch(source, /Cloudflare|Turnstile|turnstile|Postmark|email-verification/u);
+  assert.doesNotMatch(source, /Cloudflare|Turnstile|turnstile|Postmark/u);
 });
 test('working-group member guide covers the complete participation journey', async () => {
   const [landing, ...children] = await Promise.all(memberGuidePaths.map((path) => readFile(path, 'utf8')));

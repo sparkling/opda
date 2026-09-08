@@ -1,0 +1,202 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Isolated pending-applicant HubSpot signup bridge; never grants website access (ADR-0084).
+
+Parameters:
+  SourceTopicArn:
+    Type: String
+  RegistrationsTableName:
+    Type: String
+  RegistrationsTableArn:
+    Type: String
+  ParticipantsTableName:
+    Type: String
+  ParticipantsTableArn:
+    Type: String
+  BridgeSecretArn:
+    Type: String
+    AllowedPattern: 'arn:aws:secretsmanager:eu-west-2:[0-9]{12}:secret:opda/hubspot/participant-crm-bridge-[A-Za-z0-9]{6}'
+  TransferNoticeVersion:
+    Type: String
+    Default: '2026-09-08'
+    Description: Exact reviewed HubSpot transfer notice; historic versions are quarantined, never silently migrated.
+  AlarmTopicArn:
+    Type: String
+    Default: ''
+
+Conditions:
+  HasAlarmTopic: !Not [!Equals [!Ref AlarmTopicArn, '']]
+
+Resources:
+  FailureQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: opda-hubspot-signup-failures
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+
+  SignupQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: opda-hubspot-signups
+      MessageRetentionPeriod: 1209600
+      VisibilityTimeout: 360
+      ReceiveMessageWaitTimeSeconds: 20
+      SqsManagedSseEnabled: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt FailureQueue.Arn
+        maxReceiveCount: 8
+
+  QueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref SignupQueue, !Ref FailureQueue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: DedicatedTopicDelivery
+            Effect: Allow
+            Principal: { Service: sns.amazonaws.com }
+            Action: sqs:SendMessage
+            Resource: [!GetAtt SignupQueue.Arn, !GetAtt FailureQueue.Arn]
+            Condition:
+              ArnEquals: { 'aws:SourceArn': !Ref SourceTopicArn }
+              StringEquals: { 'aws:SourceAccount': !Ref AWS::AccountId }
+          - Sid: RequireTransportEncryption
+            Effect: Deny
+            Principal: '*'
+            Action: sqs:*
+            Resource: [!GetAtt SignupQueue.Arn, !GetAtt FailureQueue.Arn]
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } }
+
+  SignupSubscription:
+    Type: AWS::SNS::Subscription
+    DependsOn: QueuePolicy
+    Properties:
+      TopicArn: !Ref SourceTopicArn
+      Protocol: sqs
+      Endpoint: !GetAtt SignupQueue.Arn
+      RawMessageDelivery: true
+      FilterPolicyScope: MessageAttributes
+      FilterPolicy:
+        eventType: ['working-group-interest.received.v1']
+        recordKind: ['working-group-interest']
+        schemaVersion: ['1']
+      RedrivePolicy: { deadLetterTargetArn: !GetAtt FailureQueue.Arn }
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/opda-hubspot-signup-sync
+      RetentionInDays: 14
+
+  WorkerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: isolated-pending-applicant-sync
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-hubspot-signup-sync:*'
+              - Sid: ConsumeDedicatedQueueOnly
+                Effect: Allow
+                Action: [sqs:ReceiveMessage, sqs:DeleteMessage, sqs:GetQueueAttributes, sqs:ChangeMessageVisibility]
+                Resource: !GetAtt SignupQueue.Arn
+              - Sid: OriginalIntakeReadOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:ConditionCheckItem]
+                Resource: !Ref RegistrationsTableArn
+              - Sid: SyncStateOnlyNeverEligibility
+                Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:UpdateItem, dynamodb:ConditionCheckItem]
+                Resource: !Ref ParticipantsTableArn
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['SYNC#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              - Sid: ExactRuntimeCredential
+                Effect: Allow
+                Action: [secretsmanager:GetSecretValue]
+                Resource: !Ref BridgeSecretArn
+
+  Worker:
+    Type: AWS::Serverless::Function
+    DependsOn: LogGroup
+    Properties:
+      FunctionName: opda-hubspot-signup-sync
+      # Package the shared mapper/property contract without duplicating it.
+      CodeUri: ./
+      Handler: hubspot-sync/index.handler
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      MemorySize: 128
+      Timeout: 60
+      ReservedConcurrentExecutions: 2
+      Role: !GetAtt WorkerRole.Arn
+      Environment:
+        Variables:
+          REGISTRATIONS_TABLE_NAME: !Ref RegistrationsTableName
+          PARTICIPANTS_TABLE_NAME: !Ref ParticipantsTableName
+          BRIDGE_SECRET_ARN: !Ref BridgeSecretArn
+          TRANSFER_NOTICE_VERSION: !Ref TransferNoticeVersion
+          SYNC_QUEUE_ARN: !GetAtt SignupQueue.Arn
+          SYNC_QUEUE_URL: !Ref SignupQueue
+
+  SignupMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !GetAtt SignupQueue.Arn
+      FunctionName: !Ref Worker
+      BatchSize: 1
+      FunctionResponseTypes: [ReportBatchItemFailures]
+      ScalingConfig: { MaximumConcurrency: 2 }
+
+  DeadLetterAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: HubSpot signup work needs safe operator replay or credential/configuration repair.
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions: [{ Name: QueueName, Value: !GetAtt FailureQueue.QueueName }]
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: !If [HasAlarmTopic, [!Ref AlarmTopicArn], !Ref AWS::NoValue]
+
+  PendingAgeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: HubSpot signup delivery has been pending over a day; intake remains safely persisted.
+      Namespace: AWS/SQS
+      MetricName: ApproximateAgeOfOldestMessage
+      Dimensions: [{ Name: QueueName, Value: !GetAtt SignupQueue.QueueName }]
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 86400
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: !If [HasAlarmTopic, [!Ref AlarmTopicArn], !Ref AWS::NoValue]
+
+Outputs:
+  WorkerFunctionName:
+    Value: !Ref Worker
+  SignupQueueArn:
+    Value: !GetAtt SignupQueue.Arn
+  SignupQueueUrl:
+    Value: !Ref SignupQueue
+  FailureQueueUrl:
+    Value: !Ref FailureQueue

@@ -1,275 +1,157 @@
 ---
 /**
- * Page comments — Artalk backend on AWS Fargate, same-origin via CloudFront,
- * SSO via the path-scoped member session service (ADR-0079 amendment).
- *
- * Architecture:
- * - The regional session service owns the Auth0 session. On init we ask it
- *   for the session surface at /_auth/me; if authenticated it returns the
- *   Auth0 access token, which we POST to /api/v2/sso/exchange (the fork's
- *   SSO bridge, reached same-origin — CloudFront routes /api/v2/* to the
- *   Artalk task). The returned Artalk JWT goes to localStorage["ArtalkUser"]
- *   and the widget mounts fully logged-in — no popup, no password prompt.
- * - Site pages remain public; a 401 from /_auth/me shows the signed-out prompt.
- * - Theme follows OPDA's html[data-theme] via MutationObserver.
- * - Re-runs on `astro:page-load` so view transitions reset cleanly.
+ * Temporary anonymous comment reader during the identity migration.
+ * Member mutations are also blocked at CloudFront and the comments origin.
+ * No Artalk widget is mounted: it would restore browser tokens and emit writes.
  */
 import { getLegacyCommentKey } from '@/lib/site-route-migrations.mjs';
-
 const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
 ---
 <section class="comments-section" aria-label="Comments" data-comment-page-key={commentPageKey}>
   <h2 class="comments-section__heading">Comments</h2>
+  <p class="comments-section__notice">Comments are temporarily read-only while sign-in is upgraded.</p>
   <div id="opda-comments" class="comments-section__widget">
-    <div class="comments-section__loading" role="status">Loading comments…</div>
+    <div id="opda-comments-list" class="comments-section__list"></div>
+    <p id="opda-comments-status" role="status">Loading comments…</p>
+    <button id="opda-comments-more" class="btn btn--compact" type="button" hidden>Load more comments</button>
   </div>
 </section>
 
 <script>
-  // Artalk is loaded LAZILY (dynamic import, IntersectionObserver below):
-  // the page must render and become interactive without fetching, parsing,
-  // or running any comments code. Only the type is imported statically —
-  // erased at build time.
-  import type ArtalkType from 'artalk';
+  let controller;
+  let observedContainer;
+  let observer;
 
-  // Same origin: CloudFront routes /api/v2/* to the Artalk Fargate task
-  // (no CORS; CloudFront routes only /_auth/* to the session service).
-  const ARTALK_SERVER = window.location.origin;
-  const ARTALK_SITE = 'OPDA';
-  const SSO_ENDPOINT = '/api/v2/sso/exchange';
-  const LOCAL_USER_KEY = 'ArtalkUser';
-
-  let artalkInstance: ReturnType<typeof ArtalkType.init> | null = null;
-  let themeObserver: MutationObserver | null = null;
-  let initPromise: Promise<void> | null = null;
-  let initedPageKey: string | null = null;
-
-  function isDark(): boolean {
-    return document.documentElement.getAttribute('data-theme') === 'dark';
+  function clearLegacyCommentSession() {
+    try { window.localStorage.removeItem('ArtalkUser'); } catch { /* Reading never uses storage. */ }
   }
 
-  function tearDown() {
-    if (themeObserver) {
-      themeObserver.disconnect();
-      themeObserver = null;
-    }
-    if (artalkInstance) {
-      try { artalkInstance.destroy(); } catch { /* ignore */ }
-      artalkInstance = null;
-    }
-    initedPageKey = null;
+  function stop() {
+    controller?.abort();
+    observer?.disconnect();
+    controller = undefined;
+    observer = undefined;
+    observedContainer = undefined;
   }
 
-  function getStoredUser(): { token?: string; email?: string } {
-    try {
-      return JSON.parse(window.localStorage.getItem(LOCAL_USER_KEY) || '{}');
-    } catch {
-      return {};
+  function commentElement(comment) {
+    const article = document.createElement('article');
+    article.className = 'comments-section__entry';
+    article.id = 'atk-comment-' + comment.id;
+    const header = document.createElement('header');
+    const author = document.createElement('strong');
+    author.textContent = typeof comment.nick === 'string' ? comment.nick.slice(0, 256) : 'Participant';
+    header.append(author);
+    const date = new Date(comment.date);
+    if (Number.isFinite(date.getTime())) {
+      const time = document.createElement('time');
+      time.dateTime = date.toISOString();
+      time.textContent = date.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+      header.append(time);
     }
-  }
-
-  function writeStoredUser(user: Record<string, unknown>) {
-    try {
-      window.localStorage.setItem(LOCAL_USER_KEY, JSON.stringify(user));
-    } catch { /* ignore quota / disabled */ }
-  }
-
-  function hasDevMockSession(): boolean {
-    return import.meta.env.DEV
-      && window.localStorage.getItem('opda-dev-auth') === '1';
-  }
-
-  // Decode the exp claim from a JWT without verifying — for client-side
-  // "is this still valid?" check before reusing it.
-  function jwtExp(token: string): number | null {
-    try {
-      const [, payload] = token.split('.');
-      const padded = payload.replace(/-/g, '+').replace(/_/g, '/');
-      const json = atob(padded + '==='.slice((padded.length + 3) % 4));
-      const claims = JSON.parse(json);
-      return typeof claims.exp === 'number' ? claims.exp : null;
-    } catch {
-      return null;
+    article.append(header);
+    if (Number.isSafeInteger(comment.rid) && comment.rid > 0) {
+      const reply = document.createElement('p');
+      reply.className = 'comments-section__reply';
+      reply.textContent = 'Reply to comment #' + comment.rid;
+      article.append(reply);
     }
+    const content = document.createElement('p');
+    content.className = 'comments-section__content';
+    // Raw text is intentional during migration; never execute returned HTML/Markdown.
+    content.textContent = comment.content;
+    article.append(content);
+    return article;
   }
-
-  async function exchangeForArtalkToken(auth0Token: string) {
-    const r = await fetch(SSO_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: auth0Token }),
-    });
-    if (!r.ok) {
-      const text = await r.text();
-      throw new Error(`SSO exchange failed (${r.status}): ${text}`);
-    }
-    // Artalk returns { data: { token, user } }; older shapes also { token, user }.
-    const body = (await r.json()) as
-      | { token: string; user: Record<string, unknown> }
-      | { data: { token: string; user: Record<string, unknown> } };
-    if ('data' in body && body.data) return body.data;
-    return body as { token: string; user: Record<string, unknown> };
-  }
-
-  async function ensureArtalkSession(): Promise<boolean> {
-    // Already have a non-expired token? Use it.
-    const existing = getStoredUser();
-    if (existing.token) {
-      const exp = jwtExp(existing.token);
-      if (exp && exp > Math.floor(Date.now() / 1000) + 60) return true;
-    }
-
-    // Need a fresh token. The session service holds the Auth0 session — ask it
-    // for the access token (same-origin; cookies ride automatically).
-    let auth0Token: string;
-    try {
-      const r = await fetch('/_auth/me', { credentials: 'same-origin' });
-      if (!r.ok) return false;
-      const me = (await r.json()) as { token?: string | null };
-      if (!me.token) return false;
-      auth0Token = me.token;
-    } catch (err) {
-      console.warn('[OPDA] comments: session fetch failed', err);
-      return false;
-    }
-
-    try {
-      const { token, user } = await exchangeForArtalkToken(auth0Token);
-      // Only treat the session as valid if we actually got a JWT. A response
-      // without a token (e.g. a captcha challenge or an error shape) must NOT
-      // be written as a logged-in user — that left Artalk in a broken
-      // half-logged-in state. Fall back to the signed-out prompt instead.
-      if (!token || typeof token !== 'string') {
-        console.warn('[OPDA] comments: SSO exchange returned no token', user);
-        return false;
-      }
-      writeStoredUser({ ...user, token });
-      return true;
-    } catch (err) {
-      console.warn('[OPDA] comments: SSO bridge failed', err);
-      return false;
-    }
-  }
-
-  function init(): Promise<void> {
-    // init() fires from BOTH our DOMContentLoaded/immediate path AND
-    // astro:page-load, so it can be called twice for the same page load.
-    // Coalesce by tracking the in-flight promise + the pageKey we've
-    // already initialised for. A previous generation-counter guard wasn't
-    // enough: Artalk's own init does multiple async steps (config fetch,
-    // plugin load), and a second init() that arrived between those would
-    // tearDown the in-flight instance and leave a half-rendered widget.
-    const locationPath = window.location.pathname;
-    const pageKey = document.querySelector<HTMLElement>('.comments-section')?.dataset.commentPageKey
-      || locationPath;
-    if (initedPageKey === pageKey && artalkInstance) return Promise.resolve();
-    if (initPromise) return initPromise;
-    initPromise = doInit(pageKey, locationPath).finally(() => { initPromise = null; });
-    return initPromise;
-  }
-
-  async function doInit(pageKey: string, locationPath: string) {
-    const container = document.getElementById('opda-comments');
-    if (!container) return;
-
-    tearDown();
-
-    // The local dev sign-in can preview authenticated navigation, but it
-    // cannot mint the Artalk JWT issued by the deployed SSO bridge. State
-    // that boundary explicitly instead of mounting a widget whose writes
-    // would fail with an unauthorised API request.
-    if (hasDevMockSession()) {
-      container.innerHTML =
-        '<p class="comments-section__gated" role="status">Local preview session active. Live comments require the deployed SSO bridge.</p>';
-      initedPageKey = pageKey;
-      return;
-    }
-
-    // Code + session + config are all fetched only now — after the section
-    // neared the viewport — so none of it competes with page startup.
-    const [{ default: Artalk }, signedIn] = await Promise.all([
-      import('artalk'),
-      ensureArtalkSession(),
-      import('artalk/Artalk.css'),
-    ]);
-    // If the user navigated away while we were loading, drop out — a fresh
-    // init() will run for the new page via astro:page-load.
-    if (window.location.pathname !== locationPath) return;
-
-    container.innerHTML = '';
-
-    // Gated: Artalk renders only for signed-in users. Sign-in is restricted to
-    // allowlisted member e-mails by the session service, so a valid
-    // session implies an authorised user. Everyone else gets a prompt.
-    if (!signedIn) {
-      container.innerHTML =
-        '<p class="comments-section__gated" role="status">Sign in with an authorised OPDA account to view and post comments.</p>';
-      return;
-    }
-
-    artalkInstance = Artalk.init({
-      el: '#opda-comments',
-      server: ARTALK_SERVER,
-      site: ARTALK_SITE,
-      pageKey,
-      pageTitle: document.title,
-      darkMode: isDark(),
-      placeholder: 'Share your thoughts…',
-      noComment: 'No comments yet — be the first.',
-      sendBtn: 'Post comment',
-      // The backend's frontend.conf has empty labels and lists an OAuth
-      // login plugin we don't want — comments are gated to signed-in
-      // Auth0 users via our own SSO bridge, so the plugin's popup-login
-      // UI is dead weight and was leaving the widget half-rendered.
-      // useBackendConf:false keeps our client-side labels and skips
-      // the plugin load.
-      useBackendConf: false,
-    });
-    initedPageKey = pageKey;
-
-    themeObserver = new MutationObserver(() => {
-      if (!artalkInstance) return;
-      try { artalkInstance.setDarkMode(isDark()); } catch { /* ignore */ }
-    });
-    themeObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
-  }
-
-  // Lazy trigger: do nothing until the comments section approaches the
-  // viewport (600px early so it's usually ready by arrival). The page is
-  // fully loaded and responsive before any comments work happens; readers
-  // who never scroll down never pay for Artalk at all.
-  let observer: IntersectionObserver | null = null;
 
   function arm() {
+    clearLegacyCommentSession();
     const container = document.getElementById('opda-comments');
-    observer?.disconnect();
-    observer = null;
-    if (!container) return;
-    observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          observer?.disconnect();
-          observer = null;
-          init();
+    if (!container || observedContainer === container) return;
+    stop();
+    observedContainer = container;
+    controller = new AbortController();
+    const signal = controller.signal;
+    const list = document.getElementById('opda-comments-list');
+    const status = document.getElementById('opda-comments-status');
+    const more = document.getElementById('opda-comments-more');
+    if (!list || !status || !(more instanceof HTMLButtonElement)) return;
+    const pageKey = document.querySelector('.comments-section')?.dataset.commentPageKey || window.location.pathname;
+    let offset = 0;
+    let busy = false;
+    const seen = new Set();
+    list.replaceChildren();
+    more.hidden = true;
+
+    async function load() {
+      if (busy || signal.aborted) return;
+      busy = true;
+      more.disabled = true;
+      status.textContent = 'Loading comments…';
+      try {
+        const target = new URL('/api/v2/comments', window.location.origin);
+        target.search = new URLSearchParams({
+          page_key: pageKey, site_name: 'OPDA', limit: '20', offset: String(offset),
+          flat_mode: 'true', sort_by: 'date_asc',
+        }).toString();
+        const response = await fetch(target.toString(), {
+          method: 'GET', credentials: 'omit', cache: 'no-store', redirect: 'error',
+          headers: { accept: 'application/json' }, signal,
+        });
+        if (!response.ok) throw new Error('Comments unavailable');
+        const body = await response.json();
+        const data = body.data ?? body;
+        if (!Array.isArray(data.comments) || data.comments.length > 50
+          || !Number.isSafeInteger(data.count) || data.count < 0) throw new Error('Invalid comment response');
+        if (signal.aborted) return;
+        for (const comment of data.comments) {
+          if (!Number.isSafeInteger(comment?.id) || comment.id < 1 || typeof comment.content !== 'string'
+            || comment.content.length > 100000) throw new Error('Invalid comment');
         }
-      },
-      { rootMargin: '600px 0px' },
-    );
-    observer.observe(container);
+        for (const comment of data.comments) {
+          if (seen.has(comment.id)) continue;
+          seen.add(comment.id);
+          list.append(commentElement(comment));
+        }
+        offset += data.comments.length;
+        more.hidden = data.comments.length === 0 || offset >= data.count;
+        more.textContent = 'Load more comments';
+        status.textContent = seen.size === 0 ? 'No comments yet.' : '';
+      } catch {
+        if (signal.aborted) return;
+        status.textContent = 'Comments are temporarily unavailable. Please try again.';
+        more.textContent = 'Try again';
+        more.hidden = false;
+      } finally {
+        busy = false;
+        more.disabled = false;
+      }
+    }
+    more.addEventListener('click', () => { void load(); });
+    if (typeof IntersectionObserver === 'undefined') {
+      void load();
+    } else {
+      observer = new IntersectionObserver((entries) => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          observer?.disconnect();
+          observer = undefined;
+          void load();
+        }
+      }, { rootMargin: '600px 0px' });
+      observer.observe(container);
+    }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', arm);
-  } else {
-    arm();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arm);
+  else arm();
   document.addEventListener('astro:page-load', arm);
-  document.addEventListener('astro:before-swap', () => {
-    observer?.disconnect();
-    observer = null;
-    tearDown();
-  });
+  document.addEventListener('astro:before-swap', stop);
 </script>
+
+<style>
+  .comments-section__notice { margin-block: 1rem; }
+  .comments-section__list :global(.comments-section__entry) { border-block-start: 1px solid var(--color-border); padding-block: 1rem; }
+  .comments-section__list :global(header) { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: baseline; }
+  .comments-section__list :global(time), .comments-section__list :global(.comments-section__reply) { font-size: 0.875rem; }
+  .comments-section__list :global(.comments-section__content) { white-space: pre-wrap; overflow-wrap: anywhere; margin-block: 0.75rem 0; }
+</style>

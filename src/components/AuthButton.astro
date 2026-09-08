@@ -1,6 +1,6 @@
 ---
 /**
- * Auth0 sign-in / user-menu button — slotted into the header.
+ * Cognito participant sign-in / user-menu button — slotted into the header.
  *
  * Renders as a "Sign in" button when signed out and an avatar + dropdown
  * (Profile, Log out) when signed in. State is reconciled in the browser
@@ -43,9 +43,9 @@
 </div>
 
 <script>
-  // The path-scoped session service (ADR-0079 amendment) owns the Auth0
+  // The path-scoped session service (ADR-0084) owns the opaque participant
   // session and exposes it same-origin: /_auth/me (identity), /_auth/login
-  // (starts the PKCE flow), and /_auth/logout (clears cookies + ends Auth0
+  // (starts the PKCE flow), and /_auth/logout (revokes the session + ends Cognito
   // SSO). The site itself remains public; this button is a thin view over the
   // optional member session surface and a 401 shows "Sign in".
   //
@@ -121,7 +121,7 @@
       logoutBtn.dataset.bound = '1';
       logoutBtn.addEventListener('click', () => {
         // Clear the cached Artalk SSO JWT so the Comments widget can't reuse it,
-        // then let the session service clear its cookies and end Auth0 SSO.
+        // then let the session service revoke its session and end Cognito SSO.
         try { window.localStorage.removeItem('ArtalkUser'); } catch { /* ignore */ }
         if (import.meta.env.DEV) {
           // Tear down the mock local session; no gate to call. Stripped from prod.

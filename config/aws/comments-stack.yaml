@@ -1,7 +1,7 @@
 # Comments stack — opda.org.uk AWS hosting (ADR-0038 / ADR-0040)
 #
 # The Artalk comments runtime (eu-west-2): a single always-on Fargate task
-# running the sparkling/Artalk fork (SSO token-exchange endpoint), SQLite on
+# running the sparkling/Artalk fork behind a temporary read-only proxy, SQLite on
 # the task's ephemeral disk, persisted via Litestream to S3 (ADR-0038
 # §Comments/§Database/§Persistence — "SQLite backed by a bucket").
 #
@@ -40,9 +40,6 @@ Parameters:
     Description: >-
       Regional ID (pl-...) of the managed prefix list
       com.amazonaws.global.cloudfront.origin-facing (looked up by infra.yml).
-  Auth0Domain:
-    Type: String
-    Description: Auth0 tenant the SSO token-exchange endpoint validates against.
 
 Resources:
   # ---------------- Network (self-contained: no console-built VPC) ----------------
@@ -197,35 +194,130 @@ Resources:
       NetworkMode: awsvpc
       Cpu: '256'
       Memory: '512'
+      RuntimePlatform: { CpuArchitecture: X86_64, OperatingSystemFamily: LINUX }
       ExecutionRoleArn: !GetAtt ExecutionRole.Arn
       TaskRoleArn: !GetAtt TaskRole.Arn
       ContainerDefinitions:
         - Name: artalk
           Image: !Sub '${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/opda-artalk:latest'
-          PortMappings: [{ ContainerPort: 23366, Protocol: tcp }]
+          Essential: true
+          # The fork's AWS entrypoint hardcodes public port 23366. Override it
+          # while preserving Litestream restore/replicate and the single writer.
+          EntryPoint: [/bin/bash, -ec]
+          Command:
+            - |
+              : "${LITESTREAM_BUCKET:?LITESTREAM_BUCKET is required}"
+              DB_PATH="${ATK_DB_FILE:-/data/artalk.db}"
+              mkdir -p /data "$(dirname "$DB_PATH")"
+              if [ ! -e /data/artalk.yml ]; then artalk-go gen conf /data/artalk.yml; fi
+              printf 'dbs:\n  - path: %s\n    replicas:\n      - type: s3\n        bucket: %s\n        path: artalk\n        region: %s\n' "$DB_PATH" "$LITESTREAM_BUCKET" "$AWS_REGION" > /etc/litestream.yml
+              litestream restore -if-db-not-exists -if-replica-exists "$DB_PATH"
+              exec litestream replicate -exec "artalk-go server --config /data/artalk.yml --host 127.0.0.1 --port 23367"
           Environment:
-            # The fork's entrypoint runs Litestream restore → artalk under
-            # `litestream replicate -exec` (single supervised writer).
             - { Name: LITESTREAM_BUCKET, Value: !Ref LitestreamBucket }
+            - { Name: AWS_REGION, Value: !Ref 'AWS::Region' }
             - { Name: ATK_DB_TYPE, Value: sqlite }
             - { Name: ATK_DB_FILE, Value: /data/artalk.db }
             - { Name: ATK_TRUSTED_DOMAINS, Value: !Sub 'https://${DomainName}' }
             - { Name: ATK_SITE_DEFAULT, Value: OPDA }
-            # Comment actions require Artalk's signed-in SSO identity; captcha
-            # is redundant and breaks the popup-free SSO flow (matches fly.toml).
             - { Name: ATK_CAPTCHA_ENABLED, Value: 'false' }
-            # The fork's SSO token exchange (ADR-0038: Artalk fork bullet).
-            # The endpoint requires BOTH auth.enabled and auth.sso.enabled
-            # (server/handler/auth_sso_exchange.go answers 404 otherwise).
+            # Never turn auth off: that enables anonymous writes in Artalk.
             - { Name: ATK_AUTH_ENABLED, Value: 'true' }
-            - { Name: ATK_AUTH_SSO_ENABLED, Value: 'true' }
-            - { Name: ATK_AUTH_SSO_ISSUER, Value: !Ref Auth0Domain }
+            - { Name: ATK_AUTH_ANONYMOUS, Value: 'false' }
+            - { Name: ATK_AUTH_SSO_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_EMAIL_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_AUTH0_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_GITHUB_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_GITLAB_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_GITEA_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_GOOGLE_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_MASTODON_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_TWITTER_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_FACEBOOK_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_DISCORD_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_STEAM_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_APPLE_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_MICROSOFT_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_WECHAT_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_TIKTOK_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_SLACK_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_LINE_ENABLED, Value: 'false' }
+            - { Name: ATK_AUTH_PATREON_ENABLED, Value: 'false' }
+            - { Name: ATK_IMG_UPLOAD_ENABLED, Value: 'false' }
           LogConfiguration:
             LogDriver: awslogs
             Options:
               awslogs-group: !Ref LogGroup
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: artalk
+        - Name: comments-readonly
+          # Public ECR nginx 1.30.4 linux/amd64, manifest verified by SHA-256.
+          Image: public.ecr.aws/docker/library/nginx@sha256:862dc06c359bfe5d3211e4106269f040d261e269e58ebf17060d8328c45067c0
+          Essential: true
+          PortMappings: [{ ContainerPort: 23366, Protocol: tcp }]
+          EntryPoint: [/bin/sh, -ec]
+          Command:
+            - 'printf ''%s\n'' "$OPDA_NGINX_CONF" > /tmp/nginx.conf; exec nginx -c /tmp/nginx.conf -g ''daemon off;'''
+          Environment:
+            - Name: OPDA_NGINX_CONF
+              Value: |
+                worker_processes 1;
+                pid /tmp/nginx.pid;
+                error_log /dev/stderr warn;
+                events { worker_connections 128; }
+                http {
+                  access_log off;
+                  server_tokens off;
+                  client_body_temp_path /tmp/client_body;
+                  proxy_temp_path /tmp/proxy;
+                  fastcgi_temp_path /tmp/fastcgi;
+                  uwsgi_temp_path /tmp/uwsgi;
+                  scgi_temp_path /tmp/scgi;
+                  map $request_method $read_method { default 0; GET 1; HEAD 1; }
+                  map $args $valid_read_args {
+                    default 0;
+                    "~^(?=.{1,2300}$)page_key=(?:%2[Ff]|/)(?:[A-Za-z0-9._~/-]|%[0-9A-Fa-f]{2})*&site_name=OPDA&limit=([1-9]|[1-4][0-9]|50)&offset=(0|[1-9][0-9]{0,5})&flat_mode=true&sort_by=date_asc$" 1;
+                  }
+                  server {
+                    listen 23366;
+                    client_max_body_size 1k;
+                    add_header Cache-Control "no-store" always;
+                    add_header X-Content-Type-Options "nosniff" always;
+                    location = /healthz {
+                      if ($read_method = 0) { return 405; }
+                      return 200 "read-only\n";
+                    }
+                    location = /api/v2/comments {
+                      if ($read_method = 0) { return 405; }
+                      if ($valid_read_args = 0) { return 400; }
+                      proxy_pass_request_headers off;
+                      proxy_set_header Authorization "";
+                      proxy_set_header Cookie "";
+                      proxy_set_header Content-Length "";
+                      proxy_set_header Accept "application/json";
+                      proxy_pass_request_body off;
+                      proxy_hide_header Set-Cookie;
+                      proxy_http_version 1.1;
+                      proxy_set_header Connection "";
+                      proxy_connect_timeout 3s;
+                      proxy_read_timeout 10s;
+                      proxy_pass http://127.0.0.1:23367/api/v2/comments?$args;
+                    }
+                    location / { return 403; }
+                  }
+                }
+          HealthCheck:
+            Command: [CMD-SHELL, 'wget -q -O - http://127.0.0.1:23366/healthz >/dev/null || exit 1']
+            Interval: 30
+            Timeout: 5
+            Retries: 3
+            StartPeriod: 10
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref LogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: comments-readonly
 
   Service:
     Type: AWS::ECS::Service

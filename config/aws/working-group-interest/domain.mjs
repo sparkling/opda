@@ -1,4 +1,4 @@
-export const PRIVACY_NOTICE_VERSION = '2026-08-13';
+export const PRIVACY_NOTICE_VERSION = '2026-09-08';
 export const REGISTRATION_RETENTION_SECONDS = 180 * 24 * 60 * 60;
 
 export const WORKING_GROUPS = new Set([

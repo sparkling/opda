@@ -37,7 +37,7 @@ interface RegistrationPayload {
   contributions: string[];
   relevantPerspective?: string;
   acknowledgement: true;
-  privacyNoticeVersion: '2026-08-13';
+  privacyNoticeVersion: '2026-09-08';
   website: string;
   startedAt: number;
 }
@@ -187,7 +187,7 @@ function initWorkingGroupForm(): void {
     const website = form.querySelector<HTMLInputElement>('#website')?.value ?? '';
     const privacyNoticeVersion = form.dataset.privacyNoticeVersion;
 
-    if (privacyNoticeVersion !== '2026-08-13') {
+    if (privacyNoticeVersion !== '2026-09-08') {
       addError(null, STALE_PRIVACY_NOTICE_ISSUE.errorId, STALE_PRIVACY_NOTICE_ISSUE.message);
     }
 
@@ -207,7 +207,7 @@ function initWorkingGroupForm(): void {
       workingGroups,
       contributions,
       acknowledgement: true,
-      privacyNoticeVersion: '2026-08-13',
+      privacyNoticeVersion: '2026-09-08',
       website,
       startedAt: beganAt,
     };

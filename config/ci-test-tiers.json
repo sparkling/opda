@@ -4,6 +4,7 @@
   "tests": [
     { "path": "tests/astro-content-runtime.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/auth-session.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/comments-origin-readonly.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/aws-working-group-interest-infrastructure.test.mjs", "owner": "platform", "tier": "pull-request-blocking", "lane": "infrastructure" },
     { "path": "tests/baspi5_round_trip/test_exemplar_regression.py", "owner": "ontology", "tier": "release-blocking", "lane": "ontology" },
     { "path": "tests/baspi5_round_trip/test_round_trip.py", "owner": "ontology", "tier": "release-blocking", "lane": "ontology" },
@@ -25,7 +26,9 @@
     { "path": "tests/grlc-handler.test.mjs", "owner": "linked-data-api", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/header-brand-palette.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/hubspot-participation.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/hubspot-sync.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/participant-import.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/participant-backup.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/ia-pdtf1-source-receipts.test.mjs", "owner": "information-architecture", "tier": "scheduled-assurance", "lane": "editorial" },
     { "path": "tests/ia-preservation-audit.test.mjs", "owner": "information-architecture", "tier": "scheduled-assurance", "lane": "editorial" },
     { "path": "tests/lib/remark/frontmatter-uri-extraction.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },

@@ -17,13 +17,13 @@ const description = 'How OPDA uses personal information supplied through its pub
 >
   <article class="public-statement" aria-labelledby="privacy-title">
     <header class="public-statement__header">
-      <p class="public-statement__eyebrow">Privacy notice · Version 2026-08-13</p>
+      <p class="public-statement__eyebrow">Privacy notice · Version 2026-09-08</p>
       <h1 id="privacy-title">Working-group expressions of interest</h1>
       <p class="public-statement__lead">
         This notice explains how the Open Property Data Association uses information supplied by
         people who register interest in the Smart Property Data Trust Framework working groups.
       </p>
-      <p class="public-statement__meta"><span>Effective 13 August 2026</span></p>
+      <p class="public-statement__meta"><span>Effective 8 September 2026</span></p>
       <span id="contents-title" class="wg-fragment-alias" aria-hidden="true"></span>
     </header>
 
@@ -51,13 +51,15 @@ const description = 'How OPDA uses personal information supplied through its pub
     <section class="public-statement__content" id="information">
       <h2>What we collect</h2>
       <div>
-          <p>We collect only the information you enter in the form:</p>
+          <p>We collect the information you enter and the records needed to administer participation:</p>
           <ul>
             <li>your full name, email address, organisation, and role or area of expertise;</li>
             <li>the working groups and contribution types you select;</li>
             <li>an optional, length-limited note about relevant experience or perspective;</li>
             <li>your acknowledgement of the registration purpose and this notice; and</li>
-            <li>the submission timestamp needed to administer the registration.</li>
+            <li>the submission timestamp and the version of the notice you acknowledged;</li>
+            <li>review decisions, enrolment and active or suspended account status; and</li>
+            <li>account identifiers, email-verification and session records needed for secure sign-in.</li>
           </ul>
           <p>
             Do not include confidential information, evidence, links, property or customer data,
@@ -73,6 +75,7 @@ const description = 'How OPDA uses personal information supplied through its pub
           <ul>
             <li>review interest, experience and potential fit across the selected groups;</li>
             <li>contact you about the groups you selected and, if accepted, administer participation; and</li>
+            <li>maintain your participant record and provide approved website account access;</li>
             <li>protect the public form from automated or abusive submissions.</li>
           </ul>
           <p>
@@ -92,12 +95,17 @@ const description = 'How OPDA uses personal information supplied through its pub
       <div>
           <p>Access is limited to authorised people acting for OPDA and the providers needed to run the service:</p>
           <ul>
-            <li><strong>Amazon Web Services</strong> hosts the form service and encrypted register in the UK region, applies request-rate controls, and carries a reference-only event after a record is stored; submitted form fields are not copied into that event;</li>
+            <li><strong>Amazon Web Services</strong> hosts the form service and encrypted participant register in the UK region. Amazon Cognito provides account authentication and user-requested email sign-in codes. The service uses private recovery copies and reference-only submission events; form fields are not copied into those events;</li>
+            <li><strong>HubSpot</strong> is OPDA's contact-management service. It receives the relevant contact, organisation, working-group preference and contribution details, together with review and account-status information. It does not authenticate you or decide website access;</li>
             <li><strong>Microsoft Teams and SharePoint</strong> may be used later only if OPDA accepts and invites you.</li>
           </ul>
           <p>
             Registering through the public service does not automatically create a Microsoft guest
             account, grant access or give you standards decision rights.
+          </p>
+          <p>
+            New applications require OPDA approval before a website account is enabled.
+            Signing in proves control of your email address; it does not opt you into marketing.
           </p>
       </div>
     </section>
