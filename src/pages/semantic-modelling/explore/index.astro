@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import Callout from '@/components/Callout.astro';
 ---
 
 <ModellingLayout title="Explore the model" description="Learn the distinctions that make property information usable: which subject, role, quantity, time, claim or meaning are we actually describing? Start with the question on your desk." proseClass="prose wide modelling-document learning-document">
@@ -25,11 +26,10 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
 
   <h2 id="read-a-connection">Read a connection as a sentence</h2>
   <p>“Flat 1 — report version 2” makes the reader guess. “Report version 2 describes the inspection concerning Flat 1” names the report, event and dwelling and says how they connect. Now ask what else the statement needs: a source, period, measurement basis or arrangement?</p>
-  <section class="learning-practice document-flow" aria-labelledby="starting-practice">
-    <h3 id="starting-practice">A small reading exercise</h3>
+  <Callout title="A small reading exercise" tone="method" heading="h3" id="starting-practice">
     <p>“The latest report proves that the property has not changed.” What would you ask before relying on it?</p>
     <p><strong>Worked response:</strong> identify which property, report version and kind of change the sentence means, then inspect what the report actually supports. A recent issue date does not establish a recent visit or an unchanged dwelling. This claim needs evidence, not merely a more confident label.</p>
-  </section>
+  </Callout>
   <h2 id="layers-of-detail">Use the explanation, then put it to work</h2>
   <p>The cases are fictional teaching accounts, with explicit premises and visible answers. Some support a definite conclusion; others deliberately leave an evidence gap. They are not candidate implementation claims or professional rules. Formal representation choices remain in <a href="/semantic-modelling/method">Ontology modelling</a>, and terminology has one home in the <a href="/glossary#ontology-modelling">canonical glossary</a>.</p>
   <p>Already reviewing material? <a href="/semantic-modelling/contribute">Review and contribute</a> turns these distinctions into definition, diagram, evidence, vocabulary and rule reviews. To see how the different views fit one agreement first, read <a href="/semantic-modelling/understand/what-we-are-building">What we are building</a>.</p>

@@ -1,6 +1,7 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+import Callout from '@/components/Callout.astro';
 ---
 
 <ModellingLayout title="Names, choices and classification" description="A shared vocabulary does more than standardise spelling. It explains what a term means, which choices belong together and what an organising hierarchy does—and does not—claim." proseClass="prose wide modelling-document learning-document">
@@ -10,7 +11,7 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 
   <h2 id="term-specimen">Inspect a term, not just a word list</h2>
   <p>This specimen belongs to a fictional teaching vocabulary about physical access during inspections. It is not an approved OPDA value or a professional inspection standard.</p>
-  <section class="learning-specimen document-flow" aria-labelledby="some-access">
+  <section class="learning-example document-flow" aria-labelledby="some-access">
     <h3 id="some-access">Concept: access to some but not all agreed areas</h3>
     <dl>
       <dt>Preferred label</dt><dd>Access to some agreed areas.</dd>
@@ -43,29 +44,28 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
   <LearningDiagram kind="vocabulary" caption="Names, scoped choices, topic organisation and independent facets answer different questions. The all/some/none access choices rely on a nonempty identified inspection scope." />
 
   <h2 id="hierarchy">A topic tree is not a diagram of a building's parts</h2>
-  <div class="learning-spread">
-    <section class="learning-specimen document-flow" aria-labelledby="topics">
-      <h3 id="topics">A fictional report-topic taxonomy</h3>
-      <ul><li>Building fabric<ul><li>Roof condition</li><li>Wall condition</li></ul></li></ul>
-      <p>“Roof condition” is a narrower topic beneath “Building fabric”. This organises what reports discuss. It does not identify a roof, make a report a kind of building or state that a roof-condition concept is a physical part.</p>
-    </section>
-    <section class="learning-specimen document-flow" aria-labelledby="facets">
-      <h3 id="facets">Independent ways to describe a report</h3>
-      <dl><dt>Topic</dt><dd>Roof condition.</dd><dt>Document status</dt><dd>Draft, under this example's document convention.</dd><dt>Information type</dt><dd>Inspection account.</dd></dl>
-      <p>The same report can carry all three classifications. “Draft” need not sit beneath “Roof condition” in a single tree. Each facet asks a different question.</p>
-    </section>
-  </div>
+  <section class="learning-example document-flow" aria-labelledby="topics">
+    <h3 id="topics">A fictional report-topic taxonomy</h3>
+    <ul><li>Building fabric<ul><li>Roof condition</li><li>Wall condition</li></ul></li></ul>
+    <p>“Roof condition” is a narrower topic beneath “Building fabric”. This organises what reports discuss. It does not identify a roof, make a report a kind of building or state that a roof-condition concept is a physical part.</p>
+  </section>
+  <section class="learning-example document-flow" aria-labelledby="facets">
+    <h3 id="facets">Independent ways to describe a report</h3>
+    <dl><dt>Topic</dt><dd>Roof condition.</dd><dt>Document status</dt><dd>Draft, under this example's document convention.</dd><dt>Information type</dt><dd>Inspection account.</dd></dl>
+    <p>The same report can carry all three classifications. “Draft” need not sit beneath “Roof condition” in a single tree. Each facet asks a different question.</p>
+  </section>
   <p>A broader/narrower topic relationship helps someone browse from a general subject to a more specific one. A kind-of relationship makes a different claim about what things are. A physical part-of relationship makes another. One drawing convention should not let those meanings slide into each other unnoticed.</p>
 
-  <section class="learning-practice document-flow" aria-labelledby="vocabulary-practice">
+  <section class="learning-example document-flow" aria-labelledby="vocabulary-practice">
     <h2 id="vocabulary-practice">Practice: repair meaning and scope</h2>
     <p>A proposed definition says “Partial access means access that was partial”. Its choices are “All agreed areas accessed”, “Limited access” and “Not completed”. A report-topic tree places “Draft report” beneath “Roof condition”. What needs attention?</p>
     <h3>Worked response</h3>
     <p>The circular definition does not tell a reader what counts. The earlier “at least one, but not every, identified agreed area” definition provides an assessable boundary for this teaching scope. Test it with two of three areas accessed, and with zero of three.</p>
     <p>The proposed list mixes access with completion. An inspection could be completed within its agreed reporting scope while physical access was limited. “Not completed” could also overlap “Limited access”. Separate the questions before choosing labels, then test the access choices against the nonempty area set.</p>
     <p>“Draft report” expresses status, not a narrower roof-condition topic. Keep it as an independent facet. A report can discuss roof condition while draft or issued; the subject organisation should not force one status.</p>
-    <h3>Does adding “Other” solve the problem?</h3>
-    <p>Not here. Under the complete, nonempty all/some/none premises, every known outcome already has a place. An “Other” choice would need a new, explained meaning or a changed scope. It would not supply missing evidence. In a different list that deliberately leaves cases open, “Other” can indicate a known case outside the named choices—but it still differs from “unknown”.</p>
+    <Callout title="Does adding “Other” solve the problem?" tone="important" heading="h3">
+      <p>Not here. Under the complete, nonempty all/some/none premises, every known outcome already has a place. An “Other” choice would need a new, explained meaning or a changed scope. It would not supply missing evidence. In a different list that deliberately leaves cases open, “Other” can indicate a known case outside the named choices—but it still differs from “unknown”.</p>
+    </Callout>
   </section>
 
   <h2 id="connections">Correspondence is more than matching labels</h2>

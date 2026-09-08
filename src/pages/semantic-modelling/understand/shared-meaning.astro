@@ -2,6 +2,7 @@
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
+import Callout from '@/components/Callout.astro';
 ---
 
 <ModellingLayout
@@ -97,7 +98,7 @@ import LearningIllustration from '@/components/modelling/LearningIllustration.as
       complete account, shown three ways.
     </p>
     <LearningIllustration scene="technology" alt="Two differently arranged representations of a property situation, with the same relationship pieces kept between them." />
-    <section class="learning-specimen document-flow" aria-labelledby="form-view">
+    <section class="learning-example document-flow" aria-labelledby="form-view">
       <h3 id="form-view">1. A readable form</h3>
       <dl>
         <dt>Report version</dt><dd>Version 2</dd>
@@ -108,7 +109,7 @@ import LearningIllustration from '@/components/modelling/LearningIllustration.as
       </dl>
       <p>A form can preserve these connections. It needs sufficiently clear labels and references, not merely a field called “date”.</p>
     </section>
-    <section class="learning-specimen document-flow" aria-labelledby="nested-view">
+    <section class="learning-example document-flow" aria-labelledby="nested-view">
       <h3 id="nested-view">2. A nested description</h3>
       <ul>
         <li>Report version 2
@@ -126,7 +127,7 @@ import LearningIllustration from '@/components/modelling/LearningIllustration.as
       </ul>
       <p>The indentation chooses a reading order. The reference to the same inspection prevents the repeated description from implying a second event. A tree can contain references; nesting is not a prohibition on linking.</p>
     </section>
-    <section aria-labelledby="model-view">
+    <section class="learning-example document-flow" aria-labelledby="model-view">
       <h3 id="model-view">3. A connected account</h3>
       <LearningDiagram kind="representations" caption="The connected account keeps two report versions attached to one inspection of Flat 1." />
       <ol>
@@ -146,7 +147,7 @@ import LearningIllustration from '@/components/modelling/LearningIllustration.as
     </p>
   </section>
 
-  <section class="learning-practice document-flow" aria-labelledby="try-it">
+  <section class="learning-example document-flow" aria-labelledby="try-it">
     <h2 id="try-it"><span id="ordinary-questions" aria-hidden="true"></span><span id="participate" aria-hidden="true"></span>Practice · Follow three connections</h2>
     <p>
       Read “version 2 revises version 1”, “version 1 describes the inspection”, and
@@ -154,15 +155,16 @@ import LearningIllustration from '@/components/modelling/LearningIllustration.as
       12 August describe? What must an exchange preserve so that its recipient does
       not infer a second visit?
     </p>
-    <h3>Worked response</h3>
-    <p>
-      The first two dates are issue dates of different report versions. The third
-      is the occurrence date of the inspection. Preserve the report-version
-      distinction, the revision relationship, both links to the same inspection,
-      the inspection's subject and the meanings of the dates. Preserve the source
-      statement that the revision involved no new visit. A lone “latest date” value
-      cannot carry that account.
-    </p>
+    <Callout title="Worked response" tone="method" heading="h3">
+      <p>
+        The first two dates are issue dates of different report versions. The third
+        is the occurrence date of the inspection. Preserve the report-version
+        distinction, the revision relationship, both links to the same inspection,
+        the inspection's subject and the meanings of the dates. Preserve the source
+        statement that the revision involved no new visit. A lone “latest date” value
+        cannot carry that account.
+      </p>
+    </Callout>
     <h3>Change the case</h3>
     <p>
       A fictional maintenance record was entered on 7 September and says: “Repair

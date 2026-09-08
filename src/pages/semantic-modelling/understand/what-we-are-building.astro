@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import Callout from '@/components/Callout.astro';
 ---
 
 <ModellingLayout
@@ -23,10 +24,9 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
       explain a date used in its report; a relationship definition explains how the
       report connects to the inspection. Each does a different job.
     </p>
-    <aside class="callout callout--note modelling-callout">
-      <p class="callout__label">A fictional teaching package</p>
+    <Callout title="A fictional teaching package" tone="information">
       <p>The specimens below are invented for this guide. They are not adopted professional definitions or entries copied from the Property Pack candidate. Their deliberately small scope lets us examine whether the parts fit together.</p>
-    </aside>
+    </Callout>
   </section>
 
   <section aria-labelledby="meaning-and-data">
@@ -37,40 +37,38 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
       dictionary tells a recipient exactly which date a report element carries.
       Neither answer can safely be inferred from the word “survey”.
     </p>
-    <div class="learning-spread">
-      <section class="learning-specimen document-flow" aria-labelledby="glossary-specimen">
-        <h3 id="glossary-specimen">Business glossary · Inspection</h3>
-        <dl>
-          <dt>Definition</dt>
-          <dd>An examination of an identified dwelling during an identified visit, within the scope agreed for that visit.</dd>
-          <dt>Purpose</dt>
-          <dd>Distinguish the examination from the documents that describe it.</dd>
-          <dt>Scope in this package</dt>
-          <dd>A visit concerning one dwelling. This teaching definition does not cover every possible kind of inspection.</dd>
-          <dt>Ordinary example</dt>
-          <dd>The visit to examine Flat 1 at Harbour Court on 12 August 2026.</dd>
-          <dt>Counterexample</dt>
-          <dd>Correcting wording in the report without another examination is not another inspection.</dd>
-          <dt>Review responsibility</dt>
-          <dd>In a real package, name the context responsible for the definition and record the evidence and review status.</dd>
-        </dl>
-      </section>
-      <section class="learning-specimen document-flow" aria-labelledby="dictionary-specimen">
-        <h3 id="dictionary-specimen">Data dictionary · Report issue date</h3>
-        <dl>
-          <dt>Meaning</dt>
-          <dd>The calendar date on which the identified report version was issued.</dd>
-          <dt>Subject</dt>
-          <dd>A particular report version, not the dwelling or inspection.</dd>
-          <dt>Expected value</dt>
-          <dd>A calendar date whose source can be identified.</dd>
-          <dt>Do not substitute</dt>
-          <dd>The inspection date, a system's recording date or the period during which a claim applies.</dd>
-        </dl>
-        <h4>Separate teaching record</h4>
-        <p>Report version 2 · issue date <time datetime="2026-08-20">20 August 2026</time> · source: the fictional report's version statement.</p>
-      </section>
-    </div>
+    <section class="learning-example document-flow" aria-labelledby="glossary-specimen">
+      <h3 id="glossary-specimen">Business glossary · Inspection</h3>
+      <dl>
+        <dt>Definition</dt>
+        <dd>An examination of an identified dwelling during an identified visit, within the scope agreed for that visit.</dd>
+        <dt>Purpose</dt>
+        <dd>Distinguish the examination from the documents that describe it.</dd>
+        <dt>Scope in this package</dt>
+        <dd>A visit concerning one dwelling. This teaching definition does not cover every possible kind of inspection.</dd>
+        <dt>Ordinary example</dt>
+        <dd>The visit to examine Flat 1 at Harbour Court on 12 August 2026.</dd>
+        <dt>Counterexample</dt>
+        <dd>Correcting wording in the report without another examination is not another inspection.</dd>
+        <dt>Review responsibility</dt>
+        <dd>In a real package, name the context responsible for the definition and record the evidence and review status.</dd>
+      </dl>
+    </section>
+    <section class="learning-example document-flow" aria-labelledby="dictionary-specimen">
+      <h3 id="dictionary-specimen">Data dictionary · Report issue date</h3>
+      <dl>
+        <dt>Meaning</dt>
+        <dd>The calendar date on which the identified report version was issued.</dd>
+        <dt>Subject</dt>
+        <dd>A particular report version, not the dwelling or inspection.</dd>
+        <dt>Expected value</dt>
+        <dd>A calendar date whose source can be identified.</dd>
+        <dt>Do not substitute</dt>
+        <dd>The inspection date, a system's recording date or the period during which a claim applies.</dd>
+      </dl>
+      <h4>Separate teaching record</h4>
+      <p>Report version 2 · issue date <time datetime="2026-08-20">20 August 2026</time> · source: the fictional report's version statement.</p>
+    </section>
     <p>
       The example value is not part of the dictionary element's definition. If a
       later report is issued in September, the value changes but the meaning of
@@ -87,31 +85,29 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
       when the scope warrants one. A hierarchy and a choice list are not interchangeable,
       even when both are displayed as indented words on a screen.
     </p>
-    <div class="learning-spread">
-      <section class="learning-specimen document-flow" aria-labelledby="taxonomy-specimen">
-        <h3 id="taxonomy-specimen">Topic taxonomy · Inspection subjects</h3>
-        <ul>
-          <li>Building fabric
-            <ul>
-              <li>Roof condition</li>
-              <li>External wall condition</li>
-            </ul>
-          </li>
-        </ul>
-        <p>In this fictional topic scheme, <strong>Roof condition</strong> is a narrower inspection topic beneath <strong>Building fabric</strong>.</p>
-        <p>This organises subjects people discuss. It does not say that a roof-condition topic is a physical part of a building, or that every narrower topic is a kind of its broader topic.</p>
-      </section>
-      <section class="learning-specimen document-flow" aria-labelledby="vocabulary-specimen">
-        <h3 id="vocabulary-specimen">Controlled vocabulary · Physical access outcome</h3>
-        <p><strong>Scope:</strong> physical access to a nonempty, identified set of agreed inspection areas during this visit.</p>
-        <dl>
-          <dt>All agreed areas</dt><dd>Every area in that set was physically accessed.</dd>
-          <dt>Some, but not all, agreed areas</dt><dd>At least one area was accessed and at least one was not.</dd>
-          <dt>None of the agreed areas</dt><dd>No area in that set was physically accessed.</dd>
-        </dl>
-        <p>With that scope and sufficient evidence, exactly one outcome applies. An empty set is excluded so that “all” and “none” cannot describe the same case.</p>
-      </section>
-    </div>
+    <section class="learning-example document-flow" aria-labelledby="taxonomy-specimen">
+      <h3 id="taxonomy-specimen">Topic taxonomy · Inspection subjects</h3>
+      <ul>
+        <li>Building fabric
+          <ul>
+            <li>Roof condition</li>
+            <li>External wall condition</li>
+          </ul>
+        </li>
+      </ul>
+      <p>In this fictional topic scheme, <strong>Roof condition</strong> is a narrower inspection topic beneath <strong>Building fabric</strong>.</p>
+      <p>This organises subjects people discuss. It does not say that a roof-condition topic is a physical part of a building, or that every narrower topic is a kind of its broader topic.</p>
+    </section>
+    <section class="learning-example document-flow" aria-labelledby="vocabulary-specimen">
+      <h3 id="vocabulary-specimen">Controlled vocabulary · Physical access outcome</h3>
+      <p><strong>Scope:</strong> physical access to a nonempty, identified set of agreed inspection areas during this visit.</p>
+      <dl>
+        <dt>All agreed areas</dt><dd>Every area in that set was physically accessed.</dd>
+        <dt>Some, but not all, agreed areas</dt><dd>At least one area was accessed and at least one was not.</dd>
+        <dt>None of the agreed areas</dt><dd>No area in that set was physically accessed.</dd>
+      </dl>
+      <p>With that scope and sufficient evidence, exactly one outcome applies. An empty set is excluded so that “all” and “none” cannot describe the same case.</p>
+    </section>
     <p>
       Suppose the agreed areas are the living room, bedroom and enclosed area.
       The first two were accessed; the enclosed area was locked. “Some, but not all”
@@ -131,35 +127,33 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
       to describe. A <a href="/glossary#relationship">relationship</a> definition
       explains a particular connection between subjects.
     </p>
-    <div class="learning-spread">
-      <section class="learning-specimen document-flow" aria-labelledby="resource-specimen">
-        <h3 id="resource-specimen">Resource definition · Inspection</h3>
-        <dl>
-          <dt>What it defines</dt>
-          <dd>The kind of identifiable examination event described by this package's glossary definition.</dd>
-          <dt>What we describe about one</dt>
-          <dd>Which dwelling it concerns, its agreed scope and when it occurred.</dd>
-          <dt>Identity question</dt>
-          <dd>Are two records describing the same examination during the same visit, or a separate examination? The answer needs evidence, not just matching dates.</dd>
-          <dt>Distinction to preserve</dt>
-          <dd>A new report version need not mean a new inspection.</dd>
-        </dl>
-        <h4>Separate teaching instance</h4>
-        <p>The examination of Flat 1 at Harbour Court on 12 August 2026 is an inspection under this definition. It is one particular event, not the definition itself.</p>
-      </section>
-      <section class="learning-specimen document-flow" aria-labelledby="relationship-specimen">
-        <h3 id="relationship-specimen">Relationship definition · Describes</h3>
-        <dl>
-          <dt>Starting subject</dt><dd>A particular report version.</dd>
-          <dt>Connected subject</dt><dd>The inspection whose examination it reports.</dd>
-          <dt>Meaning in this package</dt><dd>The report version gives an account of that inspection.</dd>
-          <dt>Limit</dt><dd>This connection does not establish that every statement in the report is true, or that the report describes every inspection at the dwelling.</dd>
-        </dl>
-        <h4>Separate teaching statement</h4>
-        <p>Report version 2 describes the 12 August inspection.</p>
-        <p>Report version 1 also describes that inspection. Both reports can connect to one event without becoming the same document version.</p>
-      </section>
-    </div>
+    <section class="learning-example document-flow" aria-labelledby="resource-specimen">
+      <h3 id="resource-specimen">Resource definition · Inspection</h3>
+      <dl>
+        <dt>What it defines</dt>
+        <dd>The kind of identifiable examination event described by this package's glossary definition.</dd>
+        <dt>What we describe about one</dt>
+        <dd>Which dwelling it concerns, its agreed scope and when it occurred.</dd>
+        <dt>Identity question</dt>
+        <dd>Are two records describing the same examination during the same visit, or a separate examination? The answer needs evidence, not just matching dates.</dd>
+        <dt>Distinction to preserve</dt>
+        <dd>A new report version need not mean a new inspection.</dd>
+      </dl>
+      <h4>Separate teaching instance</h4>
+      <p>The examination of Flat 1 at Harbour Court on 12 August 2026 is an inspection under this definition. It is one particular event, not the definition itself.</p>
+    </section>
+    <section class="learning-example document-flow" aria-labelledby="relationship-specimen">
+      <h3 id="relationship-specimen">Relationship definition · Describes</h3>
+      <dl>
+        <dt>Starting subject</dt><dd>A particular report version.</dd>
+        <dt>Connected subject</dt><dd>The inspection whose examination it reports.</dd>
+        <dt>Meaning in this package</dt><dd>The report version gives an account of that inspection.</dd>
+        <dt>Limit</dt><dd>This connection does not establish that every statement in the report is true, or that the report describes every inspection at the dwelling.</dd>
+      </dl>
+      <h4>Separate teaching statement</h4>
+      <p>Report version 2 describes the 12 August inspection.</p>
+      <p>Report version 1 also describes that inspection. Both reports can connect to one event without becoming the same document version.</p>
+    </section>
     <p>
       “This event is an Inspection” places an example in the defined class.
       “This report describes this event” connects two particular subjects.
@@ -174,7 +168,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     </p>
   </section>
 
-  <section class="learning-practice document-flow" aria-labelledby="find-the-view">
+  <section class="learning-example document-flow" aria-labelledby="find-the-view">
     <h2 id="find-the-view">Practice · Which view answers the question?</h2>
     <p>Choose a starting specimen for each question before comparing your reasoning with the visible responses.</p>
     <div class="learning-table">
@@ -194,7 +188,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     <p>These are starting points, not closed compartments. Reviewing the glossary's counterexample may reveal a relationship or dictionary element that also needs clarification.</p>
   </section>
 
-  <section class="learning-practice document-flow" aria-labelledby="what-changes">
+  <section class="learning-example document-flow" aria-labelledby="what-changes">
     <h2 id="what-changes">Practice · Change a label, a meaning or an example?</h2>
     <p>
       A reviewer proposes “date of report issue” as an alternative label for “report

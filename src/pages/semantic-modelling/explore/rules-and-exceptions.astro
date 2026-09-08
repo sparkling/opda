@@ -1,6 +1,7 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+import Callout from '@/components/Callout.astro';
 ---
 
 <ModellingLayout title="Rules, requirements and exceptions" description="A useful requirement says what it asks for, when it applies and what would demonstrate a problem. Test the meaning with ordinary and difficult cases before treating a check as an answer." proseClass="prose wide modelling-document learning-document">
@@ -9,7 +10,7 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
   <p>Separate three things. A business meaning explains a concept or relationship. A data-profile requirement says what a particular kind of record must provide for a stated use. Evidence about the world helps us judge what actually happened. A check against the second cannot, by itself, prove the third or approve the first.</p>
 
   <h2 id="teaching-rule">Make the condition and requirement inspectable</h2>
-  <section class="learning-specimen document-flow" aria-labelledby="rule-r">
+  <section class="learning-example document-flow" aria-labelledby="rule-r">
     <h3 id="rule-r">Fictional teaching rule R</h3>
     <p><strong>Scope:</strong> report versions supplied for this teaching review. “Access” means physical access to the identified agreed inspection areas during the identified visit, not permission to read data.</p>
     <p><strong>Condition:</strong> the report explicitly says that physical inspection access was limited.</p>
@@ -41,7 +42,7 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
   <p>A permitted-value requirement has its own scope. Suppose another fictional profile requires exactly one known physical-access outcome for a visit, chosen from the <a href="/semantic-modelling/explore/names-and-choices#choices">defined all/some/none list</a>. A record assigning both “All” and “None” to the same nonempty scope and visit would not meet that profile's requirement. Two outcomes for two different visits would be a different case, not automatically inconsistent.</p>
   <p>Completeness asks whether required information is supplied. Consistency asks whether the relevant statements can fit together under their definitions and scope. Allowed values ask whether a stated choice belongs to the permitted set. None says an apparently complete, consistent record must be an accurate account of the world.</p>
 
-  <section class="learning-practice document-flow" aria-labelledby="change-premise">
+  <section class="learning-example document-flow" aria-labelledby="change-premise">
     <h2 id="change-premise">Practice: change one premise</h2>
     <p>Add “The enclosed area was locked and not accessed” to B, with an unambiguous reference to the identified area. What changes? Then replace A's access-limited statement with a full-access statement while leaving its locked-area limitation attached to the same visit.</p>
     <h3>Worked response</h3>
@@ -53,11 +54,12 @@ import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
   <p>If a real proposed requirement allows an exception, reviewers need to know the condition, who may assert it, what evidence establishes it and what obligation remains. “Unless appropriate” supplies none of that. Nor should a source's inability to share a detail silently become permission to omit a required distinction.</p>
   <p>For teaching purposes, imagine a revised rule whose authors explicitly permit a withheld limitation description to be represented by a restriction-aware reference. That is a changed requirement, not an interpretation of R as written. Its reviewers must test whether the reference preserves enough meaning for the intended use and whether its handling conditions are legitimate. This lesson does not establish that such an exception is approved or legally sufficient.</p>
 
-  <section class="learning-practice document-flow" aria-labelledby="bad-rule">
+  <section class="learning-example document-flow" aria-labelledby="bad-rule">
     <h2 id="bad-rule">Practice: find a fault in the rule itself</h2>
     <p>A reviewer proposes replacing R with “Every inspection report must identify an inaccessible area”. Use case C as a counterexample.</p>
-    <h3>Worked response</h3>
-    <p>C explicitly reports access to every agreed area. Requiring it to identify an inaccessible one would force an invented fact or reject the ordinary full-access case. The proposed rule overreaches; the problem is not a missing fact in C. Restore the condition or explain a different requirement that the evidence genuinely supports.</p>
+    <Callout title="Worked response" tone="caution" heading="h3">
+      <p>C explicitly reports access to every agreed area. Requiring it to identify an inaccessible one would force an invented fact or reject the ordinary full-access case. The proposed rule overreaches; the problem is not a missing fact in C. Restore the condition or explain a different requirement that the evidence genuinely supports.</p>
+    </Callout>
   </section>
   <p>A strong review note names the rule, record facts, expected result and reason. “B omits the required limitation despite asserting limited access” is different from “D cannot be assessed from this extract” and “the replacement rule rejects an intended case”. Practise that distinction in <a href="/semantic-modelling/contribute/review-rules-and-exceptions">Test a rule with ordinary and difficult cases</a>.</p>
   <p class="learning-note">These are reasoned teaching outcomes, not executed formal-validation reports. The <a href="/semantic-modelling/method">Ontology modelling</a> route explains how specified requirements are represented and checked.</p>
