@@ -1,0 +1,211 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+---
+
+<ModellingLayout
+  title="How the modelling work is done"
+  description="Practical questions and authorised evidence become a proposal people can read, test and challenge. You can contribute before that proposal exists."
+  proseClass="prose wide modelling-document learning-document"
+>
+  <section aria-labelledby="start-with-knowledge">
+    <h2 id="start-with-knowledge">You do not need to arrive with a model</h2>
+    <p>
+      Think of a question you regularly have to clarify: “Which arrangement makes
+      this person the borrower?”, “What does this area include?” or “Does completed
+      mean the visit ended or the report was issued?” The expertise lies in noticing
+      which distinction matters to the work. You do not need to propose a field,
+      draw a formal diagram or know an ontology language before the question is useful.
+    </p>
+    <p>
+      OPDA's approach begins with the materials practitioners already use—standards,
+      definitions, forms, policies, examples and other authorised evidence. This is
+      the <strong>resource-first</strong> starting point: bring the resources that
+      explain the question, rather than trying to construct the whole ontology live
+      in a kick-off meeting. It is not an instruction to turn each document or field
+      into a model term.
+    </p>
+    <p>
+      Facilitators help make that knowledge explicit and formal. AI can assist with
+      examining sources and drafting a candidate. The candidate returns to people
+      as readable definitions, examples, relationships and questions. Its purpose
+      is to make judgement possible, not to ask practitioners to endorse an answer
+      hidden inside technical syntax.
+    </p>
+  </section>
+
+  <section aria-labelledby="within-boundaries">
+    <h2 id="within-boundaries">Work inside the documented boundaries</h2>
+    <p>
+      OPDA's contextual boundaries are established inputs for this development phase.
+      New participants are not being asked to rediscover the context map. A
+      <a href="/glossary#semantic-home">semantic home</a> identifies responsibility
+      for a meaning; it is not necessarily the profession, working group or system
+      in which somebody encounters the term. Several contexts can use a meaning
+      without each owning a competing definition.
+    </p>
+    <p>
+      The <a href="/development/property-pack/contexts">context register</a> supplies
+      the maintained description; the <a href="/semantic-modelling/explore/contexts-and-connections">contexts chapter</a>
+      explains how to read it. A small common boundary is not a general folder for
+      unresolved ownership. Where two contexts need different meanings, a carefully
+      justified connection may be preferable to one imposed definition. Boundary
+      agreements belong with the Interoperability Working Group and the affected
+      meaning owners, not with an individual drafter acting alone.
+    </p>
+  </section>
+
+  <section aria-labelledby="evidence-to-proposal">
+    <h2 id="evidence-to-proposal">From a useful source to a reviewable proposal</h2>
+    <LearningDiagram kind="method" caption="Evidence and questions inform a proposal; checks and human challenge inform its revision. This is not an automatic approval pipeline." />
+    <h3>Start with a question and its scope</h3>
+    <p>
+      Identify what someone needs to understand, which subject the question concerns
+      and where the problem arises. Add a normal example and a difficult case.
+      “Which report version supports this statement about an inspection?” is a
+      modelling question. “Add a download button” may be a useful product request,
+      but it does not yet identify a missing meaning.
+    </p>
+    <h3>Bring evidence that another person can interpret</h3>
+    <p>
+      A source needs a title or reference, version, relevant passage, intended use
+      and handling conditions. Distinguish its wording from your interpretation.
+      Existing schemas and forms may expose a missing distinction; they do not
+      automatically settle it. Restricted evidence must remain within authorised
+      handling arrangements. Describing an ambiguity need not mean sharing customer
+      records or copying an entire restricted document.
+    </p>
+    <h3>Draft the agreement in inspectable forms</h3>
+    <p>
+      A facilitator can propose definitions, identify separate subjects, label
+      relationships and make examples consistent. AI-assisted drafting can help
+      compare material and expose questions, but an attractive definition may still
+      lack support. Keep the source, proposed interpretation and unresolved question
+      distinguishable. The <a href="/semantic-modelling/understand/what-we-are-building">six output views</a>
+      allow different readers to inspect the same proposed agreement.
+    </p>
+    <h3>Check the package and exercise human judgement</h3>
+    <p>
+      Technical checks can assess declared structure and requirements. Examples can
+      test whether a question is answerable and whether a rule excludes a legitimate
+      case. Practitioners judge whether the distinction matches the domain and its
+      evidence. A technically valid sentence can still express the wrong meaning;
+      a familiar sentence may still be too ambiguous for a useful check.
+    </p>
+    <h3>Make the reason for revision visible</h3>
+    <p>
+      A revision should explain what was challenged, why the wording or structure
+      changed, what stayed the same and what remains unresolved. Another context may
+      need to review a boundary consequence. Retaining a well-founded distinction
+      can be a successful outcome: progress need not mean forcing every participant
+      to use a single word in exactly the same way.
+    </p>
+    <p class="learning-note">
+      This explains the accepted evidence-led method. It does not claim that every
+      proposed intake, discussion or review-control mechanism is implemented as a
+      live service. Current participation mechanics belong in the
+      <a href="/development/working-groups/member-guide">member guide</a>, not in a
+      copied meeting schedule or submission promise here.
+    </p>
+  </section>
+
+  <section aria-labelledby="small-package">
+    <h2 id="small-package">A small package, examined from eight concerns</h2>
+    <p>
+      Use one fictional package: a report version describes an inspection of an
+      identified dwelling. It records an issue date and a physical access outcome,
+      and cites the source supporting its statements. The retained concerns help
+      people notice omissions around that package. They are a completeness aid,
+      not eight new models to build or a sequence to memorise.
+    </p>
+    <div class="learning-table">
+      <table>
+        <caption>Questions a review of the small package should consider</caption>
+        <thead><tr><th scope="col">Concern</th><th scope="col">A practical question</th><th scope="col">What an answer would clarify</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Domain structure</th><td>Is the inspection distinct from the report version?</td><td>Which subjects exist in the account and how they connect.</td></tr>
+          <tr><th scope="row">Vocabulary and taxonomy</th><td>What do the physical access choices mean, and which topics organise the findings?</td><td>The scope of a choice and the meaning of a broader topic.</td></tr>
+          <tr><th scope="row">Classification metadata</th><td>Does “superseded” describe this report version or the inspection?</td><td>Which subject a status or other classification concerns.</td></tr>
+          <tr><th scope="row">Validation and constraints</th><td>If access was limited, must the report identify the limitation?</td><td>The intended requirement and the condition under which it applies.</td></tr>
+          <tr><th scope="row">Cross-context mappings</th><td>Does a recipient's requested “survey date” mean the inspection date or the report issue date?</td><td>What must be preserved across the boundary, and what remains ambiguous.</td></tr>
+          <tr><th scope="row">Provenance and quality</th><td>Which source version supports the access statement?</td><td>The evidence to inspect, not an automatic truth verdict.</td></tr>
+          <tr><th scope="row">Temporal state and history</th><td>Was the report corrected, or did another inspection occur?</td><td>The difference between a changed account and another event.</td></tr>
+          <tr><th scope="row">Sensitivity and access semantics</th><td>Does a described permission cover this report, purpose and recipient?</td><td>The scope to express, without pretending the model grants access.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      For each concern, the method calls for a recorded disposition: <strong>model
+      here</strong>, <strong>reuse shared</strong>, <strong>boundary contribution</strong>,
+      or <strong>not applicable</strong> with a reason. For this example, the group
+      might define its inspection meaning locally, reuse a suitable shared concept
+      for source attribution, and refer the recipient's ambiguous date requirement
+      for boundary work. Those are illustrative possibilities, not decisions about
+      the actual candidate.
+    </p>
+    <p>
+      “Not applicable” needs a rationale, not a blank cell. Equally, considering
+      sensitivity does not require a property group to invent its own scheme policy.
+      Relevant distinctions can be reused or connected through their documented
+      home. Model-review governance concerns evidence, ownership, decisions and
+      versions; it is not synonymous with the wider SPDTF Trust Framework.
+    </p>
+  </section>
+
+  <section aria-labelledby="who-judges">
+    <h2 id="who-judges">A proposal is not an approval</h2>
+    <p>
+      Keep several questions separate. Is this a reviewable draft? Has a specified
+      technical check run? What technical determination has been recorded? Which
+      domain meanings have been reviewed? Has a release been authorised? Is there
+      external recognition? One answer does not automatically supply the others.
+      Read the status of the particular artefact rather than inferring it from the
+      sophistication of its website.
+    </p>
+    <p>
+      AI agents can assist and challenge, but have no vote or ontology authority.
+      Domain participants judge meaning; the Interoperability Working Group handles
+      the agreements at boundaries without overriding local meaning. Promotion and
+      release require recorded authority through OPDA's governance. A passing check,
+      an informal consensus or a generated proposal cannot authorise release alone.
+      Broader process controls that remain proposed must not be described as a
+      settled response cadence or an automatic adoption mechanism.
+    </p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="sort-contributions">
+    <h2 id="sort-contributions">Practice · What kind of contribution is this?</h2>
+    <p>
+      Consider the four notes below. Identify a domain question, useful evidence,
+      a missing modelling distinction and a downstream operational request. Then
+      say what a facilitator can formalise and what a practitioner must still judge.
+    </p>
+    <div class="learning-table">
+      <table>
+        <caption>Contributions and their worked interpretation</caption>
+        <thead><tr><th scope="col">Contribution</th><th scope="col">Worked response</th></tr></thead>
+        <tbody>
+          <tr><td>“When a report is corrected, which inspection does the recipient understand it to describe?”</td><td>A domain question. Bound its subject and use; a facilitator can make it a question the model must answer.</td></tr>
+          <tr><td>“This authorised fictionalised extract distinguishes the visit date from the report's issue date; its source version and restriction are recorded.”</td><td>Useful evidence for discussion. Check what was changed during fictionalisation and do not treat it as direct evidence of a real event.</td></tr>
+          <tr><td>“The proposed diagram has one report node, so it cannot show which version a source statement came from.”</td><td>A missing modelling distinction. A facilitator can propose separate version descriptions; practitioners test whether the distinction and examples fit their work.</td></tr>
+          <tr><td>“Send an automatic email whenever a report changes.”</td><td>A downstream operational request. It may reveal a question about what counts as a relevant change, but designing the notification service is outside this modelling lesson.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Turn a mixed request into a useful question</h3>
+    <p>
+      “Give buyers a green badge when a report is complete” mixes a role, a display
+      request and an undefined claim. A useful first question is: “Complete with
+      respect to which report requirements, for which purpose, and based on which
+      evidence?” A facilitator can formalise the eventual distinctions. Practitioners
+      must judge the requirement and the cases; the badge itself cannot establish
+      truth, permission or professional sufficiency.
+    </p>
+    <p>
+      Before a candidate exists, bring that bounded question and an ordinary and
+      difficult example. Once a candidate exists, point to the exact definition or
+      relationship that answers it—or explain what is missing. That is a substantive
+      contribution at either stage.
+    </p>
+  </section>
+</ModellingLayout>

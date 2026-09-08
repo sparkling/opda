@@ -1,0 +1,64 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout title="Turn experience into a modelling question" description="Start with a decision, misunderstanding or exception. Show what the model must help someone distinguish, before proposing a field or a software feature." proseClass="prose wide modelling-document learning-document">
+  <section aria-labelledby="start-with-work">
+    <h2 id="start-with-work">You can contribute before there is a model to review</h2>
+    <p>A colleague asks whether a property report is current. You know that “current” could mean several things: the most recently issued version, a report describing the latest inspection, or a report relevant to the decision now being made. That hesitation is useful modelling input. It exposes a question that a neatly formatted date cannot answer on its own.</p>
+    <p>You do not have to solve the whole ambiguity before bringing it. Begin with the decision someone is trying to make and explain the distinction that would change their answer. A modeller can help express it formally; they need you to explain why it matters in practice.</p>
+    <p>A useful question is bounded, but not artificially small. “What is property?” is too broad to investigate in one contribution. “When a report is corrected, how can a recipient distinguish the correction from a new inspection?” gives reviewers something they can test. It does not yet prescribe how many data elements, classes or screens should exist.</p>
+  </section>
+
+  <section aria-labelledby="question-specimen">
+    <h2 id="question-specimen">From a recurring problem to an answerable question</h2>
+    <p>Consider a fictional property-data team comparing floor-area accounts. One gives 68 m² and another 72 m² for Flat 1 at Harbour Court. Someone suggests adding a warning whenever the numbers differ. Before deciding whether a warning helps, the model needs to make the accounts comparable.</p>
+    <figure class="learning-specimen" aria-labelledby="note-caption">
+      <figcaption id="note-caption">A worked contribution note — fictional, not submitted</figcaption>
+      <dl>
+        <dt>The decision</dt><dd>A recipient needs to understand whether two area accounts describe the same measured extent.</dd>
+        <dt>The subject</dt><dd>Flat 1 at Harbour Court, not the whole building or the title document.</dd>
+        <dt>The ordinary case</dt><dd>Both accounts identify the dwelling, area, unit and included spaces.</dd>
+        <dt>The difficult case</dt><dd>Both identify the dwelling but one leaves its inclusion basis unstated.</dd>
+        <dt>The question</dt><dd>What must remain explicit about each area account so a recipient can distinguish a different inclusion basis from an unexplained discrepancy?</dd>
+        <dt>Available evidence</dt><dd>Invented account A excludes an enclosed 4 m² area; account B includes it. No industry measuring standard is claimed.</dd>
+      </dl>
+    </figure>
+    <p>The question does not ask which number to trust. Under these supplied premises, the 4 m² inclusion difference explains the values. The useful requirement is that the explanation survives an exchange. In the difficult case, the answer is not available: a recipient needs the missing basis before deciding whether the values disagree.</p>
+    <p>Modellers sometimes call a question the model should be able to answer a <em>competency question</em>. The ordinary-language question is the important part. It can be tested against a proposed model and examples without requiring you to write a technical query.</p>
+  </section>
+
+  <section aria-labelledby="avoid-solution-first">
+    <h2 id="avoid-solution-first">Keep the need separate from your first solution</h2>
+    <div class="learning-spread">
+      <section class="learning-specimen" aria-labelledby="feature-request">
+        <h3 id="feature-request">An implementation request</h3>
+        <blockquote><p>Add a mandatory “verified area” field and show a green tick when it has a value.</p></blockquote>
+        <p>This proposes a field and a display. It leaves “verified”, the measured subject and the basis of comparison unresolved. A value in a field would not establish that the measurement was appropriate or correct.</p>
+      </section>
+      <section class="learning-specimen" aria-labelledby="meaning-request">
+        <h3 id="meaning-request">The modelling question behind it</h3>
+        <blockquote><p>Which area account is being assessed, what assessment is claimed, by whom and for which purpose? What evidence supports that assessment?</p></blockquote>
+        <p>This identifies meanings an implementation might need to preserve. Whether a product displays them as fields, a document or a warning is a later design choice.</p>
+      </section>
+    </div>
+    <p>The feature request is not foolish: it may reveal a real operational difficulty. Translating it into a modelling question prevents the proposed interface from deciding the meaning prematurely. Keep the original motivation alongside the question so a technically elegant model does not lose the practical problem.</p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="try-a-question">
+    <h2 id="try-a-question">Try it: “Our status data is wrong”</h2>
+    <p>In this second invented case, a listing is withdrawn from marketing while the dwelling still exists. A receiving system labels the dwelling “withdrawn”. The source team says its status describes the listing. Frame a question without naming a new class or requiring a new screen.</p>
+    <h3>A reasoned response</h3>
+    <blockquote><p>How can a recipient identify whether a stated status describes a listing, a transaction or the dwelling, so withdrawing a listing does not imply that the dwelling has ceased to exist?</p></blockquote>
+    <p>This preserves the supplied distinction and explains its consequence. An ordinary case would show a listing's status attached to that listing. A counterexample would give the same dwelling two listings with different states: one generic “property status” would no longer answer which listing is available.</p>
+    <h3>A defensible alternative</h3>
+    <p>You might instead ask, “Which listing does this withdrawal concern, and from when?” That is a good narrower question if the subject distinction is already explicit and the real uncertainty is applicability. The evidence determines which question needs attention. Neither wording is an approved OPDA term or a rule for estate-agency practice.</p>
+  </section>
+
+  <section aria-labelledby="keep-the-boundary">
+    <h2 id="keep-the-boundary">Say where your knowledge applies</h2>
+    <p>Describe the working setting without turning your organisation's habit into a universal rule. “Our current template uses ‘status’ for the listing” supports a question about that template. It does not prove that every context uses the word that way. Link a relevant documented <a href="/development/property-pack/contexts">semantic home</a> if known; you are not being asked to rediscover the programme's established boundaries.</p>
+    <p>When evidence is unavailable, name the gap. “We need to check whether the term includes withdrawn and expired listings” is more honest than constructing an apparently complete list from memory. A fictional case may demonstrate the ambiguity, while an authorised source is needed to justify the eventual domain definition.</p>
+    <p>Keep one question, its consequence and a useful example together. If a file would help, <a href="/semantic-modelling/contribute/bring-evidence">prepare its context and restrictions</a> before sharing it. Current participation arrangements belong in the <a href="/development/working-groups/member-guide">member guide</a>; these examples create no submission, decision or response-time promise.</p>
+  </section>
+</ModellingLayout>

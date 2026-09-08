@@ -1,102 +1,81 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 ---
 
-<ModellingLayout title="Bring evidence that others can interpret" description="A useful source comes with its context: where it came from, which version it is, what it demonstrates and how it may be used. Prepare that context before submitting a file.">
+<ModellingLayout title="Bring evidence others can interpret" description="Show the relevant passage, source version, intended use and limits. Keep source wording, your interpretation and a proposed model change distinguishable, especially when material is restricted." proseClass="prose wide modelling-document learning-document">
   <section aria-labelledby="purpose">
-    <h2 id="purpose">Explain what the material helps us understand</h2>
-    <p>
-      A blank form, field dictionary, published definition or fictional scenario can
-      reveal a modelling issue. The important part is the connection to a question.
-      “This report template distinguishes inspection date from issue date” is more
-      useful than an unexplained folder of documents.
-    </p>
-    <p>
-      Existing systems and standards contain valuable knowledge. They also reflect
-      particular purposes, versions and implementation choices. A nested field does
-      not automatically establish a distinct thing in the world, and a field's absence
-      does not prove a concept is unnecessary. The source is evidence to interpret,
-      not an instruction to reproduce its structure unchanged.
-    </p>
+    <h2 id="purpose">Bring a source and the question it helps answer</h2>
+    <p>A blank form, dictionary, published definition or invented scenario can reveal a modelling problem. A reviewer needs to know why it matters. “This template distinguishes when work happened from when a report was issued” is an interpretable contribution; an unexplained folder named “latest documents” leaves them to reconstruct your argument.</p>
+    <p>Existing standards and systems hold valuable knowledge. They also reflect purposes, versions and implementation choices. A nested field does not by itself establish a distinct domain thing, and an absent field does not prove that a concept is unnecessary. Bring the source as evidence to interpret, not as an instruction to reproduce its structure unchanged.</p>
+    <LearningIllustration scene="data-services" alt="Two source-document versions arranged for comparison, with a lens drawing attention to their relevant passages." />
   </section>
-
-  <figure class="modelling-figure" aria-labelledby="envelope-caption">
-    <figcaption id="envelope-caption">The evidence envelope: what should accompany a source</figcaption>
-    <dl>
-      <dt>Origin</dt><dd>Source organisation and the owner or steward able to explain the material.</dd>
-      <dt>Version and time</dt><dd>Document version, date and the period for which its information applies.</dd>
-      <dt>Purpose</dt><dd>The question it helps answer and the working-group context it concerns.</dd>
-      <dt>Standing</dt><dd>Whether it is authoritative, informative, illustrative or disputed—and why.</dd>
-      <dt>Restrictions</dt><dd>Permission to share, confidentiality, licence, reuse and retention conditions.</dd>
-      <dt>Interpretation</dt><dd>The precise passage, field or example that matters, including any known limitations.</dd>
-    </dl>
-  </figure>
 
   <section aria-labelledby="case">
-    <h2 id="case">Harbour Court: retain the difference between versions</h2>
-    <p>
-      Suppose the group is examining our fictional inspection-date problem. Report
-      version 1 was issued on 14 August 2026; version 2 corrected it on 20 August.
-      Both describe the inspection of 12 August. An evidence note should explain that
-      relationship rather than supplying only a file called “latest-report”.
-    </p>
-    <p>
-      If the question is why an earlier decision used a particular statement, the
-      earlier version may matter. If the question is what the corrected report now
-      says, the later version matters. The model should let reviewers distinguish
-      those questions without treating the correction as another inspection.
-    </p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Hard case: two sources disagree and neither is clearly superseded</div>
-      <p>Keep both interpretations visible, with their source, version, context and any known limitations. Explain the disagreement and who needs to review it. “Newest wins” is not a general authority rule: a newer publication may describe a different subject, purpose or period. This guide does not decide which source is authoritative for a particular property claim.</p>
-    </aside>
-    <p>This is a teaching illustration. No report files are supplied here, and it does not demonstrate evidence-processing coverage in the current candidate.</p>
+    <h2 id="case">Preserve the version that supports the statement</h2>
+    <p>These short excerpts are invented teaching material, not supplied report files or Property Pack records. They concern the same 12 August 2026 inspection of Flat 1 at Harbour Court. Version 2 corrects the access-limitation description without another visit.</p>
+    <div class="learning-spread">
+      <figure class="learning-specimen" aria-labelledby="earlier-excerpt">
+        <figcaption id="earlier-excerpt">Fictional report version 1 · issued 14 August · access passage</figcaption>
+        <blockquote><p>Inspection: Flat 1, 12 August 2026. Access was limited.</p></blockquote>
+        <p>The excerpt records limited access but does not identify the affected area or reason. It is an excerpt, so do not infer that the complete report contains no further explanation.</p>
+      </figure>
+      <figure class="learning-specimen" aria-labelledby="corrected-excerpt">
+        <figcaption id="corrected-excerpt">Fictional report version 2 · issued 20 August · corrected access passage</figcaption>
+        <blockquote><p>Inspection: Flat 1, 12 August 2026. The living room and bedroom were accessed. The enclosed area was locked and was not accessed. This correction does not record a new visit.</p></blockquote>
+        <p>This passage identifies the limitation. It does not say that the enclosed area was defective, or that the entire dwelling was inaccessible.</p>
+      </figure>
+    </div>
+    <p>A reviewer can conclude that the later passage is more specific about the reported access and still describes the earlier visit. If the question concerns what an earlier reader could see, version 1 matters too. Keeping only the newest file can remove evidence needed to understand that earlier interpretation.</p>
+    <LearningDiagram kind="evidence" caption="Follow a claim to the relevant source passage and version, then state what the passage does and does not support." />
   </section>
 
-  <section aria-labelledby="prepare">
-    <h2 id="prepare">Prepare the smallest useful, permitted submission</h2>
-    <ol class="modelling-steps">
-      <li><h3>Choose the question</h3><p>State the ambiguity, rule or exception. Identify the relevant model page or candidate if one exists.</p></li>
-      <li><h3>Choose evidence you may share</h3><p>Use a permitted blank template, non-production specification or invented example. Do not assume that possession of a document gives permission to submit it.</p></li>
-      <li><h3>Keep source context intact</h3><p>Preserve the document's identity and version. Explain any excerpt or transformation so a reviewer does not mistake it for the complete original.</p></li>
-      <li><h3>Describe its limits</h3><p>An organisation's practice is not automatically an industry-wide rule. Say what the evidence establishes and what it does not.</p></li>
-      <li><h3>Use the authorised intake</h3><p>Follow the current member guide for your group and organisation. Discussion channels and page comments are not substitutes for controlled file intake.</p></li>
-    </ol>
+  <section aria-labelledby="envelope">
+    <h2 id="envelope">Give the evidence an interpretable envelope</h2>
+    <figure class="learning-specimen" aria-labelledby="envelope-caption">
+      <figcaption id="envelope-caption">The evidence envelope — a worked example, not an upload form</figcaption>
+      <dl>
+        <dt>Origin</dt><dd>The Harbour Court teaching case; no real customer, property transaction or source organisation.</dd>
+        <dt>Version and time</dt><dd>Report version 2, issued 20 August 2026; describes the 12 August inspection. The passage is not the complete report.</dd>
+        <dt>Purpose</dt><dd>Test whether a report's issue date and reported access limitation remain attached to the right version and visit.</dd>
+        <dt>Relevant passage</dt><dd>The corrected access passage above; retain the earlier passage for the comparison.</dd>
+        <dt>Standing</dt><dd>Illustrative premises. They demonstrate a modelling distinction, not an industry-wide definition or proof of a real event.</dd>
+        <dt>Restrictions</dt><dd>Entirely invented wording. A real source would need its sharing and reuse conditions checked before submission.</dd>
+        <dt>Interpretation and limit</dt><dd>The passage supports a claim of no physical access to the enclosed area during this visit. It does not support a claim about that area's condition.</dd>
+      </dl>
+    </figure>
+    <p>For a real source, origin includes its organisation, owner or steward; version includes the edition and relevant dates; restrictions include permission, licence, confidentiality and allowed reuse. Preserve any limits on the source's authority for the proposed purpose. A well-described source can still be wrong, outdated or inappropriate evidence for a particular claim.</p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="prepare">
+    <h2 id="prepare">Try it: separate the passage from the proposal</h2>
+    <p>A contribution says: “The report proves that no inspection took place, so the model should mark Flat 1 as not inspected.” Use version 2's excerpt to prepare a more careful response.</p>
+    <h3>A reasoned response</h3>
+    <dl>
+      <dt>Source wording</dt><dd>The living room and bedroom were accessed; the enclosed area was locked and was not accessed.</dd>
+      <dt>Supported interpretation</dt><dd>The reported access differs between identified areas during one stated visit.</dd>
+      <dt>Proposed meaning</dt><dd>Preserve which agreed areas an access outcome describes, rather than making one area's lack of access describe the whole dwelling.</dd>
+      <dt>Unresolved question</dt><dd>Which other aspects of inspection scope, if any, must be distinguished? The excerpt alone does not define the complete professional scope.</dd>
+    </dl>
+    <p>The original contribution makes the whole-dwelling claim stronger than its evidence. The correction does not require you to decide the physical condition of any area. It identifies what a recipient must not infer from the passage.</p>
+    <h3>When two sources really conflict</h3>
+    <p>In a separate invented case, account C says “Damp was observed on the identified north wall” and account D says “No damp was observed on that same wall”. Both explicitly describe the same identified observation by the same observer, using the same method, scope and meaning of “observed”. Neither is established as superseding the other. Under those premises the accounts conflict. Prepare both passages; do not silently choose D because it was written later. Ask what explains the difference and which evidence could resolve it.</p>
+    <p>If the passages instead concern different observers, observations, walls or periods, those two statements might both be true. Revise the conflict claim accordingly. Provenance makes that investigation possible; it does not decide the answer in advance.</p>
   </section>
 
   <section aria-labelledby="safety">
-    <h2 id="safety">Keep sensitive material out of the example</h2>
-    <p>
-      Do not submit personal, customer or live property-transaction data, credentials,
-      secrets, or material restricted by contract, licence, confidentiality or NDA.
-      Replacing a person's name may leave a case recognisable from its address or
-      unusual circumstances. A fully invented example is often sufficient to expose
-      the modelling issue.
-    </p>
-    <p>
-      The current intake guidance also excludes executables, active scripts, macros,
-      encrypted or password-protected files and archives. Audio and video are not
-      accepted through that intake; use a permitted transcript with its date,
-      speakers and context. These are current operational guidance, not ontology
-      rules. Check the <a href="/development/working-groups/member-guide/source-material-and-sharepoint">source-material
-      and SharePoint guide</a> for the complete requirements and permitted routes.
-    </p>
+    <h2 id="safety">Describe a restricted source without disclosing it</h2>
+    <p>Possession is not permission to share. Keep personal, customer and live transaction data, credentials, secrets and material restricted by contract, licence, confidentiality or NDA out of public examples and discussions. Replacing a name may leave a case recognisable from an address or unusual circumstances.</p>
+    <p>When the relevant source cannot be shared, say what kind of material it is and what permission would be needed. A useful note might be: “Our restricted internal template distinguishes three date meanings. I cannot provide its text through this discussion. Here is a wholly invented example of the ambiguity; the template owner would need to authorise any source review.” Do not disguise a copied confidential passage as a fictional example.</p>
+    <p>A permitted blank template or genuinely invented case may be sufficient to frame the question. If not, the evidence gap remains explicit. Do not claim an industry convention has been verified merely because someone says a restricted document contains it.</p>
+    <p>Sensitivity, purpose and permission scope are also modelling distinctions. Describing them in an evidence note does not grant access or establish a legal basis. The <a href="/semantic-modelling/explore/sensitivity-purpose-permissions">sensitivity and permissions chapter</a> keeps description separate from enforcement.</p>
   </section>
 
   <section aria-labelledby="intake">
-    <h2 id="intake">What the website provides today</h2>
-    <p>
-      For an active group with the described arrangements, source intake uses a
-      separate SharePoint site and authorised organisation folders. The member guide
-      explains access and the README that accompanies submissions. This page does
-      not upload files, change permissions or guarantee that a particular account
-      has access.
-    </p>
-    <p>
-      A submission is not automatically public or shared with all participants.
-      Screening, provenance and human interpretation come before any resulting
-      proposition. Being accepted into the intake does not make a document's contents
-      correct, make them authoritative for every context or approve a model change.
-    </p>
+    <h2 id="intake">Use the authorised route, with the minimum useful material</h2>
+    <p>The <a href="/development/working-groups/member-guide/source-material-and-sharepoint">source-material and SharePoint guide</a> is the maintained home for allowed material, file restrictions, access and submission mechanics. Follow it for the relevant group and organisation; this chapter is not an upload service or a guarantee that an account has access.</p>
+    <p>Choose the smallest permitted excerpt or source that lets another person inspect the issue, while retaining enough context to avoid distortion. Explain omitted sections and transformations. Discussion routes are not substitutes for controlled source intake, and acceptance into intake does not approve a source's meaning or a model change.</p>
+    <p>Leave the reviewer able to distinguish four things: what the source says, what you infer, what you propose and what remains unknown. That is the useful contribution of an evidence envelope, even when the final answer remains open.</p>
   </section>
 </ModellingLayout>

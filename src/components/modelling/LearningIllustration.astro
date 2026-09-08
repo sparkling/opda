@@ -1,0 +1,16 @@
+---
+import CampaignThemeImage from '../campaign/CampaignThemeImage.astro';
+import manifest from '../../../public/images/modelling/field-guide/manifest.json';
+
+interface Props { scene: keyof typeof manifest.scenes; alt: string; }
+const { scene, alt } = Astro.props;
+if (!Object.hasOwn(manifest.scenes, scene)) throw new Error('Unknown field-guide illustration');
+if (!alt?.trim()) throw new Error('A field-guide illustration needs a contextual text alternative');
+const illustration = manifest.scenes[scene];
+---
+
+<figure class="learning-editorial">
+  <CampaignThemeImage lightSrc={illustration.light.file} darkSrc={illustration.dark.file}
+    alt={alt} width={illustration.light.width} height={illustration.light.height} />
+  <figcaption>{illustration.caption}</figcaption>
+</figure>

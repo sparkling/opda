@@ -1,0 +1,92 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
+import { candidateManifest, kindLabels, resourceByKey, resourceRoute } from '@/lib/property-pack-model.mjs';
+
+const property = resourceByKey.get('common:Property');
+if (!property) throw new Error('The candidate-reading guide requires common:Property. Recheck its scaffold before changing the candidate.');
+const propertyHref = resourceRoute(property);
+const reviewedCandidate = candidateManifest.candidate_id === 'property-pack-0.1'
+  && candidateManifest.candidate_version === '0.1.0-draft';
+---
+
+<ModellingLayout title="Read a candidate and compare a change" description="Start directly with a real Property Pack resource page. Then use a separate fictional revision to see how a change affects several views of one agreement." proseClass="prose wide modelling-document learning-document">
+  <section aria-labelledby="candidate-reading">
+    <h2 id="candidate-reading">Start with the page you have been asked to review</h2>
+    <p>You do not need to finish the introductory chapters first. Keep the candidate's identity and version, read its definition, then choose one claim to examine. A good review can begin with one familiar subject and a well-explained counterexample.</p>
+    <p>The <a href={propertyHref}>Property resource page</a> is a real candidate definition. The identity card below reads the same maintained candidate data as that page; it is not a separately maintained model. Everything in the later <a href="#fictional-revision">change comparison</a> is an invented teaching package, not actual candidate history.</p>
+    <figure class="learning-specimen" aria-labelledby="candidate-card">
+      <figcaption id="candidate-card">Actual candidate — identify the proposal before judging it</figcaption>
+      <dl>
+        <dt>Candidate</dt><dd><code>{candidateManifest.candidate_id}</code></dd>
+        <dt>Version</dt><dd><code>{candidateManifest.candidate_version}</code></dd>
+        <dt>Candidate status</dt><dd>{candidateManifest.candidate_status.replaceAll('-', ' ')}</dd>
+        <dt>Publication standing</dt><dd>{candidateManifest.publication_status.replaceAll('-', ' ')}</dd>
+        <dt>Resource</dt><dd><a href={propertyHref}><code>{property.key}</code></a></dd>
+        <dt>Kind shown on the page</dt><dd>{kindLabels[property.kind]}</dd>
+        <dt>Definition</dt><dd>{property.definition}</dd>
+        <dt>Identity criterion</dt><dd>{property.identity_criterion}</dd>
+      </dl>
+    </figure>
+    {!reviewedCandidate && <aside class="callout callout--warn modelling-callout"><div class="callout__label">The candidate has changed</div><p>The detailed reading below was checked against property-pack-0.1, version 0.1.0-draft. Recheck the linked resource, constraints and evidence before applying those observations to the version displayed above.</p></aside>}
+    <p>“Class” describes the kind of model construct on this page. It is not the foundational judgement called an OntoUML <em>Kind</em>. Nor is this a record of Flat 1, an individual building or a live transaction. The definition proposes what a category includes; the Harbour Court story supplies fictional examples with which to practise reasoning.</p>
+  </section>
+
+  <section aria-labelledby="page-anatomy">
+    <h2 id="page-anatomy">Read four parts of the page together</h2>
+    <LearningDiagram kind="candidate" caption="Identity, structure, constraints and evidence answer different questions about the same candidate definition; none is an approval badge." />
+    <h3><a href={`${propertyHref}#identity`}>Identity and meaning</a>: what would continue?</h3>
+    <p>The reviewed candidate associates continuity with the same assigned UPRN and explicitly leaves lifecycle rules for working-group review. That is a proposed criterion to examine, not a settled answer to subdivision or merger. Ask what counts as the unit before and after the change, and what evidence would justify treating it as continuing or newly identified.</p>
+    <p>A changed postal description does not by itself prove a new property; an unchanged identifier does not by itself explain every physical or legal change. The useful challenge is the relationship between the identification practice and the domain identity criterion. We are not asserting a rule for how a real authority allocates UPRNs.</p>
+    <h3><a href={`${propertyHref}#structure`}>Model structure</a>: what does one connection claim?</h3>
+    <p>Follow a property listed under “Properties with this domain”, such as the candidate's <a href="/development/property-pack/resources/property-data-services/hasAddress">“has address”</a>. Read it as a connection between a property and an address description. Do not rewrite it in your mind as “the property is the address”. If the page does not name a broader model class, do not invent one. A diagram's layout also does not establish that two subjects are identical.</p>
+    <h3><a href={`${propertyHref}#constraints`}>Constraints and shapes</a>: what is being checked?</h3>
+    <p>The resource page links declared requirements in related shapes. In the reviewed candidate, the Common Property shape requires one UPRN value represented as a digit-only string. That is a bounded requirement on a description. It does not establish that the reference was correctly assigned to the described subject or that the proposed continuity criterion is appropriate.</p>
+    <p>Follow the relevant linked shape rather than assuming the resource summary contains every rule. A missing constraint is not proof that anything is permitted; passing an encoded constraint is not semantic approval. If the rule excludes an ordinary case, bring the case and explain the mismatch.</p>
+    <h3><a href={`${propertyHref}#evidence`}>Source evidence</a>: what supports the proposal?</h3>
+    <p>Direct source traces identify source items directly linked to the construct; structural traces carry evidence from more specific descendants to an organising model class. This is inherited evidence, not a direct source statement about that class. They are not interchangeable evidence that a source used the exact candidate wording. Neither kind of trace proves semantic truth or domain endorsement. Follow one source item and ask which part of the definition it actually supports.</p>
+    <p>The proposed home <code>common</code> is also a review question: sharing an identifier is not enough to establish a shared identity criterion and exchange meaning. The <a href="/development/property-pack/contexts">context register</a> keeps the Common boundary, the property contexts and the machine-proposed DBT Smart Data scheme context distinct. Common supply arrows are not cross-context mappings; they do not establish adopted correspondences.</p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="candidate-note">
+    <h2 id="candidate-note">A version-linked challenge you could make</h2>
+    <figure class="learning-specimen" aria-labelledby="candidate-note-caption">
+      <figcaption id="candidate-note-caption">Worked review wording — not submitted or decided</figcaption>
+      <blockquote><p>For <code>{candidateManifest.candidate_id}</code>, version <code>{candidateManifest.candidate_version}</code>, I am reviewing <a href={`${propertyHref}#identity`}>{property.key}: Identity and meaning</a>. How would this criterion treat subdivision into two dwellings? The text leaves lifecycle rules open. Without a stated treatment, a recipient might carry evidence about the former unit onto a different resulting unit. What permitted source or domain review supports continuity in that case, and what remains explicitly unresolved?</p></blockquote>
+    </figure>
+    <p>This note gives a reference, consequence and question. It does not claim that subdivision already exists in the candidate's examples, prove that the criterion is wrong or supply an invented official identifier-allocation policy. “Please change Property” would leave all of that unstated.</p>
+  </section>
+
+  <section aria-labelledby="status-dimensions">
+    <h2 id="status-dimensions">Do not combine different kinds of standing</h2>
+    <p>The source scope, candidate version, Technical Working Group determination, later domain review, release and external recognition are separate. A technical validation result is not itself the Technical Working Group's determination; that determination does not imply that every domain group has reviewed the meaning. A published review page is not adoption, and government use is not proof of formally delegated authority.</p>
+    <p>The Property Pack follows its separately recorded accelerated determination and later-review arrangement. Check the maintained <a href="/development/property-pack/technical-working-group-determination">determination page</a> and <a href="/development/property-pack/review-and-releases">review and release record</a> for standing. A polished teaching diagram cannot change it.</p>
+  </section>
+
+  <section aria-labelledby="fictional-revision">
+    <h2 id="fictional-revision">Now compare a fictional change across the agreement</h2>
+    <p>Leave the real candidate here. The following <strong>teaching draft A and teaching draft B</strong> are invented model versions. They are not Property Pack releases, report versions or a live website comparison feature. The change addresses the ambiguous access choices discussed in <a href="/semantic-modelling/contribute/review-vocabularies-and-mappings">reviewing vocabularies</a>.</p>
+    <LearningIllustration scene="technology" alt="Different representations laid out for comparison, with the connections between their subjects preserved." />
+    <div class="learning-spread">
+      <section class="learning-specimen" aria-labelledby="draft-a"><h3 id="draft-a">Teaching draft A</h3><p><strong>Access outcome:</strong> “Whether the inspection was completed.”</p><p><strong>Choices:</strong> Completed; Limited access; Not inspected.</p><p><strong>Relationship:</strong> “Report has access outcome”, without identifying the visit or agreed areas.</p></section>
+      <section class="learning-specimen" aria-labelledby="draft-b"><h3 id="draft-b">Teaching draft B</h3><p><strong>Physical-access outcome:</strong> “How much of the identified nonempty set of agreed areas was physically accessed during this visit.”</p><p><strong>Choices:</strong> All; Some but not all; None — with the full definitions established in the vocabulary.</p><p><strong>Relationship:</strong> A report version records an access-outcome statement about an identified inspection and its agreed areas.</p></section>
+    </div>
+    <table class="learning-table">
+      <caption>What changes — and what correctly stays unchanged</caption>
+      <thead><tr><th scope="col">View of the agreement</th><th scope="col">Effect of this fictional revision</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Glossary</th><td>Separate physical access from completion of inspection work. Add the scope and exclusions to the meaning, not just a new preferred label.</td></tr>
+        <tr><th scope="row">Dictionary</th><td>Explain which visit and agreed set the outcome describes. Keep report issue date unchanged: it still describes issue of a report version.</td></tr>
+        <tr><th scope="row">Controlled vocabulary</th><td>Replace overlapping work/access choices with defined all/some/none physical-access outcomes. Missing evidence is not silently recoded as none.</td></tr>
+        <tr><th scope="row">Resource definitions</th><td>Describe the proposed access-outcome statement and its subject. The definition of a report version need not change merely because it can record this better-qualified statement.</td></tr>
+        <tr><th scope="row">Relationships</th><td>Make the report-version → statement → identified inspection and scope connection explicit. Preserve which report version made the statement.</td></tr>
+        <tr><th scope="row">Topic taxonomy</th><td>Leave “Roof condition” beneath “Building fabric” unchanged. This topic relationship says nothing about physical access.</td></tr>
+      </tbody>
+    </table>
+    <p>The access rule and examples also need review against the new scope. Generated delivery artefacts, including JSON-LD, would need to preserve any agreed change; they do not decide its meaning. A revision need not alter every view, but every affected view must tell a compatible story.</p>
+    <h3>What the correction does not recover</h3>
+    <p>Harbour Court's supplied visit can be classified as some-but-not-all access under draft B. An old record containing only “Completed” cannot be reliably converted: it may describe completed work despite limited access. Ask for evidence rather than treating the new choices as a lossless renaming. That migration limitation belongs with the proposed change.</p>
+    <p>A useful review response therefore says both “this removes the demonstrated overlap” and “existing values do not determine every new outcome”. That is a more coherent agreement than a change list which celebrates cleaner labels while hiding lost meaning. Use the <a href="/development/working-groups/member-guide">current member guide</a> to take an actual candidate question into the authorised discussion.</p>
+  </section>
+</ModellingLayout>

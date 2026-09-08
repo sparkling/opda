@@ -1,0 +1,64 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+---
+
+<ModellingLayout title="Rules, requirements and exceptions" description="A useful requirement says what it asks for, when it applies and what would demonstrate a problem. Test the meaning with ordinary and difficult cases before treating a check as an answer." proseClass="prose wide modelling-document learning-document">
+  <h2 id="what-rule">“The report must be complete” is not yet a usable rule</h2>
+  <p>Complete for whom, for which purpose, and against which expectation? A report can contain every required entry while leaving an important real-world question unanswered. It can also describe an access limitation accurately while failing a particular exchange's requirement to identify the affected area.</p>
+  <p>Separate three things. A business meaning explains a concept or relationship. A data-profile requirement says what a particular kind of record must provide for a stated use. Evidence about the world helps us judge what actually happened. A check against the second cannot, by itself, prove the third or approve the first.</p>
+
+  <h2 id="teaching-rule">Make the condition and requirement inspectable</h2>
+  <section class="learning-specimen" aria-labelledby="rule-r">
+    <h3 id="rule-r">Fictional teaching rule R</h3>
+    <p><strong>Scope:</strong> report versions supplied for this teaching review. “Access” means physical access to the identified agreed inspection areas during the identified visit, not permission to read data.</p>
+    <p><strong>Condition:</strong> the report explicitly says that physical inspection access was limited.</p>
+    <p><strong>Requirement when that condition holds:</strong> the report must identify at least one limitation being reported. For this exercise, that means naming the affected area and describing the restriction.</p>
+    <p><strong>Applicability convention:</strong> establish the condition from the supplied report facts. If the report's access statement is not supplied, say “applicability not established”. Do not guess a pass or failure. No exception to R is supplied.</p>
+  </section>
+  <p>R is intentionally modest. It asks a report to explain the limitation it asserts. It does not require unrestricted access, decide whether an inspection was professionally adequate, or demand every imaginable piece of information. It does not claim to be an adopted OPDA requirement.</p>
+  <LearningDiagram kind="rule" caption="First establish whether the report says access was limited. Then inspect whether it identifies the limitation. Missing evidence of the condition is not automatically a failure." />
+
+  <h2 id="cases">Test the rule against actual record facts</h2>
+  <p>For cases A–C, the exercise supplies the complete facts relevant to rule R. In B, the omission is confirmed, not inferred from a short extract. Case D deliberately supplies only an incomplete extract.</p>
+  <div class="learning-table">
+    <table>
+      <caption>Four records, four explained outcomes under teaching rule R</caption>
+      <thead><tr><th scope="col">Case and supplied facts</th><th scope="col">Applicability</th><th scope="col">Result and reason</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">A says “Access limited: enclosed area locked and not accessed.” The enclosed area is identified in the inspection scope.</th><td>Established: the report says access was limited.</td><td>Requirement met. It names the area and restriction.</td></tr>
+        <tr><th scope="row">B says “Access limited.” Its complete contents contain no description or reference identifying a limitation.</th><td>Established.</td><td>Requirement unmet. The asserted limitation is not identified.</td></tr>
+        <tr><th scope="row">C says every agreed area was accessed and explicitly states there was no access limitation.</th><td>The condition is explicitly absent.</td><td>R imposes no limitation-description requirement on C. This does not evaluate other rules.</td></tr>
+        <tr><th scope="row">D's extract gives a report issue date but supplies no access statement.</th><td>Not established from the extract.</td><td>No met/unmet conclusion under R. Request the relevant report facts.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A and B differ in the evidence needed by the requirement, not in the condition that activates it. C is not a successful inspection merely because R does not require anything of it. D does not become B just because both extracts lack an identified limitation: only B has the established condition and confirmed omission.</p>
+  <p>Harbour Court's version 2 supplies the equivalent of A: its access account identifies the locked enclosed area. The earlier excerpt “physical access was limited” is insufficient on its own to demonstrate that an entire report omitted the detail. To conclude a record fails a completeness rule, know what part of the record has been assessed.</p>
+
+  <h2 id="counts-values-consistency">Counts and choices also need meaning</h2>
+  <p>A count requirement can say “at least one”, “no more than one” or “exactly one”. Those are different obligations. R requires at least one identified limitation, so two distinct named limitations do not violate its count. Repeating the same text twice does not supply two distinct limitations.</p>
+  <p>A permitted-value requirement has its own scope. Suppose another fictional profile requires exactly one known physical-access outcome for a visit, chosen from the <a href="/semantic-modelling/explore/names-and-choices#choices">defined all/some/none list</a>. A record assigning both “All” and “None” to the same nonempty scope and visit would not meet that profile's requirement. Two outcomes for two different visits would be a different case, not automatically inconsistent.</p>
+  <p>Completeness asks whether required information is supplied. Consistency asks whether the relevant statements can fit together under their definitions and scope. Allowed values ask whether a stated choice belongs to the permitted set. None says an apparently complete, consistent record must be an accurate account of the world.</p>
+
+  <section class="learning-practice" aria-labelledby="change-premise">
+    <h2 id="change-premise">Practice: change one premise</h2>
+    <p>Add “The enclosed area was locked and not accessed” to B, with an unambiguous reference to the identified area. What changes? Then replace A's access-limited statement with a full-access statement while leaving its locked-area limitation attached to the same visit.</p>
+    <h3>Worked response</h3>
+    <p>B now meets R because it identifies the limitation that activates the requirement. That does not certify the source account's truth.</p>
+    <p>The changed A needs attention beyond R. Full access to every agreed area conflicts with the claim that an agreed area was locked and not accessed during that same visit under the stipulated meanings. Removing the trigger may mean R alone imposes no requirement; it does not make the contradictory account acceptable under every other check.</p>
+  </section>
+
+  <h2 id="exceptions">An exception is an explicit boundary, not an escape word</h2>
+  <p>If a real proposed requirement allows an exception, reviewers need to know the condition, who may assert it, what evidence establishes it and what obligation remains. “Unless appropriate” supplies none of that. Nor should a source's inability to share a detail silently become permission to omit a required distinction.</p>
+  <p>For teaching purposes, imagine a revised rule whose authors explicitly permit a withheld limitation description to be represented by a restriction-aware reference. That is a changed requirement, not an interpretation of R as written. Its reviewers must test whether the reference preserves enough meaning for the intended use and whether its handling conditions are legitimate. This lesson does not establish that such an exception is approved or legally sufficient.</p>
+
+  <section class="learning-practice" aria-labelledby="bad-rule">
+    <h2 id="bad-rule">Practice: find a fault in the rule itself</h2>
+    <p>A reviewer proposes replacing R with “Every inspection report must identify an inaccessible area”. Use case C as a counterexample.</p>
+    <h3>Worked response</h3>
+    <p>C explicitly reports access to every agreed area. Requiring it to identify an inaccessible one would force an invented fact or reject the ordinary full-access case. The proposed rule overreaches; the problem is not a missing fact in C. Restore the condition or explain a different requirement that the evidence genuinely supports.</p>
+  </section>
+  <p>A strong review note names the rule, record facts, expected result and reason. “B omits the required limitation despite asserting limited access” is different from “D cannot be assessed from this extract” and “the replacement rule rejects an intended case”. Practise that distinction in <a href="/semantic-modelling/contribute/review-rules-and-exceptions">Test a rule with ordinary and difficult cases</a>.</p>
+  <p class="learning-note">These are reasoned teaching outcomes, not executed formal-validation reports. The <a href="/semantic-modelling/method">Ontology modelling</a> route explains how specified requirements are represented and checked.</p>
+</ModellingLayout>

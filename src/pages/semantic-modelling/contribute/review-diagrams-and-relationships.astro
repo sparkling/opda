@@ -1,0 +1,75 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+---
+
+<ModellingLayout title="Review a diagram and its relationships" description="Read every connection as a claim. Find a missing subject, an unjustified identity or a relationship that needs its setting, then explain the practical correction." proseClass="prose wide modelling-document learning-document">
+  <section aria-labelledby="read-the-sentence">
+    <h2 id="read-the-sentence">A diagram is a set of statements you can challenge</h2>
+    <p>You do not have to redraw a model to review it. Choose one connection and read it aloud: “Report version 2 describes the 12 August inspection.” The report version is the subject; “describes” says what the connection means; the inspection is its object. Reading in the opposite direction requires a different sentence: “The inspection is described by report version 2.”</p>
+    <p>Now ask whether those are the right subjects and whether the statement is warranted. “Report version 2 is the inspection” is not another way of saying the same thing. It merges a document version with an event. An unlabelled line avoids making either claim explicit, leaving each reader to guess.</p>
+    <LearningDiagram kind="sentence" caption="Read the labelled connection as a sentence; direction and the identities of both ends are part of its meaning." />
+    <p>Names and positions help locate the claim, but they are not its meaning. A large box is not necessarily a whole containing smaller things, and being drawn above another box does not necessarily mean “broader than”. Use the diagram's stated legend and labels. If the visual grammar is unexplained, that itself is useful feedback.</p>
+  </section>
+
+  <section aria-labelledby="repair-the-map">
+    <h2 id="repair-the-map">Repair a map that hides report versions</h2>
+    <p>In our fictional Harbour Court case, Flat 1 was inspected on 12 August 2026. Report version 1 was issued on 14 August; version 2 was issued on 20 August and corrected the access-limitation description. There was no new visit. The following compact maps are written as numbered edges so every relationship remains readable without a graphical editor.</p>
+    <div class="learning-spread">
+      <figure class="learning-specimen" aria-labelledby="before-map">
+        <figcaption id="before-map">Before — an ambiguous teaching map</figcaption>
+        <ol>
+          <li>Report → describes → inspection of Flat 1.</li>
+          <li>Report → issue date → 14 August.</li>
+          <li>Report → issue date → 20 August.</li>
+          <li>Inspection of Flat 1 → occurrence date → 12 August.</li>
+        </ol>
+        <p>There is one undifferentiated “Report” subject. The map does not identify which report version has which issue date.</p>
+      </figure>
+      <figure class="learning-specimen" aria-labelledby="after-map">
+        <figcaption id="after-map">After — preserve the supplied distinctions</figcaption>
+        <ol>
+          <li>Report version 1 → describes → the 12 August inspection of Flat 1.</li>
+          <li>Report version 1 → issue date → 14 August.</li>
+          <li>Report version 2 → describes → the same 12 August inspection of Flat 1.</li>
+          <li>Report version 2 → issue date → 20 August.</li>
+          <li>Report version 2 → revises → report version 1.</li>
+        </ol>
+        <p>Two report versions describe one inspection. Their issue dates do not become two inspection dates.</p>
+      </figure>
+    </div>
+    <p>The numbered edges locate feedback; they are not ontology identifiers. A useful review note would say: “Before-map edges 2 and 3 attach both issue dates to an unspecified report. A recipient cannot associate each date with its version. Please distinguish the versions while retaining their connection to the same inspection.”</p>
+    <p>There is a plausible alternative: a diagram could show one continuing report with two explicitly identified version descriptions. That can preserve the same distinction. The objection is not that every model must use our drawing; it is that the original map does not say which description and date belong together. Ontology modellers can evaluate the representation once that requirement is clear.</p>
+  </section>
+
+  <section aria-labelledby="not-every-edge">
+    <h2 id="not-every-edge">Check what kind of connection is being claimed</h2>
+    <table class="learning-table">
+      <caption>Four connections that must not quietly become one another</caption>
+      <thead><tr><th scope="col">Proposed sentence</th><th scope="col">What to review</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Harbour Court contains Flat 1.</th><td>A building-to-dwelling containment claim, not an identity merge or a hierarchy of vocabulary topics.</td></tr>
+        <tr><th scope="row">A title document refers to Flat 1.</th><td>A documentary reference does not establish that the document and dwelling are the same thing or have identical boundaries.</td></tr>
+        <tr><th scope="row">Flat 1 is a dwelling.</th><td>A classification of an example subject, not a statement that “Dwelling” is another particular flat.</td></tr>
+        <tr><th scope="row">This record describes the same dwelling as that record.</th><td>An identity claim needs evidence and a criterion; a matching address alone does not settle it.</td></tr>
+      </tbody>
+    </table>
+    <p>If a map merges the building and Flat 1 because their addresses overlap, challenge the merger with Flat 2: which subject would an inspection of Flat 2 then concern? That counterexample exposes the consequence without asking you to choose a formal identity operator. The <a href="/semantic-modelling/explore/things-and-identities">identity chapter</a> develops the distinction.</p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="relationship-setting">
+    <h2 id="relationship-setting">Try it: the relationship is missing its setting</h2>
+    <p>In a separate invented finance case, Rowan is a borrower in arrangement A and a guarantor in arrangement B, which names Morgan as its borrower. A map says only “Rowan → guarantor for → Morgan”. What can you responsibly challenge?</p>
+    <h3>A worked response</h3>
+    <p>The map does not identify the arrangement in which the participation applies. “Rowan participates as guarantor in arrangement B” preserves the supplied fact; “Rowan participates as borrower in arrangement A” preserves the other. Do not turn the two roles into two different people, and do not infer permissions to see either arrangement's records.</p>
+    <p>The revised statement still needs the period if the question concerns participation at a particular time. No period was supplied, so inventing one would make the diagram more complete-looking but less faithful. Ask which evidence establishes it. If several people guarantee the same arrangement, a map with only one available participant slot may also exclude a valid case.</p>
+    <h3>Change one premise</h3>
+    <p>Suppose the source only says “Rowan supported the application”. You can no longer conclude that Rowan was a guarantor. The correct review action is to ask what participation “supported” describes, not to tidy the line into a stronger assertion.</p>
+  </section>
+
+  <section aria-labelledby="actionable-diagram-feedback">
+    <h2 id="actionable-diagram-feedback">Report the claim, consequence and missing distinction</h2>
+    <p>Keep the page, candidate version and edge label with your note. Describe what the diagram currently says, what someone could wrongly infer and which supplied fact fails to fit. If the diagram disagrees with its adjacent definition, cite both: silently choosing one leaves the agreement inconsistent.</p>
+    <p>“Add another box” leaves reviewers guessing why. “These two roles concern different arrangements, but the diagram loses the arrangement” gives them a test for any correction. A sketch or ordinary sentence is enough; current discussion arrangements are in the <a href="/development/working-groups/member-guide/teams-and-discussions">member guide</a>.</p>
+  </section>
+</ModellingLayout>

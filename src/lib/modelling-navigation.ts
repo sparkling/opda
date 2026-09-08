@@ -29,26 +29,40 @@ export const ONTOLOGY_REFERENCE_CHAPTERS: Item[] = [
 /** One task-based chapter map for section navigation and search. */
 export const MODELLING_JOURNEYS: Item[] = [
   {
-    ...page('understand', 'Understand shared meaning'),
+    ...page('understand', "Understand shared meaning"),
     children: [
-      page('understand/shared-meaning', 'Why shared meaning matters'),
-      page('understand/a-property-story', 'A property story'),
+      page('understand/shared-meaning', "Why shared meaning matters"),
+      page('understand/what-we-are-building', "What we are building"),
+      page('understand/benefits-and-limits', "Benefits, limits and reasonable objections"),
+      page('understand/a-property-story', "Harbour Court: follow a question through the model"),
+      page('understand/how-the-work-is-done', "How the modelling work is done"),
     ],
   },
   {
-    ...page('explore', 'Explore the model'),
+    ...page('explore', "Explore the model"),
     children: [
-      page('explore/things-and-identities', 'Things and identities'),
-      page('explore/names-and-choices', 'Names, choices and classifications'),
-      page('explore/contexts-and-connections', 'Contexts and connections'),
+      page('explore/things-and-identities', "Things, identities and relationships"),
+      page('explore/people-roles-and-change', "People, roles and change"),
+      page('explore/measurements-amounts-and-values', "Measurements, amounts and values"),
+      page('explore/dates-periods-and-applicability', "Dates, periods and applicability"),
+      page('explore/claims-evidence-and-uncertainty', "Claims, evidence and uncertainty"),
+      page('explore/names-and-choices', "Names, choices and classification"),
+      page('explore/contexts-and-connections', "Connect meanings across contexts"),
+      page('explore/rules-and-exceptions', "Rules, requirements and exceptions"),
+      page('explore/sensitivity-purpose-permissions', "Sensitivity, purpose and permissions"),
     ],
   },
   {
-    ...page('contribute', 'Contribute your expertise'),
+    ...page('contribute', "Review and contribute"),
     children: [
-      page('contribute/review-a-definition', 'Review a definition'),
-      page('contribute/bring-evidence', 'Bring useful evidence'),
-      page('contribute/what-happens-next', 'What happens next'),
+      page('contribute/frame-a-modelling-question', "Turn experience into a modelling question"),
+      page('contribute/review-a-definition', "Review a definition"),
+      page('contribute/review-diagrams-and-relationships', "Review a diagram and its relationships"),
+      page('contribute/review-vocabularies-and-mappings', "Review choices and mappings"),
+      page('contribute/review-rules-and-exceptions', "Test a rule with ordinary and difficult cases"),
+      page('contribute/bring-evidence', "Bring evidence others can interpret"),
+      page('contribute/read-and-compare-a-candidate', "Read a candidate and compare a change"),
+      page('contribute/what-happens-next', "Follow feedback, disagreement and revision"),
     ],
   },
   {
@@ -68,5 +82,6 @@ export function getModellingChapter(pathname: string) {
   if (!group) return null;
   const chapters = [group, ...(group.children ?? [])];
   const position = chapters.findIndex((item) => item.url === path);
+  if (position < 0) return null;
   return { group, chapters, number: position + 1, next: chapters[position + 1] ?? null };
 }

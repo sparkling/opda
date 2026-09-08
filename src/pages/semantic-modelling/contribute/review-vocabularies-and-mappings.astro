@@ -1,0 +1,63 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+---
+
+<ModellingLayout title="Review choices and mappings" description="Test a choice list against its intended scope, then compare meanings across two versions and contexts. A matching label is a starting question, not evidence of equivalence." proseClass="prose wide modelling-document learning-document">
+  <section aria-labelledby="choices-do-work">
+    <h2 id="choices-do-work">A list is making a promise about what can be recorded</h2>
+    <p>An agreed list can make descriptions easier to compare. It can also hide a distinction if people choose the same label for different reasons. Reviewing the spelling of the options is not enough: ask what question the list answers, which cases it covers and whether a record may have one answer or several.</p>
+    <p>In this fictional inspection example, a proposed single-choice list is “Completed”, “Limited access” and “Not inspected”. It looks familiar, but “Completed” describes work against an agreed scope while “Limited access” describes physical access. An inspection could be completed within its agreed limitations, so the first two choices may both apply. “Not inspected” might describe no physical access, cancellation before the visit or work outside scope. The labels do not settle which.</p>
+    <p>A useful contribution identifies that overlap and its consequence: two practitioners could describe the same visit differently without either misunderstanding their own work. The solution may be separate questions, not more synonyms in one list.</p>
+  </section>
+
+  <section aria-labelledby="review-the-list">
+    <h2 id="review-the-list">Make the scope precise enough to test</h2>
+    <figure class="learning-specimen" aria-labelledby="access-list">
+      <figcaption id="access-list">Revised fictional vocabulary: physical access during one visit</figcaption>
+      <p><strong>Scope:</strong> access to a nonempty, identified set of agreed inspection areas during this visit. Select one outcome when the access evidence is known.</p>
+      <dl>
+        <dt>All agreed areas</dt><dd>Every area in the identified set was physically accessed.</dd>
+        <dt>Some but not all agreed areas</dt><dd>At least one area was physically accessed and at least one was not.</dd>
+        <dt>None of the agreed areas</dt><dd>No area in the identified set was physically accessed.</dd>
+      </dl>
+      <p><strong>Exclusion:</strong> these choices do not describe inspection quality, completion of every task or permission to receive a report.</p>
+    </figure>
+    <p>For Harbour Court, the identified areas are the living room, bedroom and enclosed area. The first two were accessed; the enclosed area was locked. “Some but not all” is the warranted answer under these premises. The outcomes do not overlap, and they cover every physical-access outcome for this nonempty set when the evidence is known.</p>
+    <p>The word “nonempty” matters. If there were no agreed areas, “all” and “none” could both appear defensible. An empty or unidentified scope needs separate attention, not a forced choice. Likewise, a blank access record is not evidence of access to none. It may mean that the evidence has not been supplied.</p>
+    <p>There is no need to add “Other” merely to conceal an unclear scope. If a reviewer brings a genuine uncovered outcome, examine it. If they bring missing evidence, preserve that as a recording or knowledge distinction. It is not another physical-access outcome.</p>
+  </section>
+
+  <section aria-labelledby="compare-meanings">
+    <h2 id="compare-meanings">A mapping must say what survives the crossing</h2>
+    <p>Now imagine two fictional specifications exchanging access descriptions. Their labels are similar, but their definitions have different breadth. The versions below are teaching premises, not terms or accepted mappings in the Property Pack candidate.</p>
+    <div class="learning-spread">
+      <section class="learning-specimen" aria-labelledby="source-choice">
+        <h3 id="source-choice">Source specification A · version 1</h3>
+        <dl><dt>Label</dt><dd>Some access</dd><dt>Definition</dt><dd>At least one, but not all, areas in the identified nonempty agreed set were physically accessed during the visit.</dd><dt>Excludes</dt><dd>No areas accessed; every area accessed.</dd></dl>
+      </section>
+      <section class="learning-specimen" aria-labelledby="recipient-choice">
+        <h3 id="recipient-choice">Recipient specification B · version 1</h3>
+        <dl><dt>Label</dt><dd>Restricted access</dd><dt>Definition</dt><dd>Not all areas in the identified nonempty agreed set were physically accessed during the visit.</dd><dt>Includes</dt><dd>Some-but-not-all access and no access.</dd></dl>
+      </section>
+    </div>
+    <LearningDiagram kind="mapping" caption="A proposed correspondence must preserve the compared definitions and scope. The teaching example is not an adopted cross-context mapping." />
+    <p>Under these complete fictional definitions, A's “Some access” is narrower than B's “Restricted access”. A source record with some access can be described as restricted under B's definition if the visit and agreed set are the same. But the recipient loses the distinction between some access and none unless that extra information travels too.</p>
+    <p>The reverse direction is not justified as an exact translation. A B record marked “Restricted access” does not tell us whether any area was entered. If we turn it into A's “Some access”, we invent a positive access claim. One counterexample — a visit at which every agreed area was inaccessible — defeats the proposed equivalence.</p>
+    <p>An exact correspondence can be justified in a tightly specified example. If another fictional vocabulary version defines “Partial physical access” with the same subject, visit, nonempty agreed set and some-but-not-all condition as A, and has no additional exclusions, the two definitions support equivalent choices for that stated use. Different labels do not prevent agreement; identical labels do not prove it. That conclusion still needs the relevant review and evidence before it could become a real governed mapping.</p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="mapping-practice">
+    <h2 id="mapping-practice">Try it: two uses of “completion”</h2>
+    <p>A fictional source calls a document bundle “complete” when every document on its specified checklist is present. A recipient's field is labelled “completion date”; no definition, source version or event description is supplied. Someone proposes copying the date when the bundle became complete into that field. What is your review response?</p>
+    <h3>A reasoned response</h3>
+    <p>No correspondence is established. The source describes documentary completeness; we do not yet know what the recipient's date describes. Ask for the recipient definition, the event or state being dated, the intended purpose and the relevant version. Do not assume the recipient means a conveyancing event from the spelling alone, or make a legal claim about when a transaction completed.</p>
+    <p>If the recipient is later shown to mean the same checklist becoming complete for the same bundle, a correspondence may be supportable. If it means a different event, retain the distinction. The useful outcome is not necessarily another arrow: it may be an explicit decision not to map.</p>
+  </section>
+
+  <section aria-labelledby="record-the-review">
+    <h2 id="record-the-review">Make your objection reproducible</h2>
+    <p>Keep both definitions, their versions and intended uses with the proposed direction of correspondence. Show an ordinary case that works and the smallest counterexample that fails. Say whether the proposal loses information, invents information or cannot yet be assessed. A note saying “these are similar” does not tell someone whether they can safely substitute one for the other.</p>
+    <p>The established <a href="/development/property-pack/contexts">candidate context register</a> is not a register of approved example bridges: its Common supply arrows are not mappings, and at the reviewed candidate version 0.1.0-draft, the cross-context mapping register is empty, awaiting working-group evidence. Cross-context agreement needs the affected meanings and responsible reviewers, not an inference from organisational cooperation. For the underlying distinctions, see <a href="/semantic-modelling/explore/contexts-and-connections">connecting meanings across contexts</a>.</p>
+  </section>
+</ModellingLayout>

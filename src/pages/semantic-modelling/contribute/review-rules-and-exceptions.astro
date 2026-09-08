@@ -1,0 +1,66 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+---
+
+<ModellingLayout title="Test a rule with ordinary and difficult cases" description="Use small, explicit cases to establish when a requirement applies, what meets it and where the problem lies. Missing evidence is not automatically success or failure." proseClass="prose wide modelling-document learning-document">
+  <section aria-labelledby="what-a-test-asks">
+    <h2 id="what-a-test-asks">Test the intended meaning, not just a convenient example</h2>
+    <p>A requirement can be written clearly and still ask for the wrong thing. “Every report must identify exactly one limitation” is easy to count, but it assumes that every report has a limitation and that there can only be one. Before asking a tool to enforce it, bring cases that challenge those assumptions.</p>
+    <p>Review has two distinct questions. Does this record meet the stated requirement? And does the requirement express what the agreed specification ought to demand? A failed record may reveal missing information. It may instead expose an overreaching rule. Passing an inappropriate rule is not a modelling success.</p>
+    <p>We will use a deliberately fictional teaching profile. Its conditions are supplied here, not inferred from legislation, professional standards or the current Property Pack candidate. The exercise evaluates descriptions; it cannot prove what happened at a property.</p>
+  </section>
+
+  <section aria-labelledby="rule-specimen">
+    <h2 id="rule-specimen">Read the condition before looking for the required information</h2>
+    <figure class="learning-specimen" aria-labelledby="requirement-caption">
+      <figcaption id="requirement-caption">Fictional requirement R — report the access limitation</figcaption>
+      <blockquote><p>When a report states that inspection access was limited, it must identify at least one limitation being reported for that inspection.</p></blockquote>
+      <dl>
+        <dt>Subject</dt><dd>The identified report version and the inspection it describes.</dd>
+        <dt>Trigger</dt><dd>The report states that inspection access was limited.</dd>
+        <dt>What is required</dt><dd>A description identifying at least one reported access limitation; “limited” alone does not identify it.</dd>
+        <dt>Applicability convention for this exercise</dt><dd>Use explicit evidence about the trigger. When that evidence is absent, say “applicability not established”. Do not infer a pass, failure or formal validation result.</dd>
+      </dl>
+    </figure>
+    <LearningDiagram kind="rule" caption="First establish whether the stated condition applies; then examine the information that the requirement asks for." />
+    <p>For a fully supplied record, we can inspect what it definitely contains or omits. For an excerpt, a missing passage may simply be outside the excerpt. That difference is part of the test premises. Without it, a reviewer could call a complete source defective because a short quotation did not include every section.</p>
+  </section>
+
+  <section aria-labelledby="case-matrix">
+    <h2 id="case-matrix">Four cases, four explanations</h2>
+    <table class="learning-table">
+      <caption>Teaching outcomes under requirement R, not results from a candidate validator</caption>
+      <thead><tr><th scope="col">Supplied case</th><th scope="col">Outcome</th><th scope="col">Why</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">A · Report says access was limited and identifies the locked enclosed area.</th><td>Requirement met.</td><td>The trigger is established and a limitation is identified.</td></tr>
+        <tr><th scope="row">B · Complete report says access was limited; it definitely contains no limitation description.</th><td>Requirement unmet.</td><td>The trigger is established; the required information is absent from the complete record.</td></tr>
+        <tr><th scope="row">C · Evidence explicitly establishes that the report records unrestricted access for its stated scope.</th><td>This conditional requirement does not apply.</td><td>The limited-access trigger is explicitly not met. Other requirements may still apply.</td></tr>
+        <tr><th scope="row">D · An excerpt supplies neither an access statement nor evidence about whether one exists elsewhere.</th><td>Applicability not established.</td><td>The supplied evidence does not establish the trigger. Do not turn that gap into a pass or failure.</td></tr>
+      </tbody>
+    </table>
+    <p>Harbour Court report version 2 supplies an instance of case A: it says access was limited and identifies the locked enclosed area. This establishes only that the fictional description meets R. It does not establish that the enclosed area was actually locked, that every limitation was reported or that the inspection was professionally adequate.</p>
+    <p>Case C does not claim that no limitation existed in the world. It describes the explicit access evidence stipulated for the exercise. A contradictory source could raise a separate question about accuracy. Keep that evidence question visible instead of expecting a completeness rule to decide it.</p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="change-one-premise">
+    <h2 id="change-one-premise">Try it: change one premise at a time</h2>
+    <p>Start with case A. First remove the limitation description from the complete report while leaving the limited-access statement. Then, separately, restore the description and add a second limitation: an inaccessible loft, in a new fictional inspection scope. Predict the outcome each time.</p>
+    <h3>A reasoned response</h3>
+    <p>The first change produces case B: R applies and is unmet. The second still meets R because it requires <em>at least one</em> identified limitation, not exactly one. A proposed maximum of one would reject a report containing two relevant limitations without any supplied reason for that restriction.</p>
+    <p>Now repeat the same “locked enclosed area” description twice. Repetition does not demonstrate two different limitations. If a rule is meant to count distinct limitations rather than entries, that distinction needs to be expressed. R asks only for at least one; it does not settle how duplicates should be represented.</p>
+    <h3>A harder variation</h3>
+    <p>Suppose the report says “See appendix”, but the appendix was not supplied. You cannot assert that the complete report lacks a limitation. Ask for permitted evidence of the referenced content and clarify whether the profile accepts a reference that can be followed. The problem may be an incomplete review bundle, not a defective report.</p>
+  </section>
+
+  <section aria-labelledby="rule-or-record">
+    <h2 id="rule-or-record">Use a counterexample to locate the design problem</h2>
+    <p>A reviewer proposes strengthening R to “Every inspection report must identify a limitation”. Bring a report that explicitly records physical access to every agreed area and does not report any limitation. The proposed rule would require the author to invent a limitation or misuse the field to say “none”. That is evidence that the rule's applicability condition has been lost, not evidence that the report is incomplete under R.</p>
+    <p>Another reviewer proposes “Any nonempty text is sufficient”. The record “limited” then passes, although it does not identify what was limited. This exposes a gap between the intended requirement and a shallow text-presence check. Technical specialists can explain which parts can be checked reliably and which need human judgement; the specification should not disguise the gap.</p>
+    <figure class="learning-specimen" aria-labelledby="rule-note">
+      <figcaption id="rule-note">A worked review note</figcaption>
+      <blockquote><p>The proposed maximum of one limitation excludes the supplied case with a locked enclosed area and an inaccessible loft. Both concern the same identified inspection. Please explain the business reason for the maximum or allow several limitations. This challenges the rule's design, not the accuracy of either observation.</p></blockquote>
+    </figure>
+    <p>Keep the rule's version, the smallest relevant case and the expected outcome with your note. Say explicitly whether you are challenging the rule, identifying a record that fails it or asking for missing evidence. For the underlying distinctions, see <a href="/semantic-modelling/explore/rules-and-exceptions">rules, requirements and exceptions</a>.</p>
+  </section>
+</ModellingLayout>

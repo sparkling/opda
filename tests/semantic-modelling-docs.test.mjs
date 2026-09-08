@@ -69,7 +69,7 @@ test('one registry supplies the canonical pages across four task-based journeys'
     assert.ok(source.split('\n').length < 500, `${relative} exceeds the project file limit`);
     const template = route.startsWith(`${sectionRoot}/method`) ? 'OntologyChapter' : 'ModellingLayout';
     assert.ok(source.includes(`import ${template} from '@/layouts/${template}.astro'`));
-    assert.ok(source.includes(`<${template} `));
+    assert.match(source, new RegExp(`<${template}\\s`, 'u'));
     assert.ok(source.includes(`</${template}>`));
     assert.doesNotMatch(source, /JourneyNav|<style\b|<h1\b|Astro\.redirect|http-equiv=["']refresh/iu);
     assert.doesNotMatch(source, /\bH\s*(?:&(?:amp;|#38;|#x26;)?|and)\s*M\b|Hennes|Mauritz/iu,

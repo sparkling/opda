@@ -455,7 +455,7 @@ test('semantic modelling uses the shared four-journey registry with linked paren
   assert.equal(getNavigationPrevNext('/semantic-modelling/understand').next?.url,
     '/semantic-modelling/understand/shared-meaning');
   assert.equal(getNavigationPrevNext('/semantic-modelling/understand/a-property-story').next?.url,
-    '/semantic-modelling/explore');
+    '/semantic-modelling/understand/how-the-work-is-done');
   assert.equal(getNavigationPrevNext('/semantic-modelling/contribute/what-happens-next').next?.url,
     '/semantic-modelling/method');
   assert.equal(getNavigationPrevNext('/semantic-modelling/method').next?.url,

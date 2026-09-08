@@ -1,0 +1,60 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
+---
+
+<ModellingLayout title="People, roles and change" description="A person can participate in several arrangements without becoming several people. A changed status or corrected document also needs a subject: what changed, in which setting, and what continued?" proseClass="prose wide modelling-document learning-document">
+  <h2 id="arrangements">“The borrower” is not a complete identity</h2>
+  <p>Imagine two arrangement documents open on the same desk. In the first, Sam is named as borrower. In the second, Sam is named as guarantor. If we store only “Sam: borrower”, we have not merely shortened the account. We have removed the setting that makes it intelligible.</p>
+  <LearningIllustration scene="finance" alt="Two arrangement documents and participant markers beside a residential model, inviting the reader to keep the arrangements distinct." />
+  <p>The following facts are invented for this lesson, not lending requirements or legal interpretations. They let us reach a definite modelling conclusion without deciding what obligations real contracts create.</p>
+  <div class="learning-spread">
+    <section class="learning-specimen" aria-labelledby="arrangement-a">
+      <h3 id="arrangement-a">Arrangement A</h3>
+      <p>A fictional participation record explicitly names <strong>Sam and Jo as borrowers</strong>, and North Bank as lender, in arrangement A during 1 September–31 December 2026.</p>
+      <p>The record identifies Sam independently of their displayed name. It says nothing about either person's participation after that period.</p>
+    </section>
+    <section class="learning-specimen" aria-labelledby="arrangement-b">
+      <h3 id="arrangement-b">Arrangement B</h3>
+      <p>A second record explicitly names <strong>Priya as borrower and the same Sam as guarantor</strong>, with North Bank as lender, in arrangement B during 15 September–31 December 2026.</p>
+      <p>“The same Sam” is a supplied identity fact, not a conclusion drawn from a matching name.</p>
+    </section>
+  </div>
+  <LearningDiagram kind="roles" caption="One person participates differently in two stated arrangements. A role belongs with its arrangement; the lender organisation can participate in both." />
+  <p>During the overlapping period, Sam is borrower in A and guarantor in B. Those are compatible claims about one person. Jo is also a borrower in A, so a model that permits exactly one participant in that role would lose a supplied fact. North Bank is an organisation, not a person, but it too has identified participation in each arrangement.</p>
+
+  <h2 id="role-setting">A role is relational, not just temporary</h2>
+  <p>A <a href="/glossary#role">role</a> answers “in what capacity does this subject participate here?” Seller in one transaction and buyer in another is the same pattern. The role depends on the relevant relationship or setting. “Temporary” is not the definition: a role may last for years, while a document version may exist only briefly without being a role.</p>
+  <p>Nor is role a substitute for identity. A person can stop being a borrower in an arrangement without becoming a different person. Two people can share the borrower role without becoming one person. Renaming a role cannot establish that the participant is the same person as before.</p>
+  <p>When reviewing a proposal, look for the participant, arrangement, role and relevant period together. Ask how multiple participants are represented and what establishes their identity. If a source does not state an end date, record that limit honestly; do not invent a continuing role forever or infer an end from an unrelated document's date.</p>
+
+  <section class="learning-practice" aria-labelledby="roles-practice">
+    <h2 id="roles-practice">Practice: complete the statement</h2>
+    <p>A proposed summary says, “Sam was the borrower on 20 September 2026.” Use the two supplied records to improve it. Then assess, “Sam was the only borrower in arrangement A.”</p>
+    <h3>Worked response</h3>
+    <p>“On 20 September 2026, Sam participated as a borrower in arrangement A and as guarantor in arrangement B, according to the respective participation records.” This keeps two different claims and names their evidence. The “only borrower” statement is contradicted by A's explicit inclusion of Jo.</p>
+    <p>Now transfer the reasoning. Fictional organisation Cedar Services acts as managing agent for building X under appointment M and as maintenance contractor for building Y under appointment N. A note says merely “Cedar manages the property”. Ask which property, appointment, role and period it describes. The organisation's name alone cannot fill those gaps.</p>
+  </section>
+
+  <h2 id="state-subject">What exactly is “under offer” describing?</h2>
+  <p>In a separate fictional listing example, record L describes a dwelling and carries the label “under offer” on 10 September. The label is explicitly a state of that listing record under its author's convention. A related transaction record has its own status. The dwelling has not become a different physical kind of thing because the listing label changed.</p>
+  <p>For the exercise, the author states that L continues to be the same listing when its label changes from “available” to “under offer”. We can therefore discuss a state change of L. We have not established a universal listing lifecycle, a legal transaction milestone or an approved OPDA status vocabulary.</p>
+  <p>Some classifications are analysed formally as <a href="/glossary#phase">phases</a>: conditions through which the same subject can pass. Not every workflow label deserves that analysis. First establish which subject continues and what the label means. A status word attached to “property” can easily mix the dwelling, listing, transaction and report.</p>
+
+  <h2 id="changed-description">A changed description is not another event</h2>
+  <p>Return to Harbour Court. The identified inspection of Flat 1 occurred on 12 August 2026. Report version 1 was issued on 14 August. Version 2 was issued on 20 August and corrects the description of an access limitation. The fictional revision note explicitly says that no further visit took place.</p>
+  <LearningDiagram kind="change" caption="Two report versions describe one 12 August inspection. The 20 August issue date locates a changed account, not a second visit." />
+  <p>Three questions now have three answers. “How many inspections does this story establish?” One. “How many report versions?” Two. “Did the information supplied to readers change?” Yes. The version chain lets a reader distinguish a corrected account from an additional examination without erasing the earlier account.</p>
+  <p>The report may have a continuing document identity across versions, while each version also needs its own reference. That is a modelling choice to make explicit, not an excuse to say “same report” whenever version matters. Someone explaining a decision made on 16 August needs to identify the account available then, not silently substitute the correction issued later.</p>
+
+  <section class="learning-practice" aria-labelledby="change-practice">
+    <h2 id="change-practice">Practice: change one fact</h2>
+    <p>A new fictional note states: “A second inspection of Flat 1 took place on 25 August to examine the previously locked enclosed area.” Is that another report version, another event, or a state change?</p>
+    <h3>Worked response</h3>
+    <p>The note explicitly establishes a second inspection event. It does not tell us whether a new report or another version was issued. We should record the second event and its subject, then seek the documentary connection rather than invent it.</p>
+    <p>If the note instead said only “updated 25 August”, no second inspection would be established. Ask what was updated and why. If Flat 1 were subdivided, neither of these event/version patterns would settle dwelling identity: the <a href="/semantic-modelling/explore/things-and-identities#change">subdivision question</a> needs its own evidence and identity criteria.</p>
+  </section>
+  <p>A useful review contribution separates these questions in one sentence: “Please identify whether this status describes the participant's role in arrangement A, the listing's state, or the report version; each changes differently.” The <a href="/semantic-modelling/explore/dates-periods-and-applicability">time chapter</a> explains which dates support those statements.</p>
+  <p class="learning-note">A transaction role does not establish permission to receive data. That separate question belongs in <a href="/semantic-modelling/explore/sensitivity-purpose-permissions">Sensitivity, purpose and permissions</a>. Formal role and phase analysis remains in <a href="/semantic-modelling/method/roles-and-phases">Ontology modelling</a>.</p>
+</ModellingLayout>

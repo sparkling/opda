@@ -1,103 +1,126 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import PathwaySplit from '@/components/modelling/PathwaySplit.astro';
-import DossierPanel from '@/components/modelling/DossierPanel.astro';
-import ContrastPair from '@/components/modelling/ContrastPair.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 ---
 
-<ModellingLayout title="Make meaning a shared resource" description="A property model built with the people who understand the work. Discover the ideas, challenge the definitions, and explore the discipline behind a connected, context-first framework.">
+<ModellingLayout title="Make meaning a shared resource" description="Understand the model, use your professional judgement to improve it, or study the ontology-modelling discipline behind it. Two audiences, one connected agreement." proseClass="prose wide modelling-document learning-document">
   <p>
-    Property information travels between people who ask different questions. A surveyor
-    describes what was inspected. A conveyancer examines a title. A lender considers
-    evidence for a decision. Connecting their data is useful only if we also understand
-    what it describes, where its meaning holds and what it can support.
+    A date can be correctly formatted and still describe the wrong event. A floor
+    area can have the right unit and still include a different part of the dwelling.
+    Two records can carry the same address without describing the same thing.
+    Useful property information needs the distinctions people rely on in their work.
   </p>
   <p>
-    That is the work of semantic modelling. An ontology makes the important things,
-    distinctions and relationships explicit. Our starting point is not a universal
-    hierarchy imposed on every profession. It is the questions practitioners need to
-    answer—and the agreements that let their meanings travel safely.
-  </p>
-
-  <h2 id="choose">Choose the question you want to answer</h2>
-  <PathwaySplit primary={{
-    href: '/semantic-modelling/understand', audience: 'Start here · no technical background needed',
-    title: 'Why does shared meaning matter?',
-    description: 'An introduction built around one recognisable property story. Learn what an ontology does, what it cannot do and how to read a model without learning its notation.',
-    topics: ['A building is not its address or title record', 'One inspection can produce several report versions', 'Better questions are a valuable contribution'],
-  }} alternatives={[
-    { href: '/semantic-modelling/explore', audience: 'Explore the ideas', title: 'What are we actually modelling?', description: 'Things and identities, names and choices, contexts and connections. Follow the distinctions before inspecting their formal encoding.' },
-    { href: '/semantic-modelling/contribute', audience: 'Bring your professional knowledge', title: 'How can I improve it?', description: 'Review a definition, supply an example, challenge an assumption or explain an exception. You do not need to write RDF.' },
-    { href: '/semantic-modelling/method', audience: 'Ontology modellers and implementers', title: 'How do we model ontologies?', description: 'The context-first ontology-modelling method: eight modelling concerns, identity, mapping, validation, provenance and bounded standards profiles.' },
-  ]} />
-
-  <h2 id="one-story">One story, followed all the way through</h2>
-  <DossierPanel name="Harbour Court" reference="HC · teaching case" stage="An inspection and a correction" facts={[
-    { label: 'Place', value: '14 Orchard Road', note: 'A fictional address, not an identity rule.' },
-    { label: 'Building', value: 'Two dwellings: Flat 1 and Flat 2' },
-    { label: 'Inspection', value: '12 August 2026' },
-    { label: 'Reports', value: 'Issued 14 August; corrected 20 August' },
-  ]}>
-    <p>Someone says, “The property has been inspected.” Which property? What was inspected? Which report describes it? Does the correction mean another visit took place?</p>
-    <p>The same case runs through the section, from a plain-language explanation to the shape of a mapping record. You can see how a question becomes a distinction, an explicit relationship and something that can be reviewed.</p>
-    <p><a href="/semantic-modelling/understand/a-property-story">Open the property story →</a></p>
-  </DossierPanel>
-
-  <h2 id="our-position">Local understanding. Explicit connections. Shared discipline.</h2>
-  <ContrastPair leftLabel="Begin by fitting everything into one hierarchy" rightLabel="Begin with accountable meanings, then connect them">
-    <Fragment slot="left"><p>A common hierarchy can be useful where its distinctions are already understood and agreed. Used as the starting answer to every problem, however, it can hide differences behind familiar names or force a local meaning into an unsuitable category.</p></Fragment>
-    <Fragment slot="right"><p>Our approach starts with a bounded question, its evidence and the community responsible for the meaning. We make identity and relationships precise, reuse suitable standards and record the agreements needed at each boundary.</p></Fragment>
-    <Fragment slot="verdict"><p>This is a choice about how to discover and govern meaning—not a claim that all ontology work is top-down, that every context invents its own truth, or that formal analysis is unnecessary.</p></Fragment>
-  </ContrastPair>
-  <p>
-    The aim is a connected framework, not a collection of isolated glossaries.
-    Foundational analysis challenges our distinctions. Shared vocabularies reduce
-    duplication. Mappings explain correspondence without pretending different things
-    are identical. A small common boundary earns its place through repeated, evidenced
-    needs rather than growing into a compulsory master model.
-    <a href="/semantic-modelling/method">Read the modelling manifesto</a>.
+    Semantic modelling makes those distinctions explicit and reviewable. An
+    <a href="/glossary#ontology">ontology</a> describes the things, meanings and
+    relationships involved. You do not have to write ontology code to explain why
+    a definition misses a normal case, why two choices overlap or which evidence
+    a statement needs.
   </p>
 
-  <h2 id="participation">The website is an interface to the model</h2>
+  <h2 id="choose">Choose the work you want to do</h2>
+  <div class="learning-spread">
+    <section class="learning-specimen" aria-labelledby="practical-route">
+      <h3 id="practical-route"><a href="/semantic-modelling/understand">Understand and work with the model</a></h3>
+      <p>For property practitioners, data stewards, analysts, developers and other participants who are not ontology modellers.</p>
+      <p>Start with familiar situations. Inspect definitions, choices, relationships and rules; compare evidence; turn a difficult case into an actionable review question. No formal syntax is required.</p>
+      <p><a href="/semantic-modelling/understand/shared-meaning">Start with shared meaning</a>, or <a href="/semantic-modelling/contribute/read-and-compare-a-candidate">go straight to a candidate you can inspect</a>.</p>
+    </section>
+    <section class="learning-specimen" aria-labelledby="technical-route">
+      <h3 id="technical-route"><a href="/semantic-modelling/method">Design the ontology</a></h3>
+      <p>For ontology modellers, semantic architects and people making formal representation decisions.</p>
+      <p>Apply identity analysis, roles and phases, contextual boundaries, qualified mappings, evidence and time. Work with the selected RDF, OWL, SKOS and SHACL profiles and the governing decisions.</p>
+      <p><a href="/semantic-modelling/method">Open Ontology modelling</a>.</p>
+    </section>
+  </div>
+
+  <h2 id="field-guide">A field guide with three useful starting points</h2>
+  <ol class="learning-index">
+    <li>
+      <h3><a href="/semantic-modelling/understand">Understand shared meaning</a></h3>
+      <p>Five chapters explain what we are building, its benefits and limits, the six views of an agreement, a connected property story and how the modelling work is done.</p>
+    </li>
+    <li>
+      <h3><a href="/semantic-modelling/explore">Explore the model</a></h3>
+      <p>Nine chapters examine identities, roles, measurements, time, evidence, vocabulary, connections, rules and permission descriptions. Each develops the distinction through concrete cases.</p>
+    </li>
+    <li>
+      <h3><a href="/semantic-modelling/contribute">Review and contribute</a></h3>
+      <p>Eight working references help you frame a question, review a definition or diagram, test choices and rules, bring evidence, inspect a candidate and follow a reasoned revision.</p>
+    </li>
+  </ol>
   <p>
-    You should not have to understand triples, namespaces or ontology tooling to say
-    “that definition excludes a case we see every week”. Definitions, examples,
-    relationships and questions are the public interface. Technical specialists turn
-    reviewed meaning into precise artefacts; participants judge whether the meaning
-    reflects the work.
-  </p>
-  <figure class="modelling-figure">
-    <ModellingVisual kind="candidate-loop" />
-    <figcaption>A useful modelling cycle makes disagreement inspectable. This is an explanatory handoff, not a claim that an automated approval workflow is deployed.</figcaption>
-    <ol class="modelling-steps">
-      <li><strong>Bring a question.</strong> Describe a situation, an ambiguity or an exchange that fails.</li>
-      <li><strong>Make distinctions.</strong> Identify the subjects, definitions, relationships and missing evidence.</li>
-      <li><strong>Try examples and checks.</strong> Look for counterexamples as well as successful cases.</li>
-      <li><strong>Record human judgement.</strong> Accept, revise or decline the proposal through the relevant governance process.</li>
-      <li><strong>Revise and explain.</strong> Keep unresolved questions visible and make the next candidate reviewable.</li>
-    </ol>
-  </figure>
-  <p>
-    Start with <a href="/semantic-modelling/contribute/review-a-definition">one definition</a>,
-    <a href="/semantic-modelling/contribute/bring-evidence">one useful piece of evidence</a>,
-    or <a href="/join">join a working group</a>. The participation guide distinguishes
-    what you can do on the website today from the wider workflow being proposed.
+    This is a reference to use, not a course you must finish before taking part.
+    The examples show their premises and worked responses. Changed-premise cases
+    show when the answer changes—and when the evidence no longer permits an answer.
+    Definitions of technical terms link to the site's <a href="/glossary">one glossary</a>.
   </p>
 
-  <h2 id="credible-progress">Read the ambition and the evidence separately</h2>
+  <h2 id="one-story">Follow the question, not just the vocabulary</h2>
   <p>
-    The selected OPDA ODRs govern the modelling discipline within OPDA's
-    stated scope. The <a href="/development/property-pack">Property Pack</a> is a
-    current machine-proposed component, not the whole framework or an adopted standard.
-    A teaching example is neither of those. We identify these boundaries because a
-    credible approach must be as clear about what is unfinished as about its ambition.
+    In the fictional Harbour Court case, an inspection of Flat 1 takes place on
+    12 August. A report is issued on 14 August and corrected on 20 August.
+    There is no second visit. What would a recipient wrongly conclude if
+    “inspection date” were filled with the latest report issue date?
+  </p>
+  <LearningDiagram kind="representations" caption="Two versions can describe one inspection. A change to its account is not evidence that another visit occurred." />
+  <p>
+    <a href="/semantic-modelling/understand/a-property-story">Follow the complete story</a>
+    through the building, its dwellings, the access account and a conditional
+    requirement. Then compare other situations: borrowing and guaranteeing in
+    different arrangements, measurement boundaries, a valuation opinion, document
+    preparation and a permission description.
+  </p>
+
+  <h2 id="our-position">Local meaning, explicit connections, shared discipline</h2>
+  <p>
+    Our approach begins with a bounded question and the evidence and professional
+    distinctions needed to answer it. The contextual boundaries for this phase
+    are already documented. Within them, definitions need accountable ownership
+    and coherent meaning; between them, connections must say what they preserve.
   </p>
   <p>
-    The <a href="/semantic-modelling/method/standards-and-decisions">decision register</a>
-    explains which rules apply and which proposals remain open. The
-    <a href="/semantic-modelling/method/languages-and-profiles">standards profile</a>
-    separates a language's meaning, the features we select and the implementation
-    evidence actually available.
+    This is not a rejection of formal analysis or useful shared standards, and
+    it is not a claim that all other ontology work starts with a universal
+    hierarchy. Suitable existing meaning should be reused. Where meanings differ,
+    a mapping must explain the correspondence instead of erasing the difference
+    because two labels look alike.
+    <a href="/semantic-modelling/understand/how-the-work-is-done">See how the method works</a>.
+  </p>
+
+  <h2 id="participation">Your knowledge changes what can be specified</h2>
+  <div class="learning-spread">
+    <section class="learning-specimen" aria-labelledby="before-a-draft">
+      <h3 id="before-a-draft">Before a draft exists</h3>
+      <p>“Our two floor-area accounts include different spaces. A recipient sees only two numbers and assumes they disagree.”</p>
+      <p>This identifies a question and consequence. <a href="/semantic-modelling/contribute/frame-a-modelling-question">Turn it into a modelling question</a> with an ordinary case and a difficult variation.</p>
+    </section>
+    <section class="learning-specimen" aria-labelledby="with-a-draft">
+      <h3 id="with-a-draft">When you have a candidate page</h3>
+      <p>“This definition joins the report and its inspection. What happens when a report is corrected without another visit?”</p>
+      <p>This tests a proposed distinction. <a href="/semantic-modelling/contribute/review-a-definition">Review the definition</a> and show what a recipient could misunderstand.</p>
+    </section>
+  </div>
+  <p>
+    Use the <a href="/development/working-groups/member-guide">member guide</a> for
+    current participation arrangements, or <a href="/join">express interest in a
+    working group</a>. Reading an exercise submits nothing. Technical validation,
+    professional review and authority to release a specification are different things.
+  </p>
+
+  <h2 id="credible-progress">Separate the method, the draft and the illustration</h2>
+  <p>
+    The <a href="/semantic-modelling/method/standards-and-decisions">selected decisions</a>
+    describe the modelling discipline within OPDA's stated scope. The
+    <a href="/development/property-pack">Property Pack</a> is an actual
+    machine-proposed candidate component with its own determination and review
+    record. The fictional cases in this field guide are teaching material, not
+    candidate implementation or adopted industry rules.
+  </p>
+  <p>
+    We are developing a specification. Generated delivery artefacts follow from
+    the ontology; this guide does not teach payload formats or require participants
+    to operate a linked-data application. Its subject is the meaning we need to
+    agree, the evidence behind it and the judgement that improves it.
   </p>
 </ModellingLayout>

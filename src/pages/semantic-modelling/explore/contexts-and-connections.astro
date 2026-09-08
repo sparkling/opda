@@ -1,74 +1,61 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
+import { contexts, contextRoute, contextMap, candidateManifest } from '@/lib/property-pack-model.mjs';
+const propertyContexts = contexts.filter((context) => context.kind === 'bounded-context');
 ---
 
-<ModellingLayout title="Contexts and connections: agree enough, preserve what matters" description="Different professional communities can connect their models without pretending every shared word has one meaning. Give definitions an accountable home and make the agreements between them inspectable.">
-  <section aria-labelledby="meaning">
-    <h2 id="meaning"><span id="same-label" aria-hidden="true"></span>The same word can be doing different work</h2>
-    <p>A surveyor asks which physical subject was inspected. A participant in a property transaction asks which evidence supports an assessment. Both may refer to “the property report”, while concentrating on different relationships and responsibilities. The disagreement is not necessarily an error to eliminate; it is something to understand.</p>
-    <p>A <a href="/glossary#bounded-context">bounded context</a> gives a working language and model an accountable home. Within it, practitioners can resolve ambiguous definitions and consider changes coherently. Across contexts, explicit agreements explain where meanings coincide, where they differ and what information can travel between them.</p>
-    <p>This is not permission for each community to invent its own truth. Evidence, identity criteria and the semantics of shared languages still apply. A building does not become a title record because one system uses “property” for both.</p>
+<ModellingLayout title="Connect meanings across contexts" description="An exchange succeeds when the recipient understands the relevant meaning. Give definitions an accountable home and inspect exactly what a proposed correspondence preserves, loses or invents." proseClass="prose wide modelling-document learning-document">
+  <h2 id="meaning"><span id="same-label" aria-hidden="true"></span>The same word can be doing different work</h2>
+  <p>“Completion” could label a transaction event or the finishing of a document-preparation task. “Property” could point to a dwelling, a building or a record of rights. A shared label is not enough to make those meanings interchangeable. The practical question is what a recipient will conclude after information crosses the boundary.</p>
+  <p>A <a href="/glossary#bounded-context">bounded context</a> is an explicit boundary within which meanings and their ownership are maintained consistently. Its <a href="/glossary#semantic-home">semantic home</a> identifies responsibility for a definition. This is not permission to invent conflicting facts: it is a way to preserve legitimate differences in the questions a model answers.</p>
+
+  <h2 id="boundary"><span id="discover-boundaries" aria-hidden="true"></span><span id="contexts" aria-hidden="true"></span><span id="homes" aria-hidden="true"></span><span id="semantic-home" aria-hidden="true"></span>Work within the documented boundaries</h2>
+  <p>The boundaries for this development phase are established inputs, not something each reader or workshop must rediscover. OPDA's maintained <a href="/development/property-pack/contexts#homes">contextual-boundary register</a> names these {propertyContexts.length} property semantic homes:</p>
+  <ul>{propertyContexts.map((context) => <li><a href={contextRoute(context)}>{context.label}</a> — {context.definition}</li>)}</ul>
+  <p>The <a href="/development/property-pack/contexts/common">Common boundary</a> has a different job: stable exchange meaning genuinely shared by several contexts. It stays deliberately small and is governed through the Interoperability Working Group. A term does not belong there merely because several applications use it, or because nobody has yet resolved its ownership.</p>
+  <p>The DBT Smart Data scheme working group addresses scheme-level questions. Separately, the candidate register includes a <a href="/development/property-pack/contexts/dbt-smart-data">machine-proposed DBT Smart Data semantic context</a> for authorisation and controlled sharing. That candidate context is not the external government programme, not an OPDA working-group decision and not a seventh property-domain bounded context.</p>
+
+  <LearningDiagram kind="boundaries" caption="Profession, working group, system and semantic home are related but distinct. None supplies a one-to-one rule for assigning all of a participant's knowledge to one context." />
+  <p>A surveyor is a person with professional knowledge. A working group brings people together to review meanings. A software system may display survey reports, transaction records and listing information. A semantic home identifies responsibility for a particular meaning. The same professional can contribute evidence to several questions, and the same system can use meanings from several homes.</p>
+  <p>For example, someone working on a property-data platform may identify an ambiguity in a lending participation record. Their employer's product does not automatically move that meaning into Property Technology. Follow the documented ownership and ask the responsible people to review the distinction. Within a context, resolve contradictory definitions; do not use a mapping to disguise a disagreement in its own language.</p>
+
+  <h2 id="mapping-example">Compare full definitions before drawing a bridge</h2>
+  <p>The following is a fictional vocabulary comparison, not a mapping in the candidate. Both lists concern physical access during one identified visit to the same nonempty set of identified agreed areas, and use the same meaning of “accessed”. Their scopes differ in one important respect.</p>
+  <div class="learning-spread">
+    <section class="learning-specimen" aria-labelledby="source-choice">
+      <h3 id="source-choice">Source vocabulary · teaching version 1</h3>
+      <p><strong>Some access:</strong> at least one, but not all, of the identified agreed areas was accessed.</p>
+      <p>Includes access to two of three areas. Excludes access to none and access to all.</p>
+    </section>
+    <section class="learning-specimen" aria-labelledby="recipient-choice">
+      <h3 id="recipient-choice">Recipient vocabulary · teaching version 1</h3>
+      <p><strong>Restricted access:</strong> not all of the identified agreed areas were accessed.</p>
+      <p>Includes access to two of three areas and access to none. Excludes access to all.</p>
+    </section>
+  </div>
+  <LearningDiagram kind="mapping" caption="A deliberately limited fictional correspondence: ‘some access’ has narrower meaning than ‘restricted access’, which also includes none. The connection is not an accepted candidate mapping." />
+  <p>Every “some access” case meets the recipient's “restricted access” definition under these premises. The reverse does not hold: a “restricted” record could mean zero areas were accessed. Treating the concepts as exact substitutes would lose that distinction in one direction and invent some access in the other.</p>
+  <p>An exact correspondence requires the relevant meanings to support that strong substitution. A close correspondence says the concepts are related enough for a stated use while remaining different; it is not simply an exact match with a lower confidence score. Broader and narrower correspondence express direction of scope. No correspondence may be justified when subjects differ or the evidence is insufficient.</p>
+  <p>Record the definitions and versions compared, the intended use, counterexamples and the reason for the chosen relationship. An agreement about version 1 does not automatically cover a later definition that adds or removes cases. A useful mapping is a reviewable claim with consequences, not a line drawn because two labels look friendly.</p>
+
+  <h2 id="harbour-court"><span id="property-pack" aria-hidden="true"></span>Keep the date the recipient actually needs</h2>
+  <p>Harbour Court's source account identifies an inspection on 12 August 2026, report version 1 issued on 14 August and version 2 on 20 August. Suppose a fictional recipient's definition of “inspection occurrence date” is “the calendar date on which the identified inspection took place”. A proposal fills it with the latest report issue date.</p>
+  <p>The proposal supplies 20 August where the source and recipient meanings require 12 August. It does not preserve the requested meaning, even if both values are dates and the recipient successfully reads the record. The agreed exchange must retain the inspection reference, the occurrence date and the report version supporting the account. It must not redefine a report correction as another visit.</p>
+
+  <section class="learning-practice" aria-labelledby="transfer">
+    <h2 id="transfer">Practice: when “completion” does not correspond</h2>
+    <LearningIllustration scene="conveyancing" alt="Two distinct document bundles with separate event markers and a title-boundary drawing, keeping their dated subjects apart." />
+    <p>In fictional glossary A version 1, “completion” means the transaction-transfer event identified as C in transaction T. In fictional task list B version 1, “completion” means the event of finishing preparation of document bundle D. The teaching record explicitly states that preparation finished on 7 September and C occurred on 10 September. These definitions do not claim to set professional or legal terminology.</p>
+    <h3>Worked response</h3>
+    <p>The supplied definitions identify different events, so an exact correspondence is not supported. Retain the task and transaction-event identities, their dates and any supported relationship between them. The shared word does not turn 7 September into the transaction's completion date.</p>
+    <p>If glossary A were missing its definition, the correct review would first request it. That would be an evidence gap, not proof that the meanings must differ. In both cases the useful contribution names the subject, compared versions and consequence of substitution.</p>
   </section>
 
-  <section aria-labelledby="boundary">
-    <h2 id="boundary"><span id="discover-boundaries" aria-hidden="true"></span><span id="contexts" aria-hidden="true"></span><span id="homes" aria-hidden="true"></span><span id="semantic-home" aria-hidden="true"></span>Use the documented boundaries to locate meaning</h2>
-    <p>The context boundaries for this development phase are established inputs. Departments, working groups and applications can help us find people and evidence, but they do not replace those documented semantic homes. A single application may still serve several communities whose meanings need to remain distinct.</p>
-    <p>Within an established context, ask who can explain a definition, which identity rules they use and who must review a change. Across documented contexts, write the differing definitions and consequences before deciding whether to reconcile the terms or keep a qualified connection.</p>
-    <p>Within one context, do not use mappings to disguise contradictory definitions. Resolve the model’s own language. Between genuinely distinct contexts, do not force a central definition merely to avoid maintaining an explicit agreement.</p>
-  </section>
-
-<figure class="modelling-figure" data-modelling-figure="context-mapping-bridge">
-    <ModellingVisual kind="context-mapping-bridge" />
-    <dl>
-      <dt>The strategic agreement</dt><dd>How two contexts collaborate, influence one another or deliberately remain separate.</dd>
-      <dt>The term correspondence</dt><dd>How two particular defined concepts relate, with evidence and limits.</dd>
-      <dt>The bridge</dt><dd>Which exact reviewed term mappings apply to that strategic relationship.</dd>
-    </dl>
-    <figcaption>A relationship between communities does not prove equivalence between their terms. This conceptual map is not a network or deployment diagram.</figcaption>
-  </figure>
-
-  <section aria-labelledby="harbour-court">
-    <h2 id="harbour-court"><span id="property-pack" aria-hidden="true"></span>Connect the Harbour Court evidence without flattening it</h2>
-    <p>In our fictional case, a surveying context supplies a description of the 12 August inspection. A receiving assessment context needs to know which report version supports the information it uses. The parties can agree how those references are exchanged without redefining an inspection as a report or treating the 20 August correction as another visit.</p>
-    <p>The strategic agreement explains their relationship and responsibility for changes. A separate mapping describes a particular correspondence between concepts in their vocabularies. It may be exact, close, broader or another justified relation—or the reviewers may conclude that no mapping is appropriate.</p>
-    <p>The useful outcome is not necessarily one merged term. It may be a clear translation that preserves the distinction the recipient needs. If the recipient cannot tell a corrected report from a new inspection, information has been lost even though the exchange succeeded technically.</p>
-  </section>
-
-  <section aria-labelledby="transfer">
-    <h2 id="transfer">Try the same habit in another exchange</h2>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Fictional conveyancing transfer</div>
-      <p>One sender uses “completion” for a transaction event; another label concerns completion of a system task. What definitions, subjects and practical consequences would establish whether those meanings correspond? Do not treat them as agreed industry definitions or force a <a href="/glossary#mapping">mapping</a> from the shared word alone.</p>
-    </aside>
-    <p>Use a compact review habit rather than a new form:</p>
-    <ol>
-      <li><strong>Subject:</strong> what is the statement about?</li>
-      <li><strong>Context:</strong> which documented setting gives it meaning?</li>
-      <li><strong>Statement:</strong> what exactly is being claimed?</li>
-      <li><strong>Ordinary case:</strong> when does the wording work?</li>
-      <li><strong>Counterexample:</strong> when could it mislead?</li>
-      <li><strong>Evidence needed:</strong> what would support or change the interpretation?</li>
-      <li><strong>Review question:</strong> what should the responsible people decide?</li>
-    </ol>
-    <p>More than one interpretation may be defensible, or the available evidence may be insufficient. This fictional prompt is not an agreed mapping or professional rule.</p>
-  </section>
-
-  <section aria-labelledby="common">
-    <h2 id="common">Let common agreements earn their place</h2>
-    <p>A small common agreement can be powerful when participants understand and need it. It still requires ownership, definitions, change review and evidence. “Small” is not an excuse for vagueness, and “common” does not mean every locally useful distinction must move into a central model.</p>
-    <p>Start with the shared question and the minimum meaning required to answer it. Reuse an established definition when it fits. Qualify a mapping when differences matter. Introduce a local term when the evidence reveals a real gap. None of those choices is inherently a failure of interoperability.</p>
-    <p>The OPDA method uses foundational analysis to challenge identity and dependence while keeping domain models out of an externally inherited upper-ontology hierarchy. Local ownership and shared discipline work together; they are not competing claims to absolute authority.</p>
-  </section>
-
-  <aside class="callout callout--note modelling-callout">
-    <div class="callout__label">What does an implementer need to record?</div>
-    <p>The selected method separates a scoped active context-map projection, its qualified strategic relationships and the individual mapping records applicable to each relationship. Upstream/downstream direction is different from a term mapping’s subject/object order. A named graph is not a bounded context, and a vocabulary identifier is not proof of its owner.</p>
-    <p>The <a href="/semantic-modelling/method/context-map-records">context-map record chapter</a> explains active-map scope and its deliberate history boundary. <a href="/semantic-modelling/method/mapping-records">Mapping records</a> explains the source-version and justification contract.</p>
-  </aside>
-
-  <section aria-labelledby="source-contract">
-    <h2 id="source-contract">What this explanation rests on</h2>
-    <p>OPDA <a href="/modelling/odr/odr-0038">ODR-0038</a>, <a href="/modelling/odr/odr-0045">ODR-0045</a> and <a href="/modelling/odr/odr-0060">ODR-0060</a> govern context ownership; <a href="/modelling/odr/odr-0064">ODR-0064</a> distinguishes strategic relationships and exact mapping applicability; <a href="/modelling/odr/odr-0063">ODR-0063</a> R1 supplies the external-upper-ontology inheritance boundary. Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a>. The Harbour Court communities and their agreements are illustrative, not adopted OPDA boundaries.</p>
-  </section>
+  <h2 id="common">Cooperation does not prove term equivalence</h2>
+  <p>A strategic context map can describe who supplies shared meaning and how contexts cooperate. An individual term mapping makes a separate claim about defined concepts. A relationship between groups does not establish that every similarly named term is equivalent, and its arrow direction is not automatically the direction of a term correspondence.</p>
+  <p>In candidate {candidateManifest.candidate_version}, the <a href="/development/property-pack/contexts#map">Common supply arrows</a> show shared elements supplied from the Common boundary. They are not mappings. The maintained register currently contains {contextMap.cross_domain_mappings.length} cross-domain mappings; its status is “{contextMap.mapping_status}”. The fictional bridges in this lesson must not be read as adopted additions to that register.</p>
+  <p>Sometimes the best result is deliberate reuse. Sometimes it is a qualified connection that preserves a difference, or a decision not to map until evidence exists. The Interoperability Working Group's boundary work does not replace the domain owners' responsibility for internal meaning.</p>
+  <p id="source-contract" class="learning-note">Use <a href="/semantic-modelling/contribute/review-vocabularies-and-mappings">Review choices and mappings</a> to apply the comparison. The <a href="/semantic-modelling/method/context-map-records">context-map</a> and <a href="/semantic-modelling/method/mapping-records">mapping-record</a> references contain the separate formal contracts. Current boundary facts above come from the maintained candidate register, not from professional illustration or campaign copy.</p>
 </ModellingLayout>

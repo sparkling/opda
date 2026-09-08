@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "collection": "OPDA modelling field guide",
+  "provider": "OpenAI native image generation",
+  "artDirection": "Astra Ultra",
+  "created": "2026-09-08",
+  "lightPrompt": "Create one professional OPDA editorial illustration, very wide panoramic 4:1 composition, generous side-to-side visual story and shallow height. Expressive precise deep-purple pen-and-ink architecture linework with substantial lively transparent watercolour and opaque gouache pigment fields. Palette gold, petrol teal, violet, rose and coral. Clean off-white #F9F9F9 paper; keep background quiet. Colourful, beautiful, humane sophisticated magazine illustration, not clipart, not photography, not flat vector. No lettering or text whatsoever. All meaningful content must be contained inside a central horizontal 4:1 panoramic area, no essential detail above/below, for a shallow website strip. ",
+  "darkEditPrompt": "Create the exact DARK MODE counterpart of this approved OPDA editorial illustration. Preserve every object's identity, location, proportions, detail, composition, camera, framing, image aspect ratio and all margins exactly. Change only the paper/background and pigment/line palette. Deep-purple paper #131224 throughout, pale lavender and off-white fine architectural pen lines replacing dark outlines where needed, rich luminous petrol teal, gold, violet, rose and coral watercolour/gouache washes. Background must read deep purple, not black or brown. Keep the same legibility and joyful sophistication. No new objects, no crop, no re-layout, no additional text or letters; remove any incidental small numeral if present. This is a palette edit, NOT a reinterpretation.",
+  "export": {
+    "sourceWidth": 1983,
+    "sourceHeight": 793,
+    "width": 1200,
+    "height": 480,
+    "format": "webp",
+    "quality": 76,
+    "effort": 6,
+    "operation": "Whole-image resize preserving intrinsic aspect ratio. No crop, CSS filter or forced frame. Requested 4:1; generated approximately 2.5:1, retained without distortion."
+  },
+  "altPolicy": "Each use supplies a contextual text alternative. Editorial illustrations orient readers; the diagrams and HTML specimens carry the exact modelling claims.",
+  "scenes": {
+    "agency": {
+      "prompt": "An estate agency work surface viewed at a shallow isometric angle: a small British terraced home cutaway on the left, two distinct blank listing sheets with differently coloured corner tabs in the centre, a key on the right. Explore which dwelling a listing describes. No people or hands. Sweeping horizontal composition; tangible paper layers, not a computer dashboard.",
+      "caption": "Identify the dwelling before judging its descriptions.",
+      "light": {
+        "scene": "agency",
+        "mode": "light",
+        "source": "exec-5b5631a1-be84-4666-9144-2e1bc720b9d0.png",
+        "sourceSha256": "92c63a95a8b479f296af54275e80158480fb7c898922a15b70dba39e1b80a42e",
+        "file": "/images/modelling/field-guide/agency-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 81102
+      },
+      "dark": {
+        "scene": "agency",
+        "mode": "dark",
+        "source": "exec-785e893d-bbf2-4135-93c9-6c9b86dad9be.png",
+        "sourceSha256": "dced400cf4449c6ad8d065efc1d9628071f6008c057e2421b9af77183545b334",
+        "file": "/images/modelling/field-guide/agency-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 71692,
+        "editedFrom": "exec-5b5631a1-be84-4666-9144-2e1bc720b9d0.png"
+      }
+    },
+    "finance": {
+      "prompt": "A lending-arrangement workbench: two separate open folded agreements in violet and petrol on a horizontal desk, simple human-shaped wooden participant tokens beside each agreement, one modest gold architectural house model set behind them. These illustrate roles in different arrangements, not money. No currency, coin stacks, flags, text, hands or logos.",
+      "caption": "Keep the participant, role and arrangement together.",
+      "light": {
+        "scene": "finance",
+        "mode": "light",
+        "source": "exec-a398329e-f0d8-4190-bfdd-667356d3c37a.png",
+        "sourceSha256": "056d911d79bb54396cf558691df714f190cf0fe6d39cafa4e2076cc74c4d3707",
+        "file": "/images/modelling/field-guide/finance-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 53124
+      },
+      "dark": {
+        "scene": "finance",
+        "mode": "dark",
+        "source": "exec-5ebb87ea-7fe7-4087-98a5-9f71d4ecc983.png",
+        "sourceSha256": "efbd78f50503362b07ab1b97d8317173a4ad18c9a2bdd8970298b3f6f4e1a644",
+        "file": "/images/modelling/field-guide/finance-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 74526,
+        "editedFrom": "exec-a398329e-f0d8-4190-bfdd-667356d3c37a.png"
+      }
+    },
+    "surveying": {
+      "prompt": "A surveyor's horizontal drawing table: one floor-plan sheet, a transparent enclosed-room overlay slightly offset, a teal architect's scale and pencil, one violet measuring instrument. Gold main living area and coral enclosed area are visibly distinct. Three-quarter perspective, not a precise measured technical plan. No labels, numbers, text, people or hands.",
+      "caption": "A number needs a subject, unit and inclusion basis.",
+      "light": {
+        "scene": "surveying",
+        "mode": "light",
+        "source": "exec-f5fec0ce-7a89-47db-b359-cc370a1d31ff.png",
+        "sourceSha256": "febb0015b657628caec1a6477ba13767903328cb283b265398eb0ac2bc54ae32",
+        "file": "/images/modelling/field-guide/surveying-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 79290
+      },
+      "dark": {
+        "scene": "surveying",
+        "mode": "dark",
+        "source": "exec-2ca111c5-22c3-46d2-962b-d7207aaeda91.png",
+        "sourceSha256": "391cfc25b57964ca35b7df4600919b762995a31f200283fd2cbeac815b6fc95e",
+        "file": "/images/modelling/field-guide/surveying-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 79796,
+        "editedFrom": "exec-f5fec0ce-7a89-47db-b359-cc370a1d31ff.png"
+      }
+    },
+    "conveyancing": {
+      "prompt": "A conveyancing desk as horizontal still life: a purple ribboned document bundle on left, a teal open calendar with completely blank squares in middle, separate coral and gold file tabs with a small rolled boundary drawing on right. Different documents and dates concern different events. No text, numbers, official seals, signatures, people or hands.",
+      "caption": "Similar date labels can describe different events.",
+      "light": {
+        "scene": "conveyancing",
+        "mode": "light",
+        "source": "exec-dc753105-4bc8-40a1-a009-1ea58de099be.png",
+        "sourceSha256": "2f1e7a58bb1ef5980ea91b121d9c187f1f95f2f35dde65e4d47dcc66e3eed553",
+        "file": "/images/modelling/field-guide/conveyancing-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 70948
+      },
+      "dark": {
+        "scene": "conveyancing",
+        "mode": "dark",
+        "source": "exec-c70f7816-6f65-4113-b87c-6b24b74b7a01.png",
+        "sourceSha256": "7856ab2b8c161d2886cf1171bd6cf5362374c1916c42dc53c0c4bd46df900446",
+        "file": "/images/modelling/field-guide/conveyancing-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 75192,
+        "editedFrom": "exec-dc753105-4bc8-40a1-a009-1ea58de099be.png"
+      }
+    },
+    "data-services": {
+      "prompt": "A property-data evidence worktable: three physical source-document sheets with violet, petrol and coral edge tabs in shallow tiers, a broad magnifying glass over a changed abstract block on one sheet, two small version folders side by side, a gold clip. Evidence and versions, not a pipeline. No text, numbers, arrows, people, hands or interface widgets.",
+      "caption": "Keep the source, version and supported claim distinguishable.",
+      "light": {
+        "scene": "data-services",
+        "mode": "light",
+        "source": "exec-3e6502c8-e25c-4bcc-ad86-10114483373a.png",
+        "sourceSha256": "3e93aabc7ea33cb424b677ce8c87c6cc65c0b53fd19cc0c0653b624d28ec83c6",
+        "file": "/images/modelling/field-guide/data-services-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 62924
+      },
+      "dark": {
+        "scene": "data-services",
+        "mode": "dark",
+        "source": "exec-edcd8cd6-9149-48a3-b218-da025083542e.png",
+        "sourceSha256": "86194e65313d66c5b3a4348e18ab6e28bb3e700ce086ed4c199aa177519891c6",
+        "file": "/images/modelling/field-guide/data-services-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 73298,
+        "editedFrom": "exec-3e6502c8-e25c-4bcc-ad86-10114483373a.png"
+      }
+    },
+    "technology": {
+      "prompt": "A meaning-preserving representation still life: a folded property drawing on the left, a small layered paper tree with petrol branches in the centre, a few violet and gold connected wooden beads on the right, all sharing one small coral house motif. Tactile conceptual objects, not a formal technical diagram or dashboard. No text, numbers, labels, arrows, people or hands.",
+      "caption": "Different views can preserve one connected account.",
+      "light": {
+        "scene": "technology",
+        "mode": "light",
+        "source": "exec-599657f1-4cd1-4ed4-947b-a0b00c85f355.png",
+        "sourceSha256": "03f3154ef2c02332638460052a75ce40bcfb652087f5242c33828e970343e80c",
+        "file": "/images/modelling/field-guide/technology-light.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 56178
+      },
+      "dark": {
+        "scene": "technology",
+        "mode": "dark",
+        "source": "exec-f85393f4-8b21-4faf-b991-1344012fb3d3.png",
+        "sourceSha256": "b36e310cadecd917fb40eb875d2104eb2685d7237efe31ef9a5313e48959d27f",
+        "file": "/images/modelling/field-guide/technology-dark.webp",
+        "width": 1200,
+        "height": 480,
+        "bytes": 56904,
+        "editedFrom": "exec-599657f1-4cd1-4ed4-947b-a0b00c85f355.png"
+      }
+    }
+  }
+}

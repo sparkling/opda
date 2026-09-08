@@ -38,3 +38,42 @@ test('field-guide visual projection is scoped and never accepts external HTML', 
   assert.match(css, /@container/u);
   assert.match(css, /@media print/u);
 });
+
+const webpSize = (bytes) => {
+  assert.equal(bytes.toString('ascii', 0, 4), 'RIFF');
+  assert.equal(bytes.toString('ascii', 8, 12), 'WEBP');
+  for (let offset = 12; offset + 8 <= bytes.length;) {
+    const type = bytes.toString('ascii', offset, offset + 4);
+    const length = bytes.readUInt32LE(offset + 4);
+    const data = offset + 8;
+    if (type === 'VP8 ') return [bytes.readUInt16LE(data + 6) & 0x3fff, bytes.readUInt16LE(data + 8) & 0x3fff];
+    if (type === 'VP8X') return [bytes.readUIntLE(data + 4, 3) + 1, bytes.readUIntLE(data + 7, 3) + 1];
+    if (type === 'VP8L') {
+      const bits = bytes.readUInt32LE(data + 1);
+      return [(bits & 0x3fff) + 1, ((bits >>> 14) & 0x3fff) + 1];
+    }
+    offset = data + length + (length % 2);
+  }
+  throw new Error('Missing WebP dimensions');
+};
+
+test('editorial scenes have matched light/dark assets and intrinsic geometry', () => {
+  const manifest = JSON.parse(read('public/images/modelling/field-guide/manifest.json'));
+  assert.deepEqual(Object.keys(manifest.scenes).sort(), ['agency', 'conveyancing', 'data-services', 'finance', 'surveying', 'technology']);
+  for (const scene of Object.values(manifest.scenes)) {
+    assert.ok(scene.prompt && scene.caption);
+    assert.equal(scene.dark.editedFrom, scene.light.source);
+    for (const mode of ['light', 'dark']) {
+      const asset = scene[mode];
+      assert.match(asset.file, /^\/images\/modelling\/field-guide\/[a-z-]+\.webp$/u);
+      const bytes = readFileSync(new URL('../public' + asset.file, import.meta.url));
+      assert.deepEqual(webpSize(bytes), [asset.width, asset.height]);
+      assert.deepEqual([asset.width, asset.height], [scene.light.width, scene.light.height]);
+      assert.equal(bytes.length, asset.bytes);
+    }
+  }
+  const component = read('src/components/modelling/LearningIllustration.astro');
+  assert.match(component, /Object\.hasOwn\(manifest\.scenes, scene\)/u);
+  assert.match(component, /CampaignThemeImage/u);
+  assert.match(component, /width=\{illustration\.light\.width\} height=\{illustration\.light\.height\}/u);
+});

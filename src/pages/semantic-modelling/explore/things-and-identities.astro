@@ -1,96 +1,59 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 ---
 
-<ModellingLayout title="Things and identities: which property do you mean?" description="An address can connect several records without making them records of the same thing. A useful model helps people recognise those differences before information is combined.">
-  <section aria-labelledby="one-address">
-    <h2 id="one-address">One address. More than one thing.</h2>
-    <p>Imagine a report arriving with the subject “14 Orchard Road”. It sounds precise. But our fictional Harbour Court building contains Flat 1 and Flat 2. Does the report concern the whole building, one dwelling, or an entry in another record? The address helps us find the situation; it does not answer the question.</p>
-    <p>Linked data gives us a way to identify these things separately and explain their relationships. We can say that the building contains the dwellings, that a report describes an inspection and that the inspection concerned a particular subject. We do not have to press all those meanings into one field called “property”.</p>
+<ModellingLayout title="Things, identities and relationships" description="Before joining information, establish what each statement describes. Then read every connection as a claim you could explain—and challenge—in an ordinary sentence." proseClass="prose wide modelling-document learning-document">
+  <h2 id="one-address">One address. More than one thing.</h2>
+  <p>A report arrives with the subject “14 Orchard Road”. It sounds precise. In our fictional case, Harbour Court is the building at that address and contains Flat 1 and Flat 2. Does the report concern the whole building, one dwelling, or a record describing a legal interest? The address helps you locate the situation. It does not answer that question.</p>
+  <p>This is a useful place to begin modelling: not “which fields should we add?”, but “what are we talking about?” The building, dwellings, inspection and report can each be identified and described. In modelling language, each can be a <a href="/glossary#resource">resource</a>. Something need not be physical to count: an inspection event and a particular document version can matter just as much as a wall or room.</p>
+  <LearningDiagram kind="identity" caption="Same address, distinct subjects. Harbour Court contains Flat 1 and Flat 2; an address description and a title record must not be equated with that building. Fictional teaching example." />
+  <p>The connections say different things. Harbour Court <em>contains</em> Flat 1 and Flat 2. An address description <em>locates</em> the building in this example. A title record <em>describes</em> the extent stated in that record; the address alone does not establish whether that extent is the whole building or one flat. None of these statements says the connected subjects are identical.</p>
+
+  <h2 id="same">Four questions hidden inside “the property”</h2>
+  <div class="learning-spread">
+    <section class="learning-specimen" aria-labelledby="individual-kind">
+      <h3 id="individual-kind">An individual and a kind</h3>
+      <p><strong>Individual:</strong> Flat 1 at Harbour Court, the particular dwelling in our story.</p>
+      <p><strong><a href="/glossary#kind">Kind</a>:</strong> dwelling—the sort of thing Flat 1 is. A model definition explains what counts as a dwelling in its stated scope.</p>
+      <p>“Flat 1 is a dwelling” classifies an individual. It does not make Flat 1 identical to the definition, nor describe a physical object called “Dwelling” that contains every dwelling.</p>
+    </section>
+    <section class="learning-specimen" aria-labelledby="identifier-representation">
+      <h3 id="identifier-representation">An identifier and a representation</h3>
+      <p><strong>Identifier:</strong> a reference intended to identify a particular subject within a declared scheme.</p>
+      <p><strong>Representation:</strong> a description of that subject, such as a listing entry, a drawing or a report.</p>
+      <p>Two descriptions may concern one dwelling. One document may describe several dwellings. Neither the number of files nor the number of names decides how many subjects exist.</p>
+    </section>
+  </div>
+  <p>An identifier helps only if we know what it identifies. A report reference may identify a document family while another reference identifies one version. A reference copied into a dwelling record might still identify the building. Matching characters are a reason to examine the scheme and evidence, not permission to merge everything that carries them.</p>
+  <p>Identity is a particularly strong claim. If we say two references identify the same subject, information attached to either must be interpreted on that basis. Mistaking a title record for a building could turn a change to the record into an apparent change to the physical building. Keeping the subjects distinct lets us connect useful evidence without inventing that consequence.</p>
+
+  <h2 id="relationships">A line is a sentence with work to do</h2>
+  <p>A <a href="/glossary#relationship">relationship</a> makes a specific connection. Consider “Report version 2 describes the inspection concerning Flat 1”. Read it in two parts: report version 2 <em>describes</em> the inspection; the inspection <em>concerns</em> Flat 1. The report did not perform the inspection, and the dwelling did not issue the report. Direction and a meaningful verb preserve those differences.</p>
+  <p>Compare four ordinary connections. “Flat 1 is contained in Harbour Court” concerns a part and a whole. “Report version 2 mentions Flat 1” is documentary reference. “Flat 1 is classified as a dwelling” assigns a kind. “These two records refer to the same inspection” is an identity claim about their subject. Replacing each with an unlabelled line erases the distinction the reader needs to judge.</p>
+  <p>Likewise, a topic tree that places “Roof condition” under “Building fabric” organises subjects for reading. It does not state which roof is part of which building. The <a href="/semantic-modelling/explore/names-and-choices#hierarchy">names and choices chapter</a> develops that distinction.</p>
+
+  <h2 id="qualified-relationships">Some connections need a setting</h2>
+  <p>“Alex is the buyer” sounds complete until two transactions are on the desk. In the Harbour Court case, Alex participates as buyer in transaction T, the proposed sale of Flat 1, during the recorded period 1–30 September 2026. That is the whole statement we have evidence for. It does not describe Alex's role in another transaction or outside that period.</p>
+  <LearningDiagram kind="qualified-relationship" caption="A participant, role, transaction and period belong to one qualified statement. A bare connection from a person to a dwelling cannot express all of that meaning." />
+  <p>A statement about participation may also need a source: for this example, a fictional participation note for transaction T records Alex's role and period. A reviewer can ask about that note without deciding how the statement is encoded. The same habit applies to an organisation acting for another party, or a report used as evidence for a particular assessment: identify the relationship's setting before deciding that a simple line is enough.</p>
+
+  <section class="learning-practice" aria-labelledby="repair-map">
+    <h2 id="repair-map">Practice: repair two misleading connections</h2>
+    <p>At fictional Rowan Mews, the building contains Unit A and Unit B. Inspection I examined Unit A only. Report R describes Inspection I. A proposed diagram merges Unit A with the building because both descriptions give “8 Rowan Mews”, and draws an unlabelled line from Report R to Unit A. What would you change?</p>
+    <h3>Worked response</h3>
+    <p>Keep the building and Unit A separate and connect them with “contains” in the building-to-unit direction. The supplied premises explicitly distinguish them, so the shared address cannot justify the merge. This prevents findings about Unit A being silently attributed to Unit B or the whole building.</p>
+    <p>Replace the unexplained line with two stated relationships: “Report R describes Inspection I” and “Inspection I examined Unit A”. The event matters because it identifies what the report is an account of. If the diagram's purpose is only to show that the report mentions Unit A, label that narrower claim explicitly; it cannot stand in for the inspection claim.</p>
+    <h3>Change the evidence</h3>
+    <p>Now suppose two reports carry different inspection references, but neither source explains its reference scheme. Can you conclude there were two visits? No. They might identify different events, or two representations of one event. Ask for occurrence dates, subjects, the scheme's identity rule and source confirmation. Here the missing evidence, not a drawing choice, limits the answer.</p>
   </section>
 
-<figure class="modelling-figure" data-modelling-figure="identity-map">
-    <ModellingVisual kind="identity-map" />
-    <dl>
-      <dt>The building</dt><dd>Harbour Court, containing two dwellings in this fictional case.</dd>
-      <dt>The dwellings</dt><dd>Flat 1 and Flat 2: two possible inspection subjects, not interchangeable labels.</dd>
-      <dt>The address</dt><dd>14 Orchard Road: useful descriptive information, not proof that all associated resources are identical.</dd>
-      <dt>The title record</dt><dd>A separately identified record, connected to the property situation but not equated with the building.</dd>
-    </dl>
-    <figcaption>All examples are fictional teaching commitments. This is not an approved property-identity model or a legal description of a real title.</figcaption>
-  </figure>
-
-  <section aria-labelledby="same">
-    <h2 id="same">“Connected” is not “the same”</h2>
-    <p>Suppose the title record and the building description contain exactly the same address. Combining their information may be useful. Declaring them to be the same thing would be a mistake: a record and the physical building have different identities. The right connection preserves the distinction rather than deleting it.</p>
-    <p>This is why matching words and identifiers are evidence to examine, not automatic permission to merge. Ask what each identifier identifies. A building identifier, dwelling identifier and report reference may all be useful, but each serves a different question.</p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">What would the technical mistake look like?</div>
-      <p>We explicitly refuse <code>owl:sameAs</code> between the example building and title record. That predicate expresses identity, not “related to”, “mentions the same address” or “probably a useful match”. The <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships chapter</a> explains the formal distinction.</p>
-    </aside>
-  </section>
-
-  <section aria-labelledby="change">
-    <h2 id="change">Ask what changes—and what stays the same</h2>
-    <p>The Harbour Court inspection happens on 12 August 2026. Report version 1 appears on 14 August. A correction produces report version 2 on 20 August. There is a new report version, not automatically a new inspection. A “latest date” field that hides this distinction can give a convincing but wrong answer.</p>
-    <p>Other changes are harder. If Flat 1 is subdivided into two dwellings, does the original dwelling continue? We deliberately leave that question open here. Practitioners must agree the rule for recognising the dwelling through that change; a fresh label or a “converted” status does not settle it.</p>
-    <p>The important habit is to name the hard case. Guarino and Welty’s <a href="https://www.loa.istc.cnr.it/old/Papers/CACM2002.pdf"><cite>Evaluating Ontological Decisions with OntoClean</cite>, 2002, pp. 62–63</a> explains why identity criteria help expose apparently natural but mistaken classifications. Our property cases are illustrations of that questioning discipline, not examples authored by them.</p>
-  </section>
-
-  <section aria-labelledby="roles">
-    <h2 id="roles">Separate identity, role and state with three questions</h2>
-    <p>
-      These words name different tests, not boxes to memorise. A
-      <a href="/glossary#kind">kind</a> asks what sort of thing is being identified. A
-      <a href="/glossary#role">role</a> describes how something participates in a
-      relationship or setting. A <a href="/glossary#phase">phase</a> is a classification
-      that can change while the same subject continues. The exact analysis belongs in
-      the formal method; first ask what the example requires.
-    </p>
-    <figure class="modelling-figure" aria-labelledby="role-caption" data-modelling-figure="role-phase">
-      <figcaption id="role-caption">One person, two transaction roles—and a separate record-state question</figcaption>
-      <ModellingVisual kind="role-phase" />
-      <ol class="modelling-steps">
-        <li>
-          <h3>What is being identified?</h3>
-          <p>The same illustrative person remains identifiable independently of one sale. Ask what establishes that identity; an unchanged name is not enough.</p>
-        </li>
-        <li>
-          <h3>In what setting does the description apply?</h3>
-          <p>The person acts as seller in transaction A and buyer in transaction B. Each statement needs its transaction and relevant period. These are contextual roles, not different people.</p>
-        </li>
-        <li>
-          <h3>What changes while the subject continues?</h3>
-          <p>For this deliberately stipulated example, one review record continues while its workflow label changes from draft to reviewed. Ask which subject the state concerns and what supports continuing identity.</p>
-        </li>
-      </ol>
-    </figure>
-    <p>
-      Time alone does not supply the answer. Subdivision of Flat 1 is not a phase merely
-      because it happens over time. A report correction is not automatically a phase of
-      the inspection. Nor do the shortcuts “kind means permanent”, “role means temporary”
-      or “every status is a phase” replace the identity and dependence questions.
-    </p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Fictional finance transfer</div>
-      <p>Suppose one person is a borrower in arrangement A and a guarantor in arrangement B. What relationship, period and evidence make each role meaningful? More than one answer may be defensible, or the evidence may be insufficient. This asks a modelling question; it does not state an agreed lending rule.</p>
-    </aside>
-    <p>
-      A seller role identifies participation in a transaction; it does not prove
-      permission to read every linked report. That handling question needs its own
-      authority and evidence. For the more exact tests and formal representation, use
-      <a href="/semantic-modelling/method/roles-and-phases">roles and phases in Ontology modelling</a>.
-    </p>
-  </section>
-
-  <section aria-labelledby="next">
-    <h2 id="next">Use the distinction in a review</h2>
-    <p>When reading a definition, try three questions: what exactly does this identify; what related thing must not be confused with it; and which change would challenge its identity? A precise counterexample can be more useful than a long list of additional fields.</p>
-  </section>
-
-  <section aria-labelledby="source-contract">
-    <h2 id="source-contract">What this explanation rests on</h2>
-    <p>OPDA <a href="/modelling/odr/odr-0047">ODR-0047</a>, <a href="/modelling/odr/odr-0041">ODR-0041</a> / <a href="/modelling/odr/odr-0042">ODR-0042</a> and <a href="/modelling/odr/odr-0059">ODR-0059</a> inform the identity and relationship discipline; <a href="/modelling/odr/odr-0053">ODR-0053</a> distinguishes temporal state and recording. Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. The <a href="/semantic-modelling/method/standards-and-decisions">decision and provenance register</a> separates method authority from OPDA candidate evidence. Harbour Court is an illustration, not a conformance claim.</p>
-  </section>
+  <h2 id="change">What can change while the subject continues?</h2>
+  <p>At Harbour Court, report version 1 was issued on 14 August and version 2 on 20 August. The correction changes the description of an access limitation; both describe the 12 August inspection. There was no new visit in this story. A change to its description is therefore not a new inspection. The <a href="/semantic-modelling/explore/people-roles-and-change#changed-description">roles and change chapter</a> works through the evidence.</p>
+  <p>Subdivision is harder. If Flat 1 is divided into two dwellings, the label “converted” cannot decide whether the original dwelling continues. We would need the model's identity criteria and the facts of the alteration. Time passing does not make every change a state of the same subject.</p>
+  <h2 id="roles">Identity, role and state are different questions</h2>
+  <p id="role-caption">A <a href="/glossary#role">role</a> describes participation in a setting; a recorded state describes a subject at a relevant time. Neither replaces the question “which subject is this?” Continue at <a href="/semantic-modelling/explore/people-roles-and-change">People, roles and change</a> for multiple arrangements and the difference between an event and its changing account.</p>
+  <h2 id="next">A useful review question is specific</h2>
+  <p>“The property link is unclear” flags a concern. “Does this link mean the building contains the dwelling, or that the report mentions it? The current wording would let a reader apply a flat-only finding to the whole building” identifies the claim and its consequence. That is a contribution a modeller and a practitioner can examine together.</p>
+  <p id="source-contract" class="learning-note">Method background: <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships</a> and the <a href="/semantic-modelling/method/standards-and-decisions">decision register</a>. These cases teach the identity and relationship questions; they do not approve a property-identity model or describe a real legal title.</p>
 </ModellingLayout>

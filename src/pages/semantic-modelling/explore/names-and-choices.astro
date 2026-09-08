@@ -1,60 +1,75 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 ---
 
-<ModellingLayout title="Names and choices: the word is not the thing" description="A shared vocabulary does more than standardise spelling. It explains what a term means, which choices belong together and where apparently similar terms must remain different.">
-  <section aria-labelledby="layers">
-    <h2 id="layers">A dwelling, a concept and a label</h2>
-    <p>Flat 1 at Harbour Court is a fictional dwelling. A concept used to classify it—perhaps “flat”—is not the dwelling. The text displayed for that concept is a label. These three layers let people find information using familiar words while preserving the meaning behind the words.</p>
-    <p>A governed vocabulary may give one concept a preferred label and useful alternatives. That does not mean “flat” and “apartment” are universally interchangeable in every professional context. Reviewers must establish whether their definitions coincide in the particular vocabulary. If they do not, keeping separate concepts is more honest than announcing a synonym.</p>
-  </section>
+<ModellingLayout title="Names, choices and classification" description="A shared vocabulary does more than standardise spelling. It explains what a term means, which choices belong together and what an organising hierarchy does—and does not—claim." proseClass="prose wide modelling-document learning-document">
+  <h2 id="layers">The thing, the concept and the words</h2>
+  <p>Flat 1 at Harbour Court is a fictional dwelling. A defined concept used to classify it—perhaps “flat”—is not that dwelling. The text displayed for that concept is a label. Keeping these apart lets someone use familiar words without making the words responsible for deciding identity.</p>
+  <p>A vocabulary can give one concept a preferred label and several alternative labels for the same meaning in its scope. That does not establish that “flat” and “apartment” are interchangeable everywhere. First compare the definitions and the intended use. If they differ materially, calling them synonyms conceals the question rather than resolving it.</p>
 
-<figure class="modelling-figure" data-modelling-figure="concept-layers">
-    <ModellingVisual kind="concept-layers" />
+  <h2 id="term-specimen">Inspect a term, not just a word list</h2>
+  <p>This specimen belongs to a fictional teaching vocabulary about physical access during inspections. It is not an approved OPDA value or a professional inspection standard.</p>
+  <section class="learning-specimen" aria-labelledby="some-access">
+    <h3 id="some-access">Concept: access to some but not all agreed areas</h3>
     <dl>
-      <dt>The thing</dt><dd>Flat 1: the dwelling described in the Harbour Court example.</dd>
-      <dt>The classification concept</dt><dd>A defined dwelling-form concept in a named, governed vocabulary.</dd>
-      <dt>The label</dt><dd>The words shown to a reader; another label need not create another concept.</dd>
-      <dt>The organising view</dt><dd>A topic or facet used to find information, without declaring a new kind of dwelling.</dd>
+      <dt>Preferred label</dt><dd>Access to some agreed areas.</dd>
+      <dt>Alternative label</dt><dd>Partial physical access, used here only with this defined scope.</dd>
+      <dt>Definition</dt><dd>During the identified visit, physical access was obtained to at least one, but not every, area in the nonempty set of identified agreed inspection areas.</dd>
+      <dt>Example</dt><dd>The living room and bedroom were accessed; the third agreed area, an enclosed area, was not.</dd>
+      <dt>Exclusions</dt><dd>Access to all agreed areas; access to none; permission to read or share a report.</dd>
+      <dt>Teaching code</dt><dd>SOME. The code identifies this choice within this fictional list; its letters do not define the meaning.</dd>
     </dl>
-    <figcaption>Changing a display label does not automatically change the concept or the dwelling. Changing a definition may require review of classifications and mappings.</figcaption>
-  </figure>
+  </section>
+  <p>The definition does work the label cannot do alone. “Partial” might otherwise mean part of a day, some documents or limited visibility within every area. The example shows an ordinary case; the exclusions block plausible misunderstandings. A code helps exchange the choice, but an inherited code such as “P” could mean something else in another source.</p>
+  <p>A preferred-label edit from “Access to some agreed areas” to “Some agreed areas accessed” could leave the meaning unchanged. Extending the definition to include access to none would change meaning, even if the code and displayed label stayed the same. Review the definition, not just the text diff.</p>
 
-  <section aria-labelledby="choices">
-    <h2 id="choices">A closed choice list is not an open population</h2>
-    <p>An exchange might allow only a reviewed set of inspection-status values. A new status must then go through the vocabulary’s change process before being used in that exchange. That is a closed choice list. It does not mean the world contains only the inspection events already in our data.</p>
-    <p>The inspection subjects are different. A system may receive a report about a newly identified dwelling. That dwelling is not a new status code, and it should not require adding every possible dwelling to an enumeration. A resource population can grow while a particular exchange’s list of permitted choices remains closed.</p>
-    <p>Nor is an unanswered field the same as an explicit “not inspected” choice. The former says information is missing; the latter makes a statement. If “unknown” is a permitted concept, define what it means rather than using it as a catch-all for missing, withheld and not applicable.</p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">How are the choices represented technically?</div>
-      <p>SKOS provides concepts and concept schemes; SHACL expresses the applicable validation condition. Scheme membership alone does not establish every exchange’s permitted list. The selected method uses explicit closure decisions and checks such as a permitted-value list where appropriate. See <a href="/semantic-modelling/method/languages-and-profiles">languages and profiles</a>.</p>
-    </aside>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Fictional agency transfer</div>
-      <p>A listing displays “under offer”, a related transaction has a different state, and an inspection-report field is absent. Which subject does each statement concern? Which information is absent, and which choice has been explicitly stated? This is not an agreed status vocabulary or transition rule. A useful answer may identify missing evidence rather than choose a label.</p>
-    </aside>
+  <h2 id="choices">A choice list needs a scope</h2>
+  <p>For this lesson, the question is precisely: <em>which proportion of a nonempty, identified set of agreed areas was physically accessed during one identified visit?</em> Each area either was or was not accessed under the exercise's stated convention. We have complete evidence for those outcomes when selecting a choice.</p>
+  <div class="learning-table">
+    <table>
+      <caption>Three choices for the fictional physical-access question</caption>
+      <thead><tr><th scope="col">Choice</th><th scope="col">Definition</th><th scope="col">Example with three agreed areas</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">All</th><td>Every agreed area was accessed.</td><td>Three accessed.</td></tr>
+        <tr><th scope="row">Some</th><td>At least one, but not every, agreed area was accessed.</td><td>One or two accessed.</td></tr>
+        <tr><th scope="row">None</th><td>No agreed area was accessed.</td><td>Zero accessed.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Under these premises the choices do not overlap, and they cover every known access outcome. The nonempty scope matters: with no agreed areas, ordinary “all” and “none” wording becomes misleading. Unknown access evidence is a different problem. It cannot be converted into “None” simply because no access statement arrived.</p>
+  <p>A closed choice list means a particular use permits only its defined choices until the list is deliberately revised. It does not mean the world contains only the three inspection events already on a screen. Newly identified dwellings and inspections can join an open population without becoming new vocabulary values.</p>
+
+  <LearningDiagram kind="vocabulary" caption="Names, scoped choices, topic organisation and independent facets answer different questions. The all/some/none access choices rely on a nonempty identified inspection scope." />
+
+  <h2 id="hierarchy">A topic tree is not a diagram of a building's parts</h2>
+  <div class="learning-spread">
+    <section class="learning-specimen" aria-labelledby="topics">
+      <h3 id="topics">A fictional report-topic taxonomy</h3>
+      <ul><li>Building fabric<ul><li>Roof condition</li><li>Wall condition</li></ul></li></ul>
+      <p>“Roof condition” is a narrower topic beneath “Building fabric”. This organises what reports discuss. It does not identify a roof, make a report a kind of building or state that a roof-condition concept is a physical part.</p>
+    </section>
+    <section class="learning-specimen" aria-labelledby="facets">
+      <h3 id="facets">Independent ways to describe a report</h3>
+      <dl><dt>Topic</dt><dd>Roof condition.</dd><dt>Document status</dt><dd>Draft, under this example's document convention.</dd><dt>Information type</dt><dd>Inspection account.</dd></dl>
+      <p>The same report can carry all three classifications. “Draft” need not sit beneath “Roof condition” in a single tree. Each facet asks a different question.</p>
+    </section>
+  </div>
+  <p>A broader/narrower topic relationship helps someone browse from a general subject to a more specific one. A kind-of relationship makes a different claim about what things are. A physical part-of relationship makes another. One drawing convention should not let those meanings slide into each other unnoticed.</p>
+
+  <section class="learning-practice" aria-labelledby="vocabulary-practice">
+    <h2 id="vocabulary-practice">Practice: repair meaning and scope</h2>
+    <p>A proposed definition says “Partial access means access that was partial”. Its choices are “All agreed areas accessed”, “Limited access” and “Not completed”. A report-topic tree places “Draft report” beneath “Roof condition”. What needs attention?</p>
+    <h3>Worked response</h3>
+    <p>The circular definition does not tell a reader what counts. The earlier “at least one, but not every, identified agreed area” definition provides an assessable boundary for this teaching scope. Test it with two of three areas accessed, and with zero of three.</p>
+    <p>The proposed list mixes access with completion. An inspection could be completed within its agreed reporting scope while physical access was limited. “Not completed” could also overlap “Limited access”. Separate the questions before choosing labels, then test the access choices against the nonempty area set.</p>
+    <p>“Draft report” expresses status, not a narrower roof-condition topic. Keep it as an independent facet. A report can discuss roof condition while draft or issued; the subject organisation should not force one status.</p>
+    <h3>Does adding “Other” solve the problem?</h3>
+    <p>Not here. Under the complete, nonempty all/some/none premises, every known outcome already has a place. An “Other” choice would need a new, explained meaning or a changed scope. It would not supply missing evidence. In a different list that deliberately leaves cases open, “Other” can indicate a known case outside the named choices—but it still differs from “unknown”.</p>
   </section>
 
-  <section aria-labelledby="hierarchy">
-    <h2 id="hierarchy">A useful topic tree is not necessarily an inheritance tree</h2>
-    <p>A website section called “building information” might contain inspection reports, addresses and dwelling descriptions. It helps you browse; it does not claim that a report is a kind of building. Likewise, a vocabulary’s broader/narrower organisation is not automatically an assertion that one class inherits another’s properties.</p>
-    <p>Independent facets provide other ways to find the same material: subject, concern or information type. A report can appear in more than one view without becoming several different reports. Keep these organising decisions separate from the identity-bearing model.</p>
-  </section>
-
-  <section aria-labelledby="connections">
-    <h2 id="connections">A close match is not simply a less confident exact match</h2>
-    <p>Two communities may use terms that are sufficiently related to connect, yet different enough that substitution would lose meaning. A mapping records which relationship is justified. An exact match, close match and broader match express different relationships, not merely different score thresholds.</p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Why does a chain of exact matches deserve extra care?</div>
-      <p>Imagine vocabulary A’s concept exactly matches B’s concept, and B’s exactly matches C’s. SKOS exactMatch is transitive, so the chain carries an exact-match consequence between A and C. A chain of closeMatch statements has no corresponding transitivity rule. Friendly mapping labels therefore have formal consequences; they are not inert notes. <a href="https://www.w3.org/TR/skos-reference/#mapping">SKOS Reference §10</a> specifies the distinction.</p>
-      <p>This does not make three physical dwellings one dwelling. Conceptual correspondence and identity between individual things are different questions.</p>
-    </aside>
-    <p>Review the definitions and examples before choosing the relationship. Then retain the sources and versions compared, why the mapping was judged appropriate and how it was produced. The <a href="/semantic-modelling/method/mapping-records">mapping-record chapter</a> explains the complete technical receipt.</p>
-  </section>
-
-  <section aria-labelledby="source-contract">
-    <h2 id="source-contract">What this explanation rests on</h2>
-    <p>OPDA <a href="/modelling/odr/odr-0036">ODR-0036</a> separates classification from inheritance; <a href="/modelling/odr/odr-0039">ODR-0039</a> / <a href="/modelling/odr/odr-0040">ODR-0040</a> and <a href="/modelling/odr/odr-0048">ODR-0048</a> govern vocabularies and closure; <a href="/modelling/odr/odr-0049">ODR-0049</a> governs facets. <a href="/modelling/odr/odr-0056">ODR-0056</a> / <a href="/modelling/odr/odr-0059">ODR-0059</a> qualify cross-context mappings. Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a>. The vocabulary choices here are illustrative, not approved OPDA values.</p>
-  </section>
+  <h2 id="connections">Correspondence is more than matching labels</h2>
+  <p>A recipient might define “restricted access” to include both some access and no access. Our “Some” choice then has a narrower meaning, not merely a less confident exact match. The <a href="/semantic-modelling/explore/contexts-and-connections#mapping-example">worked correspondence</a> compares the definitions and demonstrates the information lost in substitution.</p>
+  <p>A useful vocabulary review supplies an ordinary case, an exclusion and the question the choice must answer. It need not propose the code or technical notation. For a complete applied exercise, use <a href="/semantic-modelling/contribute/review-vocabularies-and-mappings">Review choices and mappings</a>.</p>
+  <p id="source-contract" class="learning-note">The <a href="/glossary#mapping">canonical glossary</a> and <a href="/semantic-modelling/method/standards-and-decisions">method decision register</a> remain shared references. These teaching specimens are not another maintained candidate vocabulary.</p>
 </ModellingLayout>

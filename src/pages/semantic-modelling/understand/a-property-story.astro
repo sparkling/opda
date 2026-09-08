@@ -1,197 +1,255 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
-import DetailDisclosure from '@/components/modelling/DetailDisclosure.astro';
-import ModellingIllustration from '@/components/modelling/ModellingIllustration.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 ---
 
-<ModellingLayout title="A property story, carefully connected" description="Follow Harbour Court from an inspection to a corrected report. See how a small set of distinctions makes the story easier to read, question and improve." claim="example">
+<ModellingLayout
+  title="Harbour Court: follow a question through the model"
+  description="An inspection, a corrected report and a proposed sale. Follow the evidence without confusing the building, its dwellings or their descriptions."
+  claim="example"
+  proseClass="prose wide modelling-document learning-document"
+>
   <p>
-    Harbour Court at 14 Orchard Road is fictional. Its building contains Flat 1 and
-    Flat 2. The examples below teach modelling distinctions; they are not records
-    from the Property Pack candidate, legal advice or current conformance results.
+    Harbour Court at 14 Orchard Road is fictional. The facts and source excerpts on
+    this page are stipulated teaching premises, not records from the Property Pack
+    candidate or professional rules. We begin with a question a recipient might
+    reasonably ask: <strong>what does the corrected report tell us about Flat 1,
+    and what can we rely on it to distinguish?</strong>
   </p>
 
-  <ModellingIllustration kind="property-story" />
+  <LearningIllustration scene="agency" alt="A property frontage beside a listing sheet and separate listing stages, distinguishing the dwelling from the description used to market it." />
 
   <section aria-labelledby="act-one">
-    <h2 id="act-one"><span id="identifiers" aria-hidden="true"></span><span id="classes-properties" aria-hidden="true"></span>1. Establish the cast before joining the dots</h2>
+    <h2 id="act-one"><span id="identifiers" aria-hidden="true"></span><span id="classes-properties" aria-hidden="true"></span>Establish the cast before joining the dots</h2>
     <p>
-      A message says “the property has been inspected”. Before adding a date, ask
-      what “the property” identifies. Was the inspection about Flat 1, the whole
-      building or both? Does the report itself make the scope clear? Our example
-      treats the inspection as concerning Flat 1; that is an explicit teaching
-      assumption, not something inferred from the street address.
+      Harbour Court contains two dwellings, Flat 1 and Flat 2. A proposed sale concerns
+      Flat 1. The listing describes that dwelling; the building is not itself the
+      listing, and Flat 2 is not silently included because it shares the building's
+      street address. In our example, a change from “listing being prepared” to
+      “listing available” describes the listing's state. It does not mean that the
+      dwelling has become a different physical thing.
     </p>
-    <figure class="modelling-figure" aria-labelledby="cast-caption">
-      <figcaption id="cast-caption">Related subjects are not interchangeable identities</figcaption>
-      <ModellingVisual kind="identity-map" />
-      <dl>
-        <dt>Building</dt><dd>Harbour Court contains the two dwellings.</dd>
-        <dt>Dwelling</dt><dd>Flat 1 is the subject of this illustrative inspection; Flat 2 is not silently included.</dd>
-        <dt>Address description</dt><dd>A description used to refer to Flat 1 at 14 Orchard Road.</dd>
-        <dt>Title record</dt><dd>A separately identified record. Its exact relationship to the dwellings needs evidence; the address alone does not establish it.</dd>
-        <dt>Inspection</dt><dd>An event, distinct from each report describing it.</dd>
-      </dl>
-    </figure>
+    <div class="learning-table">
+      <table>
+        <caption id="cast-caption">The subjects in this story</caption>
+        <thead><tr><th scope="col">Subject</th><th scope="col">What we know here</th><th scope="col">What not to assume</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Harbour Court</th><td>A building containing Flat 1 and Flat 2.</td><td>The building and either dwelling are the same subject.</td></tr>
+          <tr><th scope="row">Flat 1</th><td>The dwelling examined in the inspection and described in the proposed-sale listing.</td><td>Statements about it also describe Flat 2.</td></tr>
+          <tr><th scope="row">Address description</th><td>Names Flat 1 at 14 Orchard Road.</td><td>Matching address text settles identity.</td></tr>
+          <tr><th scope="row">Title record</th><td>A separate document is mentioned in the sale material.</td><td>The address alone establishes the rights or extent it describes.</td></tr>
+          <tr><th scope="row">Inspection</th><td>An examination of Flat 1 on 12 August 2026.</td><td>It is the same subject as a report of the visit.</td></tr>
+          <tr><th scope="row">Report versions 1 and 2</th><td>Two versions describing that inspection.</td><td>Two documents establish two visits.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>
-      Read a connection as a sentence: “the building contains Flat 1” or “the report
-      describes the inspection”. A line without a clear relationship name asks the
-      reader to guess. If the sentence overstates what the evidence says, the model
-      needs a narrower statement or an unresolved question.
+      Naming these subjects separately allows a precise question. “Does this report
+      concern the property?” becomes “Does this report describe the inspection of
+      Flat 1, and what scope did that inspection have?” Identifiers can keep those
+      references stable; they do not supply the missing identity or scope evidence.
+    </p>
+  </section>
+
+  <section aria-labelledby="source-excerpt">
+    <h2 id="source-excerpt">Read the source before accepting a summary</h2>
+    <section class="learning-specimen" aria-labelledby="report-excerpt">
+      <h3 id="report-excerpt">Fictional source · Report version 2</h3>
+      <blockquote>
+        <p>Issued 20 August 2026. This version revises the report issued on 14 August 2026 and describes the same inspection of Flat 1 at Harbour Court on 12 August 2026. No new visit took place.</p>
+        <p>The agreed inspection areas were the living room, bedroom and enclosed area. The living room and bedroom were accessed. The enclosed area was locked and was not accessed. This version corrects the earlier description of the access limitation.</p>
+      </blockquote>
+      <p>Additional teaching premise: version 1 stated that physical access was limited, but nowhere in that version identified which agreed area could not be accessed. The correction adds that missing description.</p>
+    </section>
+    <p>
+      The passage supports more than a date. It identifies the dwelling, distinguishes
+      the visit from the reports, connects the versions and specifies an access
+      limitation. It does not describe the condition of the locked area. We should
+      not turn “not accessed” into “no defect found” or infer that every part of the
+      dwelling was examined.
+    </p>
+    <p>
+      Its wording also lets us use the fictional choice set from
+      <a href="/semantic-modelling/understand/what-we-are-building#topics-and-choices">What we are building</a>.
+      The agreed set has three identified areas; two were accessed and one was not.
+      Therefore “Some, but not all, agreed areas” fits these premises. This physical
+      access outcome says nothing about permission to receive the report.
     </p>
   </section>
 
   <section aria-labelledby="act-two">
-    <h2 id="act-two">2. Give the dates the right subjects</h2>
-    <figure class="modelling-figure" aria-labelledby="timeline-caption">
-      <figcaption id="timeline-caption">One inspection, two report versions</figcaption>
-      <ModellingVisual kind="evidence-timeline" />
-      <ol class="modelling-steps">
-        <li><h3><time datetime="2026-08-12">12 August 2026</time> · Inspection</h3><p>The inspection of Flat 1 occurs. This is the event date in our scenario.</p></li>
-        <li><h3><time datetime="2026-08-14">14 August 2026</time> · Report version 1</h3><p>The first report is issued and describes the 12 August inspection.</p></li>
-        <li><h3><time datetime="2026-08-20">20 August 2026</time> · Report version 2</h3><p>A correction is issued. It revises version 1; it does not describe a new inspection in this scenario.</p></li>
-      </ol>
-    </figure>
+    <h2 id="act-two"><span id="timeline-caption" aria-hidden="true"></span>Connect the versions without inventing another visit</h2>
+    <LearningDiagram kind="property-story" caption="Two dwellings in one building; two report versions describing one inspection of Flat 1." />
+    <ol>
+      <li>Harbour Court contains Flat 1 and Flat 2.</li>
+      <li>The 12 August inspection concerns Flat 1.</li>
+      <li>Report version 1 describes that inspection and was issued on 14 August.</li>
+      <li>Report version 2 describes that same inspection and was issued on 20 August.</li>
+      <li>Report version 2 revises report version 1.</li>
+    </ol>
+    <dl>
+      <dt id="unchanged-claim">A statement left unchanged</dt>
+      <dd>The report still describes the 12 August inspection of Flat 1. The correction does not alter that event date or subject.</dd>
+      <dt id="changed-claim">An account made more specific</dt>
+      <dd>The corrected access statement identifies the locked enclosed area. Anyone relying on the earlier, less specific account can now inspect exactly what was added.</dd>
+    </dl>
     <p>
-      Keeping the earlier report identifiable lets somebody explain which version
-      supported a decision at the time. The corrected version does not need to erase
-      that history. Conversely, retaining history does not mean presenting superseded
-      wording as if it were the current account.
+      The date on the corrected document is not evidence of another visit. Here the
+      source explicitly says the opposite. Retaining version 1 allows someone to
+      explain which account supported an earlier decision; connecting the correction
+      allows them to see what was subsequently clarified. Preserving history does
+      not require presenting superseded wording as current.
     </p>
     <p>
-      There can be other clocks. A system might record the report later, and a claim
-      might apply only during a stated period. Neither the recording date nor report
-      issue date should stand in for a claim's period of applicability. This case
-      supplies no such period; the honest value is “not established here”.
+      We have not supplied a system recording date or a period for which a wider
+      claim is valid. There is no reason to invent either to complete a diagram.
+      The <a href="/semantic-modelling/explore/dates-periods-and-applicability">dates and periods chapter</a>
+      explains why occurrence, issue, recording and applicability answer different
+      questions rather than forming an automatic four-step workflow.
     </p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Review exercise: “Version 2 means a second inspection”</div>
-      <p>That conclusion does not follow. Here the correction produces a new report version, while the inspection stays the same event. If another visit actually occurred, the evidence would need to identify it separately. A count of documents is not a count of inspections.</p>
-    </aside>
   </section>
 
   <section aria-labelledby="act-three">
-    <h2 id="act-three"><span id="shapes-provenance" aria-hidden="true"></span>3. Follow a claim back to its evidence</h2>
+    <h2 id="act-three"><span id="shapes-provenance" aria-hidden="true"></span>Test a requirement whose scope is explicit</h2>
     <p>
-      Suppose a <a href="/glossary#claim">claim</a> says that an inspection of Flat 1
-      occurred on 12 August. The claim is an assertion somebody made; the inspection
-      is the event it describes; the report is <a href="/glossary#evidence">evidence</a>
-      offered in support. Treating these as three distinct
-      subjects allows the recipient to ask who made the claim, which report version
-      supports it and whether the correction affects it.
+      Suppose this <em>fictional teaching profile</em> requires a report that states
+      physical inspection access was limited to identify the limitation it reports.
+      This is a requirement on the report's account, not a professional rule about
+      which areas must be inspected or a judgement on the adequacy of an inspection.
     </p>
-    <div class="modelling-comparison">
-      <section aria-labelledby="unchanged-claim">
-        <h3 id="unchanged-claim">The correction leaves the date unchanged</h3>
-        <p>The claim may still be supported. Its connection to the corrected evidence should be reviewed, not assumed merely because the same address appears.</p>
-      </section>
-      <section aria-labelledby="changed-claim">
-        <h3 id="changed-claim">The correction changes something the claim relied on</h3>
-        <p>The claim needs another look. Preserve the previous source relationship so the reason for the change remains understandable.</p>
-      </section>
+    <div class="learning-table">
+      <table>
+        <caption>Apply the stipulated requirement to the supplied reports</caption>
+        <thead><tr><th scope="col">Case</th><th scope="col">Does the requirement apply?</th><th scope="col">What follows?</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Version 1</th><td>Yes: it states that access was limited.</td><td>For this exercise, the complete version 1 does not identify what limited access. It therefore does not meet the teaching requirement.</td></tr>
+          <tr><th scope="row">Version 2</th><td>Yes: access to the enclosed area was limited.</td><td>It meets that requirement by identifying the locked enclosed area.</td></tr>
+          <tr><th scope="row">A third extract with no access statement</th><td>Not established from that extract.</td><td>Ask for evidence of applicability; do not automatically report a pass, failure or inapplicable rule.</td></tr>
+        </tbody>
+      </table>
     </div>
     <p>
-      We have deliberately not invented the contents of a survey finding or a rule
-      about acceptable evidence. The example demonstrates the questions a model can
-      support. Domain participants must establish the actual meaning and evidential
-      requirements for their context.
+      A check can test this bounded requirement without deciding whether the source
+      is factually correct. “Meets the teaching requirement” does not mean “the report
+      is true”, “the inspection is sufficient” or “OPDA has adopted this rule”.
+      Practitioners still need to judge whether the requirement expresses the right
+      meaning and whether exceptions have been considered.
+    </p>
+  </section>
+
+  <section aria-labelledby="measured-area">
+    <h2 id="measured-area">Compare what the quantities describe</h2>
+    <p>
+      Two separate fictional area accounts appear alongside the sale material.
+      Account A records 68 m² for Flat 1, excluding an enclosed 4 m² area. Account B
+      records 72 m², including that area. We stipulate that the main area and enclosed
+      area are the same in both accounts and that no other inclusion differs. No
+      professional measuring standard is claimed.
+    </p>
+    <p>
+      Those premises explain the difference: the four square metres included by B
+      are excluded by A. This does not conflict with the inspection's limited
+      physical access. The area accounts are separate sources; this story does not
+      say that the inspector measured the locked area during the visit. Keeping the
+      sources distinct prevents us from quietly attributing their claims to the
+      inspection report.
+    </p>
+    <p>
+      If the intended use requires one particular measuring basis, we need evidence
+      of that requirement. Choosing the larger number, or the newer document, is not
+      a substitute. Likewise, an asking price, a price agreed in a transaction and a
+      valuation opinion can concern Flat 1 without being the same claim. The
+      <a href="/semantic-modelling/explore/measurements-amounts-and-values">measurements, amounts and values chapter</a>
+      shows how to compare those subjects and purposes.
     </p>
   </section>
 
   <section aria-labelledby="act-four">
-    <h2 id="act-four">4. A role needs its setting</h2>
+    <h2 id="act-four">Keep a participant's role attached to its setting</h2>
     <p>
-      A person can take part as a buyer in one transaction and as a seller in another.
-      Those descriptions concern participation; they are not two incompatible kinds
-      of person. In the Harbour Court case, we keep the person and the transaction
-      separately identifiable so a role can be understood in its setting.
+      Add two fictional participants: Nia participates as seller and Alex as buyer in
+      transaction T, the proposed sale of Flat 1. Alex is also seller in a different arrangement
+      concerning another dwelling. “Alex is the buyer” is therefore incomplete
+      unless the arrangement is understood. The person has not become two people;
+      the roles describe different relationships.
     </p>
     <p>
-      An open review question is enough: “Which transaction makes this person the
-      buyer here, and what time or other qualification is needed?” Participants do
-      not have to decide how that role should be encoded. They do need to notice
-      when the model loses the setting that makes the statement meaningful.
-    </p>
-  </section>
-
-  <section aria-labelledby="act-five">
-    <h2 id="act-five">5. Let a hard case expose what is not decided</h2>
-    <p>
-      Imagine Flat 1 is later subdivided. Does the original dwelling persist, do new
-      dwellings replace it, or does the answer depend on which kind of resource is
-      being tracked? The inspection remains a historical event, but deciding how its
-      subject relates to later dwellings needs more than a matching address string.
-    </p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">What should a careful model record before resolving subdivision?</div>
-      <p>State which resource's identity is being considered; record the relevant dates and evidence; explain the possible interpretations; and identify who must review them. Do not merge the building, dwelling and title record to remove the uncertainty. The identity criterion is unresolved in this teaching case.</p>
-    </aside>
-    <p>
-      A visible unresolved question is useful information. It tells implementers not
-      to rely on an unstated equivalence and tells participants exactly where their
-      expertise can improve the candidate.
+      This account does not establish which reports either participant may see.
+      Transaction participation and permission scope are separate distinctions.
+      We can ask what relationship, period or evidence is missing without inventing
+      a legal basis or an access policy for the story. The same restraint applies
+      when reading a real candidate: a connection states only the meaning it
+      actually defines.
     </p>
   </section>
 
-  <DetailDisclosure summary="Stable illustrative identifiers" note="Optional technical view">
-    <p>These example.org identifiers are teaching references, not OPDA vocabulary terms or promised live resource pages.</p>
-    <dl>
-      <dt>Building</dt><dd><code>https://example.org/harbour-court/building</code></dd>
-      <dt>Flat 1</dt><dd><code>https://example.org/harbour-court/dwelling-1</code></dd>
-      <dt>Address description</dt><dd><code>https://example.org/harbour-court/address-1</code></dd>
-      <dt>Title record</dt><dd><code>https://example.org/harbour-court/title-record</code></dd>
-      <dt>Inspection</dt><dd><code>https://example.org/harbour-court/inspection</code></dd>
-      <dt>Report versions</dt><dd><code>https://example.org/harbour-court/report-v1</code> and <code>https://example.org/harbour-court/report-v2</code></dd>
-      <dt>Claim</dt><dd><code>https://example.org/harbour-court/claim-1</code></dd>
-      <dt>Participant and transaction</dt><dd><code>https://example.org/harbour-court/person-1</code> and <code>https://example.org/harbour-court/transaction</code></dd>
-    </dl>
-    <p>Identifiers do not, by themselves, establish identity criteria. In particular, this case makes no <code>owl:sameAs</code> assertion between the building and title record.</p>
-  </DetailDisclosure>
+  <section class="learning-practice" aria-labelledby="follow-the-question">
+    <h2 id="follow-the-question">Practice · Follow a question from document to evidence</h2>
+    <p>
+      A summary says: “The latest Harbour Court survey confirms that every agreed
+      area was inspected on 20 August.” Which part of that statement can you
+      challenge from the supplied evidence? Identify the subject, relationship and
+      source passage, not just the word you dislike.
+    </p>
+    <h3>Worked response</h3>
+    <p>
+      The source identifies Flat 1, not every dwelling in Harbour Court. Report
+      version 2 <em>describes</em> the 12 August inspection; 20 August is its issue
+      date. The access passage names three agreed areas and says that the enclosed
+      area was not accessed. A supported replacement is: “Report version 2, issued
+      on 20 August, describes the 12 August inspection of Flat 1 and identifies the
+      locked enclosed area as an access limitation.”
+    </p>
+    <p>
+      This conclusion is warranted within the supplied premises. It does not answer
+      whether the title record covers only Flat 1, whether the locked area contains
+      a defect or whether the report meets a real recipient's requirements. Those
+      questions need different evidence; adding confidence to the summary would not
+      supply it.
+    </p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="act-five">
+    <h2 id="act-five">A harder variation · Flat 1 is later subdivided</h2>
+    <p>
+      Suppose later material says that Flat 1 has been subdivided into two dwellings.
+      Does the original dwelling continue, do new dwellings replace it, or are
+      different records tracking different kinds of subject? The original inspection
+      remains a historical event, but its relationship to the later dwellings is not
+      established by a shared address.
+    </p>
+    <h3>What a useful review should preserve</h3>
+    <p>
+      Keep the earlier inspection's original subject identifiable. Ask for the
+      identity criterion, the relevant dates and the evidence linking the earlier
+      and later dwellings. Keep the building and title record distinct. Do not treat
+      subdivision automatically as a simple status change, or copy the old findings
+      to both later dwellings without a justified relationship.
+    </p>
+    <p>
+      Unlike the report-date correction, this case deliberately does not supply
+      enough information for an identity verdict. Naming that gap is a useful
+      result: it tells someone exactly which evidence and judgement the model needs.
+    </p>
+  </section>
 
   <section aria-labelledby="use-the-story">
-    <h2 id="use-the-story"><span id="vocabularies" aria-hidden="true"></span><span id="property-pack-walkthrough" aria-hidden="true"></span><span id="read-pages" aria-hidden="true"></span>Use the story on a real model page</h2>
+    <h2 id="use-the-story"><span id="vocabularies" aria-hidden="true"></span><span id="property-pack-walkthrough" aria-hidden="true"></span><span id="read-pages" aria-hidden="true"></span>Use the story's questions on a real candidate</h2>
     <p>
-      The <a href="/development/property-pack/resources/common/Property#identity">current
-      <code>common:Property</code> resource page</a> is a useful first reading exercise
-      precisely because its meaning and identity need scrutiny. This guide was checked
-      against Property Pack candidate version <code>0.1.0-draft</code>. It is
-      machine-proposed and for public review only; it does not implement the Harbour
-      Court teaching story or prove conformance to the required modelling method.
+      The story teaches how to separate a subject, a definition, a connection and
+      supporting evidence. It does not claim that Harbour Court is implemented in
+      the Property Pack candidate. The maintained
+      <a href="/semantic-modelling/contribute/read-and-compare-a-candidate">candidate-reading and change-comparison guide</a>
+      now owns the real-page walkthrough, including its version, status, identity,
+      structure, constraints and evidence checks.
     </p>
-    <ol class="modelling-steps">
-      <li>
-        <h3>Identify the candidate before judging it</h3>
-        <p>Read the displayed candidate status and keep the page link and version with your notes. Technical determination, later domain review, release and external recognition are separate statuses; none follows merely because the page is polished or a technical check passes.</p>
-      </li>
-      <li>
-        <h3><a href="/development/property-pack/resources/common/Property#identity">Read identity and meaning</a></h3>
-        <p>Say what the proposed resource includes and excludes. The current candidate ties continuity to the same assigned UPRN while leaving lifecycle rules for working-group review. Ask what evidence supports that criterion rather than teaching it as settled identity.</p>
-      </li>
-      <li>
-        <h3>Question the semantic home</h3>
-        <p>Placement in <code>common</code> is a candidate <a href="/glossary#semantic-home">semantic home</a>, not evidence of an approved shared definition or a constituted decision body. Ask which responsible people should review it.</p>
-      </li>
-      <li>
-        <h3><a href="/development/property-pack/resources/common/Property#structure">Read one piece of structure</a></h3>
-        <p>The page’s technical “Kind” says that this construct is a class. It is not a foundational verdict about an identity-bearing kind. Read one relationship in ordinary language and note what is absent or unspecified.</p>
-      </li>
-      <li>
-        <h3><a href="/development/property-pack/resources/common/Property#constraints">Check the declared constraints</a></h3>
-        <p>A missing constraint is not proof that anything is permitted, while a passing constraint is not semantic approval. Record the bounded question the page can answer.</p>
-      </li>
-      <li>
-        <h3><a href="/development/property-pack/resources/common/Property#evidence">Follow the source evidence</a></h3>
-        <p>Distinguish a direct source trace from a structural source trace. Both establish provenance, not semantic truth or domain endorsement. Keep one source reference with the question it helps you ask.</p>
-      </li>
-    </ol>
     <p>
-      Finish with one useful challenge: which <a href="/glossary#resource">resource</a>
-      is being described, what does one <a href="/glossary#relationship">relationship</a>
-      mean, and what ordinary case or counterexample tests it? Use only the current
-      discussion or evidence-intake route described in the
-      <a href="/development/working-groups/member-guide">member guide</a>. Reading this
-      page submits nothing and creates no approval or response-time promise.
+      Take one question with you: which subject does a statement concern, what
+      connection does it assert, and what supports that assertion? A candidate page
+      defining a resource or class is not itself a live property record. A useful
+      reading keeps the proposed definition distinct from the particular examples
+      used to test it.
     </p>
   </section>
 </ModellingLayout>

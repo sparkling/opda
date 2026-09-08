@@ -1,0 +1,55 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+---
+
+<ModellingLayout title="Dates, periods and applicability" description="A date is useful when we know what it dates. Separate when something happened, when an account was issued, when it was recorded and when a statement is meant to apply." proseClass="prose wide modelling-document learning-document">
+  <h2 id="which-clock">“Date: 8 September” answers almost nothing on its own</h2>
+  <p>A property-data record shows a recent date. A reader concludes that the dwelling was inspected recently. Another thinks the report was recently issued. A third treats the date as the beginning of an assessment's applicability. All may be reading the same characters, but they are answering different questions.</p>
+  <p>Time needs a subject and a meaning, just as a quantity needs a subject and a basis. A model should let us say “this date locates the inspection” or “this period describes when the statement applies”. It should not leave one generic “updated” field to do every job.</p>
+
+  <h2 id="linden-house">One example, several kinds of time</h2>
+  <p>In this separate fictional case, an inspection of Linden House took place across 2–3 September 2026. Report R1 was issued on 5 September. A recipient entered R1 in its records on 8 September. Within R1, assessment A explicitly describes the condition observed on 3 September only. These are the supplied facts; they do not establish any professional validity period.</p>
+  <LearningDiagram kind="clocks" caption="Different meanings of time in the Linden House example: inspection 2–3 September; report issued 5 September; recorded 8 September; assessment applies to the condition on 3 September only. These are not four required workflow stages." />
+  <div class="learning-table">
+    <table>
+      <caption>Read each temporal statement with its subject</caption>
+      <thead><tr><th scope="col">Question</th><th scope="col">Supplied answer</th><th scope="col">What it does not establish</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">When did the inspection occur?</th><td>It took place across 2–3 September.</td><td>Continuous inspection for every hour of those two dates.</td></tr>
+        <tr><th scope="row">When was R1 issued?</th><td>5 September.</td><td>An inspection on 5 September.</td></tr>
+        <tr><th scope="row">When did the recipient record R1?</th><td>8 September.</td><td>A new report version or a fresh observation.</td></tr>
+        <tr><th scope="row">When does assessment A describe the condition?</th><td>3 September only, as stated in R1.</td><td>The condition remaining unchanged after that date.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The chronological order happens to be straightforward here, but these are not four mandatory stages. A record may be entered after an event, a statement may describe a past period, and a future applicability period may be declared before it begins. Some sources supply only one relevant kind of time. Inventing the others would make the account look complete while making it less faithful.</p>
+
+  <h2 id="period-duration">A period locates; a duration measures</h2>
+  <p>“The inspection took place across 2–3 September” locates an interval on the calendar. “The inspector spent six hours examining the property” would describe a duration of activity. Neither statement can replace the other. Two visits of three hours each could fit within the same two-date interval, but the example has not supplied that pattern or total.</p>
+  <p>Even an interval needs clear boundaries. Does “from 1 to 30 September” include both dates? If hours matter, which time zone and which start and end conventions are intended? A nontechnical reviewer need not choose a storage format to notice that a deadline or overlap question cannot be answered until these meanings are clear.</p>
+  <p>Suppose a fictional instruction explicitly applies on every calendar date from 1 September through 30 September, inclusive. We can conclude that it applies on 30 September and does not establish applicability on 1 October. If the instruction says only “September” without defining the relevant year or subject, those conclusions are not yet available. The amount of temporal detail should follow the question, not a demand that every statement carry a timestamp.</p>
+
+  <section class="learning-practice" aria-labelledby="lanes-practice">
+    <h2 id="lanes-practice">Practice: put the statement on the right clock</h2>
+    <p>Using Linden House, assess three summaries: “The inspection is dated 8 September”; “R1 was issued after the inspection”; and “Assessment A confirms the condition on 8 September”.</p>
+    <h3>Worked response</h3>
+    <p>The first confuses the recipient's recording date with the occurrence interval. The second is supported: 5 September is after the supplied 2–3 September inspection. The third overstates the assessment, which explicitly concerns 3 September only. A later recording does not extend its applicability.</p>
+    <p>A useful corrected summary is: “R1, issued 5 September and recorded here on 8 September, describes the inspection undertaken across 2–3 September. Its assessment A concerns the condition on 3 September.” Every date now has a job.</p>
+  </section>
+
+  <h2 id="revision-history">A correction creates history, not necessarily another visit</h2>
+  <p>In the Harbour Court story, the 12 August inspection is described by report versions issued on 14 and 20 August. The later version corrects an access-limitation description; no further visit occurred. Its issue date belongs to that version, not to a second inspection. We can explain both the event and the changing knowledge about it without overwriting either.</p>
+  <p>This distinction also helps explain past decisions. A reader relying on version 1 on 16 August could not have read version 2 issued on 20 August. A present-day account can identify the later correction without pretending it was available earlier. “What did the source say then?” and “what does the latest source now say about then?” are different historical questions.</p>
+  <p>That is why a version reference and its source matter alongside dates. A generic “latest” flag cannot tell us which words changed, what they concern or whether the new version replaces an earlier statement for the reader's purpose.</p>
+
+  <section class="learning-practice" aria-labelledby="missing-time">
+    <h2 id="missing-time">Practice: remove a premise</h2>
+    <p>Take the Linden House account again, but remove the statement about assessment A's applicability. The inspection and issue dates remain. Can we still say the assessment applies to 3 September only?</p>
+    <h3>Worked response</h3>
+    <p>No. That limit came from an explicit statement, not from choosing the inspection's final date. Ask for the assessment's temporal scope. We can still say when the inspection occurred and when R1 was issued; uncertainty about one time meaning does not erase the others.</p>
+    <p>Now restore that statement but remove the inspection dates. We know which date the assessment concerns, but cannot conclude when the visit occurred. An account can describe a past condition, so applicability alone is not an occurrence date.</p>
+  </section>
+  <p>In review, ask “What does this date locate, and which conclusion depends on it?” That is more useful than requesting dates everywhere. To follow the relationship between source history and belief, continue with <a href="/semantic-modelling/explore/claims-evidence-and-uncertainty">Claims, evidence and uncertainty</a>.</p>
+  <p class="learning-note">The formal modelling choices for occurrence, applicability, recording and version chains are explained in <a href="/semantic-modelling/method/evidence-and-time">Evidence and time in Ontology modelling</a>. The examples here define their own limited temporal premises; they do not set report-validity periods.</p>
+</ModellingLayout>

@@ -1,164 +1,207 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
-import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
 ---
 
-<ModellingLayout title="Why shared meaning matters" description="A field can contain the right kind of value and still answer the wrong question. See how an explicit model helps people recognise, connect and challenge what property information means.">
+<ModellingLayout
+  title="Why shared meaning matters"
+  description="Correctly formatted information can still answer the wrong question. Learn to read the subjects and connections that make an account understandable."
+  proseClass="prose wide modelling-document learning-document"
+>
   <section aria-labelledby="the-problem">
     <h2 id="the-problem"><span id="what" aria-hidden="true"></span><span id="beyond-fields" aria-hidden="true"></span>A date is not yet an explanation</h2>
     <p>
       Imagine receiving “survey date: 20 August 2026” for Harbour Court. The date is
       readable and correctly formatted. Yet you cannot tell whether someone visited
-      the property that day, issued a report, corrected an earlier report or entered
-      information into a system. A well-formed value has not resolved the ambiguity.
+      the dwelling that day, issued a report, corrected an earlier report or entered
+      information into a system. The value may pass a format check while answering
+      a different question from the one you intended to ask.
     </p>
     <p>
-      In our fictional case, the inspection occurred on 12 August. Report version 1
-      was issued on 14 August; version 2 corrected it on 20 August. Calling all three
-      “survey date” loses distinctions before any information is exchanged. A model
-      helps by naming the event and documents separately and explaining what each
+      In our fictional case, an inspection of Flat 1 occurred on 12 August. Report
+      version 1 was issued on 14 August. Version 2, issued on 20 August, corrected the
+      description of an access limitation; no second visit occurred. Calling all
+      three dates “survey date” discards distinctions before information is exchanged.
+      The problem is not the date format. It is the missing explanation of what each
       date describes.
+    </p>
+    <p>
+      <strong>Semantic modelling</strong> is the work of making those meanings
+      explicit: what we are describing, what we say about it, how it relates to other
+      things and under which conditions a statement applies. An
+      <a href="/glossary#ontology">ontology</a> formally expresses the selected
+      distinctions. It does not replace professional knowledge; it gives that
+      knowledge a form people can examine, challenge and use consistently.
     </p>
   </section>
 
-  <figure class="modelling-figure" aria-labelledby="statement-caption">
-    <figcaption id="statement-caption">Read a statement with its supporting context</figcaption>
-    <ModellingVisual kind="evidence-timeline" />
-    <dl>
-      <dt>Which thing?</dt><dd>The inspection—not the building or the report.</dd>
-      <dt>What are we saying?</dt><dd>It occurred on 12 August 2026.</dd>
-      <dt>What supports the statement?</dt><dd>In this illustration, the report records that inspection date.</dd>
-      <dt>Which version?</dt><dd>The corrected report is version 2, issued on 20 August.</dd>
-      <dt>What remains separate?</dt><dd>A report date does not establish a new inspection date, and the presence of evidence does not by itself establish truth.</dd>
-    </dl>
-  </figure>
-
   <section aria-labelledby="things">
-    <h2 id="things"><span id="worked-example" aria-hidden="true"></span>Keep the thing distinct from the description</h2>
+    <h2 id="things"><span id="worked-example" aria-hidden="true"></span>The world, the agreement and a particular account</h2>
     <p>
-      Harbour Court is a building containing Flat 1 and Flat 2. A description of
-      Flat 1's address helps somebody find or refer to the dwelling. A title record
-      serves a different purpose. An inspection report describes an event and its
-      findings. None becomes interchangeable simply because “14 Orchard Road”
-      appears in it.
+      Keep three levels apart. There is a dwelling in the world. There is a model
+      definition explaining what the model means by a dwelling. And there are
+      particular records describing it. A definition can be clear while a record
+      contains an error. A record can change while the dwelling remains the same.
+      Neither a model nor a collection of records is the world itself.
     </p>
     <p>
-      This distinction matters when descriptions change. Correcting spelling in an
-      address does not, by itself, establish that a dwelling has been replaced.
-      Equally, an unchanged address does not prove that subdivision left the same
-      dwelling in existence. To answer that question we need explicit identity
-      criteria: what counts as the same thing in this model, and what evidence supports
-      that judgement? An identifier records a reference; it does not settle the judgement alone.
+      Harbour Court is a building containing Flat 1 and Flat 2. An address description
+      helps people locate or refer to a dwelling. A title record serves another
+      purpose. A report describes an inspection and its findings. The appearance of
+      “14 Orchard Road” in each description does not make these subjects
+      interchangeable. Correcting an address's spelling does not create a dwelling;
+      keeping its spelling does not prove that a later subdivision left the same
+      dwelling in existence.
     </p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Optional technical view: one resource, several representations</div>
-      <p>The illustrative identifier <code>https://example.org/harbour-court/inspection</code> refers to the inspection in this case. A readable page, a diagram and an RDF description can describe that same resource. They are representations, not three different inspections. The building, dwelling and report have different identifiers because this example distinguishes their subjects.</p>
-      <p>Providing readable and machine-processable vocabulary documentation is an established linked-data publication pattern. It does not require the reader to consume the machine representation. See the <a href="https://www.w3.org/TR/swbp-vocab-pub/#choosing">W3C vocabulary publishing recipes</a>.</p>
-    </aside>
+    <p>
+      These are questions about <a href="/glossary#resource">resources</a>—the
+      identifiable things and concepts we describe—and their identity. A stable
+      reference helps us talk about a subject repeatedly. It cannot decide, on its
+      own, whether two descriptions concern the same subject.
+    </p>
+  </section>
+
+  <section aria-labelledby="read-a-sentence">
+    <h2 id="read-a-sentence"><span id="statement-caption" aria-hidden="true"></span>Read the connection as a sentence</h2>
+    <p>
+      Start without any diagram: <strong>Report version 2 describes the 12 August
+      inspection.</strong> The first part tells us which subject we are talking about.
+      “Describes” names the relationship. The last part tells us what that subject
+      connects to. The diagram is another way of showing that sentence.
+    </p>
+    <LearningDiagram kind="sentence" caption="Start with the report, follow “describes”, and arrive at the inspection." />
+    <p>
+      Direction matters. Read from the arrow's starting point to its end. Reversing
+      it would say that the inspection describes the report, which is not the
+      claim intended here. The relationship name matters too: replacing “describes”
+      with “is the same as” would make a different and unjustified claim.
+      An unlabelled line leaves the reader to guess.
+    </p>
+    <p>
+      Some sentences need more context than two names and a verb. “Alex is a buyer”
+      leaves the arrangement unstated; “Alex participates as buyer in the proposed
+      sale of Flat 1” identifies it. A relationship can also need a period, source
+      or purpose. The first review task is to notice the missing meaning, not to
+      choose how a technical specialist should encode it.
+    </p>
   </section>
 
   <section aria-labelledby="connected">
-    <h2 id="connected"><span id="tree-graph" aria-hidden="true"></span><span id="context-first" aria-hidden="true"></span><span id="local-precision" aria-hidden="true"></span>One account, shown in complementary views</h2>
+    <h2 id="connected"><span id="connected-caption" aria-hidden="true"></span><span id="tree-graph" aria-hidden="true"></span><span id="context-first" aria-hidden="true"></span><span id="local-precision" aria-hidden="true"></span>One account, three useful representations</h2>
     <p>
-      A familiar form is useful for entering or reading one report. A tree gives its
-      values a chosen place in that description. A connected graph makes the subjects
-      and relationships explicit across descriptions. These views can complement one
-      another; this comparison does not claim that a tree cannot use references or
-      that a graph automatically removes duplication.
+      A form can be convenient for entering or reading a report. A nested description
+      groups information beneath a chosen starting subject. A graph draws out
+      connections across subjects. Each can express the same facts when its fields,
+      references and relationships have clear meanings. Here is one deliberately
+      complete account, shown three ways.
     </p>
-    <figure class="modelling-figure" aria-labelledby="connected-caption" data-modelling-figure="connected-views">
-      <figcaption id="connected-caption">The same fictional report account as fields, a tree and connected statements</figcaption>
-      <div class="modelling-comparison">
-        <section aria-labelledby="form-view">
-          <h3 id="form-view">Familiar report fields</h3>
-          <dl>
-            <dt>Dwelling reference</dt><dd>Flat 1</dd>
-            <dt>Inspection date</dt><dd>12 August 2026</dd>
-            <dt>Report version</dt><dd>Report version 2</dd>
-            <dt>Report issue date</dt><dd>20 August 2026</dd>
-          </dl>
-          <p>These fields describe one report version. They do not show, by themselves, that version 2 revises version 1 or that both describe the same inspection.</p>
-        </section>
-        <section aria-labelledby="model-view">
-          <h3 id="model-view">Tree and connected account</h3>
-          <EnrichmentVisual kind="connected-views" />
-        </section>
-      </div>
+    <LearningIllustration scene="technology" alt="Two differently arranged representations of a property situation, with the same relationship pieces kept between them." />
+    <section class="learning-specimen" aria-labelledby="form-view">
+      <h3 id="form-view">1. A readable form</h3>
       <dl>
-        <dt>Flat 1</dt><dd>The inspection concerns this dwelling in the teaching case.</dd>
-        <dt>Inspection</dt><dd>It occurred on 12 August 2026.</dd>
-        <dt>Report version 1</dt><dd>It was issued on 14 August 2026 and describes the inspection.</dd>
-        <dt>Report version 2</dt><dd>It was issued on 20 August 2026, describes the same inspection and revises version 1.</dd>
+        <dt>Report version</dt><dd>Version 2</dd>
+        <dt>Issue date of this version</dt><dd>20 August 2026</dd>
+        <dt>Earlier report revised</dt><dd>Version 1, issued 14 August 2026</dd>
+        <dt>Inspection described by both versions</dt><dd>The inspection of Flat 1 on 12 August 2026</dd>
+        <dt>Reason for the revision</dt><dd>Corrected description of an access limitation; no new visit.</dd>
       </dl>
-    </figure>
+      <p>A form can preserve these connections. It needs sufficiently clear labels and references, not merely a field called “date”.</p>
+    </section>
+    <section class="learning-specimen" aria-labelledby="nested-view">
+      <h3 id="nested-view">2. A nested description</h3>
+      <ul>
+        <li>Report version 2
+          <ul>
+            <li>Issued: 20 August 2026.</li>
+            <li>Revises: report version 1
+              <ul><li>Issued: 14 August 2026.</li><li>Describes: the same 12 August inspection.</li></ul>
+            </li>
+            <li>Describes: the inspection
+              <ul><li>Occurred: 12 August 2026.</li><li>Concerns: Flat 1.</li></ul>
+            </li>
+            <li>Correction: access-limitation wording; no new visit.</li>
+          </ul>
+        </li>
+      </ul>
+      <p>The indentation chooses a reading order. The reference to the same inspection prevents the repeated description from implying a second event. A tree can contain references; nesting is not a prohibition on linking.</p>
+    </section>
+    <section aria-labelledby="model-view">
+      <h3 id="model-view">3. A connected account</h3>
+      <LearningDiagram kind="representations" caption="The connected account keeps two report versions attached to one inspection of Flat 1." />
+      <ol>
+        <li>Report version 2 revises report version 1.</li>
+        <li>Report version 2 describes the inspection that occurred on 12 August 2026.</li>
+        <li>Report version 1 describes that same inspection.</li>
+        <li>The inspection concerns Flat 1.</li>
+      </ol>
+      <p>Version 1 was issued on 14 August and version 2 on 20 August. The correction concerns access-limitation wording, not a new visit. Those facts remain part of the account even when a small diagram concentrates on its connections.</p>
+    </section>
     <p>
-      Try the case before reading on: when report version 2 is issued on 20 August,
-      which date and relationship change, and which inspection does it still describe?
-      The teaching assumption is that there was no second visit: the issue date changes
-      and the <em>revises</em> relationship is added, while both reports still describe
-      the 12 August inspection. What evidence would change that conclusion?
+      The graph helps someone follow a subject across descriptions. It does not
+      guarantee correct claims, automatically eliminate duplicates or prove that
+      two similarly labelled nodes are identical. Equally, a familiar form is not
+      inherently less meaningful. The test is what a recipient can understand after
+      the information has moved between these representations.
+    </p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="try-it">
+    <h2 id="try-it"><span id="ordinary-questions" aria-hidden="true"></span><span id="participate" aria-hidden="true"></span>Practice · Follow three connections</h2>
+    <p>
+      Read “version 2 revises version 1”, “version 1 describes the inspection”, and
+      “the inspection concerns Flat 1”. Which subjects do 20 August, 14 August and
+      12 August describe? What must an exchange preserve so that its recipient does
+      not infer a second visit?
+    </p>
+    <h3>Worked response</h3>
+    <p>
+      The first two dates are issue dates of different report versions. The third
+      is the occurrence date of the inspection. Preserve the report-version
+      distinction, the revision relationship, both links to the same inspection,
+      the inspection's subject and the meanings of the dates. Preserve the source
+      statement that the revision involved no new visit. A lone “latest date” value
+      cannot carry that account.
+    </p>
+    <h3>Change the case</h3>
+    <p>
+      A fictional maintenance record was entered on 7 September and says: “Repair
+      completed on 3 September. This is the first recording of that repair.”
+      Someone proposes replacing the completion date with 7 September because it
+      is later. What would you challenge?
     </p>
     <p>
-      A glossary, dictionary, form and diagram answer different reading needs. They
-      should express compatible meaning rather than become separate accounts. An
-      <a href="/glossary#ontology">ontology</a> makes the shared meaning explicit;
-      JSON-LD is one generated output from it, not another subject to learn here.
+      The repair completion and the recording are different subjects of time
+      statements. Under the supplied evidence, the repair was completed on
+      3 September and recorded on 7 September. Keep both meanings. If the later
+      entry instead reported another repair, that event would need separate
+      identification and evidence; lateness alone would not establish it.
     </p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Optional technical handoff</div>
-      <p>Read the connection as a sentence: “Report version 2 describes the 12 August inspection.” The <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships chapter</a> shows how an implementer carries an agreed sentence into the formal model. You can review the sentence without learning that syntax.</p>
-    </aside>
   </section>
 
   <section aria-labelledby="benefits">
-    <h2 id="benefits"><span id="why" aria-hidden="true"></span><span id="less-reinterpretation" aria-hidden="true"></span><span id="traceable-evidence" aria-hidden="true"></span><span id="change" aria-hidden="true"></span><span id="earn-benefits" aria-hidden="true"></span>Benefits worth testing</h2>
+    <h2 id="benefits"><span id="why" aria-hidden="true"></span><span id="less-reinterpretation" aria-hidden="true"></span><span id="traceable-evidence" aria-hidden="true"></span><span id="change" aria-hidden="true"></span><span id="earn-benefits" aria-hidden="true"></span>The benefit comes from preserving a useful distinction</h2>
     <p>
-      The benefit is not the number of connections in a diagram. It is what people
-      can do with them. For Harbour Court, we would look for these practical outcomes:
-    </p>
-    <ol class="modelling-steps">
-      <li><h3>Reuse with less reinterpretation</h3><p>A recipient can distinguish inspection time from report issue time without asking the sender to explain an ambiguous field again. This depends on both parties preserving the distinction in their exchange.</p></li>
-      <li><h3>Find the source of a disagreement</h3><p>If two screens show different dates, their references reveal whether they describe different events or different report versions. The model makes investigation possible; it does not automatically choose the reliable source.</p></li>
-      <li><h3>Assess the effect of a correction</h3><p>A report revision can be connected to claims and consumers that depend on it. The useful question is which conclusions need review—not whether every connected record should be overwritten.</p></li>
-      <li><h3>Make professional review precise</h3><p>A participant can point to the exact relationship that is wrong and supply a counterexample. Technical specialists can then propose a change that addresses that issue.</p></li>
-    </ol>
-    <p>
-      These are intended benefits, not measured results for the current Property Pack
-      candidate. They require usable definitions, maintained evidence, compatible
-      implementations and people responsible for resolving problems.
+      Fewer repeated explanations, traceable evidence and understandable corrections
+      are worthwhile aims. They depend on maintained definitions and exchanges that
+      preserve the agreement. The <a href="/semantic-modelling/understand/benefits-and-limits">benefits, limits and reasonable objections chapter</a>
+      examines these conditions, costs and alternatives in full.
     </p>
   </section>
-
   <section aria-labelledby="limits">
-    <h2 id="limits"><span id="ai" aria-hidden="true"></span>What the model cannot decide for you</h2>
+    <h2 id="limits"><span id="ai" aria-hidden="true"></span>Agreeing meaning is not centralising everybody's data</h2>
     <p>
-      A technical check can find a missing date or an unexpected value when a rule
-      requires one. It cannot establish that an inspection really occurred. Nor does
-      connecting a report grant permission to share it. Meaning, factual accuracy,
-      access and approval need different evidence and responsibilities.
+      People can share definitions and identifiers without placing every property
+      record in one database. A model does not prove that an inspection happened,
+      grant access to a report or make an AI draft an approved standard.
+      <a href="/semantic-modelling/understand/benefits-and-limits#accuracy-and-access">Accuracy, access and adoption need their own evidence</a>.
+      Your useful contribution is a precise question about what the agreement says.
     </p>
-    <p>
-      Context also matters. Different professions may legitimately need different
-      descriptions of a situation. OPDA's approach starts with those questions and
-      accountable communities, then connects the meanings that need to cross their
-      boundaries. It is not a claim that all existing industry standards are
-      centrally imposed, or that shared models are inherently unsuitable.
+    <p class="learning-note">
+      If you make formal modelling decisions, the separate
+      <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships chapter</a>
+      explains the technical representation. You do not need its syntax to review
+      the sentences on this page.
     </p>
-    <p>
-      The <a href="/semantic-modelling/method">modelling method</a> explains the
-      required discipline. The <a href="/development/property-pack">Property Pack
-      candidate</a> is a separately identified implementation to inspect. Neither
-      this fictional case nor a successful check ratifies a standard.
-    </p>
-  </section>
-
-  <section aria-labelledby="try-it">
-    <h2 id="try-it"><span id="ordinary-questions" aria-hidden="true"></span><span id="participate" aria-hidden="true"></span>Try the distinction</h2>
-    <p>A system replaces “12 August” with “20 August” after the report correction. What would you ask before accepting that update?</p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Compare with a useful review question</div>
-      <p>“Which date does this field represent: the inspection occurrence or the latest report issue? If it represents the inspection, what evidence says another inspection occurred?” This identifies the ambiguity without prescribing an ontology-language fix.</p>
-    </aside>
   </section>
 </ModellingLayout>

@@ -2,138 +2,83 @@
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 ---
 
-<ModellingLayout title="Review a definition" description="Learn to turn an uneasy feeling about a term into a precise question. Try the Harbour Court exercise, then use the same approach on a candidate page.">
+<ModellingLayout title="Review a definition" description="Test what a definition includes, excludes and leaves ambiguous. Compare plausible revisions, then use an ordinary case and a counterexample to explain what should change." proseClass="prose wide modelling-document learning-document">
   <section aria-labelledby="read">
     <h2 id="read">Read the claim before judging the words</h2>
-    <p>
-      Check the page's status, the thing being defined and its scope. An illustrative
-      example teaches a distinction. A candidate term proposes a meaning for review.
-      A historical page explains an earlier artefact. They invite different kinds of
-      feedback, so keep the page link and version with the question.
-    </p>
-    <p>
-      Then read the definition as if you were explaining it to a colleague. Does it
-      identify the right subject? Does it include too much, exclude a common case or
-      rely on another ambiguous word? You are reviewing what the statement means,
-      not merely whether it sounds polished.
-    </p>
+    <p>A fluent sentence can still define the wrong thing. Read a proposed definition as if you had to use it on an unfamiliar case: what would you include, what would you exclude and what would you need to ask? Your task is to examine the agreement it proposes, not just to improve its style.</p>
+    <p>First identify the page's standing and scope. A teaching example invites practice; a candidate term proposes meaning for review; a historical definition records earlier work. Keep the page and candidate version with your note. An attractive definition on a review website does not thereby become an accepted industry definition.</p>
+    <p>Then name the subject. Is the wording about a dwelling, an inspection event, a report version, someone's statement or a relationship? If it switches subjects halfway through, a reader may receive the wrong answer while every individual word still looks familiar.</p>
   </section>
 
   <section aria-labelledby="exercise">
-    <h2 id="exercise">Exercise: which date are we recording?</h2>
-    <figure class="modelling-figure" aria-labelledby="draft-caption">
-      <figcaption id="draft-caption">Deliberately flawed teaching definition—not a current candidate term</figcaption>
+    <h2 id="exercise">The date example: three plausible responses</h2>
+    <figure class="learning-specimen" aria-labelledby="draft-caption">
+      <figcaption id="draft-caption">Deliberately flawed teaching definition — not a current candidate term</figcaption>
       <blockquote><p>Survey date: the date on which the property was surveyed or the survey report was last issued.</p></blockquote>
-      <dl>
-        <dt>Known in the fictional case</dt><dd>Flat 1 was inspected on 12 August 2026.</dd>
-        <dt>First report</dt><dd>Version 1 was issued on 14 August.</dd>
-        <dt>Correction</dt><dd>Version 2 was issued on 20 August, without another inspection.</dd>
-      </dl>
+      <p>In the fictional Harbour Court case, Flat 1 was inspected on 12 August 2026. Report version 1 was issued on 14 August. Version 2 was issued on 20 August, correcting the access-limitation description without another visit.</p>
     </figure>
-    <p>
-      Write a question in your own notes; then compare the responses below. Start with
-      the practical consequence: “Could the receiver think a new inspection happened?”
-      This reading exercise sends nothing, records no vote and does not run a check
-      against the Property Pack candidate.
-    </p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">“Use the latest date so there is only one answer.”</div>
-      <p>This makes selection easier but changes the meaning. The latest issue date tells us when the corrected report was issued, not when the inspection occurred. A consumer asking about the event would receive the wrong kind of answer even though the date is formatted correctly.</p>
-    </aside>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">“Separate inspection occurrence from report issue.”</div>
-      <p>This addresses the demonstrated ambiguity. Each date needs a named subject: the inspection event or a particular report version. A revised definition still needs domain review; the exercise is not a declaration that these are approved OPDA terms.</p>
-    </aside>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">“Add an explanation but leave the combined field unchanged.”</div>
-      <p>An explanation helps a human reader, but a recipient still cannot identify the date's role from the value alone. You would need an explicit way to distinguish what the field represents, or separate representations. Whether an existing exchange can support that is a question for implementers after the intended meaning is agreed.</p>
-    </aside>
-    <p>
-      A sensible alternative question can also be useful: this is not a scored test of
-      an approved business rule. Compare how each response preserves the inspection
-      and report as different subjects, then note what remains undecided.
-    </p>
+    <p>Write a question in your own notes; then compare the responses below. Start with the consequence: “Could the receiver think a new inspection happened?” This is a worked exercise, not a scored test or a submission.</p>
+    <h3>“Keep the most recent date”</h3>
+    <p>This is attractive when someone wants a single sortable value. But it answers “Which relevant date is latest?” rather than “When did the inspection occur?” The value 20 August could make the visit appear more recent than it was. A selection rule cannot repair a definition that combines different subjects.</p>
+    <h3>“Separate occurrence from issue”</h3>
+    <p>This addresses the demonstrated ambiguity. “Inspection occurrence date” concerns the event; “report issue date” concerns the identified report version. The receiver can retain both and answer the appropriate question. That is a semantic clarification, not a demand for a particular pair of database fields.</p>
+    <h3>“Keep one date element but identify its meaning”</h3>
+    <p>A qualified date description could also preserve the distinction if it explicitly identifies whether it concerns inspection occurrence or report issue, and which subject it describes. Keeping the ambiguous definition and relying on a nearby free-text hint would not be enough. The important question is what a recipient can reliably distinguish, not whether the eventual representation has one element or two.</p>
   </section>
 
   <section aria-labelledby="revision">
-    <h2 id="revision">Propose a distinction, then test its edges</h2>
-    <div class="modelling-comparison">
-      <section aria-labelledby="inspection-definition">
+    <h2 id="revision">A repair needs a second test</h2>
+    <div class="learning-spread">
+      <section class="learning-specimen" aria-labelledby="inspection-definition">
         <h3 id="inspection-definition">Illustrative revision: inspection date</h3>
-        <p>The date on which the identified inspection occurred.</p>
-        <p>Question to test: what if the inspection spans more than one day? The definition may need a period rather than a single date.</p>
+        <blockquote><p>The date on which the identified inspection occurred.</p></blockquote>
+        <p>It separates the event from its report. It may still exclude an inspection spanning several days.</p>
       </section>
-      <section aria-labelledby="report-definition">
+      <section class="learning-specimen" aria-labelledby="report-definition">
         <h3 id="report-definition">Illustrative revision: report issue date</h3>
-        <p>The date on which the identified version of the report was issued.</p>
-        <p>Question to test: how do we distinguish issue, revision and later entry into a system? A record timestamp is not automatically an issue date.</p>
+        <blockquote><p>The date on which the identified version of the report was issued.</p></blockquote>
+        <p>It ties the date to a version. It does not silently make a later recording timestamp the issue date.</p>
       </section>
     </div>
-    <p>
-      The revision resolves one demonstrated problem; it does not finish the model.
-      A good counterexample can show that a neat sentence still excludes something
-      important. Explain the situation and what a reader must be able to distinguish.
-      You do not need to choose a technical datatype or property name.
-    </p>
-    <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Change one feature and ask again</div>
-      <p>Now suppose the inspection spans two days, or the receiving system records the report later than its issue date. Which assumption in the illustrative definitions needs review? Preserve what the response clarified, and state what remains undecided: whether the event needs a period, which recording time matters, and what evidence establishes either answer.</p>
-    </aside>
+    <p>If the inspection spans two days, that is a genuine counterexample to a single-day assumption, not a reason to undo the useful event/report distinction. Ask whether the agreed scope needs an occurrence period and what establishes its boundaries. The <a href="/semantic-modelling/explore/dates-periods-and-applicability">dates and periods chapter</a> explains why an interval and its duration answer different questions.</p>
+    <p>Changes in wording can be small while changes in meaning are large. Replacing “issued” with “entered into our system” introduces a different event and an organisation-specific setting. Conversely, adding an alternative label need not change the defined meaning at all. State which kind of edit you are proposing.</p>
   </section>
 
   <section aria-labelledby="questions">
-    <h2 id="questions">Six questions for any definition</h2>
-    <ol>
-      <li><strong>Subject:</strong> which thing, event, description or relationship is this about?</li>
-      <li><strong>Purpose:</strong> which practical question should this information answer?</li>
-      <li><strong>Scope:</strong> what belongs here, and what looks similar but does not?</li>
-      <li><strong>Hard case:</strong> what happens outside the usual situation?</li>
-      <li><strong>Context:</strong> would another profession interpret the words differently?</li>
-      <li><strong>Evidence:</strong> what source, example or observation supports the challenge?</li>
-    </ol>
-    <p>
-      Apply the same approach to a diagram. Read one labelled connection as an
-      ordinary sentence. “A report describes an inspection” is reviewable; an
-      unexplained line between two boxes is not. If the diagram and definition
-      disagree, record the discrepancy rather than choosing one silently.
-    </p>
+    <h2 id="questions">Look beyond mixed dates</h2>
+    <table class="learning-table">
+      <caption>Other fictional definitions and the questions they invite</caption>
+      <thead><tr><th scope="col">Proposed wording</th><th scope="col">Problem to test</th><th scope="col">Useful challenge</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">“A verified statement is a statement that has been verified.”</th><td>Circular wording leaves the assessment unnamed.</td><td>What was assessed, against which criteria, by whom and for which purpose? Do not substitute “correct” without evidence.</td></tr>
+        <tr><th scope="row">“An accessible area is an area the inspector can enter.”</th><td>A hidden setting: general capability, permission or actual physical access during a particular visit?</td><td>Would a normally accessible room count when it was locked during this visit? Name the intended circumstance.</td></tr>
+        <tr><th scope="row">“A report is current for six months after issue.”</th><td>A local convention is presented as a general applicability rule.</td><td>Which source, purpose and scope justify six months? An internal practice alone does not establish an industry-wide period.</td></tr>
+      </tbody>
+    </table>
+    <p>Do not “fix” the last sentence by choosing another duration. A plausible revision might say that a particular organisation assesses a report as suitable for a specified purpose and period. Another might define a profile requirement with a justified time limit. These are different proposals; neither follows merely from a familiar use of “current”.</p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="definition-practice">
+    <h2 id="definition-practice">Try it: does “complete” include too much?</h2>
+    <p>A fictional draft says: “A complete report is one containing every section in template T.” A reviewer proposes: “A complete report is one that fully describes the property's condition.” The supplied evidence is only template T and a report with all its sections filled in.</p>
+    <h3>A reasoned response</h3>
+    <p>The original definition is narrow but testable against its stated template. The revision is broader and makes a much stronger claim. A report can contain every section yet describe only an agreed inspection scope. The supplied evidence does not establish that it fully describes every aspect of the property's condition.</p>
+    <p>A defensible clarification is “Template-complete report: a report containing the sections required by the identified version of template T.” That keeps documentary completeness separate from completeness or accuracy of knowledge about the property. If the actual need is adequate coverage for a purpose, bring that as a separate question with relevant evidence.</p>
+    <p>The ordinary case is the stipulated report containing every required section. A counterexample is a section headed “Roof” saying that roof access was outside the agreed scope: the document can be template-complete without claiming that the roof was inspected.</p>
   </section>
 
   <section aria-labelledby="prepare">
     <h2 id="prepare">Prepare a contribution somebody can act on</h2>
-    <figure class="modelling-figure" aria-labelledby="feedback-caption">
-      <figcaption id="feedback-caption">A worked feedback note—fictional and not submitted</figcaption>
-      <dl>
-        <dt>Reference</dt><dd>The teaching definition “Survey date” above.</dd>
-        <dt>Problem</dt><dd>It combines the inspection occurrence with report issue.</dd>
-        <dt>Consequence</dt><dd>A report correction can make the inspection appear more recent than it was.</dd>
-        <dt>Counterexample</dt><dd>Inspection on 12 August; report versions issued on 14 and 20 August; no second inspection.</dd>
-        <dt>Request</dt><dd>Distinguish the two meanings and check the multi-day inspection case.</dd>
-        <dt>Evidence standing</dt><dd>Invented example for review; not an industry rule or customer record.</dd>
-      </dl>
+    <figure class="learning-specimen" aria-labelledby="feedback-caption">
+      <figcaption id="feedback-caption">A worked feedback note — fictional and not submitted</figcaption>
+      <blockquote><p>The teaching definition “Survey date” combines inspection occurrence with report issue. For Flat 1, the inspection was on 12 August and the corrected report was issued on 20 August without another visit. A recipient could mistake a correction for a more recent inspection. Please distinguish the meanings and test the multi-day case. The example is invented; it is not an approved professional definition.</p></blockquote>
     </figure>
-    <p>
-      You can use this structure in your own notes. One clear issue per contribution
-      makes it easier to discuss and connect to a proposed change. Replacement wording
-      is welcome, but a precise problem and its consequence are sufficient.
-    </p>
+    <p>Replacement wording is optional. The subject, practical consequence and smallest useful counterexample are already a contribution. If you propose wording, explain what it changes and what remains undecided. Link related dictionary or diagram content if the same ambiguity appears there, so a correction does not leave two incompatible views.</p>
   </section>
 
   <section aria-labelledby="share">
     <h2 id="share">Use the current discussion route</h2>
-    <p>
-      On pages with an enabled comment component, authorised signed-in participants
-      can leave contextual feedback. For group discussion, follow the
-      <a href="/development/working-groups/member-guide/teams-and-discussions">Teams
-      and discussion guidance</a> and keep related replies in the same thread. These
-      exercises do not submit anything to either surface.
-    </p>
-    <p>
-      Do not paste customer information, live transaction details or restricted
-      source material into a comment or thread. If a file is needed, use the
-      <a href="/semantic-modelling/contribute/bring-evidence">authorised evidence
-      preparation and intake route</a>. Posting feedback is not approval of a term,
-      a candidate or a release.
-    </p>
+    <p>The <a href="/development/working-groups/member-guide/teams-and-discussions">Teams and discussion guidance</a> explains group discussion and page-specific comments where available to authorised participants. Keep the reference and related replies together. This reading exercise submits nothing and records no vote.</p>
+    <p>Do not paste customer information, live transaction details or restricted evidence into a comment. If a source is needed, <a href="/semantic-modelling/contribute/bring-evidence">prepare its context and permitted handling</a>. Posting feedback does not approve a term, candidate or release.</p>
   </section>
 </ModellingLayout>

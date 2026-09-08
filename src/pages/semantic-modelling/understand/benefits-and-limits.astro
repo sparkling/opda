@@ -1,0 +1,237 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout
+  title="Benefits, limits and reasonable objections"
+  description="Shared meaning is worth the effort when it preserves distinctions people need. Examine the benefit, the conditions and the work that remains."
+  proseClass="prose wide modelling-document learning-document"
+>
+  <section aria-labelledby="what-improves">
+    <h2 id="what-improves">Start with the misunderstanding you want to prevent</h2>
+    <p>
+      A connected model is not valuable simply because it contains many connections.
+      It is valuable when people can answer a practical question with less guessing:
+      which dwelling does this account concern, what does this amount represent, or
+      which version supports this statement? The improvement is a clearer agreement
+      about those questions, not a promise that every process will become cheaper or
+      every piece of information more accurate.
+    </p>
+    <p>
+      Consider two fictional floor-area accounts for the same dwelling. Account A
+      gives 68 m², excluding an enclosed 4 m² area. Account B gives 72 m², including
+      it. These premises explain the difference without choosing a professional
+      measuring standard. Now consider what happens when the accounts are exchanged.
+    </p>
+    <div class="learning-spread">
+      <section class="learning-specimen" aria-labelledby="distinction-lost">
+        <h3 id="distinction-lost">Exchange A · The basis is lost</h3>
+        <dl>
+          <dt>What arrives</dt><dd>Area: 68 m². Other area: 72 m².</dd>
+          <dt>What the recipient can conclude</dt><dd>Two different numbers were supplied. Their comparability is not established.</dd>
+          <dt>Risk</dt><dd>A recipient may treat them as incompatible measurements of the same area, or silently keep the larger value.</dd>
+        </dl>
+      </section>
+      <section class="learning-specimen" aria-labelledby="distinction-kept">
+        <h3 id="distinction-kept">Exchange B · The basis survives</h3>
+        <dl>
+          <dt>What arrives</dt><dd>The same dwelling; 68 m² excluding the enclosed 4 m² area; 72 m² including it; separate references to accounts A and B.</dd>
+          <dt>What the recipient can conclude</dt><dd>The stated inclusion difference explains the four-square-metre difference in this example.</dd>
+          <dt>Remaining question</dt><dd>Which basis is appropriate for the intended use? The exchange does not decide that.</dd>
+        </dl>
+      </section>
+    </div>
+    <p>
+      The second exchange supports a better explanation because it preserves subject,
+      unit, basis and source—not because it uses a particular file format. The
+      <a href="/semantic-modelling/explore/measurements-amounts-and-values">measurements chapter</a>
+      develops this example, including a harder case where the missing evidence
+      prevents the same conclusion.
+    </p>
+  </section>
+
+  <section aria-labelledby="benefits-with-conditions">
+    <h2 id="benefits-with-conditions">Five benefits, with their conditions attached</h2>
+    <h3>Fewer repeated reinterpretations</h3>
+    <p>
+      If sender and recipient use the same understood distinction, a person should
+      not need to explain it afresh at every handoff. The condition is that the
+      distinction survives the exchange and the recipient uses it correctly.
+      If “measured area” is flattened back into one unexplained field, a carefully
+      defined model upstream will not rescue the lost meaning downstream.
+    </p>
+    <h3>Evidence that is easier to inspect</h3>
+    <p>
+      A statement linked to its source and version gives a reviewer somewhere useful
+      to look. That requires maintained references, relevant passages and an honest
+      account of what the source supports. A link to an entire document, or to an
+      inaccessible version without an interpretable description, may leave the
+      important question unanswered. Provenance makes investigation possible; it is
+      not a certificate of truth.
+    </p>
+    <h3>Agreements that practitioners can challenge</h3>
+    <p>
+      A readable definition, example or relationship lets somebody say precisely
+      what is wrong. That benefit depends on reviewable wording and a reasoned human
+      response. If an essential exclusion exists only in code, a domain expert may
+      never see it. If a polished diagram conceals an unresolved assumption, visual
+      clarity can create false confidence rather than understanding.
+    </p>
+    <h3>Deliberate reuse</h3>
+    <p>
+      A well-defined concept can be reused where its meaning genuinely fits. Reuse
+      requires comparing scope, identity, purpose and relevant constraints—not just
+      matching labels. Reusing a term that almost fits can hide a consequential
+      difference. Sometimes a qualified correspondence between distinct meanings is
+      the useful result; merging them is not always an improvement.
+    </p>
+    <h3>A clearer account of change</h3>
+    <p>
+      If a definition or source changes, explicit connections help identify which
+      interpretations need review and which can stay the same. This requires version
+      information and an explanation of the change. Overwriting the previous
+      definition removes the very evidence needed to explain why an earlier decision
+      used it. Conversely, preserving a version does not establish that it remains
+      appropriate for current use.
+    </p>
+    <p class="learning-note">These are intended benefits and ways to test them, not measured performance claims for the current Property Pack candidate. No time-saving percentage or commercial return is implied.</p>
+  </section>
+
+  <section aria-labelledby="the-cost">
+    <h2 id="the-cost">What the approach asks of people</h2>
+    <p>
+      Definitions need owners and maintenance. Difficult cases need discussion.
+      Sources need enough context to be interpretable and enough permission to be
+      used. Boundary agreements need representatives who understand both sides.
+      Generated representations need checks that they preserve the meaning and the
+      constraints they claim to carry. These are real costs, not work that vanishes
+      because an ontology exists.
+    </p>
+    <p>
+      Bounded work helps make those costs manageable. A group can address a specific
+      question inside its documented scope, reuse an established meaning where it
+      fits and record a justified exclusion. It need not model every possible property
+      situation before producing something useful. But a smaller scope must remain
+      visible: an agreement for one purpose should not quietly become a rule for all
+      purposes.
+    </p>
+  </section>
+
+  <section aria-labelledby="reasonable-objections">
+    <h2 id="reasonable-objections">Reasonable objections deserve more than slogans</h2>
+    <h3 id="already-a-schema">“We already have a schema.”</h3>
+    <p>
+      A schema is valuable. It can describe a document's structure and constrain
+      permitted content; its accompanying documentation may contain substantial
+      domain knowledge. The question is whether those materials make the necessary
+      subjects, relationships and conditions explicit across uses. A well-formed
+      field called “date” still needs a meaning.
+    </p>
+    <p>
+      OPDA's earlier PDTF schema and its separately identified schema-derived ontology
+      remain useful evidence for requirements, traceability and future migration
+      analysis. The recorded <a href="/semantic-modelling/decision-basis">decision basis</a>
+      does not treat either as an OPDA-endorsed predecessor scheme or as automatic
+      authority for future domain meaning. The approach changes how that meaning is
+      established; it does not discard everything learned from the existing material.
+    </p>
+    <h3 id="one-definition">“Why not agree one definition of property?”</h3>
+    <p>
+      Shared definitions help when the intended meaning really is shared. But a
+      building, a dwelling, a right or interest described by a title record, and a
+      subject considered in a lending decision are not made identical by calling
+      them “property”. OPDA works within documented contexts so useful local
+      distinctions remain explicit. At their boundaries, people must establish what
+      information another context needs and what a proposed connection preserves.
+      This is not permission for arbitrary disagreement; it is a way to locate and
+      examine the difference.
+    </p>
+    <h3 id="existing-standards">“Why not import an existing ontology such as FIBO?”</h3>
+    <p>
+      Reusing established work can avoid reinvention. ADR-0063 identifies the
+      Financial Industry Business Ontology as a useful reference and potential source
+      of concepts for Finance and Banking. It also says the group should establish
+      its scope and questions before considering wholesale import. A term's existence
+      in another ontology does not demonstrate that it answers this group's question
+      with the right scope. Other modelling approaches also support evidence and
+      participation; OPDA's choice is not a claim that all alternatives impose one
+      top-down model.
+    </p>
+    <h3 id="identifiers">“Is an identifier enough?”</h3>
+    <p>
+      An identifier helps us refer to something consistently. It cannot establish
+      that two organisations assigned it to the same subject, or decide what happens
+      when a dwelling is subdivided. Review the identity criterion and the evidence
+      for applying it. The identifier supports the agreement; it does not replace it.
+    </p>
+    <h3 id="forms-and-systems">“Will this replace our forms or require one database?”</h3>
+    <p>
+      Not inherently. Forms and systems can offer useful views of a shared agreement,
+      and organisations need not centralise all their records to share meaning.
+      Implementation and migration still require separate choices and testing.
+      A model does not automatically update an existing form, translate a historic
+      field correctly or make every recipient adopt a new exchange.
+    </p>
+    <h3 id="ai">“Is AI deciding the standard?”</h3>
+    <p>
+      No. AI can help examine evidence and draft candidates. Its proposals may omit
+      context, inherit a source's mistake or produce plausible wording unsupported
+      by evidence. Practitioners judge domain meaning; technical checks assess
+      specified conformance; recorded OPDA authority governs promotion and release.
+      Agreement between models does not substitute for those responsibilities.
+    </p>
+    <h3 id="restricted-evidence">“Can we contribute when the evidence is restricted?”</h3>
+    <p>
+      Often a bounded description of the question, an authorised excerpt or a
+      carefully labelled fictional example can help. Describe the source's relevance
+      and restriction without copying material you may not share. A fictional example
+      can reveal an ambiguity, but it is not proof of a claim about real practice.
+      The <a href="/development/working-groups/member-guide">member guide</a> is the
+      home for current participation and evidence-handling instructions.
+    </p>
+  </section>
+
+  <section aria-labelledby="accuracy-and-access">
+    <h2 id="accuracy-and-access">What a model cannot guarantee</h2>
+    <p>
+      An accurate definition cannot make an inaccurate source true. A passing data
+      check cannot establish that an inspection happened. A source reference cannot
+      guarantee that its contents remain current. A description of permission does
+      not authenticate somebody or grant access to records. A reviewable candidate
+      does not become an approved release or acquire external recognition because
+      it appears on a website.
+    </p>
+    <p>
+      These distinctions do not weaken the case for modelling. They show where the
+      model helps and where other evidence or action is still required. The right
+      claim is “this makes the meaning and its limitations inspectable”, not “this
+      removes every risk in property-data exchange”.
+    </p>
+  </section>
+
+  <section class="learning-practice" aria-labelledby="test-the-benefit">
+    <h2 id="test-the-benefit">Practice · Put a condition on the claimed benefit</h2>
+    <p>
+      A project note says: “Once both area accounts use our model, recipients will
+      no longer have to investigate different floor areas.” Use the opening exchanges
+      to write a more defensible claim. What work remains even in exchange B?
+    </p>
+    <h3>Worked response</h3>
+    <p>
+      “If both accounts identify the same dwelling and preserve their values, units,
+      inclusion bases and sources, a recipient can explain this difference without
+      guessing what each area includes.” The evidence supports that narrower benefit.
+      It does not select an appropriate measuring basis for a real purpose, verify
+      the underlying measurements or ensure that a receiving system will display
+      the explanation correctly.
+    </p>
+    <h3>A harder variation</h3>
+    <p>
+      Suppose both accounts now claim the same inclusion basis but still give 68 m²
+      and 72 m². Retaining the basis remains useful: it shows that the earlier
+      explanation no longer resolves the difference. Ask for the relevant measuring
+      methods, dates and source evidence. A good model can help locate a disagreement
+      without resolving it. State that limit alongside the benefit you advocate.
+    </p>
+  </section>
+</ModellingLayout>

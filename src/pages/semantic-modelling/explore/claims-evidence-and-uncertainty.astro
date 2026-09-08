@@ -1,0 +1,66 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
+---
+
+<ModellingLayout title="Claims, evidence and uncertainty" description="Keep what a source says separate from what you conclude. A good model makes support, disagreement and missing knowledge visible without pretending that a well-described claim must be true." proseClass="prose wide modelling-document learning-document">
+  <h2 id="source-and-statement">“The report says so” is a beginning</h2>
+  <p>A report can support a decision only if we can identify the relevant statement, its subject and its limits. The name of a respected source or the freshness of a document does not tell us which claim a particular passage supports. Nor does a chain of copied records become several independent observations.</p>
+  <LearningIllustration scene="data-services" alt="Source documents and distinct versions compared under a lens, with attention drawn back to the supporting passages." />
+  <p>A <a href="/glossary#claim">claim</a> is something asserted: “the enclosed area was not accessed during the inspection”, for example. <a href="/glossary#evidence">Evidence</a> is what helps us assess it. An event is what happened; an observation is an act or result of examining something; a report records an account. These can be connected without being the same thing.</p>
+
+  <h2 id="access-evidence">Follow one claim back to its passage</h2>
+  <p>At fictional Harbour Court, the 12 August 2026 inspection of Flat 1 had three identified agreed areas: living room, bedroom and enclosed area. The living room and bedroom were accessed; the enclosed area was locked. Read the two invented report excerpts before deciding how to summarise access.</p>
+  <div class="learning-spread">
+    <section class="learning-specimen" aria-labelledby="source-v1">
+      <h3 id="source-v1">Report version 1 · issued 14 August</h3>
+      <blockquote><p>Physical access was limited during the 12 August inspection of Flat 1.</p></blockquote>
+      <p><strong>What it supports:</strong> the author reported a limitation during that inspection.</p>
+      <p><strong>What this passage does not identify:</strong> the affected area or reason.</p>
+    </section>
+    <section class="learning-specimen" aria-labelledby="source-v2">
+      <h3 id="source-v2">Report version 2 · issued 20 August</h3>
+      <blockquote><p>The agreed inspection areas were the living room, bedroom and enclosed area. The living room and bedroom were accessed. The enclosed area was locked and was not accessed. This corrects the limitation description; no further visit took place.</p></blockquote>
+      <p><strong>What it supports:</strong> a specific access account for the same 12 August inspection, with a stated reason and revision relationship.</p>
+    </section>
+  </div>
+  <LearningDiagram kind="evidence" caption="The claim ‘some but not all agreed areas were accessed’ is derived from the stated three-area scope and access account in report version 2. The trace identifies its support; it does not independently verify the visit." />
+  <p>We can derive “some but not all agreed areas were accessed”: two of the three identified areas were accessed and one was not. This is supported by the supplied account and our explicit teaching definition of that outcome. We cannot derive “the enclosed area was defective”, “permission to share the report was refused” or “another inspection took place on 20 August”. None follows from the passage.</p>
+  <p>The source relationship is useful because a reader can inspect our reasoning. It is not a truth guarantee. In a real case, the author could have recorded an observation incorrectly. Evidence about who observed what, under which conditions and by which method may strengthen or challenge the account. “Recorded in version 2” and “independently verified” are different claims.</p>
+
+  <h2 id="derivation-currency">A clear trail also exposes dependence and limits</h2>
+  <p>Suppose data service S copies version 2 and service T then copies S. Three records may now repeat the access statement, but the supplied trail identifies one underlying report account. Counting the copies as three corroborating observations would exaggerate the evidence.</p>
+  <p>Derivation should say what was done: copied, summarised, calculated or interpreted. The area calculation in the <a href="/semantic-modelling/explore/measurements-amounts-and-values">measurement chapter</a> is supported by stipulated dimensions and an inclusion basis. An interpretation of “limited” needs a definition and scope. A summary that drops those qualifications can be less useful than its source even when every word was copied correctly.</p>
+  <p>Currency is also relative to a question. A newly issued report may describe an older event. A source recognised for identifying a document does not thereby settle the condition of the dwelling described in it. Ask which authority and time matter for the intended use, not whether a source is simply “authoritative” in the abstract.</p>
+
+  <h2 id="uncertainty">An empty space is not a statement of “no”</h2>
+  <p>In the following fictional examples, the field concerns access to an identified enclosed area during a named inspection. These are different information situations, not a proposed OPDA code list.</p>
+  <div class="learning-table">
+    <table>
+      <caption>What each record actually tells a reader</caption>
+      <thead><tr><th scope="col">Record</th><th scope="col">Meaning we can preserve</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">No entry is present.</th><td>Information is absent. The absence alone does not explain why.</td></tr>
+        <tr><th scope="row">“Whether the area was accessed is unknown to the author.”</th><td>The author explicitly states a limit to their knowledge.</td></tr>
+        <tr><th scope="row">“Not applicable: this identified dwelling has no enclosed area.”</th><td>The supplied reason places this question outside the case's scope; it is not an access failure.</td></tr>
+        <tr><th scope="row">“The access detail is withheld from this extract.”</th><td>Information has deliberately not been included here. Its value is not disclosed.</td></tr>
+        <tr><th scope="row">“The area was not accessed during inspection I.”</th><td>An explicit negative claim about access during I.</td></tr>
+        <tr><th scope="row">One account says “accessed during I”; another says “not accessed during I”.</th><td>Potentially conflicting claims, requiring a check of the subject, event and intended meanings.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Substituting one of these for another changes meaning. An empty entry does not say that the author checked and found no access. “Withheld” does not tell us that the author is uncertain. “Not applicable” needs its own reason; it should not become a polite label for an answer that is difficult to obtain.</p>
+  <p>A confidence percentage cannot repair the missing distinctions. Before relying on “90% confident”, ask what claim the number concerns, who assigned it, what evidence or method produced it and how it should be interpreted. A neat number without that account adds apparent precision, not inspectable support.</p>
+
+  <section class="learning-practice" aria-labelledby="conflict-practice">
+    <h2 id="conflict-practice">Practice: distinguish an update from a conflict</h2>
+    <p>At fictional Willow Cottage, source P says “the enclosed area was not accessed during inspection I on 4 September”. Source Q says “the enclosed area was accessed during inspection J on 6 September”. Both identify the same area. Must one be wrong?</p>
+    <h3>Worked response</h3>
+    <p>No. The claims concern different inspection events and can both be true. Preserve the event references; do not compress the records into a timeless “accessed: yes/no” conflict.</p>
+    <h3>A genuine unresolved conflict</h3>
+    <p>Change Q: it now explicitly says the same area was accessed during inspection I on 4 September. Both authors confirm that “accessed” has the same meaning and scope; neither account is described as a correction or withdrawal. P and Q now make incompatible claims about the same stipulated event and area.</p>
+    <p>Record both sources and the conflict. Seek the underlying observations and clarification from the appropriate source owners. A later issue date for Q alone would not settle it. We have enough evidence to identify the disagreement, but not to choose which account is accurate.</p>
+  </section>
+  <p>A strong review note distinguishes the source wording, your conclusion and its limit: “Version 2 supports some-but-not-all access to the three named areas. It does not establish the enclosed area's condition.” To prepare that evidence for another person to review, use <a href="/semantic-modelling/contribute/bring-evidence">Bring evidence others can interpret</a>.</p>
+</ModellingLayout>

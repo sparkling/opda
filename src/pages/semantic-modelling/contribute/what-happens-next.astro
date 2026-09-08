@@ -1,118 +1,82 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 ---
 
-<ModellingLayout title="What happens to a contribution?" description="Discussion, a proposed change, technical checks and adoption are different events. Follow the Harbour Court question through them without mistaking an intended workflow for a completed approval system.">
+<ModellingLayout title="Follow feedback, disagreement and revision" description="Recognise a reasoned response: the evidence considered, meaning changed, checks made and questions left open. A retained distinction can be a successful outcome." proseClass="prose wide modelling-document learning-document">
   <section aria-labelledby="not-a-vote">
     <h2 id="not-a-vote">A comment opens a question; it does not settle the model</h2>
-    <p>
-      A precise observation gives reviewers something to investigate. It may lead to
-      better wording, a new distinction, a request for more evidence or a conclusion
-      that the existing meaning should remain. A useful outcome can also be a clearly
-      recorded disagreement. None requires treating the number of comments, reactions
-      or agreeing AI agents as authority.
-    </p>
-    <p>
-      The sequence below is a guide to the reasoning and handoffs, illustrated with
-      fictional Harbour Court feedback. It is not a live tracking system, a promised
-      response time or evidence that every stage is currently implemented on this
-      website. The applicable candidate and working-group records determine standing.
-    </p>
+    <p>A contribution may lead to clearer wording, a missing distinction, a request for evidence or a reasoned decision to keep the existing meaning. It can also expose a disagreement which is not yet resolved. None of those outcomes is measured by the number of comments, reactions or agreeing AI agents.</p>
+    <p>What matters to a contributor is whether the response engages with the actual issue. Can you see which evidence was considered, what the proposal now means and what your difficult case revealed? “Thanks, resolved” tells you almost none of that.</p>
+    <p>The sequence here illustrates reasoning and handoffs using a fictional access question. It is not an implemented issue tracker, a promised response time or an adopted lifecycle state machine. Check the relevant working-group and candidate records for the standing of real work.</p>
   </section>
 
-  <figure class="modelling-figure" aria-labelledby="journey-caption">
-    <figcaption id="journey-caption">An illustrative review journey, with distinct responsibilities</figcaption>
-    <ModellingVisual kind="candidate-loop" />
-    <ol class="modelling-steps">
-      <li><h3>Observation · Participant</h3><p>“The report was corrected on 20 August, but the inspection occurred on 12 August. This definition appears to combine those dates.”</p></li>
-      <li><h3>Interpretation · Facilitator and domain reviewers</h3><p>Identify the subjects and evidence. Ask whether the problem is wording, missing structure, a source conflict or a difference between contexts.</p></li>
-      <li><h3>Proposed change · Modelling contributors</h3><p>Draft separate meanings for inspection occurrence and report issue. Include the multi-day inspection counterexample and show what would change.</p></li>
-      <li><h3>Checks · Technical specialists and tools</h3><p>Examine whether the encoding and declared rules preserve the proposed distinction. A check does not establish that the inspection happened or approve the meaning.</p></li>
-      <li><h3>Disposition · Responsible human authority</h3><p>Record the response, rationale, remaining questions and the candidate or decision affected. Promotion requires the applicable recorded authority.</p></li>
-    </ol>
-  </figure>
+  <section aria-labelledby="journey">
+    <h2 id="journey">Follow one question until the remaining difference is visible</h2>
+    <figure class="learning-specimen" aria-labelledby="journey-caption">
+      <figcaption id="journey-caption">An illustrative review journey — not a record of actual candidate changes</figcaption>
+      <ol>
+        <li><strong>Question.</strong> A participant notices that the draft choice list combines “Completed” and “Limited access”. “Our report can be complete even though an agreed area was inaccessible. Which choice describes that case?”</li>
+        <li><strong>Request for evidence.</strong> A facilitator asks what “complete” means in the example, which areas were agreed and whether the report describes access or completion of work. Those facts would distinguish overlapping meanings from inconsistent data.</li>
+        <li><strong>Evidence and proposed correction.</strong> The fictional Harbour Court case identifies the living room, bedroom and enclosed area as the agreed areas. The first two were accessed; the enclosed area was locked. Contributors propose all/some/none physical-access outcomes, keeping completion of the report separate.</li>
+        <li><strong>Checks and review.</strong> The supplied case fits “some but not all”. Reviewers test all-access, no-access and empty-scope cases. Technical specialists examine whether the representation preserves the subject, visit and scope and whether declared checks express the proposed requirements.</li>
+        <li><strong>Disposition and next challenge.</strong> The response explains the revised scope and its limits. A later reviewer asks how old “Completed” records can be interpreted. The correction does not recover information those records never distinguished; that migration question remains open.</li>
+      </ol>
+    </figure>
+    <p>The evidence request is substantive, not a demand to complete paperwork. Without an identified nonempty set, the revised choices could still overlap or answer the wrong question. The later challenge is also substantive: improved definitions do not make ambiguous historical values unambiguous.</p>
+    <p>In this teaching example, proposing the distinction is warranted. Claiming that the group has adopted it, that all earlier records can be converted or that a released implementation now enforces it would not be warranted. Real human dispositions and release authority must be separately recorded.</p>
+  </section>
 
   <section aria-labelledby="responses">
     <h2 id="responses">What an understandable response should tell you</h2>
-    <p>
-      “Resolved” is not enough if you cannot see what changed. A useful response
-      connects the original question to the reasoning and its effect. For our case,
-      you should be able to distinguish these possible outcomes:
-    </p>
-    <dl>
-      <dt>A change is proposed</dt><dd>The draft now separates the dates. It still needs review, and the affected candidate version should be identified.</dd>
-      <dt>More evidence is needed</dt><dd>The usual case is clear, but the treatment of inspections spanning several days remains open.</dd>
-      <dt>Different contexts need different views</dt><dd>One consumer needs the event date and another the latest report issue date. The model can preserve both without redefining them as one thing.</dd>
-      <dt>No change is proposed</dt><dd>The existing definition already distinguishes the subjects, or the suggested replacement would introduce a different error. Explain that reasoning and point to the relevant definition.</dd>
-    </dl>
-    <p>
-      These are explanatory outcomes, not the names of an implemented OPDA issue
-      tracker or an adopted lifecycle state machine. The
-      <a href="/semantic-modelling/method">method section</a> separates the required
-      modelling discipline from wider proposed operating arrangements.
-    </p>
+    <div class="learning-spread">
+      <section class="learning-specimen" aria-labelledby="inadequate-response">
+        <h3 id="inadequate-response">An inadequate response</h3>
+        <blockquote><p>Resolved. We have renamed the options and all tests pass.</p></blockquote>
+        <p>You cannot tell whether the overlap was removed, which tests ran, what “complete” now means or how old records are treated.</p>
+      </section>
+      <section class="learning-specimen" aria-labelledby="reasoned-response">
+        <h3 id="reasoned-response">A worked, reasoned response</h3>
+        <blockquote><p>Teaching draft B separates physical access from completion of work. Its three outcomes concern the identified nonempty set of agreed areas during one visit. Harbour Court is some-but-not-all access. The empty-scope case is excluded from this list and needs separate treatment. An old “Completed” value does not determine an access outcome without more evidence. This remains a teaching proposal, not a release.</p></blockquote>
+      </section>
+    </div>
+    <p>The better response does not need to accept every suggestion. It connects the original question to a stated change and explains the boundary. In actual review, it should also identify the affected candidate version, the responsible decision or review record and the standing of that disposition.</p>
   </section>
 
   <section aria-labelledby="checks">
-    <h2 id="checks">Passing a check answers a bounded question</h2>
-    <div class="modelling-comparison">
-      <section aria-labelledby="technical-answer">
-        <h3 id="technical-answer">A technical check can ask</h3>
-        <p>Does this report description contain the issue date required by this declared profile? Is that value expressed in the required form? Does the example preserve the intended relationship?</p>
-      </section>
-      <section aria-labelledby="human-answer">
-        <h3 id="human-answer">Domain review still has to ask</h3>
-        <p>Is this the right date to require for the stated purpose? Does the definition work in practice? What evidence supports the claim, and who can authorise the proposed change?</p>
-      </section>
-    </div>
-    <p>
-      A file can satisfy an encoded rule while containing an inaccurate statement.
-      Equally, a useful observation can reveal that the encoded rule itself is wrong.
-      Tools help locate inconsistencies; people must interpret their consequences.
-      This teaching example is not a current candidate validation result.
-    </p>
+    <h2 id="checks">A technical result answers a bounded question</h2>
+    <h3 id="technical-answer">What can a technical check establish?</h3>
+    <p>A check might confirm that a supplied example uses an allowed value or that generated views retain an agreed relationship. It cannot establish that physical access occurred, that the evidence is accurate or that the proposed choice list is appropriate for every use. Domain reviewers can also discover that a technically enforceable requirement is itself wrong.</p>
+    <h3 id="human-answer">Which judgement and authority are still needed?</h3>
+    <p>A technical validation result and the Technical Working Group's determination are not the same event. For the Property Pack, the recorded accelerated arrangement separates that determination from later domain review. Neither automatically establishes release, adoption or external government recognition. Consult the maintained <a href="/development/property-pack/technical-working-group-determination">determination page</a> and <a href="/development/property-pack/review-and-releases">review and release record</a> rather than inferring status from this sequence.</p>
+    <p>AI and facilitators can assemble evidence, propose alternatives and explain consequences. They do not gain decision authority because several drafts agree. Human domain judgement and recorded OPDA authority retain their separate roles.</p>
   </section>
 
   <section aria-labelledby="disagreement">
-    <h2 id="disagreement">When there is no clean answer yet</h2>
-    <p>
-      Subdivision gives Harbour Court a harder question: what makes Flat 1 the same
-      dwelling over time? An unchanged address cannot settle it, and a new identifier
-      alone cannot explain it. Record the competing interpretations, the evidence
-      needed and which responsibility owns the next review. Do not hide the problem
-      by merging the dwelling, building and title record.
-    </p>
+    <h2 id="disagreement">Distinguish three reasons for not having one answer</h2>
+    <h3>A wording problem</h3>
+    <p>Two reviewers intend the same physical-access scope, but one reads “partial” as including no access. A precise definition and exclusions may resolve the disagreement. Test the revised wording with both the some-access and no-access cases.</p>
+    <h3>A source conflict</h3>
+    <p>Two sources make incompatible access claims about the same identified area and visit, and neither is known to supersede the other. Renaming a term does not reconcile those accounts. Keep both, their versions and the evidence needed to investigate. “Use the newest” is not a general authority rule.</p>
+    <h3>A legitimate difference of purpose</h3>
+    <p>One user needs to know which areas were entered; another needs to know whether a document contains all required sections. Both questions can be valid. The useful outcome is to preserve the two meanings and identify how they relate, not force them into one universal “complete” status.</p>
     <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Why preserve dissent if most people prefer one answer?</div>
-      <p>A minority example may reveal a material exception or a different context. Recording it makes the consequence of the majority's preferred design visible and provides a reason to revisit the decision when evidence changes. That does not mean every objection prevents progress; it means unresolved meaning should not be represented as settled agreement.</p>
+      <div class="callout__label">A retained distinction can be progress</div>
+      <p>A minority counterexample may reveal a real boundary or exception. Recording it makes the consequence of the preferred proposal inspectable and gives reviewers a reason to revisit it if evidence changes. It does not imply that every objection prevents progress or that silence equals agreement.</p>
     </aside>
   </section>
 
+  <section class="learning-practice" aria-labelledby="follow-up-practice">
+    <h2 id="follow-up-practice">Try it: what is missing from “no change”?</h2>
+    <p>A response to a multi-day inspection example says: “No change: the date field is optional.” What should you ask next?</p>
+    <h3>A reasoned response</h3>
+    <p>Optionality does not explain how a multi-day event can be described when information is available. Ask whether the intended scope includes such events and, if so, how their occurrence period is preserved. The response may legitimately show that the existing model already supports a period, or explain a justified exclusion. It needs to address the supplied case, not merely say that the troublesome value can be omitted.</p>
+    <p>A useful follow-up keeps the original reference, identifies this unanswered part and avoids reopening unrelated questions. If new evidence changes the premises, say so; a revised conclusion is not automatically evidence that the earlier reasoning was careless.</p>
+  </section>
+
   <section aria-labelledby="available">
-    <h2 id="available">Current routes, proposed capabilities and authority</h2>
-    <p>
-      Today, the site provides candidate documentation and the member guide. Pages
-      that expose comments support contextual feedback for authorised signed-in
-      participants; working-group Teams threads support discussion under the
-      <a href="/development/working-groups/member-guide/teams-and-discussions">current
-      discussion guidance</a>. File intake follows its separate authorised route.
-    </p>
-    <p>
-      Richer change views, expanded review facilities and the wider lifecycle
-      arrangements are not made operational simply by describing them here.
-      <a href="/modelling/adr/adr-0065">ADR-0065</a> and
-      <a href="/modelling/adr/adr-0068">ADR-0068</a> record wider proposals. The
-      <a href="/modelling/adr/adr-0067">Property Pack decision, ADR-0067</a>, separately
-      records that component's authority boundary: candidate generation and technical
-      conformance do not grant agents release authority.
-    </p>
-    <p>
-      If you contribute, keep the reference to the original question and follow its
-      existing discussion thread. Ask which candidate or decision the response
-      affects. If access or the next step is unclear, use the
-      <a href="/development/working-groups/member-guide">member guide</a>; do not
-      create a parallel public thread containing private evidence.
-    </p>
+    <h2 id="available">Follow the existing record, not an invented process</h2>
+    <p>The <a href="/development/working-groups/member-guide/teams-and-discussions">current discussion guidance</a> explains working-group threads and page-specific comments where available. A comment is not a vote, an approval or a standalone decision record. Source intake has its separate authorised route.</p>
+    <p><a href="/modelling/adr/adr-0065">ADR-0065</a> and <a href="/modelling/adr/adr-0068">ADR-0068</a> describe wider proposed operating arrangements; their proposals do not create live response deadlines or ratification mechanics. The accepted <a href="/modelling/adr/adr-0067">Property Pack method</a> and its <a href="/modelling/adr/adr-0075">accelerated determination amendment</a> retain the relevant authority boundaries.</p>
+    <p>Keep your question's reference and ask which candidate or recorded decision the response affects. When a next step or access arrangement is unclear, use the <a href="/development/working-groups/member-guide">member guide</a>. Do not create a parallel public discussion containing private evidence simply to make the question more visible.</p>
   </section>
 </ModellingLayout>

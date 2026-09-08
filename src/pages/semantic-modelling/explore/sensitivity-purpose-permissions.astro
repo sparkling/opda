@@ -1,0 +1,55 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
+---
+
+<ModellingLayout title="Sensitivity, purpose and permissions" description="A model can describe who participates, why information is used and what a permission covers. Those distinctions matter—but describing them does not authenticate anyone or grant access." proseClass="prose wide modelling-document learning-document">
+  <h2 id="seller-report">“The seller may see the report” leaves too much unstated</h2>
+  <p>Which seller, in which transaction? Which report and version? Does “see” mean read an extract, download the entire document, amend it or share it further? For what purpose and period? Who supplied the permission statement, and what standing does it have?</p>
+  <p>These are modelling questions before they are implementation questions. A useful account must distinguish the participant's domain role from a description of permission. Someone being a seller does not establish entitlement to every record connected to the dwelling, just as the word “borrower” does not identify every arrangement in which someone participates.</p>
+
+  <LearningDiagram kind="permissions" caption="Participation, a scoped permission description and downstream enforcement are separate. A model statement neither verifies the actor's identity nor grants access to a document." />
+  <p>Read the three claims separately: “Nia participates as seller in transaction T”; “a specified permission description concerns Nia, a named report, action, purpose and period”; and “an implementing service evaluates and enforces its applicable policy”. The first does not imply the second, and recording the second does not perform the third.</p>
+
+  <h2 id="sensitivity">Classify the information you actually mean</h2>
+  <p>A property report may combine descriptions of a building with information relating to identifiable people, contact details or restricted source material. It should not inherit one undifferentiated label merely because its main topic is “property”. The relevant classification may concern an individual statement, an attachment, an extract or the document as a whole.</p>
+  <p>Personal-data and sensitivity classifications answer different questions from document status or topic. “Issued” is not the same as “public”. “About a dwelling” is not evidence that a record contains no personal information. A classification should say what it covers, who assigned it, under which defined scheme and at which relevant time.</p>
+  <p>The model must be able to preserve distinctions that the agreed handling requirements need. It does not follow that every private fact should be copied into modelling evidence. A restriction-aware description can explain why a source matters without disclosing its protected content; <a href="/semantic-modelling/contribute/bring-evidence">Bring evidence others can interpret</a> shows that review practice.</p>
+
+  <h2 id="roles-purpose">Participation and purpose are not permission</h2>
+  <p>A transaction role describes participation in property work: seller in T, borrower in A or guarantor in B. A scheme role describes a separately defined capacity within a data-sharing scheme. A permission describes allowed actions with a scope and conditions. A person or organisation may be connected to all three, but none should be inferred merely from the others.</p>
+  <p>Purpose explains why a particular use is intended. Reading an inspection extract to review an access description is not the same purpose as using its contact details for unrelated marketing. A purpose statement helps identify that difference; merely writing down a purpose does not establish that the use is allowed.</p>
+  <p>Consent, a legal basis for processing and permission are also not synonyms. A record may describe a person's expressed consent; a legal-basis statement concerns the justification under applicable rules; a permission can concern a specific action on a specific resource. Their validity and relationships need appropriate evidence and authority. This chapter does not decide what legal basis applies to any real case.</p>
+
+  <h2 id="permission-specimen">A proposal we can actually review</h2>
+  <p>The next specimen is an invented, unapproved permission description for a modelling exercise. It is not a real grant, scheme policy or statement of legal sufficiency. The source note expressly covers only the described action; no extension by role is allowed in these teaching premises.</p>
+  <section class="learning-specimen" aria-labelledby="description-p">
+    <h3 id="description-p">Draft permission description P</h3>
+    <dl>
+      <dt>Participant</dt><dd>Nia, separately identified; seller in fictional transaction T.</dd>
+      <dt>Information</dt><dd>Extract E from report version 2, consisting only of the inspection-access account.</dd>
+      <dt>Action</dt><dd>Read the extract. Amendment and onward sharing are outside this proposed permission.</dd>
+      <dt>Purpose</dt><dd>Review the description of physical inspection access for transaction T.</dd>
+      <dt>Period</dt><dd>1–15 September 2026, both dates included.</dd>
+      <dt>Source and standing</dt><dd>Fictional drafting note N, version 1; a proposal awaiting appropriate review, not an approved entitlement.</dd>
+      <dt>Not supplied</dt><dd>Evidence that the source has authority to grant this permission, any applicable legal basis, and any separate consent evidence.</dd>
+    </dl>
+  </section>
+  <p>Even with those limits, P is more reviewable than “the seller may see the report”. We can inspect the participant, information, action, purpose and period. We can also point precisely to what is not established. A detailed description can still be unauthorised; completeness of its fields is not approval.</p>
+
+  <section class="learning-practice" aria-labelledby="permissions-practice">
+    <h2 id="permissions-practice">Practice: state what the proposal covers</h2>
+    <p>Under P's wording, does the proposal cover Nia reading E for the stated review purpose on 10 September? Does it cover amending the full report, forwarding E, or reading it on 20 September? Does it establish that any of those actions is legally authorised?</p>
+    <h3>Worked response</h3>
+    <p>The first action falls within the proposal's described scope: the named participant, extract, action, purpose and period match. The other actions do not fall within that scope. In particular, permission to read an extract is not permission to change the full report, and participation as seller does not extend the period or permit onward sharing.</p>
+    <p>No real entitlement or legal authorisation is established by this exercise. P is unapproved and its source authority and legal-basis evidence are explicitly absent. Distinguish “matches the proposed description” from “is authorised in practice”.</p>
+    <h3>Change the evidence</h3>
+    <p>Now receive only the sentence “Nia may see the report”, without P. The missing resource, action meaning, purpose, period and source standing cannot be recovered from Nia's seller role. Request the scoped description and its authority evidence. Do not silently fill the gaps with the earlier exercise's details.</p>
+  </section>
+
+  <h2 id="model-and-implementation">The model's job is to preserve these distinctions</h2>
+  <p>A downstream implementation may authenticate an actor, evaluate applicable policy, allow or refuse an action and record what happened. Those are operational responsibilities. A diagram or model annotation does not carry them out, prove valid consent or make OPDA the operator of a data service.</p>
+  <p>That boundary does not make the semantics optional. If an agreed specification says a permission description has a purpose and resource scope, dropping those qualifications in an exchange would lose part of the agreement. Practitioners can challenge that loss without designing an enforcement engine.</p>
+  <p>Scheme-level concepts should be reused or connected through their documented semantic home, not redefined independently in every property context. The broader <a href="/dbt-smart-data#separation">Smart Data standard-versus-operator explanation</a> remains the home for programme and Trust-framework context. Model-review decisions and that wider Trust Framework are different concerns.</p>
+  <p class="learning-note">A useful review contribution is: “This statement establishes a participant's role, but the proposed access claim needs its own resource, action, purpose, period and authority evidence.” No sensitive source material needs to be disclosed merely to demonstrate that missing distinction.</p>
+</ModellingLayout>
