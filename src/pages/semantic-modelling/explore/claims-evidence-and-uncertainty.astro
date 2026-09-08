@@ -2,6 +2,7 @@
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
+import Callout from '@/components/Callout.astro';
 ---
 
 <ModellingLayout title="Claims, evidence and uncertainty" description="Keep what a source says separate from what you conclude. A good model makes support, disagreement and missing knowledge visible without pretending that a well-described claim must be true." proseClass="prose wide modelling-document learning-document">
@@ -12,19 +13,21 @@ import LearningIllustration from '@/components/modelling/LearningIllustration.as
 
   <h2 id="access-evidence">Follow one claim back to its passage</h2>
   <p>At fictional Harbour Court, the 12 August 2026 inspection of Flat 1 had three identified agreed areas: living room, bedroom and enclosed area. The living room and bedroom were accessed; the enclosed area was locked. Read the two invented report excerpts before deciding how to summarise access.</p>
-  <div class="learning-spread">
-    <section class="learning-specimen document-flow" aria-labelledby="source-v1">
+  <figure class="learning-extract document-flow" aria-labelledby="source-v1">
+    <figcaption>
       <h3 id="source-v1">Report version 1 · issued 14 August</h3>
-      <blockquote><p>Physical access was limited during the 12 August inspection of Flat 1.</p></blockquote>
-      <p><strong>What it supports:</strong> the author reported a limitation during that inspection.</p>
-      <p><strong>What this passage does not identify:</strong> the affected area or reason.</p>
-    </section>
-    <section class="learning-specimen document-flow" aria-labelledby="source-v2">
+    </figcaption>
+    <blockquote><p>Physical access was limited during the 12 August inspection of Flat 1.</p></blockquote>
+    <p><strong>What it supports:</strong> the author reported a limitation during that inspection.</p>
+    <p><strong>What this passage does not identify:</strong> the affected area or reason.</p>
+  </figure>
+  <figure class="learning-extract document-flow" aria-labelledby="source-v2">
+    <figcaption>
       <h3 id="source-v2">Report version 2 · issued 20 August</h3>
-      <blockquote><p>The agreed inspection areas were the living room, bedroom and enclosed area. The living room and bedroom were accessed. The enclosed area was locked and was not accessed. This corrects the limitation description; no further visit took place.</p></blockquote>
-      <p><strong>What it supports:</strong> a specific access account for the same 12 August inspection, with a stated reason and revision relationship.</p>
-    </section>
-  </div>
+    </figcaption>
+    <blockquote><p>The agreed inspection areas were the living room, bedroom and enclosed area. The living room and bedroom were accessed. The enclosed area was locked and was not accessed. This corrects the limitation description; no further visit took place.</p></blockquote>
+    <p><strong>What it supports:</strong> a specific access account for the same 12 August inspection, with a stated reason and revision relationship.</p>
+  </figure>
   <LearningDiagram kind="evidence" caption="The claim ‘some but not all agreed areas were accessed’ is derived from the stated three-area scope and access account in report version 2. The trace identifies its support; it does not independently verify the visit." />
   <p>We can derive “some but not all agreed areas were accessed”: two of the three identified areas were accessed and one was not. This is supported by the supplied account and our explicit teaching definition of that outcome. We cannot derive “the enclosed area was defective”, “permission to share the report was refused” or “another inspection took place on 20 August”. None follows from the passage.</p>
   <p>The source relationship is useful because a reader can inspect our reasoning. It is not a truth guarantee. In a real case, the author could have recorded an observation incorrectly. Evidence about who observed what, under which conditions and by which method may strengthen or challenge the account. “Recorded in version 2” and “independently verified” are different claims.</p>
@@ -53,11 +56,12 @@ import LearningIllustration from '@/components/modelling/LearningIllustration.as
   <p>Substituting one of these for another changes meaning. An empty entry does not say that the author checked and found no access. “Withheld” does not tell us that the author is uncertain. “Not applicable” needs its own reason; it should not become a polite label for an answer that is difficult to obtain.</p>
   <p>A confidence percentage cannot repair the missing distinctions. Before relying on “90% confident”, ask what claim the number concerns, who assigned it, what evidence or method produced it and how it should be interpreted. A neat number without that account adds apparent precision, not inspectable support.</p>
 
-  <section class="learning-practice document-flow" aria-labelledby="conflict-practice">
+  <section class="learning-example document-flow" aria-labelledby="conflict-practice">
     <h2 id="conflict-practice">Practice: distinguish an update from a conflict</h2>
     <p>At fictional Willow Cottage, source P says “the enclosed area was not accessed during inspection I on 4 September”. Source Q says “the enclosed area was accessed during inspection J on 6 September”. Both identify the same area. Must one be wrong?</p>
-    <h3>Worked response</h3>
-    <p>No. The claims concern different inspection events and can both be true. Preserve the event references; do not compress the records into a timeless “accessed: yes/no” conflict.</p>
+    <Callout title="Worked response" tone="method" heading="h3">
+      <p>No. The claims concern different inspection events and can both be true. Preserve the event references; do not compress the records into a timeless “accessed: yes/no” conflict.</p>
+    </Callout>
     <h3>A genuine unresolved conflict</h3>
     <p>Change Q: it now explicitly says the same area was accessed during inspection I on 4 September. Both authors confirm that “accessed” has the same meaning and scope; neither account is described as a correction or withdrawal. P and Q now make incompatible claims about the same stipulated event and area.</p>
     <p>Record both sources and the conflict. Seek the underlying observations and clarification from the appropriate source owners. A later issue date for Q alone would not settle it. We have enough evidence to identify the disagreement, but not to choose which account is accurate.</p>

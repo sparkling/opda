@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import Callout from '@/components/Callout.astro';
 ---
 
 <ModellingLayout
@@ -23,8 +24,8 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
       it. These premises explain the difference without choosing a professional
       measuring standard. Now consider what happens when the accounts are exchanged.
     </p>
-    <div class="learning-spread">
-      <section class="learning-specimen document-flow" aria-labelledby="distinction-lost">
+    <div class="learning-comparison">
+      <section class="document-flow" aria-labelledby="distinction-lost">
         <h3 id="distinction-lost">Exchange A · The basis is lost</h3>
         <dl>
           <dt>What arrives</dt><dd>Area: 68 m². Other area: 72 m².</dd>
@@ -32,7 +33,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
           <dt>Risk</dt><dd>A recipient may treat them as incompatible measurements of the same area, or silently keep the larger value.</dd>
         </dl>
       </section>
-      <section class="learning-specimen document-flow" aria-labelledby="distinction-kept">
+      <section class="document-flow" aria-labelledby="distinction-kept">
         <h3 id="distinction-kept">Exchange B · The basis survives</h3>
         <dl>
           <dt>What arrives</dt><dd>The same dwelling; 68 m² excluding the enclosed 4 m² area; 72 m² including it; separate references to accounts A and B.</dd>
@@ -191,8 +192,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     </p>
   </section>
 
-  <section aria-labelledby="accuracy-and-access">
-    <h2 id="accuracy-and-access">What a model cannot guarantee</h2>
+  <Callout title="What a model cannot guarantee" tone="important" heading="h2" id="accuracy-and-access">
     <p>
       An accurate definition cannot make an inaccurate source true. A passing data
       check cannot establish that an inspection happened. A source reference cannot
@@ -207,9 +207,9 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
       claim is “this makes the meaning and its limitations inspectable”, not “this
       removes every risk in property-data exchange”.
     </p>
-  </section>
+  </Callout>
 
-  <section class="learning-practice document-flow" aria-labelledby="test-the-benefit">
+  <section class="learning-example document-flow" aria-labelledby="test-the-benefit">
     <h2 id="test-the-benefit">Practice · Put a condition on the claimed benefit</h2>
     <p>
       A project note says: “Once both area accounts use our model, recipients will

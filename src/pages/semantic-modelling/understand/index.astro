@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import Callout from '@/components/Callout.astro';
 ---
 
 <ModellingLayout
@@ -112,8 +113,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     </p>
   </section>
 
-  <section aria-labelledby="first-action">
-    <h2 id="first-action">A useful first action</h2>
+  <Callout title="A useful first action" tone="method" heading="h2" id="first-action">
     <p>
       Think of one term your team regularly has to explain. Write the question it
       answers, the subject it describes and a situation in which its meaning could
@@ -121,5 +121,5 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
       enough to begin <a href="/semantic-modelling/contribute/frame-a-modelling-question">framing a modelling question</a>;
       you do not have to wait until somebody has drawn a candidate diagram.
     </p>
-  </section>
+  </Callout>
 </ModellingLayout>
