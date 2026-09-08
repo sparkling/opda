@@ -259,7 +259,7 @@ test('a concurrent approval, deactivation or enrollment change prevents enrollme
 });
 
 test('me rechecks current membership and session bindings instead of trusting a stale cookie', async (t) => {
-  const changes = [null, { reviewStatus: 'rejected' }, { suspended: true }, { active: false },
+  const changes = [null, { reviewStatus: 'rejected' }, { reviewStatus: 'withdrawn' }, { suspended: true }, { active: false },
     { enrolmentStatus: 'not_invited' }, { accessVersion: 2 }, { email: 'changed@example.test' },
     { cognitoSub: 'changed-sub' }, { participantId: 'changed-participant' }, { expiresAt: NOW }];
   for (const change of changes) await t.test(JSON.stringify(change), async () => {
@@ -268,6 +268,8 @@ test('me rechecks current membership and session bindings instead of trusting a 
     const me = await controls.handler(event('/_auth/me', { cookies: response.cookies }));
     assert.equal(me.statusCode, 401);
     assert.deepEqual(JSON.parse(me.body), { authenticated: false });
+    assert.equal(cookieValue(me.cookies, '__Host-opda_session'), '');
+    assert.ok(me.cookies.every(cookie => cookie.endsWith('Max-Age=0')));
   });
   for (const change of [{ expiresAt: NOW }, { accessVersion: 9 }, { email: 'different@example.test' }, { sub: 'other' }]) {
     await t.test('session ' + JSON.stringify(change), async () => {
@@ -276,6 +278,26 @@ test('me rechecks current membership and session bindings instead of trusting a 
       assert.equal((await controls.handler(event('/_auth/me', { cookies: response.cookies }))).statusCode, 401);
     });
   }
+});
+
+test('withdrawal signs out every existing session and reapproval never revives old cookies', async () => {
+  const controls = handlerWith();
+  const first = await controls.callback(), second = await controls.callback();
+  assert.equal(controls.sessions.size, 2);
+  Object.assign(controls.state.participant, { reviewStatus: 'withdrawn', active: false, suspended: true, accessVersion: 2 });
+  for (const session of [first, second]) {
+    const denied = await controls.handler(event('/_auth/me', { cookies: session.cookies }));
+    assert.equal(denied.statusCode, 401);
+    assert.equal(cookieValue(denied.cookies, '__Host-opda_session'), '');
+  }
+  assert.equal((await controls.callback()).statusCode, 401);
+  Object.assign(controls.state.participant, { reviewStatus: 'approved', active: true, suspended: false, accessVersion: 3 });
+  for (const session of [first, second]) {
+    assert.equal((await controls.handler(event('/_auth/me', { cookies: session.cookies }))).statusCode, 401);
+  }
+  const fresh = await controls.callback();
+  assert.equal(fresh.statusCode, 302);
+  assert.equal((await controls.handler(event('/_auth/me', { cookies: fresh.cookies }))).statusCode, 200);
 });
 
 test('me never accepts Auth0 token cookies or unknown/malformed opaque tokens', async () => {

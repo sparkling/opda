@@ -321,8 +321,8 @@ read and compares the session access version. Deny missing, unreadable,
 inconsistent or expired state. Commit `active=false` and increment the version
 before confirming suspension; then disable Cognito, globally sign out and
 invalidate sessions with durable retries. A Cognito failure does not restore
-access. Reactivation does not revive old sessions. Already-delivered data cannot
-be recalled, and a read authorised before suspension may finish.
+access. Reactivation cannot revive old sessions. Visible signed-in tabs recheck every 15 seconds
+and on return to the page; this updates the UI, not the security boundary. Delivered data cannot be recalled.
 
 AWS documents that ordinary signature/expiry JWT validation can accept revoked
 tokens. API Gateway JWT checks, stale Cognito groups and CRM polling therefore
@@ -462,24 +462,24 @@ trusted access actions, HubSpot capacity and Microsoft access remain separately 
 
 ### Confirmation
 
-**Accepted; signup synchronisation, approved-user import and Cognito endpoints live.**
-Infrastructure and website CI deployed `95242916` on 2026-09-08. Schema/app preflight passed.
+**Accepted; signup synchronisation, HubSpot review webhooks and Cognito endpoints live.**
+Infrastructure and website CI deployed `803c5d33` on 2026-09-08; both approval Lambdas match its artifact.
 
 - Imported 1,001 HubSpot contacts and preserved six allowlist approvals: 1,007 mapped accounts,
   enabled but initially unenrolled. No passwords, bulk invitations, admin grants or verification
   shortcuts. Both approval sources are pinned in S3; all 1,001 CRM status mirrors were projected.
 - A live synthetic signup verified ten mapped fields, pending/inactive status and no Cognito account.
-  Its contact was archived, intake removed and replay suppressed. Tests cover duplicates, ambiguous
-  creation, expiry, throttling, IAM and session denial.
+  Manual HubSpot approval enabled access in 1.8 seconds; withdrawal disabled it in 1.4 seconds,
+  using actual signed HubSpot notifications. The test contact was archived, intake removed and replay
+  suppressed; the disabled account/audit remain. Tests cover retries, signatures, expiry and denial.
 - Login presents the Cognito email-code challenge; unauthenticated sessions return 401. The real
   code callback awaits operator completion, so end-to-end sign-in has not passed yet. The session
   Lambda no longer has Auth0 configuration.
 - Verified S3 recovery point, 2026-09-08 19:56:51 UTC: 3,023 register items covering 1,007 accounts,
   empty intake, 1,001 CRM profiles and 16 definitions. Counts/digests passed; no sessions or credentials.
 
-The webhook stack is deployed; live signature compatibility verification is in progress. Outstanding:
-operator email-code completion, a quarantine restore drill, privileged access/MFA procedures,
-retention sweeps and authenticated comment writes. Comments remain public read-only.
+Outstanding: operator email-code completion, a quarantine restore drill, privileged access/MFA
+procedures, retention sweeps and authenticated comment writes. Comments remain public read-only.
 
 ## More Information
 

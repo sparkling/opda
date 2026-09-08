@@ -4,6 +4,7 @@
   "tests": [
     { "path": "tests/astro-content-runtime.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/auth-session.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/auth-session-watch.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/comments-origin-readonly.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/aws-working-group-interest-infrastructure.test.mjs", "owner": "platform", "tier": "pull-request-blocking", "lane": "infrastructure" },
     { "path": "tests/baspi5_round_trip/test_exemplar_regression.py", "owner": "ontology", "tier": "release-blocking", "lane": "ontology" },

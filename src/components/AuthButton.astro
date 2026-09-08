@@ -4,7 +4,7 @@
  *
  * Renders as a "Sign in" button when signed out and an avatar + dropdown
  * (Profile, Log out) when signed in. State is reconciled in the browser
- * on every page-load (including Astro view transitions).
+ * on page-load and periodically while a signed-in page is visible.
  */
 ---
 <div class="auth-button" data-auth-button>
@@ -43,6 +43,8 @@
 </div>
 
 <script>
+  import { createSessionWatch, readSessionIdentity } from '../scripts/auth-session-watch.mjs';
+
   // The path-scoped session service (ADR-0084) owns the opaque participant
   // session and exposes it same-origin: /_auth/me (identity), /_auth/login
   // (starts the PKCE flow), and /_auth/logout (revokes the session + ends Cognito
@@ -56,29 +58,27 @@
   // `false` in production builds, so each block collapses to nothing and no
   // mock code (not even the identity object) reaches live.
 
-  async function gateIdentity() {
-    if (import.meta.env.DEV && window.localStorage.getItem('opda-dev-auth') === '1') {
-      return { email: 'dev@localhost', name: 'Local Dev', picture: '' };
+  function gateIdentity(signal) {
+    if (import.meta.env.DEV) {
+      return window.localStorage.getItem('opda-dev-auth') === '1'
+        ? { email: 'dev@localhost', name: 'Local Dev', picture: '' } : null;
     }
-    try {
-      const r = await fetch('/_auth/me', { credentials: 'same-origin' });
-      if (!r.ok) return null;
-      const j = await r.json();
-      return j && j.email ? j : null;
-    } catch {
-      return null;
-    }
+    return readSessionIdentity({ signal });
   }
 
-  async function reconcile() {
-    const loginBtn = document.getElementById('auth-login-btn') as HTMLButtonElement | null;
-    const userMenu = document.getElementById('auth-user-menu') as HTMLDivElement | null;
+  function renderIdentity(id) {
+    const loginBtn = document.getElementById('auth-login-btn');
+    const userMenu = document.getElementById('auth-user-menu');
     const userEmail = document.getElementById('auth-user-email');
     const userFull = document.getElementById('auth-user-full');
     const userAvatar = document.getElementById('auth-user-avatar');
     if (!loginBtn || !userMenu) return;
 
-    const id = await gateIdentity();
+    const root = document.querySelector('[data-auth-button]');
+    if (root) root.dataset.authState = id ? 'signed-in' : 'signed-out';
+    loginBtn.disabled = false;
+    loginBtn.textContent = 'Sign in';
+    if (userAvatar) { userAvatar.textContent = ''; userAvatar.style.backgroundImage = ''; }
     if (id) {
       const display = id.name || id.email || 'Account';
       if (userEmail) userEmail.textContent = display;
@@ -93,8 +93,35 @@
     } else {
       loginBtn.hidden = false;
       userMenu.hidden = true;
+      if (userEmail) userEmail.textContent = '';
+      if (userFull) userFull.textContent = '';
+      closeDropdown();
+      try { window.localStorage.removeItem('ArtalkUser'); } catch { /* Storage may be disabled. */ }
     }
   }
+
+  function closeDropdown() {
+    const dropdown = document.getElementById('auth-user-dropdown');
+    if (dropdown) dropdown.hidden = true;
+    document.getElementById('auth-user-trigger')?.setAttribute('aria-expanded', 'false');
+  }
+
+  const watcher = createSessionWatch({ readIdentity: gateIdentity, onIdentity: renderIdentity,
+    onUnavailable(id) {
+      // Keep a previously confirmed view during a transient failure. Without any
+      // successful check, show a neutral unavailable control, not a logout claim.
+      if (id !== undefined) renderIdentity(id);
+      else {
+        const button = document.getElementById('auth-login-btn');
+        if (button) { button.hidden = false; button.disabled = true; button.textContent = 'Sign-in unavailable'; }
+      }
+      const root = document.querySelector('[data-auth-button]');
+      if (root) root.dataset.authState = 'unavailable';
+    },
+    isVisible: () => document.visibilityState === 'visible',
+  });
+  let observedRoot;
+  let leaving = false;
 
   function bind() {
     const loginBtn = document.getElementById('auth-login-btn');
@@ -109,9 +136,10 @@
           // No session service on the dev server — fake a local session instead of
           // 404ing on /_auth/login. Stripped from production builds.
           window.localStorage.setItem('opda-dev-auth', '1');
-          reconcile();
+          watcher.stop(); void watcher.start();
           return;
         }
+        leaving = true; watcher.stop();
         const ret = window.location.pathname + window.location.search;
         window.location.href = '/_auth/login?return=' + encodeURIComponent(ret);
       });
@@ -122,11 +150,11 @@
       logoutBtn.addEventListener('click', () => {
         // Clear the cached Artalk SSO JWT so the Comments widget can't reuse it,
         // then let the session service revoke its session and end Cognito SSO.
-        try { window.localStorage.removeItem('ArtalkUser'); } catch { /* ignore */ }
+        leaving = true; watcher.stop(); renderIdentity(null);
         if (import.meta.env.DEV) {
           // Tear down the mock local session; no gate to call. Stripped from prod.
           window.localStorage.removeItem('opda-dev-auth');
-          reconcile();
+          leaving = false; void watcher.start();
           return;
         }
         window.location.href = '/_auth/logout';
@@ -141,22 +169,34 @@
         dropdown.hidden = !open;
         trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
-      document.addEventListener('click', (e) => {
-        if (!dropdown.hidden && !dropdown.contains(e.target as Node) && e.target !== trigger) {
-          dropdown.hidden = true;
-          trigger.setAttribute('aria-expanded', 'false');
-        }
-      });
     }
   }
 
   function init() {
+    const root = document.querySelector('[data-auth-button]');
+    if (!root || root === observedRoot) return;
+    observedRoot = root; leaving = false;
     bind();
-    reconcile();
+    void watcher.start();
   }
 
+  // One listener set for this bundled module, not one per new header element.
+  document.addEventListener('click', (event) => {
+    const dropdown = document.getElementById('auth-user-dropdown');
+    const trigger = document.getElementById('auth-user-trigger');
+    if (dropdown && !dropdown.hidden && !dropdown.contains(event.target) && event.target !== trigger) closeDropdown();
+  });
+  window.addEventListener('focus', () => { if (!leaving) void watcher.refresh(); });
+  window.addEventListener('pageshow', () => { leaving = false; if (observedRoot) void watcher.start(); });
+  window.addEventListener('pagehide', () => watcher.pause());
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible') watcher.pause();
+    else if (!leaving && observedRoot) void watcher.start();
+  });
+  document.addEventListener('astro:before-swap', () => { watcher.pause(); observedRoot = undefined; });
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', init, { once: true });
   } else {
     init();
   }
