@@ -24,6 +24,7 @@
     { "path": "tests/e2e/visual.spec.mjs", "owner": "design-system", "tier": "scheduled-assurance", "lane": "editorial" },
     { "path": "tests/grlc-handler.test.mjs", "owner": "linked-data-api", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/header-brand-palette.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/hubspot-participation.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/ia-pdtf1-source-receipts.test.mjs", "owner": "information-architecture", "tier": "scheduled-assurance", "lane": "editorial" },
     { "path": "tests/ia-preservation-audit.test.mjs", "owner": "information-architecture", "tier": "scheduled-assurance", "lane": "editorial" },
     { "path": "tests/lib/remark/frontmatter-uri-extraction.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },
