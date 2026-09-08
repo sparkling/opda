@@ -212,10 +212,13 @@ Resources:
               if [ ! -e /data/artalk.yml ]; then artalk-go gen conf /data/artalk.yml; fi
               printf 'dbs:\n  - path: %s\n    replicas:\n      - type: s3\n        bucket: %s\n        path: artalk\n        region: %s\n' "$DB_PATH" "$LITESTREAM_BUCKET" "$AWS_REGION" > /etc/litestream.yml
               litestream restore -if-db-not-exists -if-replica-exists "$DB_PATH"
-              exec litestream replicate -exec "artalk-go server --config /data/artalk.yml --host 127.0.0.1 --port 23367"
+              exec litestream replicate -exec "artalk-go server --config /data/artalk.yml"
           Environment:
             - { Name: LITESTREAM_BUCKET, Value: !Ref LitestreamBucket }
             - { Name: AWS_REGION, Value: !Ref 'AWS::Region' }
+            # Artalk reads YAML then ATK_*; its host/port flags are unbound.
+            - { Name: ATK_HOST, Value: '127.0.0.1' }
+            - { Name: ATK_PORT, Value: '23367' }
             - { Name: ATK_DB_TYPE, Value: sqlite }
             - { Name: ATK_DB_FILE, Value: /data/artalk.db }
             - { Name: ATK_TRUSTED_DOMAINS, Value: !Sub 'https://${DomainName}' }
@@ -263,7 +266,7 @@ Resources:
               Value: |
                 worker_processes 1;
                 pid /tmp/nginx.pid;
-                error_log /dev/stderr warn;
+                error_log stderr warn;
                 events { worker_connections 128; }
                 http {
                   access_log off;

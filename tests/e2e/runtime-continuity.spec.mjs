@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { visit, watchRuntime } from './support.mjs';
+import { PRIVACY_NOTICE_VERSION } from '../../config/aws/working-group-interest/domain.mjs';
 
 async function exposeCompactHeaderControls(page) {
   const toggle = page.locator('#global-nav-toggle');
@@ -64,26 +65,62 @@ test.describe('runtime continuity boundaries', () => {
     clean();
   });
 
-  test('comments degrade to an authorised-account prompt without an SSO POST', async ({ page }) => {
+  test('comments remain anonymously readable without identity exchange or mutations', async ({ page, baseURL }) => {
     const clean = watchRuntime(page);
-    const exchangeRequests = [];
+    const apiRequests = [];
+    const loginRequests = [];
+    const content = '<strong>Retained comment, displayed as plain text.</strong>';
+
+    // A real cookie proves the reader omits credentials, rather than merely
+    // passing because this isolated browser context happens to be empty.
+    await page.context().addCookies([{ name: 'legacy-comment-session', value: 'synthetic-old-session', url: baseURL }]);
 
     await page.route('**/_auth/me', (route) => route.fulfill({
       status: 401,
       contentType: 'application/json',
       body: JSON.stringify({ error: 'signed out' }),
     }));
-    await page.route('**/api/v2/sso/exchange', async (route) => {
-      exchangeRequests.push(route.request().method());
-      await route.fulfill({ status: 500, contentType: 'application/json', body: '{}' });
+    await page.route('**/_auth/login**', async (route) => {
+      loginRequests.push(route.request().url());
+      await route.fulfill({ status: 200, contentType: 'text/plain', body: 'unexpected login' });
+    });
+    await page.route('**/api/v2/**', async (route) => {
+      const request = route.request();
+      const url = new URL(request.url());
+      apiRequests.push({ url, method: request.method(), headers: await request.allHeaders(), body: request.postData() });
+      if (url.pathname !== '/api/v2/comments' || request.method() !== 'GET') {
+        await route.fulfill({ status: 403, contentType: 'application/json', body: '{}' });
+        return;
+      }
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({
+        data: { comments: [{ id: 41, nick: 'Test Participant', date: '2026-09-08T12:00:00Z', content }], count: 1 },
+      }) });
     });
 
     await visit(page, '/governance/stakeholder-engagement');
     await page.locator('.comments-section').scrollIntoViewIfNeeded();
-    await expect(page.locator('#opda-comments')).toContainText(
-      'Sign in with an authorised OPDA account to view and post comments',
+    await expect(page.locator('.comments-section__notice')).toHaveText(
+      'Comments are temporarily read-only while sign-in is upgraded.',
     );
-    expect(exchangeRequests).toEqual([]);
+    await expect(page.locator('#atk-comment-41 .comments-section__content')).toHaveText(content);
+    await expect(page.locator('#atk-comment-41 header strong')).toHaveText('Test Participant');
+    await expect(page.locator('#atk-comment-41 .comments-section__content strong')).toHaveCount(0);
+    await expect(page.locator('#opda-comments-status')).toBeEmpty();
+    await expect(page.locator('#opda-comments-more')).toBeHidden();
+    await expect(page.locator('#opda-comments input, #opda-comments textarea, #opda-comments [contenteditable="true"], #opda-comments a[href*="/_auth/"]')).toHaveCount(0);
+    expect(apiRequests).toHaveLength(1);
+    const [read] = apiRequests;
+    expect(read.url.origin).toBe(new URL(page.url()).origin);
+    expect(read.url.pathname).toBe('/api/v2/comments');
+    expect(Object.fromEntries(read.url.searchParams)).toEqual({
+      page_key: await page.locator('.comments-section').getAttribute('data-comment-page-key'),
+      site_name: 'OPDA', limit: '20', offset: '0', flat_mode: 'true', sort_by: 'date_asc',
+    });
+    expect(read.method).toBe('GET');
+    expect(read.body).toBeNull();
+    expect(read.headers.authorization).toBeUndefined();
+    expect(read.headers.cookie).toBeUndefined();
+    expect(loginRequests).toEqual([]);
     clean();
   });
 
@@ -138,7 +175,7 @@ test.describe('runtime continuity boundaries', () => {
       workingGroups: ['estate-agency'],
       contributions: ['review-model-candidates'],
       acknowledgement: true,
-      privacyNoticeVersion: '2026-08-13',
+      privacyNoticeVersion: PRIVACY_NOTICE_VERSION,
     });
     clean();
   });

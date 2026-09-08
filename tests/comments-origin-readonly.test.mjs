@@ -24,10 +24,12 @@ function nginxConfig() {
 test('comments origin has a pinned read-only sidecar and loopback-only Artalk with login disabled', () => {
   assert.match(stack, /public\.ecr\.aws\/docker\/library\/nginx@sha256:[a-f0-9]{64}/u);
   assert.match(stack, /CpuArchitecture: X86_64/u);
-  assert.match(stack, /--host 127\.0\.0\.1 --port 23367/u);
   assert.match(stack, /litestream restore -if-db-not-exists -if-replica-exists/u);
   assert.match(stack, /exec litestream replicate -exec/u);
   const artalk = stack.slice(stack.indexOf('- Name: artalk'), stack.indexOf('- Name: comments-readonly'));
+  assert.match(artalk, /ATK_HOST, Value: '127\.0\.0\.1'/u);
+  assert.match(artalk, /ATK_PORT, Value: '23367'/u);
+  assert.doesNotMatch(artalk, /artalk-go server[^\n]*--(?:host|port)\b/u);
   assert.doesNotMatch(artalk, /PortMappings:/u);
   assert.match(artalk, /ATK_AUTH_ENABLED, Value: 'true'/u);
   for (const flag of ['ANONYMOUS', 'SSO_ENABLED', 'EMAIL_ENABLED', 'AUTH0_ENABLED', 'GOOGLE_ENABLED', 'GITHUB_ENABLED']) {
@@ -35,6 +37,10 @@ test('comments origin has a pinned read-only sidecar and loopback-only Artalk wi
   }
   assert.doesNotMatch(stack, /Auth0Domain|ATK_AUTH_SSO_ISSUER/u);
   const config = nginxConfig();
+  // Node's child stderr is a socket on Linux: reopening /dev/stderr fails.
+  // Nginx's native stderr target uses the existing descriptor, as in ECS.
+  assert.match(config, /error_log stderr warn;/u);
+  assert.doesNotMatch(config, /error_log \/dev\/stderr/u);
   assert.match(config, /location = \/api\/v2\/comments/u);
   assert.match(config, /proxy_pass_request_headers off/u);
   assert.match(config, /proxy_pass_request_body off/u);
@@ -58,7 +64,9 @@ function http(port, path, { method = 'GET', headers = {}, body = '' } = {}) {
 
 test('native nginx enforces anonymous GET/HEAD and rejects mutation, bearer and query bypasses', async t => {
   const binary = process.env.OPDA_NGINX_BINARY || 'nginx';
-  if (spawnSync(binary, ['-v']).error?.code === 'ENOENT') return t.skip('Native nginx is not installed; static contracts still run');
+  const version = spawnSync(binary, ['-v'], { encoding: 'utf8' });
+  if (version.error?.code === 'ENOENT' && !process.env.OPDA_NGINX_BINARY) return t.skip('Native nginx is not installed; static contracts still run');
+  assert.equal(version.status, 0, version.error?.message || version.stderr);
   const temporary = await mkdtemp(join(tmpdir(), 'opda-comments-readonly-'));
   const seen = [];
   const upstream = createServer((req, res) => {
@@ -86,15 +94,20 @@ test('native nginx enforces anonymous GET/HEAD and rejects mutation, bearer and 
     .replaceAll('127.0.0.1:23367', `127.0.0.1:${upstream.address().port}`);
   const configPath = join(temporary, 'nginx.conf');
   await writeFile(configPath, config, { mode: 0o600 });
-  nginx = spawn(binary, ['-c', configPath, '-g', 'daemon off; master_process off;'], { stdio: ['ignore', 'ignore', 'pipe'] });
+  // Never depend on Homebrew/Ubuntu compiled-in prefixes or writable system
+  // directories. Only process-local paths and loopback ports differ from ECS.
+  const args = ['-p', temporary + '/', '-c', configPath, '-e', 'stderr'];
+  const preflight = spawnSync(binary, [...args, '-t'], { encoding: 'utf8' });
+  assert.equal(preflight.status, 0, preflight.error?.message || preflight.stderr);
+  nginx = spawn(binary, [...args, '-g', 'daemon off; master_process off;'], { stdio: ['ignore', 'ignore', 'pipe'] });
   let errors = '';
   nginx.stderr.on('data', chunk => { errors += chunk; });
   let ready = false;
-  for (let i = 0; i < 50 && nginx.exitCode === null; i++) {
+  for (let i = 0; i < 250 && nginx.exitCode === null; i++) {
     try { ready = (await http(port, '/healthz')).status === 200; if (ready) break; } catch { /* starting */ }
     await new Promise(resolve => setTimeout(resolve, 20));
   }
-  assert.equal(ready, true, errors);
+  assert.equal(ready, true, `nginx did not become healthy; exit=${nginx.exitCode}; ${errors}`);
   const query = new URLSearchParams({ page_key: '/retained-thread', site_name: 'OPDA', limit: '20', offset: '0', flat_mode: 'true', sort_by: 'date_asc' });
   const path = '/api/v2/comments?' + query;
   const result = await http(port, path, { headers: { Authorization: 'Bearer old-token', Cookie: 'session=old', 'content-length': '4' }, body: 'evil' });

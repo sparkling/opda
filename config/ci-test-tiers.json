@@ -28,6 +28,7 @@
     { "path": "tests/hubspot-participation.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/hubspot-sync.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/participant-import.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/legacy-participant-import.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/participant-backup.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/ia-pdtf1-source-receipts.test.mjs", "owner": "information-architecture", "tier": "scheduled-assurance", "lane": "editorial" },
     { "path": "tests/ia-preservation-audit.test.mjs", "owner": "information-architecture", "tier": "scheduled-assurance", "lane": "editorial" },
