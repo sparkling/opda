@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { createHash } from 'node:crypto';
+import { createHash, createHmac } from 'node:crypto';
 import test from 'node:test';
 import { createWebhookHandler } from '../config/aws/hubspot-approval/webhook.mjs';
 
@@ -9,10 +9,13 @@ const secret = { portalId: 144765514, appId: 52397854, clientSecret };
 const config = {
   signingSecretArn: 'arn:aws:secretsmanager:eu-west-2:123456789012:secret:opda-signing-fixture',
   queueUrl: 'https://sqs.eu-west-2.amazonaws.com/123456789012/opda-hubspot-approval',
+  publicWebhookUrl: 'https://abc123def4.execute-api.eu-west-2.amazonaws.com/hubspot/approval',
 };
 const maxBytes = 512 * 1024;
 const hash = value => createHash('sha256').update(value).digest('hex');
 const sign = raw => createHash('sha256').update(clientSecret).update(raw).digest('hex');
+const signV3 = (raw, timestamp = String(now), url = config.publicWebhookUrl, method = 'POST') =>
+  createHmac('sha256', clientSecret).update(method + url).update(raw).update(timestamp).digest('base64');
 const hint = (patch = {}) => ({
   portalId: secret.portalId, appId: secret.appId, objectId: 123,
   subscriptionType: 'contact.propertyChange', propertyName: 'opda_review_status',
@@ -36,6 +39,14 @@ function setup(overrides = {}) {
     now: () => now, ...overrides,
   });
   return { handler, calls, sent };
+}
+function v3Request(payload = [hint()], options = {}) {
+  const event = request(payload, options);
+  const raw = event.isBase64Encoded ? Buffer.from(event.body, 'base64') : Buffer.from(event.body);
+  const timestamp = options.timestamp ?? String(now);
+  event.headers['x-hubspot-signature-v3'] = signV3(raw, timestamp);
+  event.headers['x-hubspot-request-timestamp'] = timestamp;
+  return event;
 }
 
 test('authenticates v1 raw bytes and queues exactly one reference-only receipt', async () => {
@@ -82,6 +93,107 @@ test('never downgrades a v3-bearing request or accepts another declared signatur
     assert.equal((await f.handler(request([hint()], { headers }))).statusCode, 401);
     assert.equal(f.sent.length, 0);
   }
+});
+
+test('valid v3 works with HubSpot dual headers and prefers v3 over the legacy digest', async () => {
+  for (const legacy of ['valid', 'missing', 'wrong']) {
+    const f = setup(), event = v3Request();
+    if (legacy === 'missing') delete event.headers['x-hubspot-signature'];
+    if (legacy === 'wrong') event.headers['x-hubspot-signature'] = '0'.repeat(64);
+    assert.equal(event.headers['x-hubspot-signature-version'], 'v1');
+    assert.equal((await f.handler(event)).statusCode, 202);
+    assert.equal(f.sent.length, 1);
+    assert.deepEqual(JSON.parse(f.sent[0].MessageBody), {
+      schemaVersion: 1, contactIds: ['123'], receivedAt: now, receiptId: hash(event.body),
+    });
+  }
+});
+
+test('a forged v3 signature never falls back to an otherwise valid v1 signature', async () => {
+  const f = setup(), event = v3Request();
+  event.headers['x-hubspot-signature-v3'] = Buffer.alloc(32).toString('base64');
+  assert.equal((await f.handler(event)).statusCode, 401);
+  assert.equal(f.sent.length, 0);
+});
+
+test('v3 binds the exact raw body, POST method and pinned public URL, never host headers', async () => {
+  for (const signature of [
+    signV3(JSON.stringify([hint()]), String(now), config.publicWebhookUrl, 'GET'),
+    signV3(JSON.stringify([hint()]), String(now), 'https://other12345.execute-api.eu-west-2.amazonaws.com/hubspot/approval'),
+    signV3(JSON.stringify([hint()]) + ' '),
+  ]) {
+    const f = setup(), event = v3Request();
+    event.headers['x-hubspot-signature-v3'] = signature;
+    event.headers.host = 'other12345.execute-api.eu-west-2.amazonaws.com';
+    event.headers['x-forwarded-host'] = event.headers.host;
+    assert.equal((await f.handler(event)).statusCode, 401);
+    assert.equal(f.sent.length, 0);
+  }
+  const f = setup(), event = v3Request();
+  event.headers.host = 'untrusted.example.test';
+  event.headers['x-forwarded-proto'] = 'http';
+  assert.equal((await f.handler(event)).statusCode, 202);
+  event.requestContext.http.method = 'GET';
+  assert.equal((await f.handler(event)).statusCode, 405);
+});
+
+test('v3 validates timestamp age and bounded future skew before reading the secret', async () => {
+  for (const [offset, expected] of [[-300000, 202], [-300001, 401], [60000, 202], [60001, 401]]) {
+    const f = setup();
+    const event = v3Request([hint()], { timestamp: String(now + offset) });
+    assert.equal((await f.handler(event)).statusCode, expected);
+    assert.equal(f.calls.length, expected === 202 ? 1 : 0);
+    assert.equal(f.sent.length, expected === 202 ? 1 : 0);
+  }
+});
+
+test('v3 requires a single canonical decimal millisecond timestamp', async () => {
+  for (const timestamp of [undefined, null, now, '', ' ' + now, '0' + now, now + '.0',
+    '1e12', '-1', '9007199254740992', String(now) + ',' + now]) {
+    const f = setup(), event = v3Request();
+    if (timestamp === undefined) delete event.headers['x-hubspot-request-timestamp'];
+    else event.headers['x-hubspot-request-timestamp'] = timestamp;
+    assert.equal((await f.handler(event)).statusCode, 401);
+    assert.equal(f.calls.length, 0); assert.equal(f.sent.length, 0);
+  }
+});
+
+test('v3 rejects duplicate security headers, unsupported legacy versions and malformed encodings', async () => {
+  for (const header of ['X-HubSpot-Signature-V3', 'X-HubSpot-Request-Timestamp',
+    'X-HubSpot-Signature-Version', 'X-HubSpot-Signature']) {
+    const f = setup(), event = v3Request();
+    event.headers[header] = event.headers[header.toLowerCase()];
+    assert.equal((await f.handler(event)).statusCode, 401); assert.equal(f.calls.length, 0);
+  }
+  for (const bad of ['', '!', 'A'.repeat(43), 'A'.repeat(44) + '=', 'A'.repeat(42) + 'B=',
+    Buffer.alloc(32).toString('base64') + '\n', null, ['duplicate']]) {
+    const f = setup(), event = v3Request();
+    event.headers['x-hubspot-signature-v3'] = bad;
+    assert.equal((await f.handler(event)).statusCode, 401); assert.equal(f.calls.length, 0);
+  }
+  for (const version of ['v2', 'v3', '', 'v1,v2']) {
+    const f = setup(), event = v3Request();
+    event.headers['x-hubspot-signature-version'] = version;
+    assert.equal((await f.handler(event)).statusCode, 401);
+  }
+});
+
+test('v3 preserves base64 raw Unicode and whitespace with case-insensitive header names', async () => {
+  const raw = `\n ${JSON.stringify([hint({ propertyValue: 'synthetic-é-🏡' })], null, 2)}\n`;
+  const f = setup(), event = v3Request(raw, { base64: true });
+  event.headers = { 'X-HubSpot-Signature-V3': event.headers['x-hubspot-signature-v3'],
+    'X-HubSpot-Request-Timestamp': String(now) };
+  assert.equal((await f.handler(event)).statusCode, 202);
+  assert.equal(JSON.parse(f.sent[0].MessageBody).receiptId, hash(raw));
+  event.headers['X-HubSpot-Signature-V3'] = signV3(JSON.stringify(JSON.parse(raw)));
+  assert.equal((await f.handler(event)).statusCode, 401);
+});
+
+test('authenticated v3 queue failures remain retryable without leaking headers or body', async () => {
+  const f = setup({ sendMessage: async () => { throw new Error(clientSecret + ' synthetic@example.test'); } });
+  const response = await f.handler(v3Request());
+  assert.equal(response.statusCode, 503);
+  assert.doesNotMatch(JSON.stringify(response), /synthetic|signing|example.test/);
 });
 
 test('validates exact numeric portal and app IDs for every event before enqueuing anything', async () => {
@@ -301,6 +413,14 @@ test('enforces API Gateway HTTP API v2, the exact route, POST and string bodies'
 test('bad configuration or receipt clocks cannot produce an accepted message', async () => {
   for (const bad of [{}, { ...config, signingSecretArn: '' }, { ...config, queueUrl: '' }]) {
     assert.throws(() => createWebhookHandler(bad), /configuration/i);
+  }
+  for (const publicWebhookUrl of [undefined, '', 'http://abc123def4.execute-api.eu-west-2.amazonaws.com/hubspot/approval',
+    'https://example.test/hubspot/approval', config.publicWebhookUrl + '?', config.publicWebhookUrl + '#',
+    config.publicWebhookUrl + '/', config.publicWebhookUrl + '?x=1', config.publicWebhookUrl + '#fragment',
+    config.publicWebhookUrl.replace('https://', 'https://user@'), config.publicWebhookUrl.replace('.com/', '.com:443/'),
+    config.publicWebhookUrl.replace('/hubspot/', '/ignored/../hubspot/'),
+    config.publicWebhookUrl.replace('/hubspot/', '/%68ubspot/')]) {
+    assert.throws(() => createWebhookHandler({ ...config, publicWebhookUrl }), /configuration/i);
   }
   for (const timestamp of [NaN, 1.5, -1, '123']) {
     const f = setup({ now: () => timestamp });

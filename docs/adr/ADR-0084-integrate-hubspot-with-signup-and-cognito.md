@@ -225,11 +225,12 @@ approval screen is required. Enrolment completes only after mailbox proof at sig
 The existing legacy private app supports property-change webhooks. Configure its
 HTTPS target and subscriptions in HubSpot's private-app UI, not the public-app API.
 Watch review status, email, deletion/privacy deletion, merge and restore events.
-The receiver verifies the app's documented v1 signature over the exact raw bytes,
-pins portal/app IDs and durably enqueues bounded contact-ID hints before replying.
+The receiver prefers v3 HMAC over the pinned HTTPS URL, method, raw body and fresh
+timestamp; an invalid v3 never falls back to v1. Legacy-only v1 remains supported.
+It pins portal/app IDs and durably enqueues bounded contact-ID hints before replying.
 It has no participant-table or Cognito permissions. The signing secret is separate
-from the contact API token in Secrets Manager. No secrets or contact values enter
-queue payloads or logs. [Private-app webhooks](https://developers.hubspot.com/docs/apps/legacy-apps/private-apps/overview)
+from the contact API token in Secrets Manager. No secrets or contact values enter queue payloads or logs.
+[Private-app webhooks](https://developers.hubspot.com/docs/apps/legacy-apps/private-apps/overview), [Signature validation](https://developers.hubspot.com/docs/apps/legacy-apps/authentication/validating-requests)
 
 The signature authenticates the app, not the approver. A separate worker fetches
 the current contact and review/email property histories. Approval requires a
@@ -247,8 +248,8 @@ security boundary. Administrative grants and identity correction remain separate
 audited AWS operations under operator authority and step-up; CRM never grants them.
 [Property-access limitations](https://knowledge.hubspot.com/properties/restrict-view-edit-access-for-properties)
 
-Delivery can be duplicate, delayed or out of order, and v1 signatures have no
-timestamp-bound replay protection. Treat every event as a fresh-read hint, not a
+Delivery can be duplicate, delayed or out of order; legacy v1 has no timestamp
+protection. Treat every event, including timestamp-checked v3, as a fresh-read hint, not a
 command. Conditional decision versions and an atomic audit prevent old approvals
 from restoring withdrawn access. One worker serialises provider effects, SQS retries
 failures, and 15-minute complete-inventory reconciliation repairs missed events.
@@ -456,8 +457,7 @@ Deliver in independent, verified slices:
 
 ### Consequences
 
-Staff retain their CRM; ownership and approval stay explicit, and CRM outages cannot determine
-access. OPDA owns the integration, identity migration and recovery process. CRM snapshots may lag;
+Staff retain their CRM; ownership and approval stay explicit. OPDA owns identity integration and recovery. CRM snapshots may lag;
 trusted access actions, HubSpot capacity and Microsoft access remain separately governed.
 
 ### Confirmation
@@ -477,7 +477,7 @@ Infrastructure and website CI deployed `95242916` on 2026-09-08. Schema/app pref
 - Verified S3 recovery point, 2026-09-08 19:56:51 UTC: 3,023 register items covering 1,007 accounts,
   empty intake, 1,001 CRM profiles and 16 definitions. Counts/digests passed; no sessions or credentials.
 
-The webhook amendment is under implementation and not yet live-verified. Outstanding:
+The webhook stack is deployed; live signature compatibility verification is in progress. Outstanding:
 operator email-code completion, a quarantine restore drill, privileged access/MFA procedures,
 retention sweeps and authenticated comment writes. Comments remain public read-only.
 

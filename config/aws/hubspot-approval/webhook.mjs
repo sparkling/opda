@@ -1,4 +1,4 @@
-import { createHash, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 
 const PORTAL_ID = 144765514;
 const APP_ID = 52397854;
@@ -6,6 +6,8 @@ const ENDPOINT = '/hubspot/approval';
 const MAX_BODY_BYTES = 512 * 1024;
 const MAX_EVENTS = 100;
 const MAX_CONTACTS = 100;
+const MAX_SIGNATURE_AGE_MS = 300000;
+const MAX_SIGNATURE_FUTURE_MS = 60000;
 const CONTACT_ID = /^[1-9][0-9]{0,19}$/;
 const PROPERTIES = new Set(['opda_review_status', 'email']);
 const OBJECT_EVENTS = new Set(['contact.deletion', 'contact.privacyDeletion', 'contact.restore']);
@@ -25,7 +27,7 @@ function rawBody(event) {
   if (event?.version !== '2.0') reject();
   if (event.rawPath !== ENDPOINT) reject(404);
   if (event.requestContext?.http?.method !== 'POST') reject(405);
-  if (event.rawQueryString && event.rawQueryString !== '') reject();
+  if (event.rawQueryString !== undefined && event.rawQueryString !== '') reject();
   if (typeof event.body !== 'string'
     || ![true, false, undefined].includes(event.isBase64Encoded)) reject();
   if (event.isBase64Encoded) {
@@ -50,15 +52,37 @@ function singleHeader(headers, name) {
   return matches[0]?.[1];
 }
 
-function v1Signature(headers) {
-  // This legacy private app uses v1. A v3 header must never fall back to v1:
-  // supporting v3 later requires a pinned public URL and timestamp/HMAC validation.
-  if (singleHeader(headers, 'x-hubspot-signature-v3') !== undefined) reject(401);
+function requestSignature(headers, receivedAt) {
+  const v3 = singleHeader(headers, 'x-hubspot-signature-v3');
   const version = singleHeader(headers, 'x-hubspot-signature-version');
-  const signature = singleHeader(headers, 'x-hubspot-signature');
+  const v1 = singleHeader(headers, 'x-hubspot-signature');
+  const timestamp = singleHeader(headers, 'x-hubspot-request-timestamp');
+  // The version header labels the legacy digest, including on dual-header requests.
   if ((version !== undefined && version !== 'v1')
-    || typeof signature !== 'string' || !/^[a-f0-9]{64}$/i.test(signature)) reject(401);
-  return Buffer.from(signature, 'hex');
+    || (v1 !== undefined && !/^[a-f0-9]{64}$/i.test(v1))) reject(401);
+  if (v3 !== undefined) {
+    if (!/^[A-Za-z0-9+/]{43}=$/.test(v3)) reject(401);
+    const digest = Buffer.from(v3, 'base64');
+    if (digest.length !== 32 || digest.toString('base64') !== v3) reject(401);
+    if (typeof timestamp !== 'string' || !/^(?:0|[1-9][0-9]{0,15})$/.test(timestamp)) reject(401);
+    const at = Number(timestamp);
+    if (!Number.isSafeInteger(at) || receivedAt - at > MAX_SIGNATURE_AGE_MS
+      || at - receivedAt > MAX_SIGNATURE_FUTURE_MS) reject(401);
+    return { version: 3, digest, timestamp };
+  }
+  if (v1 === undefined) reject(401);
+  return { version: 1, digest: Buffer.from(v1, 'hex') };
+}
+
+function configuredPublicUrl(value) {
+  let url;
+  try { url = new URL(value); } catch { throw new TypeError('Invalid webhook configuration'); }
+  if (typeof value !== 'string' || url.protocol !== 'https:' || url.username || url.password || url.port
+    || !/^[a-z0-9]{10}\.execute-api\.[a-z0-9-]+\.amazonaws\.com(?:\.cn)?$/.test(url.hostname)
+    || value !== `${url.origin}${ENDPOINT}`) throw new TypeError('Invalid webhook configuration');
+  // Only this canonical URL is signed. No query, escapes, stage, or user-controlled
+  // host is allowed, so HubSpot's documented URI percent-decoding is an identity.
+  return value;
 }
 
 function signingSecret(stored) {
@@ -130,11 +154,11 @@ async function sendMessage(input) {
 /**
  * Authenticated invalidation hints, never approval authority. The worker must
  * re-read current CRM and durable participant state for every received contact.
- * Legacy v1 is SHA256(clientSecret + raw request bytes), not JSON reserialization:
+ * Verify preferred v3 HMAC or legacy v1 against exact bytes, never reserialized JSON:
  * https://developers.hubspot.com/docs/apps/legacy-apps/authentication/validating-requests
  * https://developers.hubspot.com/docs/api-reference/legacy/webhooks/guide
  *
- * @param {{signingSecretArn: string, queueUrl: string}} config
+ * @param {{signingSecretArn: string, queueUrl: string, publicWebhookUrl: string}} config
  * @param {{getSecret?: Function, sendMessage?: Function, now?: Function}} deps
  */
 export function createWebhookHandler(config, deps = {}) {
@@ -142,18 +166,22 @@ export function createWebhookHandler(config, deps = {}) {
     || typeof config?.queueUrl !== 'string' || !config.queueUrl.trim()) {
     throw new TypeError('Invalid webhook configuration');
   }
+  const publicUrl = configuredPublicUrl(config.publicWebhookUrl);
   const read = deps.getSecret ?? getSecret;
   const send = deps.sendMessage ?? sendMessage;
   const now = deps.now ?? Date.now;
   return async event => {
     try {
       const raw = rawBody(event);
-      const supplied = v1Signature(event.headers);
       const receivedAt = now();
       if (!Number.isSafeInteger(receivedAt) || receivedAt < 0) throw new Error('Clock unavailable');
+      const supplied = requestSignature(event.headers, receivedAt);
       const secret = signingSecret(await read(config.signingSecretArn));
-      const expected = createHash('sha256').update(secret, 'utf8').update(raw).digest();
-      if (!timingSafeEqual(expected, supplied)) reject(401);
+      const expected = supplied.version === 3
+        ? createHmac('sha256', secret).update('POST' + publicUrl, 'utf8').update(raw).update(supplied.timestamp, 'utf8').digest()
+        : createHash('sha256').update(secret, 'utf8').update(raw).digest();
+      // A present v3 signature has exactly one verification path: never retry v1.
+      if (!timingSafeEqual(expected, supplied.digest)) reject(401);
       const contactIds = contactHints(raw);
       // Deliberately exclude raw payloads, property values, emails and event IDs.
       // v1 has no timestamp binding: duplicate/replayed hints must be safe downstream.
@@ -172,7 +200,7 @@ let runtime;
 export async function handler(event) {
   try {
     runtime ??= createWebhookHandler({ signingSecretArn: process.env.SIGNING_SECRET_ARN,
-      queueUrl: process.env.APPROVAL_QUEUE_URL });
+      queueUrl: process.env.APPROVAL_QUEUE_URL, publicWebhookUrl: process.env.PUBLIC_WEBHOOK_URL });
     return await runtime(event);
   } catch {
     return response(503);

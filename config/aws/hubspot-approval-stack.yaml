@@ -190,6 +190,7 @@ Resources:
         Variables:
           SIGNING_SECRET_ARN: !Ref SigningSecretName
           APPROVAL_QUEUE_URL: !Ref ApprovalQueue
+          PUBLIC_WEBHOOK_URL: !Sub 'https://${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}/hubspot/approval'
 
   Worker:
     Type: AWS::Serverless::Function

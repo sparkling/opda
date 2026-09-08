@@ -25,6 +25,8 @@ test('approval receiver is a bounded, direct HTTP API with exactly one signed PO
   assert.match(receiver, /ReservedConcurrentExecutions: 2/);
   assert.match(receiver, /SIGNING_SECRET_ARN: !Ref SigningSecretName/);
   assert.match(receiver, /APPROVAL_QUEUE_URL: !Ref ApprovalQueue/);
+  assert.ok(receiver.includes("PUBLIC_WEBHOOK_URL: !Sub 'https://${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}/hubspot/approval'"),
+    'v3 signatures bind the deployed HTTPS endpoint, never forwarded request headers');
   assert.doesNotMatch(receiver, /BRIDGE_SECRET|TABLE_NAME|USER_POOL/);
   assert.match(resource(template, 'Api'), /Type: AWS::ApiGatewayV2::Api[\s\S]*ProtocolType: HTTP/);
   assert.match(resource(template, 'ApprovalRoute'), /RouteKey: POST \/hubspot\/approval\n/);
