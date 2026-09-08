@@ -181,6 +181,9 @@ test('teaching pages are bounded visible documents, not interactive course machi
     const source = page(path);
     assert.ok(source.split('\n').length < 500, path + ' exceeds file limit');
     assert.match(source, /learning-document/u);
+    for (const [, classes] of source.matchAll(/class="([^"]*\blearning-(?:specimen|practice)\b[^"]*)"/gu)) {
+      assert.ok(classes.split(/\s/u).includes('document-flow'), path + ' must use the shared editorial flow for teaching text');
+    }
     assert.doesNotMatch(source, /<details\b|<form\b|<button\b|client:|<style\b/iu);
     assert.doesNotMatch(source, /H\s*&(?:amp;)?\s*M|Hennes|Mauritz/iu);
     const ids = [...source.matchAll(/\bid="([^"]+)"/gu)].map((m) => m[1]);

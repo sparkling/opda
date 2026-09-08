@@ -161,3 +161,25 @@ The report-only slice receives local file, link, scope and whitespace checks, pl
 Completed local checks on 8 September: seven Markdown files all below 500 lines; 35 local document links resolve; the chapter inventory contains 22 unique routes with eight verified existing routes and fourteen proposed new routes; no prohibited source-business names or trailing whitespace were found. The main worktree still contained only its two pre-existing unrelated modifications. No website build or application test result is claimed.
 
 The output is this local document set on the isolated review branch, to be committed as a coherent review slice. No website route or navigation entry exposes these reports. No push, deployment, upstream change or publication is part of this rerun.
+
+## Implementation authorised and completed — 8 September 2026
+
+The subsequent instruction, “create a swarm and implement it”, authorised the website rewrite described by this proposal. The report-only boundary above records the earlier review; it does not describe the later implementation.
+
+Implementation ran on `feat/modelling-field-guide`, based on proposal commit `61a984a6`. Ruflo tracked swarm `swarm-1788823349738-9nigyg` and task `task-1788824859499-p0rw0y`. Three native Astra Ultra authors owned isolated Understand, Explore and Contribute worktrees. Root integrated their work. A separate native Claude Code `claude-fable-5-1` executor, at maximum effort and with read-only tools, reviewed the assembled curriculum and source. No OpenRouter transport was used. The root adjudicated findings against repository evidence; the ledger's default consensus label does not establish a unanimous vote.
+
+The delivered guide has 22 substantive chapters, three rewritten learning landings and a rewritten overall Modelling landing. The allocation remains five Understand, nine Explore and eight Review/contribute chapters. Fourteen chapter routes are new. The technical Ontology modelling chapters and generated candidate corpus were not changed.
+
+The visual system contains 16 authored diagram masters with accessible text equivalents and six distinct professional illustration scenes, each with matching light/dark assets. The illustration [manifest](../../../public/images/modelling/field-guide/manifest.json) records prompts, edit lineage, dimensions and asset sizes. The [diagram masters](../../working/modelling-learning/) retain editable light/dark specimens. Existing image sets were preserved. Native image generation produced the illustration assets under Astra art direction; the prose models were not presented as image-generation providers.
+
+Fable judged the chapters substantive rather than outlines. Its actionable findings led to complete illustration integration, navigation/search registration, replacement of obsolete exact-prose assertions with structural checks, and correction of a fictional participant's inconsistent transaction role. Further integration review aligned transaction and vocabulary versions, clarified the distinction between an abbreviated source excerpt and a complete teaching premise, and made a contradictory-observation example explicit about observer, method, scope and identity. Real candidate information remains drawn from the maintained candidate data, with a reviewed-version warning; fictional changes are labelled separately.
+
+Validation completed locally:
+
+- `make test`: 285 passing tests, one existing skipped test, no failures.
+- `make build`: 2,735 pages built successfully. The installed package manager required the local `pnpm_config_verify_deps_before_run=false` invocation; no dependency or lockfile change was made for it.
+- All 119 existing chapter/landing fragment targets covered by the compatibility fixture remain present. Navigation and search cover all new chapters.
+- The existing OPDA Chrome profile loaded the loopback build. Rendered checks across all 16 diagram types found no text outside its node, duplicate page IDs, horizontal page overflow or paragraphs exceeding the 1,024px editorial measure at the inspected desktop viewport.
+- Light/dark screenshots were inspected, including the actual illustration source switching. The browser check caught and corrected unbounded text in classed teaching examples and excessive space in two figures. Responsive CSS and full text alternatives are implemented, but narrow-screen rendering has not been visually verified in this run.
+
+Implementation commits include `07b011ca` (diagram system) and `cece45f3` (curriculum, illustrations and navigation), followed by the verified editorial-layout corrections containing this receipt. “Publish local” in the second commit's title describes local source integration, not deployment. No report was added to published navigation, no upstream project was modified, and nothing was pushed or deployed.
