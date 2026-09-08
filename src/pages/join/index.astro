@@ -194,11 +194,19 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
     </section>
 
     <section class="wg-section wg-evidence" aria-labelledby="trust-title">
-      <CampaignSectionHeading eyebrow="A contribution with boundaries" title="Your judgement is valuable. Your authority is respected." id="trust-title">
-        <p slot="aside">
-          Existing documents show what has been recorded. Practitioners understand why it matters,
-          where exceptions arise and what happens when a rule does not fit real work.
-        </p>
+      <CampaignSectionHeading eyebrow="A contribution with boundaries" title="Your judgement is valuable. Your authority is respected." id="trust-title" align="start">
+        <div slot="aside" class="wg-section-media">
+          <CampaignThemeImage
+            className="wg-section-media__image"
+            lightSrc="/images/join/set-3/judgement-landscape-light.webp"
+            darkSrc="/images/join/set-3/judgement-landscape-dark.webp"
+            alt=""
+          />
+          <p>
+            Existing documents show what has been recorded. Practitioners understand why it matters,
+            where exceptions arise and what happens when a rule does not fit real work.
+          </p>
+        </div>
       </CampaignSectionHeading>
 
       <CampaignCardGrid cards={evidenceCards} />

@@ -1,0 +1,26 @@
+{
+  "title": "Professional judgement and respected authority",
+  "created": "2026-09-08",
+  "provider": "OpenAI native image generation",
+  "usage": "Join-page evidence introduction; decorative, with the meaning supplied by adjacent HTML.",
+  "dimensions": {
+    "width": 1536,
+    "height": 512
+  },
+  "export": {
+    "format": "webp",
+    "quality": 85,
+    "resize": "Proportional width-only resize; no cropping."
+  },
+  "light": {
+    "file": "judgement-landscape-light.webp",
+    "source": "exec-56c8ce42-86aa-4283-a079-c23a7c21f23e.png",
+    "prompt": "Use case: illustration-story.\nAsset type: a new OPDA join-page editorial illustration for the section “Your judgement is valuable. Your authority is respected.”\nCreate ONE light-mode, very wide 3:1 landscape composition, ideally 2172×724, to match a 1536×512 section-image slot without cropping.\nScene: a thoughtful peer review in a British property practice. Three adult practitioners of different ages and skin tones sit across a long desk: an experienced woman explains an exception on an open property inspection sketch, a colleague listens attentively, and a third compares the sketch with a separate source folder that remains in their own hands. A small cutaway house drawing and a modest model doorway make the property setting clear. Show judgement grounded in experience, respectful listening and distinct ownership of source material, not certification or automatic approval.\nMedium: refined architectural pen-and-ink drawing with luminous, colour-rich watercolour washes, fine natural linework, visible paper grain, believable expressive faces and hands. Illustrated, not photographic, flat-vector, glossy or 3D. Palette: petrol/teal, violet, coral and selective OPDA golden-yellow accents on off-white paper, calm natural skin tones. Soft contextual hints of a practice office, not busy stock-art clutter.\nComposition: a shallow horizontal scene filling the panorama, eye-level three-quarter view, all faces and important hands comfortably inside the frame. No huge blank bands. No text overlay area is needed; the heading lives outside the image.\nNo readable text, numbers, letters, labels, logos, watermark, shields, approval stamps, checkmarks, handshake, glowing outlines, abstract network graphics or floating icons. One illustration only, not a webpage, montage or light/dark comparison."
+  },
+  "dark": {
+    "file": "judgement-landscape-dark.webp",
+    "source": "exec-cb528293-3e83-492c-8e23-48c0833a8d2f.png",
+    "editedFrom": "exec-56c8ce42-86aa-4283-a079-c23a7c21f23e.png",
+    "prompt": "Use case: style-transfer.\nInput image: EDIT TARGET, the approved light-mode OPDA judgement illustration. Produce its dark-mode counterpart only.\nPreserve exactly the same three practitioners, identities, faces, natural skin tones, poses, hands, desk, inspection sketch, separate source folder, miniature doorway, office, perspective, framing and 3:1 dimensions.\nChange only the paper/ground, ink contrast and watercolour pigment treatment for a deep-ink OPDA website (#131224 / #231f2f). Keep people and their work clearly readable: natural warm skin, rich petrol/teal, violet, coral and restrained golden-yellow accents, lighter drawing details against dark paper, tactile watercolour grain. An actual painterly dark-paper illustration, not an inverted negative. Preserve enough midtones that it is inviting and readable at a small website size.\nNo fluorescent outlines, neon, glow, night sky, stars, dramatic spotlight, muddy brown background, new objects, omissions, readable text, labels, logos, watermarks or comparison panels. Single image, same geometry, no cropping."
+  }
+}

@@ -341,6 +341,7 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   assert.ok(cards.indexOf('{card.image &&') < cards.indexOf('(card.paragraphs ??'));
   assert.match(themeImage, /attributeFilter: \['data-theme'\]/u);
   assert.match(cards, /aspect-ratio:\s*4 \/ 1/u);
+  assert.match(cards, /\.campaign-card--linked h3\s*\{[^}]*font-size:\s*var\(--text-2xl\)/u);
   assert.match(cards, /margin:\s*clamp\(var\(--space-8\), 4vw, var\(--space-10\)\) 0 0/u);
   for (const group of expectedGroups) {
     assert.ok(existsSync(new URL(`../public/images/join/set-1/${group}.webp`, import.meta.url)));
@@ -350,12 +351,14 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     }
   }
   assert.match(page, /workingGroupImageSet = 'set-3'/u);
-  for (const subject of ['motivation', 'influence']) {
+  for (const subject of ['motivation', 'influence', 'judgement']) {
     for (const mode of ['light', 'dark']) {
       const asset = `/images/join/set-3/${subject}-landscape-${mode}.webp`;
       assert.ok(page.includes(asset));
       assert.ok(existsSync(new URL(`../public${asset}`, import.meta.url)));
-      assert.ok(existsSync(new URL(`../public/images/join/set-3/${subject}-${mode}.webp`, import.meta.url)));
+      if (subject !== 'judgement') {
+        assert.ok(existsSync(new URL(`../public/images/join/set-3/${subject}-${mode}.webp`, import.meta.url)));
+      }
     }
   }
   assert.doesNotMatch(cards, /width=\{1200\}|height=\{300\}/u);
