@@ -50,7 +50,7 @@ test('email claim keys contain a digest, not a personal address', () => {
 test('identity infrastructure disables public signup and separates persistent records from sessions', async () => {
   const stack = await readFile(new URL('../config/aws/participant-identity-stack.yaml', import.meta.url), 'utf8');
   assert.match(stack, /AllowAdminCreateUserOnly: true/);
-  assert.match(stack, /AllowedFirstAuthFactors: \[EMAIL_OTP\]/);
+  assert.match(stack, /AllowedFirstAuthFactors: \[PASSWORD, EMAIL_OTP\]/);
   assert.match(stack, /ManagedLoginVersion: 2/);
   assert.match(stack, /PreventUserExistenceErrors: ENABLED/);
   assert.match(stack, /AllowedOAuthFlows: \[code\]/);

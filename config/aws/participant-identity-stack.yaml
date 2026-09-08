@@ -84,7 +84,9 @@ Resources:
       AdminCreateUserConfig: { AllowAdminCreateUserOnly: true }
       MfaConfiguration: 'OFF'
       Policies:
-        SignInPolicy: { AllowedFirstAuthFactors: [EMAIL_OTP] }
+        # Cognito requires PASSWORD in every pool. Imported users receive no
+        # password and sign in by email code; self-registration stays disabled.
+        SignInPolicy: { AllowedFirstAuthFactors: [PASSWORD, EMAIL_OTP] }
       Schema:
         - Name: email
           AttributeDataType: String

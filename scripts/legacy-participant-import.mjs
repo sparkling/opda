@@ -170,7 +170,7 @@ export async function awsDependencies() {
   const cognito = new cog.CognitoIdentityProviderClient(cfg);
   const pool = (await cognito.send(new cog.DescribeUserPoolCommand({ UserPoolId: outputs.UserPoolId }))).UserPool;
   if (pool?.AdminCreateUserConfig?.AllowAdminCreateUserOnly !== true
-    || JSON.stringify(pool.Policies?.SignInPolicy?.AllowedFirstAuthFactors) !== '["EMAIL_OTP"]') fail();
+    || JSON.stringify([...(pool.Policies?.SignInPolicy?.AllowedFirstAuthFactors ?? [])].sort()) !== '["EMAIL_OTP","PASSWORD"]') fail();
   const db = document.DynamoDBDocumentClient.from(new ddb.DynamoDBClient(cfg));
   const s3 = new storage.S3Client(cfg);
   const markerGuard = pin => ({ ConditionCheck: { TableName: TABLE, Key: { pk: MARKER },
