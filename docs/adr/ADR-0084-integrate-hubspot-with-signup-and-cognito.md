@@ -12,16 +12,15 @@ implements: []
 
 ## Context and Problem Statement
 
-OPDA needs a CRM for fewer than 1,000 website participants, retaining join data,
-human approval, completed enrolment and active/inactive state. Participants need
-website accounts, not CRM seats. Discovering an existing HubSpot account changes
-the build-versus-buy decision. This replaces ADR-0084's **uncommitted bespoke-CRM
-draft**, not an accepted decision or deployed service.
+OPDA needs a CRM for roughly 1,000 participants, retaining join data, human approval,
+completed enrolment and active/inactive state. Participants need website accounts, not CRM seats.
+An existing HubSpot account changes the build-versus-buy decision. This replaces ADR-0084's
+**uncommitted bespoke-CRM draft**, not an accepted decision or deployed service.
 
 The repository already implements anonymous `/join` submissions in encrypted,
 on-demand DynamoDB in `eu-west-2`. A reference-only DynamoDB Streams/SNS/SQS
 boundary follows persistence. The public handler does not create accounts.
-The current website session service and Artalk SSO use **Auth0**, not Cognito,
+At the start of this migration, website sessions and Artalk SSO used **Auth0**,
 with a separate commenter email allowlist. Therefore adopting Cognito is an
 authentication migration, not simply configuring an existing Cognito connector.
 
@@ -59,11 +58,10 @@ avoid paid automation tiers; keep AWS costs and private recovery proportionate.
 
 ## Decision Outcome
 
-Use **HubSpot for CRM, Cognito for authentication, and DynamoDB for website
-eligibility**. Implement a narrow signup/synchronisation bridge and access-action
-page, not a custom CRM. HubSpot is not called during ordinary participant login
-or protected requests. Its outage must not break the public site or revoke an
-otherwise eligible person's access merely because CRM synchronisation is late.
+Use **HubSpot for CRM, Cognito for authentication, and DynamoDB for website eligibility**.
+Implement a narrow signup/synchronisation bridge and access-action page, not a custom CRM.
+HubSpot is not called during participant login or protected requests. Its outage must not break
+the public site or revoke eligible access merely because CRM synchronisation is late.
 
 ### 1. What integrating authentication with HubSpot actually means
 
@@ -95,11 +93,10 @@ contact and lifecycle data, not replace Cognito with HubSpot authentication.
 The AWS register holds a labelled last-observed CRM profile/revision for recovery, not
 bidirectional ownership. Decisions reference application evidence that CRM edits cannot rewrite.
 
-Use immutable random participant IDs, separate registration IDs and a verified
-`issuer + sub` identity binding. Store the HubSpot portal/contact mapping in AWS;
-neither email nor a CRM field is a security identifier. Reserve canonical email
-and subject bindings with conditional writes/transactions at trusted review and
-enrolment. An eventually consistent search index is not a uniqueness check.
+Use immutable random participant IDs, separate registration IDs and a verified `issuer + sub`
+binding. Store the HubSpot portal/contact mapping in AWS; neither email nor a CRM field is a security
+identifier. Reserve canonical email/subject bindings with conditional transactions at trusted
+review/enrolment. An eventually consistent search index is not a uniqueness check.
 [DynamoDB transactions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html)
 
 ### 3. Join fields and the minimal HubSpot property set
@@ -283,9 +280,11 @@ The server-side eligibility predicate is:
 
 Disable Cognito self-service signup. Provision approved contacts using
 `AdminCreateUser` + `SUPPRESS`, without a temporary password or `email_verified`.
-Use Essentials managed login with email one-time passwords. There is no bulk
-invitation wave: the person requests a code when choosing to sign in. The
-successful code verifies ownership; staff approval is not email verification.
+Use Essentials managed login with email one-time passwords. Cognito also requires
+`PASSWORD` in the allowed factors, but imported users receive no password. The client
+must list required `email` as writable; the pool keeps it immutable after creation.
+There is no bulk invitation wave: each person requests a code when signing in.
+The successful code verifies ownership; staff approval is not email verification.
 An immutable import participant identifier prevents a retry adopting somebody
 else's existing Cognito account. Never force-transfer aliases or silently rebind
 changed CRM addresses. Retain source snapshot, operator decision and import results
@@ -457,28 +456,30 @@ Deliver in independent, verified slices:
 
 ### Consequences
 
-Staff retain their existing CRM; ownership and approval stay explicit, and CRM
-outages cannot determine access. OPDA still owns the small integration, identity
-migration and recovery process. CRM snapshots may lag; trusted access actions,
-HubSpot capacity and Microsoft access remain separately governed.
+Staff retain their CRM; ownership and approval stay explicit, and CRM outages cannot determine
+access. OPDA owns the integration, identity migration and recovery process. CRM snapshots may lag;
+trusted access actions, HubSpot capacity and Microsoft access remain separately governed.
 
 ### Confirmation
 
-**Accepted; credential and property setup completed, login migration in implementation.**
-The operator CLI, `scripts/hubspot-participation-admin.mjs`, provides read-only `preflight`.
-`apply-schema` requires confirmation, creates only missing definitions and verifies them.
-The operator approved the bounded existing-contact migration; no accounts or bulk
-invitations have yet been created. Before enabling integration:
+**Accepted; signup synchronisation, approved-user import and Cognito endpoints live.**
+Infrastructure and website CI deployed `95242916` on 2026-09-08. Schema/app preflight passed.
 
-- Confirm lossless mapping, no honeypot/timer CRM data and no invented evidence.
-- Exercise duplicates, contact merges, ambiguous timeouts, out-of-order events,
-  retries, `429`, erased records and queue isolation using synthetic records.
-- Prove pending/incomplete/inactive users and stale sessions cannot perform
-  member actions, including direct Artalk/API requests and password resets.
-- Prove CRM edits, professional roles/groups, ownership and HubSpot admin status cannot grant AWS access.
-- Verify exact-target admin authorisation, CSRF, revocation, MFA/step-up, safe retries and public-site independence.
-- Restore S3 snapshots in quarantine with erasure, duplicate identity and pool-loss cases; never restore active sessions.
-- Keep personal data/secrets out of builds and logs. Use focused tests and one synthetic journey, not new whole-site gates; record capacity and recovery ownership.
+- Imported 1,001 HubSpot contacts and preserved six allowlist approvals: 1,007 mapped accounts,
+  enabled but initially unenrolled. No passwords, bulk invitations, admin grants or verification
+  shortcuts. Both approval sources are pinned in S3; all 1,001 CRM status mirrors were projected.
+- A live synthetic signup verified ten mapped fields, pending/inactive status and no Cognito account.
+  Its contact was archived, intake removed and replay suppressed. Tests cover duplicates, ambiguous
+  creation, expiry, throttling, IAM and session denial.
+- Login presents the Cognito email-code challenge; unauthenticated sessions return 401. The real
+  code callback awaits operator completion, so end-to-end sign-in has not passed yet. The session
+  Lambda no longer has Auth0 configuration.
+- Verified S3 recovery point, 2026-09-08 19:56:51 UTC: 3,023 register items covering 1,007 accounts,
+  empty intake, 1,001 CRM profiles and 16 definitions. Counts/digests passed; no sessions or credentials.
+
+Outstanding: a quarantine restore drill, staff action page/API and MFA/grants, automated status
+projection, retention/reconciliation sweeps and authenticated comment writes. Comments are public
+read-only; CRM projection is operator-run. These are explicit boundaries, not implied live capabilities.
 
 ## More Information
 
@@ -495,5 +496,4 @@ invitations have yet been created. Before enabling integration:
 Native Astra Ultra and Fable 5.1 findings informed the identity, invitation, abuse,
 retention and migration decisions. Separate review/enrolment/active fields are
 retained over Fable's consolidation suggestion; capacity is a preflight condition.
-The operator subsequently authorised implementation and the bounded contact approval.
-Current migration decisions and live checks are recorded through working Ruflo MCP.
+The operator authorised implementation and bounded contact approval; decisions and live checks are recorded in Ruflo MCP.
