@@ -36,6 +36,18 @@ project folder and organise it. Maintain a project README.
   Use MCP, Microsoft Graph, or another API/CLI. If those routes are unavailable or
   blocked, report the exact blocker and stop instead of switching to the web UI.
 
+## Main-only repository workflow
+
+- Work directly on `main` in this existing checkout.
+- NEVER create or use feature, review, release, or agent branches or additional
+  worktrees, including for background agents and swarms.
+- Assign parallel writers non-overlapping files in this checkout and serialize
+  overlapping edits. Independent reviews should be read-only.
+- Consolidate existing branch work into `main` without reverting newer accepted
+  changes or absorbing unrelated uncommitted work.
+- Commit coherent, verified changes incrementally. Push and publish only when
+  explicitly requested by the user.
+
 ## Browser Automation Hard Rule
 
 - For every browser interaction in this repository, including local-page inspection,
@@ -77,7 +89,7 @@ Use the smallest capable structure derived from dependency edges, shared-state r
 - Independent one-shot native agents need no Ruflo swarm.
 - For persistent topology, shared memory, or tracked handoffs, discover the live schemas, call `swarm_init`, then register each worker with `agent_spawn({agentType: "...", agentId: "..."})`.
 - A tracked record does not launch a native Claude/Codex agent; launch the matching executor separately.
-- Give every writer an isolated worktree and non-overlapping ownership; name one integration owner.
+- Keep every writer in the existing `main` checkout with non-overlapping ownership; name one integration owner and serialize conflicting edits. Never create agent branches or worktrees.
 - Read-only research may run concurrently. Continue independent work after spawning and wait only on a real dependency.
 - Role strings such as `researcher`, `architect`, `coder`, and `reviewer` are labels, not proof of a specialized runtime.
 
