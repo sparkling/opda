@@ -3,6 +3,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import LearningCard from '@/components/modelling/LearningCard.astro';
 import LearningDiagram from '@/components/modelling/LearningDiagram.astro';
 import LearningIllustration from '@/components/modelling/LearningIllustration.astro';
+import SubpageCards from '@/components/modelling/SubpageCards.astro';
 import { contexts, contextRoute, contextMap, candidateManifest } from '@/lib/property-pack-model.mjs';
 const propertyContexts = contexts.filter((context) => context.kind === 'bounded-context');
 ---
@@ -14,7 +15,16 @@ const propertyContexts = contexts.filter((context) => context.kind === 'bounded-
 
   <h2 id="boundary"><span id="discover-boundaries" aria-hidden="true"></span><span id="contexts" aria-hidden="true"></span><span id="homes" aria-hidden="true"></span><span id="semantic-home" aria-hidden="true"></span>Work within the documented boundaries</h2>
   <p>The boundaries for this development phase are established inputs, not something each reader or workshop must rediscover. OPDA's maintained <a href="/development/property-pack/contexts#homes">contextual-boundary register</a> names these {propertyContexts.length} property semantic homes:</p>
-  <ul>{propertyContexts.map((context) => <li><a href={contextRoute(context)}>{context.label}</a> — {context.definition}</li>)}</ul>
+  <SubpageCards labelledby="boundary">
+    {propertyContexts.map((context) => (
+      <li>
+        <a class="card" href={contextRoute(context)}>
+          <h3>{context.label}</h3>
+          <p>{context.definition}</p>
+        </a>
+      </li>
+    ))}
+  </SubpageCards>
   <p>The <a href="/development/property-pack/contexts/common">Common boundary</a> has a different job: stable exchange meaning genuinely shared by several contexts. It stays deliberately small and is governed through the Interoperability Working Group. A term does not belong there merely because several applications use it, or because nobody has yet resolved its ownership.</p>
   <p>The DBT Smart Data scheme working group addresses scheme-level questions. Separately, the candidate register includes a <a href="/development/property-pack/contexts/dbt-smart-data">machine-proposed DBT Smart Data semantic context</a> for authorisation and controlled sharing. That candidate context is not the external government programme, not an OPDA working-group decision and not a seventh property-domain bounded context.</p>
 

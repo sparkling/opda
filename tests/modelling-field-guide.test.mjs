@@ -103,7 +103,7 @@ test('diagram interpretations use the normal-sized shared callout instead of sma
   assert.doesNotMatch(css, /\.learning-figure[^{}]*figcaption\s*\{[^}]*var\(--text-sm\)/su);
 });
 
-test('modelling parent-page destinations share readable linked-card navigation', () => {
+test('modelling destination lists share readable linked-card navigation', () => {
   const component = read('src/components/modelling/SubpageCards.astro');
   assert.match(component, /class="card-grid modelling-subpages"/u);
   assert.match(component, /aria-labelledby=\{labelledby\}/u);
@@ -112,7 +112,7 @@ test('modelling parent-page destinations share readable linked-card navigation',
   assert.match(component, /minmax\(min\(100%, 26rem\), 1fr\)/u);
   assert.match(component, /font: 400 var\(--text-lg\)/u);
   assert.doesNotMatch(component, /var\(--text-(?:xs|sm)\)/u);
-  for (const path of ['index', 'understand/index', 'explore/index', 'contribute/index', 'method/index']) {
+  for (const path of ['index', 'understand/index', 'explore/index', 'contribute/index', 'method/index', 'explore/contexts-and-connections']) {
     const source = read('src/pages/semantic-modelling/' + path + '.astro');
     assert.match(source, /<SubpageCards labelledby=/u, path);
     assert.match(source, /<a class="card" href=/u, path);
