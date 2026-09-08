@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import Callout from '@/components/Callout.astro';
 import '@/styles/modelling/learning.css';
 import '@/styles/modelling/field-guide.css';
 
@@ -19,12 +20,12 @@ const claims = {
   method: {
     label: 'Required modelling method',
     body: 'Examples do not establish candidate implementation.',
-    tone: 'method',
+    tone: 'method' as const,
   },
   example: {
     label: 'Illustrative case',
     body: 'No real property, person or transaction.',
-    tone: 'note',
+    tone: 'information' as const,
   },
 };
 const scopeNote = claim === 'guide' ? null : claims[claim];
@@ -34,10 +35,9 @@ const scopeNote = claim === 'guide' ? null : claims[claim];
   <h1>{title}</h1>
   <p class="lead">{description}</p>
   {scopeNote && (
-    <aside class={`callout callout--${scopeNote.tone}`}>
-      <p class="callout__label">{scopeNote.label}</p>
+    <Callout title={scopeNote.label} tone={scopeNote.tone}>
       <p>{scopeNote.body}</p>
-    </aside>
+    </Callout>
   )}
   <slot />
 </Layout>

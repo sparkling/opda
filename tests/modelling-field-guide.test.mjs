@@ -39,6 +39,30 @@ test('field-guide visual projection is scoped and never accepts external HTML', 
   assert.match(css, /@media print/u);
 });
 
+test('editorial layouts constrain reading text, not comparisons and diagrams', () => {
+  const css = read('src/styles/modelling/field-guide.css');
+  assert.match(css, /\.learning-comparison/u);
+  assert.match(css, /container-type: inline-size/u);
+  assert.match(css, /max-inline-size: none/u);
+  assert.doesNotMatch(css, /max-inline-size: (54|60)rem/u);
+  assert.doesNotMatch(css, /\.learning-specimen[\s\S]*?background: var\(--color-surface-alt\)/u);
+  const editorial = read('src/styles/editorial-content.css');
+  assert.match(editorial, /--editorial-text-max: 64rem/u);
+  assert.match(editorial, /:is\(h2, h3, h4\):first-child/u);
+});
+
+test('authored callouts share the design-system component without a second visual skin', () => {
+  const component = read('src/components/Callout.astro');
+  assert.match(component, /callout--/u);
+  assert.match(component, /callout__label/u);
+  assert.match(component, /aria-labelledby/u);
+  assert.match(component, /<slot\s*\/>/u);
+  assert.doesNotMatch(component, /<style/u);
+  const layout = read('src/layouts/ModellingLayout.astro');
+  assert.match(layout, /<Callout/u);
+  assert.doesNotMatch(layout, /<aside class=/u);
+});
+
 const webpSize = (bytes) => {
   assert.equal(bytes.toString('ascii', 0, 4), 'RIFF');
   assert.equal(bytes.toString('ascii', 8, 12), 'WEBP');

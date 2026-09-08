@@ -78,9 +78,9 @@ test('one registry supplies the canonical pages across four task-based journeys'
   const layout = read('src/layouts/ModellingLayout.astro');
   for (const kind of ['method', 'example']) assert.match(layout, new RegExp(`${kind}:`, 'u'));
   assert.match(layout, /<h1>\{title\}<\/h1>/u);
-  assert.match(layout, /callout callout--\$\{scopeNote.tone\}/u);
+  assert.match(layout, /<Callout title=\{scopeNote.label\} tone=\{scopeNote.tone\}/u);
   assert.match(layout, /tone: 'method'/u);
-  assert.match(layout, /class="callout__label"/u);
+  assert.match(read('src/components/Callout.astro'), /class="callout__label"/u);
   assert.doesNotMatch(layout, /Learning guide|ChapterIntro/u);
   const editorial = read('src/styles/editorial-content.css');
   assert.match(editorial, /--editorial-heading-space:\s*var\(--space-7\);/u);

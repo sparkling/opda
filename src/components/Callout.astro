@@ -1,0 +1,17 @@
+---
+/** The design system owns the presentation; this component owns its markup. */
+interface Props {
+  title: string;
+  tone?: 'information' | 'method' | 'technical' | 'important' | 'caution' | 'confirmation' | 'critical';
+  id?: string;
+  heading?: 'p' | 'h2' | 'h3' | 'h4';
+}
+const { title, tone = 'information', id, heading: Heading = 'p' } = Astro.props;
+const tones = ['information', 'method', 'technical', 'important', 'caution', 'confirmation', 'critical'];
+if (!title?.trim() || !tones.includes(tone)) throw new Error('A callout needs a title and a semantic tone');
+if (!['p', 'h2', 'h3', 'h4'].includes(Heading)) throw new Error('Invalid callout heading');
+---
+<aside class={`callout callout--${tone}`} aria-labelledby={id} aria-label={id ? undefined : title}>
+  <Heading class="callout__label" id={id}>{title}</Heading>
+  <slot />
+</aside>
