@@ -287,7 +287,7 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     'The direction of travel is clear. The practical detail is still open.',
     'Participation does not make SPDTF adopted or confer standards authority.',
     'professional judgement',
-    'What participation does—and doesn’t—mean.',
+    'What participation means and what it does not.',
     'Estate Agency',
     'Finance and Banking',
     'Conveyancing',
