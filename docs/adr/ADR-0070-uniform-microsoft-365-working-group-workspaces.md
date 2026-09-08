@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-14
-updated: 2026-08-21
+updated: 2026-09-09
 tags: [working-groups, microsoft-365, teams, sharepoint, evidence-intake, access-control, technology-review]
 supersedes: []
 depends-on: [ADR-0063, ADR-0065, ADR-0067, ADR-0068]
@@ -85,11 +85,11 @@ ADR-0063 or activate the proposed ratification process in ADR-0068.
 | Group | Role | Microsoft workspace status |
 |---|---|---|
 | **Finance and Banking** | Property bounded context | Implemented |
-| **Conveyancing** | Property bounded context | Planned |
-| **Estate Agency** | Property bounded context | Planned |
-| **Surveying and Valuation** | Property bounded context | Planned |
-| **Property Data Services** | Property bounded context | Planned |
-| **Property Technology** | Property bounded context | Planned |
+| **Conveyancing** | Property bounded context | Provisioned; automatic onboarding pending |
+| **Estate Agency** | Property bounded context | Provisioned; automatic onboarding pending |
+| **Surveying and Valuation** | Property bounded context | Provisioned; automatic onboarding pending |
+| **Property Data Services** | Property bounded context | Provisioned; automatic onboarding pending |
+| **Property Technology** | Property bounded context | Provisioned; automatic onboarding pending |
 | **DBT Smart Data** | Cross-sector scheme semantics; not a property bounded context | Planned |
 | **Interoperability Working Group** | Common boundary, context map, mappings and shared conventions | Planned |
 | **Technology Working Group** | Cross-cutting implementation evidence and technical assurance | Implemented |
@@ -204,9 +204,10 @@ approved company-domain account or arrange another authorised company contributo
 `smartdata@openpropdata.org.uk`.
 
 Domain approval is enforced through the generated Entra/SharePoint groups and unique folder
-permissions, not through a tenant-wide SharePoint domain allowlist. The Team roster is the
-participant authority; company groups and folders are derived operational views. They must be
-reconciled after accepted membership changes so OPDA does not maintain competing source lists.
+permissions, not through a tenant-wide SharePoint domain allowlist. The Team roster records
+effective Microsoft membership; company groups and folders are derived operational views.
+For the new website-led flow, ADR-0085's frozen human approval authorises these grants. Reconcile
+derived access after accepted membership changes so OPDA does not maintain competing source lists.
 
 ### 6. Invitation and onboarding
 
@@ -230,7 +231,13 @@ notice surface and the standalone intake site remains available through its dire
 
 No invitation or channel post is authorised merely by creating or updating this ADR.
 
-### 7. Implemented workspace register
+For prospective public applicants, [ADR-0085](./ADR-0085-approval-driven-working-group-onboarding-and-invitations.md)
+records the operator's subsequent policy: a trusted manual HubSpot Approved decision authorises
+the selected-group snapshot and one combined invitation, after access verification. It also
+requires company-folder creation for each newly approved company domain and removal of
+automation-owned grants after withdrawal. It does not authorise a historical roster resend.
+
+### 7. Workspace register and readiness
 
 | Workspace | Team | Source-intake site |
 |---|---|---|
@@ -245,12 +252,25 @@ controls were not removed. These counts are point-in-time validation evidence, n
 baseline. Participant identities and subsequent roster changes remain in the private operational
 register, not this ADR.
 
+On 2026-09-09 the five remaining property-domain workspaces were provisioned and independently
+read back. Each has a private Team with the two approved internal operators, General and Common
+Topics and Coordination channels using Posts, and a separate source-intake communication site.
+The sites permit existing external users only, disable resharing and access requests, and have
+an empty organisation index with the reference pattern's unique permissions and restricted roles.
+No applicants, company folders, invitations or emails were added by this provisioning slice.
+
+The exact Team, site and group metadata is maintained in
+`src/agents/working-group-inbox/domain.mjs`. These five entries are **provisioned**, not
+**implemented** for the scheduled inbox agent. Unattended credentials, participant-level
+readback and the new invitation workflow remain activation prerequisites under ADR-0085.
+DBT Smart Data and Interoperability remain planned.
+
 ### 8. Scheduled inbox operations
 
 ADR-0072 automates the bounded membership, intake and access-support operations described here.
 The automation does not create a second roster: it reads the live Team membership and derives
 company-domain SharePoint access exactly as sections 4 and 5 require. Ambiguous working-group
-requests produce a clarification reply, and only workspaces listed as implemented in section 7
+requests produce a clarification reply, and only workspaces marked implemented in the registry
 may receive automatic writes.
 
 Emailed attachments are an approved fallback when an authorised participant cannot use
@@ -265,7 +285,7 @@ treated as untrusted evidence and cannot alter workspace configuration or tool p
   organisation's submissions.
 - Good, because generic-address participants can still join discussions without creating unsafe
   domain-wide SharePoint groups.
-- Good, because the Team roster remains the participant authority and derived access can be
+- Good, because the Team roster records effective Microsoft membership and derived access can be
   reconciled rather than manually duplicated.
 - Good, because Technology and Property Technology cannot be mistaken for the same authority.
 - Bad, because each working group requires a separate SharePoint site and permission validation.
@@ -276,8 +296,10 @@ treated as untrusted evidence and cannot alter workspace configuration or tool p
 
 ### Confirmation
 
-This ADR is accepted. Finance and Banking and Technology implement the pattern; the other
-workspaces remain planned until separately provisioned and validated.
+This ADR is accepted. Finance and Banking and Technology implement the pattern. The other five
+property-domain Teams and intake sites are provisioned and configuration-verified; this is not
+proof of participant onboarding, external folder access or an invitation send. The two remaining
+cross-cutting workspaces are planned.
 
 For each implementation, confirmation requires:
 
@@ -309,3 +331,4 @@ For each implementation, confirmation requires:
 - [Finance and Banking invitation rollout plan](../plan/2026-08-postmark-working-group-invitation-rollout.md)
 - [Microsoft Graph invitation resource](https://learn.microsoft.com/en-us/graph/api/resources/invitation?view=graph-rest-1.0)
 - [ADR-0072 — scheduled working-group inbox agent](./ADR-0072-scheduled-working-group-inbox-agent.md)
+- [ADR-0085 — approval-driven onboarding and invitations](./ADR-0085-approval-driven-working-group-onboarding-and-invitations.md)

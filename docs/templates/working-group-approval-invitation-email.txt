@@ -1,0 +1,118 @@
+Your OPDA working-group access is ready
+
+Hello {{display_name}},
+
+OPDA has approved your participation in all the working groups listed below,
+matching your selection at approval. Your Teams memberships are set up. Each
+group explains whether you also have a private company folder for source material.
+
+Together, we are making UK property transaction data interoperable, verifiable
+and consent-driven. OPDA is developing a governed family of connected domain
+models, preserving precise local meaning while supporting shared glossaries,
+data dictionaries, schemas, APIs, forms and readable documentation.
+
+No ontology, AI or technical expertise is required. Share your domain knowledge,
+discuss the evidence and challenge drafts. AI assists the process; people govern
+and review the results.
+
+1. OPEN YOUR MICROSOFT WORKSPACE
+
+{{#microsoft_redemption_url}}
+Accept your Microsoft invitation once, then open the Teams links below.
+
+Accept Microsoft invitation:
+{{.}}
+{{/microsoft_redemption_url}}
+{{^microsoft_redemption_required}}
+Your Microsoft invitation has already been accepted. Open your working groups
+using the Teams links below.
+{{/microsoft_redemption_required}}
+
+Use the email account that received this invitation. Access is personal to you.
+Do not forward this email or share its invitation link.
+
+YOUR APPROVED WORKING GROUPS
+
+{{#each groups}}
+{{group_name}}
+{{group_scope}}
+
+Open this working group in Teams:
+{{team_url}}
+
+{{#source_folder_url}}
+Your private company folder is ready. Open your company folder to contribute
+authorised source material for this group:
+{{.}}
+
+Access is limited to your authorised company contributors and OPDA administrators.
+{{/source_folder_url}}
+{{#teams_only}}
+Teams-only access. You can join discussions and review drafts. No private
+company-folder upload access has been granted for this group. Contact OPDA if you
+need an approved company-domain account added for uploads.
+{{/teams_only}}
+
+{{/each}}
+Ordinary Teams files are shared with the working group. They are not the private
+company-folder intake route. Use discussion threads for questions and reply in an
+existing thread whenever it covers your topic.
+
+2. SIGN IN TO THE OPDA WEBSITE
+
+Website sign-in is separate from Microsoft Teams and SharePoint. Use the email
+address you registered with OPDA and enter the one-time code sent to that address.
+Accepting a Microsoft invitation does not sign you in to the website.
+
+Sign in to the OPDA website:
+{{website_login_url}}
+
+HOW TO CONTRIBUTE
+
+1. Share authorised source material through a private company folder shown above,
+   where available.
+2. Join the discussion in the most relevant Teams channel and keep replies in
+   their existing threads.
+3. Review model drafts and help identify missing concepts, unclear meanings
+   and practical issues.
+
+{{#has_source_folders}}
+In your company's area you may create, upload, edit, rename, move and delete your
+material. Keep a top-level README with an index, provenance, version, context and
+any usage restrictions. Contributors cannot change permissions, invite people,
+make material public or view another company's submissions.
+{{/has_source_folders}}
+
+SOURCE MATERIAL AND PRIVACY
+
+Useful evidence includes schemas and API definitions, data dictionaries,
+non-production database structures, blank forms, guidance, taxonomies, semantic
+models and diagrams.
+
+Upload authorised files, not links. OPDA will not follow source links to websites,
+cloud drives or online documents. Audio and video must be transcribed before
+submission.
+
+Original sources are reviewed for security and suitability. They are not
+automatically published or shared with other participants. People review
+AI-assisted candidates before they become working-group drafts.
+
+DO NOT SUBMIT
+
+- Personal, customer or live property-transaction data.
+- Passwords, API keys, credentials or other secrets.
+- Material restricted by confidentiality, contract, licence or NDA.
+- Executable software, active scripts or macros.
+- Password-protected or encrypted files, or compressed archives.
+
+NEED HELP OR WANT TO LEAVE A GROUP?
+
+For private access problems, colleague invitations or withdrawal from a working
+group, contact smartdata@openpropdata.org.uk. Unsubscribing from email below does
+not itself remove your workspace access.
+
+Open Property Data Association · Smart Property Data Trust Framework
+This email follows OPDA's approval of your selected working groups.
+
+Stop receiving Smart Property Data Trust Framework working-group emails:
+{{{ pm:unsubscribe }}}

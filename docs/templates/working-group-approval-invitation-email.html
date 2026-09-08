@@ -1,0 +1,120 @@
+<!doctype html>
+<!--
+  Subject: Your OPDA working-group access is ready
+  Alias: working-group-approval-invitation
+  Model: src/approval-onboarding/invitation.mjs (verified current approval only)
+  Inline image: opda-logo -> assets/opda-email-logo.png
+  One recipient; broadcast; TrackLinks=None; TrackOpens=false.
+  Provider-managed unsubscribe is the only unescaped interpolation.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Your OPDA working-group access is ready</title>
+</head>
+<body style="margin:0;padding:0;background:#faf9f5;color:#3d3d3a;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">Your approved working groups, Microsoft access and OPDA website sign-in.</div>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#faf9f5;">
+    <tr><td align="center" style="padding:32px 14px;">
+      <table role="presentation" width="680" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:680px;background:#ffffff;border:1px solid #e6dfd0;border-radius:16px;overflow:hidden;">
+        <tr><td style="padding:22px 32px;background:#2c273b;color:#ffffff;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td><img src="cid:opda-logo" width="260" alt="Open Property Data Association" style="display:block;width:100%;max-width:260px;height:auto;border:0;"></td>
+              <td align="right" style="padding-left:18px;font-family:'Roboto Slab',Georgia,'Times New Roman',serif;font-size:13px;line-height:19px;font-weight:700;color:#e5b632;text-transform:uppercase;letter-spacing:1.2px;">Smart Property Data Trust Framework</td>
+            </tr>
+          </table>
+        </td></tr>
+        <tr><td style="padding:38px 32px 22px;">
+          <p style="margin:0 0 12px;font-size:14px;line-height:20px;font-weight:700;color:#a9583e;text-transform:uppercase;letter-spacing:1.2px;">Your working-group registration is approved</p>
+          <h1 style="margin:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-size:36px;line-height:43px;color:#141413;font-weight:700;">Your OPDA working-group access is ready</h1>
+          <p style="margin:0 0 14px;font-size:17px;line-height:27px;">Hello {{display_name}},</p>
+          <p style="margin:0 0 14px;font-size:17px;line-height:27px;">OPDA has approved your participation in all the working groups listed below, matching your selection at approval. Your Teams memberships are set up. Each group’s card explains whether you also have a private company folder for source material.</p>
+          <p style="margin:0 0 14px;font-size:17px;line-height:27px;">Together, we are making UK property transaction data <strong>interoperable, verifiable and consent-driven</strong>. OPDA is developing a governed family of connected domain models, preserving precise local meaning while supporting shared glossaries, data dictionaries, schemas, APIs, forms and readable documentation.</p>
+          <p style="margin:0;font-size:17px;line-height:27px;"><strong>No ontology, AI or technical expertise is required.</strong> Share your domain knowledge, discuss the evidence and challenge drafts. AI assists the process; people govern and review the results.</p>
+        </td></tr>
+        <tr><td style="padding:28px 32px;border-top:1px solid #e6dfd0;">
+          <h2 style="margin:0 0 14px;font-size:20px;line-height:28px;color:#141413;">1. Open your Microsoft workspace</h2>
+          {{#microsoft_redemption_url}}
+          <p style="margin:0 0 16px;font-size:15px;line-height:24px;">Accept your Microsoft invitation once, then open the Teams links below.</p>
+          <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 16px;">
+            <tr><td style="border-radius:8px;background:#a9583e;"><a href="{{.}}" style="display:inline-block;padding:14px 22px;color:#ffffff;text-decoration:none;font-size:16px;line-height:20px;font-weight:700;">Accept Microsoft invitation</a></td></tr>
+          </table>
+          {{/microsoft_redemption_url}}
+          {{^microsoft_redemption_required}}
+          <p style="margin:0 0 16px;font-size:15px;line-height:24px;">Your Microsoft invitation has already been accepted. Open your working groups using the Teams links below.</p>
+          {{/microsoft_redemption_required}}
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#fff4cf;border-left:4px solid #e5b632;border-radius:8px;">
+            <tr><td style="padding:14px 16px;font-size:14px;line-height:22px;"><strong>Use the email account that received this invitation.</strong> Access is personal to you. Do not forward this email or share its invitation link.</td></tr>
+          </table>
+        </td></tr>
+        <tr><td style="padding:28px 32px;border-top:1px solid #e6dfd0;">
+          <h2 style="margin:0 0 14px;font-size:20px;line-height:28px;color:#141413;">Your approved working groups</h2>
+          {{#each groups}}
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 16px;border:1px solid #e6dfd0;border-radius:8px;">
+            <tr><td style="padding:18px;">
+              <h3 style="margin:0 0 8px;font-size:18px;line-height:25px;color:#141413;">{{group_name}}</h3>
+              <p style="margin:0 0 12px;font-size:14px;line-height:22px;">{{group_scope}}</p>
+              <p style="margin:0 0 12px;font-size:15px;line-height:24px;"><a href="{{team_url}}" style="color:#a9583e;text-decoration:underline;font-weight:700;">Open this working group in Teams</a></p>
+              {{#source_folder_url}}
+              <p style="margin:0;font-size:14px;line-height:22px;"><strong>Your private company folder is ready.</strong> <a href="{{.}}" style="color:#a9583e;text-decoration:underline;">Open your company folder</a> to contribute authorised source material for this group. Access is limited to your authorised company contributors and OPDA administrators.</p>
+              {{/source_folder_url}}
+              {{#teams_only}}
+              <p style="margin:0;font-size:14px;line-height:22px;"><strong>Teams-only access.</strong> You can join discussions and review drafts. No private company-folder upload access has been granted for this group. Contact OPDA if you need an approved company-domain account added for uploads.</p>
+              {{/teams_only}}
+            </td></tr>
+          </table>
+          {{/each}}
+          <p style="margin:0;font-size:14px;line-height:22px;"><strong>Ordinary Teams files are shared with the working group.</strong> They are not the private company-folder intake route. Use discussion threads for questions and reply in an existing thread whenever it covers your topic.</p>
+        </td></tr>
+        <tr><td style="padding:28px 32px;border-top:1px solid #e6dfd0;">
+          <h2 style="margin:0 0 14px;font-size:20px;line-height:28px;color:#141413;">2. Sign in to the OPDA website</h2>
+          <p style="margin:0 0 16px;font-size:15px;line-height:24px;">Website sign-in is separate from Microsoft Teams and SharePoint. Use the email address you registered with OPDA and enter the one-time code sent to that address. Accepting a Microsoft invitation does not sign you in to the website.</p>
+          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+            <tr><td style="border-radius:8px;background:#a9583e;"><a href="{{website_login_url}}" style="display:inline-block;padding:14px 22px;color:#ffffff;text-decoration:none;font-size:16px;line-height:20px;font-weight:700;">Sign in to the OPDA website</a></td></tr>
+          </table>
+        </td></tr>
+        <tr><td style="padding:28px 32px;border-top:1px solid #e6dfd0;">
+          <h2 style="margin:0 0 14px;font-size:20px;line-height:28px;color:#141413;">How to contribute</h2>
+          <ol style="margin:0;padding:0 0 0 22px;font-size:15px;line-height:24px;">
+            <li style="margin:0 0 8px;"><strong>Share authorised source material</strong> through a private company folder shown above, where available.</li>
+            <li style="margin:0 0 8px;"><strong>Join the discussion</strong> in the most relevant Teams channel and keep replies in their existing threads.</li>
+            <li><strong>Review model drafts</strong> and help identify missing concepts, unclear meanings and practical issues.</li>
+          </ol>
+          {{#has_source_folders}}
+          <p style="margin:18px 0 0;font-size:15px;line-height:24px;">In your company’s area you may create, upload, edit, rename, move and delete your material. Keep a top-level README with an index, provenance, version, context and any usage restrictions. Contributors cannot change permissions, invite people, make material public or view another company’s submissions.</p>
+          {{/has_source_folders}}
+        </td></tr>
+        <tr><td style="padding:28px 32px;background:#efe9de;">
+          <h2 style="margin:0 0 14px;font-size:20px;line-height:28px;color:#141413;">Source material and privacy</h2>
+          <p style="margin:0 0 12px;font-size:15px;line-height:24px;">Useful evidence includes schemas and API definitions, data dictionaries, non-production database structures, blank forms, guidance, taxonomies, semantic models and diagrams.</p>
+          <p style="margin:0 0 12px;font-size:15px;line-height:24px;"><strong>Upload authorised files, not links.</strong> OPDA will not follow source links to websites, cloud drives or online documents. Audio and video must be transcribed before submission.</p>
+          <p style="margin:0;font-size:15px;line-height:24px;">Original sources are reviewed for security and suitability. They are not automatically published or shared with other participants. People review AI-assisted candidates before they become working-group drafts.</p>
+        </td></tr>
+        <tr><td style="padding:28px 32px;background:#fbf3ee;border-top:1px solid #ebc3a9;border-bottom:1px solid #ebc3a9;">
+          <h2 style="margin:0 0 12px;font-size:20px;line-height:28px;color:#7d3a2b;">Do not submit</h2>
+          <ul style="margin:0;padding:0 0 0 20px;font-size:15px;line-height:24px;">
+            <li>Personal, customer or live property-transaction data.</li>
+            <li>Passwords, API keys, credentials or other secrets.</li>
+            <li>Material restricted by confidentiality, contract, licence or NDA.</li>
+            <li>Executable software, active scripts or macros.</li>
+            <li>Password-protected or encrypted files, or compressed archives.</li>
+          </ul>
+        </td></tr>
+        <tr><td style="padding:28px 32px;">
+          <h2 style="margin:0 0 12px;font-size:20px;line-height:28px;color:#141413;">Need help or want to leave a group?</h2>
+          <p style="margin:0;font-size:15px;line-height:24px;">For private access problems, colleague invitations or withdrawal from a working group, contact <a href="mailto:smartdata@openpropdata.org.uk" style="color:#a9583e;text-decoration:underline;">smartdata@openpropdata.org.uk</a>. Unsubscribing from email below does not itself remove your workspace access.</p>
+        </td></tr>
+        <tr><td style="padding:22px 32px;background:#211f1c;color:#b8b1a3;font-size:12px;line-height:19px;">
+          Open Property Data Association · Smart Property Data Trust Framework<br>
+          This email follows OPDA’s approval of your selected working groups.<br>
+          <a href="{{{ pm:unsubscribe }}}" style="color:#e5b632;text-decoration:underline;">Stop receiving Smart Property Data Trust Framework working-group emails</a>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

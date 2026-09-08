@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-14
-updated: 2026-08-27
+updated: 2026-09-09
 tags: [engagement, recruitment, linkedin, trade-bodies, working-groups, signup, campaign, measurement]
 supersedes: []
 depends-on: [ADR-0063, ADR-0065, ADR-0069]
@@ -208,6 +208,12 @@ to target contexts, collected fields, automated onboarding or data use require a
 
 ## Amendments
 
+- **2026-09-09 — separate approval follow-up.** ADR-0085 defines the operator-authorised
+  invitation after a trusted HubSpot approval and verified Microsoft access. This recruitment
+  campaign still seeks expressions of interest; submitting the form is not approval, Microsoft
+  membership or marketing consent. Historical Finance and Banking sends remain governed by
+  their roster-specific rollout record and are not automatically repeated.
+
 - **2026-08-27 — standalone `/join` campaign.** ADR-0078 moves the canonical campaign to
   `/join`, its privacy notice to `/join/privacy`, and adds `/accessibility`. These routes use a
   minimal standalone public-service shell, while the complete approved form remains at the
@@ -238,6 +244,7 @@ to target contexts, collected fields, automated onboarding or data use require a
 - [ADR-0069 — public working-group recruitment and signup](./ADR-0069-public-working-group-recruitment-and-signup.md)
 - [ADR-0078 — standalone working-group recruitment campaign](./ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md)
 - [ADR-0079 — public site and retired edge authentication gate](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md)
+- [ADR-0085 — approval-driven onboarding and invitations](./ADR-0085-approval-driven-working-group-onboarding-and-invitations.md)
 - [Approved LinkedIn copy](../recruitment/2026-08-bounded-context-working-group-linkedin.md)
 - [Trade and professional body outreach register](../recruitment/2026-08-bounded-context-trade-body-outreach.md)
 - [Outreach parameter set](../recruitment/2026-08-bounded-context-outreach-parameters.json)

@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "tiers": ["release-blocking", "pull-request-blocking", "scheduled-assurance", "development-aid", "delete"],
   "tests": [
+    { "path": "tests/approval-onboarding-invitation.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/astro-content-runtime.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/auth-session.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/auth-session-watch.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },

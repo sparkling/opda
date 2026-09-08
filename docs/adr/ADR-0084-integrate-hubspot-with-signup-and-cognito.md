@@ -28,7 +28,7 @@ at that inspection, and 1,001 contacts. API inventory found `linkedin_account`,
 `membership_type` and `relationship_type`. The account-wide custom-property limit is 10,
 with two used before setup. The legacy contact ceiling remains unverified.
 
-This concerns participant administration, not SPDTF trust, standards authority or Microsoft access.
+This governs website access, not SPDTF trust or standards authority; ADR-0085 governs Microsoft/email follow-up.
 On 2026-09-08 the operator authorised implementation, live website sign-in, and a
 one-time approval of existing HubSpot contacts. Brief cutover downtime is acceptable.
 The frozen migration includes contacts created by 18:26:22 UTC that day; it does
@@ -115,7 +115,7 @@ An initially created contact is an unverified applicant, not an approved member.
 | `email` | Existing `email` | Contact address; changes are not changes to the verified Cognito binding. |
 | `organisation` | Existing `company` | Contact-level company name; do not create/merge Company records by name alone. |
 | `role` | **New:** `opda_role_or_expertise` | `string` / `text`; broader than Job title, preserving the form's professional-role/expertise meaning; never an application permission. |
-| `workingGroups` | **New:** `opda_requested_working_groups` | `enumeration` / `checkbox`; requested groups, not approved groups or Microsoft grants. |
+| `workingGroups` | **New:** `opda_requested_working_groups` | `enumeration` / `checkbox`; requests until a trusted Approved decision freezes the selection under ADR-0085; never direct Microsoft grants. |
 | `contributions` | **New:** `opda_contribution_preferences` | `enumeration` / `checkbox`; all six current choices. |
 | `relevantPerspective` | **New:** `opda_relevant_perspective` | `string` / `textarea`; retain the 600-character limit and existing privacy warning. |
 | Review outcome | **New:** `opda_review_status` | `enumeration` / `select`; staff-owned decision: `received`, `under_review`, `approved`, `rejected`, `withdrawn`. A current manual edit with recorded CRM actor is required. |
@@ -486,7 +486,7 @@ procedures, retention sweeps and authenticated comment writes. Comments remain p
 - [ADR-0038](./ADR-0038-hosting-auth-and-comments-architecture-aws.md): existing Auth0 and Artalk architecture, amended only at migration.
 - [ADR-0040](./ADR-0040-aws-hosting-ci-cd-pipeline.md): infrastructure-as-code and authorised CI delivery.
 - [ADR-0069](./ADR-0069-public-working-group-recruitment-and-signup.md): collection, reference events, human review and retention.
-- [ADR-0070](./ADR-0070-uniform-microsoft-365-working-group-workspaces.md): separate Microsoft invitations and permissions.
+- [ADR-0070](./ADR-0070-uniform-microsoft-365-working-group-workspaces.md) and [ADR-0085](./ADR-0085-approval-driven-working-group-onboarding-and-invitations.md): Microsoft workspace permissions and approval-triggered invitations.
 - [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md): public documentation and path-scoped sessions.
 - [ADR-0083](./ADR-0083-rebuild-proportionate-risk-based-ci-cd.md): proportional validation.
 - Code evidence: `config/aws/working-group-interest/{domain,index}.mjs`, `working-group-interest-stack.yaml`, `submission-events/index.mjs`, `auth-session/index.mjs`, and `src/components/Comments.astro`.
