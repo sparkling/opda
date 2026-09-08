@@ -168,6 +168,7 @@
 .public-footer__credit {
   grid-area: credit;
   justify-self: start;
+  align-self: start;
   margin: 0;
   min-height: var(--target-min);
   display: flex;
@@ -195,6 +196,10 @@
   align-items: center;
   text-decoration: none;
 }
+/* Align the visible labels independently of the credit's existing position. */
+.public-footer__links,
+.public-footer a.public-footer__brand { align-self: baseline; }
+.public-footer .brand-heading { align-items: baseline; }
 .public-footer a {
   min-height: var(--target-min);
   display: inline-flex;

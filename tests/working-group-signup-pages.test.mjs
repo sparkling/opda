@@ -225,7 +225,10 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.match(publicCss, /padding-block:\s*var\(--space-6\) calc\(var\(--space-6\) \+ var\(--space-5\)\)/u);
   assert.match(publicCss, /grid-template-areas:\s*'credit brand links'/u);
   assert.match(publicCss, /\.public-footer__credit\s*\{[^}]*justify-self:\s*start[^}]*display:\s*flex[^}]*flex-direction:\s*column[^}]*text-align:\s*left/su);
+  assert.match(publicCss, /\.public-footer__credit\s*\{[^}]*align-self:\s*start/su);
   assert.match(publicCss, /\.public-footer__links\s*\{[^}]*justify-self:\s*end[^}]*justify-content:\s*flex-end/su);
+  assert.match(publicCss, /\.public-footer__links,\s*\.public-footer a\.public-footer__brand\s*\{[^}]*align-self:\s*baseline/su);
+  assert.match(publicCss, /\.public-footer \.brand-heading\s*\{[^}]*align-items:\s*baseline/su);
   assert.doesNotMatch(publicCss, /\.public-footer a\.public-footer__brand\s*\{[^}]*transform:/su);
   assert.match(publicCss, /\.public-footer__links a\s*\{[^}]*color:\s*var\(--color-text-muted\)[^}]*font-weight:\s*400/su);
   assert.match(publicCss, /:root\[data-theme='dark'\] \.public-footer__links a\s*\{[^}]*color:\s*var\(--neutral-400\)/su);
