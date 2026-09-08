@@ -149,6 +149,17 @@ test('destination cards use the shared compact card-title scale', async () => {
   assert.doesNotMatch(destinationCards, /\.destination-card-grid \.card h3\s*\{[^}]*var\(--h2\)/su);
 });
 
+test('linked cards share a visible theme-aware hover and keyboard focus treatment', async () => {
+  const components = await readFile(file('public/ui/design/components.css'), 'utf8');
+  const interaction = components.match(/a\.card:is\(:hover, :focus-visible\)\s*\{([^}]*)\}/u)?.[1] ?? '';
+  assert.match(interaction, /border-color: var\(--color-link\)/u);
+  assert.match(interaction, /background: var\(--color-surface-tint\)/u);
+  assert.match(interaction, /box-shadow: var\(--shadow-md\)/u);
+  assert.doesNotMatch(interaction, /transform:|(?:width|height|padding|margin):/u);
+  assert.match(components, /box-shadow var\(--duration-fast\) var\(--ease\)/u);
+  assert.match(components, /a\.card:focus-visible\s*\{[^}]*outline: 3px solid var\(--color-focus\)/u);
+});
+
 test('shared navigation exposes visible focus, state and 44px targets', async () => {
   const [contentSource, shell, toc, client, header, sidebar, sidebarItem, layout, base, navigation, search, components, tokens, searchPage, searchController, headerBrand, shellSupport] = await Promise.all([
     readFile(file('public/ui/design/content.css'), 'utf8'),
