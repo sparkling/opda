@@ -41,6 +41,16 @@ test('every Astro page belongs to an explicit visual route family', async () => 
   }
 });
 
+test('the under-development sign-in returns to the homepage through auth', async () => {
+  const source = await readFile(file('src/pages/under-development.astro'), 'utf8');
+  const href = source.match(/<a class="cs-signin" href="([^"]+)">/u)?.[1];
+  assert.equal(href, '/_auth/login?return=%2F');
+
+  const destination = new URL(href, 'https://opda.test');
+  assert.equal(destination.pathname, '/_auth/login');
+  assert.equal(destination.searchParams.get('return'), '/');
+});
+
 test('reader pages delegate local contents navigation to the shared right rail', async () => {
   const sources = await filesWithExtension('src', '.astro');
   for (const path of sources) {
