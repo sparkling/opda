@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-09-09
+updated: 2026-09-09
 tags: [hubspot, participants, working-groups, postmark, email, microsoft-365, teams, sharepoint, approval]
 supersedes: []
 amends: [ADR-0070, ADR-0071, ADR-0084]
@@ -158,6 +159,17 @@ SharePoint CSOM/REST app-only operations require certificate authentication. The
 delegated CLI session is useful for explicit administration, but it is not an unattended service
 credential. [SharePoint app-only authentication](https://learn.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azuread)
 
+The dedicated `OPDA Participation Onboarding` service application uses Microsoft Graph
+`User.Read.All`, `User.Invite.All`, `GroupMember.ReadWrite.All`, `TeamMember.Read.All` and
+`Team.ReadBasic.All`. Its SharePoint-resource `Sites.Selected` permission has explicit
+`fullcontrol` assignments on the six domain intake sites only. It has no tenant-wide
+SharePoint, directory-write, user-write or Team-owner-write permission. The final two Graph
+read permissions verify actual Team state rather than assuming group synchronisation.
+The certificate and a separate receipt-encryption key are held in AWS Secrets Manager.
+Rotate the certificate before its expiry; preserve the separate encryption key while existing
+receipts require recovery. Encrypt the private receipt payload with authenticated encryption
+bound to its participant, so redemption URLs are not plaintext in DynamoDB or its S3 exports.
+
 ### 4. One combined Postmark invitation
 
 Use a new versioned template alias, `working-group-approval-invitation`, with subject
@@ -232,9 +244,21 @@ The combined HTML/plain-text templates and pure payload builder are implemented 
 11 tests covering all six configured workspaces, conditional redemption, URL validation and
 tracking settings. Postmark's validation API accepted subject, HTML and text in six synthetic
 rendering cases: mixed, all-folder and Teams-only access, each with and without redemption.
-No live template was created or updated and no message was sent. This is not an end-to-end
-onboarding test. Current native
-Microsoft administration is delegated; the inspected applications have no unattended credential.
+On 2026-09-09 the new live Postmark template was created and read back as template `46437816`
+on server `20188829`. Its HTML/plain-text fingerprint is pinned by the service; neither earlier
+template was changed and no message was sent. This is not an end-to-end onboarding test.
+
+The dedicated Microsoft service application and certificate are provisioned. App-only reads
+succeeded on all six configured sites and private Teams; the unselected cross-cutting
+Technology intake returned HTTP 403. Finance's member-sharing setting was aligned with the
+five new sites. No participant memberships, company folders or guest invitations were changed.
+The initial certificate expires on 2027-03-07. Its temporary local private-key copy was removed
+after the Secrets Manager copy was verified. No delegated refresh session was transferred.
+
+Approval-time group snapshots, atomic reference-only outbox records, cancellation/withdrawal
+work, a certificate-authenticated API boundary, encrypted receipt support and the Postmark
+delivery adapter are implemented and tested. The consumer and its live activation remain
+separate work; these preparation steps do not make the follow-up live.
 
 Before activating automatic follow-up, verify:
 

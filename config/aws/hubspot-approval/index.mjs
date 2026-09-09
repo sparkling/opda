@@ -1,10 +1,20 @@
 import { createHubSpotClient } from './client.mjs';
 import { createIdentity } from './identity.mjs';
 import { createStore } from './store.mjs';
-import { CONTACT_ID, contactProfile, reviewDecision, emailPredatesApproval, ordinaryAccess, parseHints } from './domain.mjs';
+import { CONTACT_ID, contactProfile, reviewDecision, approvedGroupSnapshot, emailPredatesApproval, ordinaryAccess, parseHints } from './domain.mjs';
+import { createOnboardingNotifier, onboardingHint } from './onboarding.mjs';
 
-export function createWorker({ store, hubspot, identity, cutover, now = Date.now }) {
+export function createWorker({ store, hubspot, identity, cutover, notifyOnboarding, now = Date.now }) {
   if (!Number.isFinite(cutover)) throw new Error('Approval cutover required');
+  async function relayOnboarding() {
+    if (!notifyOnboarding) return { notified: 0 };
+    const pending = await store.pendingOnboarding();
+    for (const operation of pending) {
+      try { await notifyOnboarding(onboardingHint(operation.operationId)); }
+      catch { throw new Error('Onboarding notification incomplete'); }
+    }
+    return { notified: pending.length };
+  }
   async function processContact(contactId) {
     if (!CONTACT_ID.test(contactId)) throw new Error('Invalid contact reference');
     let contact = await hubspot.getContact(contactId);
@@ -33,17 +43,29 @@ export function createWorker({ store, hubspot, identity, cutover, now = Date.now
       } catch { reason = 'identity-changed'; }
     }
     if (reason) ({ binding, account } = await store.hold(binding, account, reason, now()));
-    else if (decision) ({ binding, account } = await store.apply(binding, account, decision, now()));
+    else if (decision) ({ binding, account } = await store.apply(binding, account, {
+      ...decision, ...(decision.trusted && decision.status === 'approved'
+        ? { groupSnapshot: approvedGroupSnapshot(contact, decision) } : {}),
+    }, now()));
+    if (binding.onboarding && !ordinaryAccess(account, now()) && (binding.onboarding.action === 'provision'
+      || binding.onboarding.accessVersion !== account.accessVersion)) {
+      ({ binding, account } = await store.hold(binding, account, 'access-unavailable', now()));
+    }
     // No browser sessions or role grants are issued here. Existing sessions check
     // AWS eligibility/version on every protected request, including revocations.
     const enabled = ordinaryAccess(account, now());
-    await identity.setAccess(account, enabled);
-    if (contact && !contact.archived) await hubspot.projectStatus(contactId, {
-      active: enabled, enrolmentStatus: account.enrolmentStatus,
-    });
-    await store.markEffects(binding, account);
+    try {
+      await identity.setAccess(account, enabled);
+      if (contact && !contact.archived) await hubspot.projectStatus(contactId, {
+        active: enabled, enrolmentStatus: account.enrolmentStatus,
+      });
+      await store.markEffects(binding, account);
+    } finally {
+      // Even a Cognito outage must not suppress a committed Microsoft revocation.
+      if (notifyOnboarding && binding.onboarding) await notifyOnboarding(onboardingHint(binding.onboarding.operationId));
+    }
   }
-  async function reconcile() {
+  async function reconcileContacts() {
     const contacts = await hubspot.listContacts(); // Complete inventory or throw; never infer deletion from a partial page.
     const { accounts, bindings } = await store.inventory();
     const current = new Map(contacts.map(c => [c.id, c]));
@@ -61,7 +83,9 @@ export function createWorker({ store, hubspot, identity, cutover, now = Date.now
       if (!c || c.properties?.email?.trim().toLowerCase() !== account.email
         || c.properties?.opda_active !== String(active)
         || c.properties?.opda_enrolment_status !== account.enrolmentStatus
-        || (map && map.providerAccessVersion !== account.accessVersion)) pending.add(account.hubspotContactId);
+        || (map && map.providerAccessVersion !== account.accessVersion)
+        || (!active && map?.onboarding && (map.onboarding.action === 'provision'
+          || map.onboarding.accessVersion !== account.accessVersion))) pending.add(account.hubspotContactId);
     }
     for (const map of bindings) if (!accountByContact.has(map.contactId)) pending.add(map.contactId);
     if (pending.size > 5000) throw new Error('Reconciliation bound exceeded');
@@ -72,17 +96,23 @@ export function createWorker({ store, hubspot, identity, cutover, now = Date.now
     if (failures) throw new Error(`Approval reconciliation incomplete (${failures})`);
     return { checked: contacts.length, processed: pending.size };
   }
-  return { processContact, reconcile };
+  async function reconcile() {
+    try { return await reconcileContacts(); }
+    finally { await relayOnboarding(); } // Outbox repair is independent of CRM/Cognito availability.
+  }
+  return { processContact, reconcile, relayOnboarding };
 }
 
 let runtime;
 function defaults() {
   runtime ??= createWorker({
     store: createStore({ participantsTableName: process.env.PARTICIPANTS_TABLE_NAME,
-      registrationsTableName: process.env.REGISTRATIONS_TABLE_NAME }),
+      registrationsTableName: process.env.REGISTRATIONS_TABLE_NAME,
+      onboardingCutover: process.env.ONBOARDING_CUTOVER ? Date.parse(process.env.ONBOARDING_CUTOVER) : undefined }),
     hubspot: createHubSpotClient({ secretArn: process.env.BRIDGE_SECRET_ARN }),
     identity: createIdentity({ poolId: process.env.USER_POOL_ID }),
     cutover: Date.parse(process.env.REVIEW_CUTOVER),
+    notifyOnboarding: process.env.ONBOARDING_QUEUE_URL ? createOnboardingNotifier(process.env.ONBOARDING_QUEUE_URL) : undefined,
   });
   return runtime;
 }

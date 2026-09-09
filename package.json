@@ -60,7 +60,8 @@
     "publish:resources": "bash scripts/publish-resources.sh",
     "deploy": "bash deploy.sh",
     "deploy:ci": "git push origin main",
-    "test:participant-import": "node --test tests/participant-import.test.mjs"
+    "test:participant-import": "node --test tests/participant-import.test.mjs",
+    "test:onboarding": "node --test tests/approval-onboarding-*.test.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.2.4",

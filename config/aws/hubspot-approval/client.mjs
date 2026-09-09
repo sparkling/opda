@@ -17,6 +17,7 @@ function validateContact(contact, expectedId) {
   if (!object(contact) || typeof contact.id !== 'string' || !CONTACT_ID.test(contact.id)
     || (expectedId !== undefined && contact.id !== expectedId) || !object(contact.properties)) fail();
   if (contact.propertiesWithHistory !== undefined && !object(contact.propertiesWithHistory)) fail();
+  // Group history is reviewed independently: malformed interests must not hide a withdrawal.
   for (const name of ['opda_review_status', 'email']) {
     const history = contact.propertiesWithHistory?.[name];
     if (history !== undefined && !Array.isArray(history)) fail();
@@ -26,7 +27,7 @@ function validateContact(contact, expectedId) {
 
 function readQuery() {
   return new URLSearchParams({ properties: CONTACT_PROPERTIES.join(','),
-    propertiesWithHistory: 'opda_review_status,email', archived: 'false' });
+    propertiesWithHistory: 'opda_review_status,email,opda_requested_working_groups', archived: 'false' });
 }
 
 async function readSecret(secretArn) {

@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { CONTACT_PROPERTIES } from '../hubspot-participation/import.mjs';
+import { PARTICIPATION_PROPERTIES } from '../hubspot-participation/properties.mjs';
 
 export const PORTAL_ID = 144765514;
 export const CONTACT_ID = /^[1-9][0-9]{0,19}$/;
@@ -7,6 +8,8 @@ export const REVIEW = new Set(['received', 'under_review', 'approved', 'rejected
 export const digest = value => createHash('sha256').update(value).digest('hex');
 export const emailHash = email => digest(email.trim().toLowerCase());
 export const mappingKey = id => `CRM#CONTACT#${id}`;
+export const APPROVED_GROUPS = Object.freeze(PARTICIPATION_PROPERTIES
+  .find(property => property.name === 'opda_requested_working_groups').options.map(option => option.value));
 
 export function contactProfile(contact) {
   if (!CONTACT_ID.test(contact?.id) || contact.archived) throw new Error('Contact unavailable');
@@ -21,13 +24,37 @@ export function contactProfile(contact) {
   };
 }
 
-function latest(history) {
-  if (!Array.isArray(history) || !history.length) return null;
+function latest(history, before = Infinity) {
+  if (!Array.isArray(history) || !history.length || history.length > 2000
+    || history.some(item => !item || typeof item !== 'object' || Array.isArray(item)
+      || typeof item.timestamp !== 'string')) return null;
   const sorted = history.map(item => ({ ...item, at: Date.parse(item.timestamp) })).sort((a, b) => b.at - a.at);
-  if (sorted.some(item => !Number.isFinite(item.at))) return null;
-  if (sorted.some(item => item.at === sorted[0].at && ['value', 'sourceType', 'sourceId', 'updatedByUserId']
-    .some(key => item[key] !== sorted[0][key]))) return null;
-  return sorted[0];
+  if (sorted.some(item => !Number.isSafeInteger(item.at) || item.at < 0)) return null;
+  const current = sorted.find(item => item.at <= before);
+  if (!current || sorted.some(item => item.at === current.at && ['value', 'sourceType', 'sourceId', 'updatedByUserId']
+    .some(key => item[key] !== current[key]))) return null;
+  return current;
+}
+
+/** A checkbox edit is evidence to review, not a later expansion of an approval. */
+export function approvedGroupSnapshot(contact, decision) {
+  const failed = reason => ({ snapshotStatus: 'review_required', groups: [],
+    groupDigest: digest('[]'), groupsAt: null, reason });
+  if (!decision?.trusted || decision.status !== 'approved' || !Number.isSafeInteger(decision.at)) {
+    return failed('manual-approval-required');
+  }
+  const history = contact?.propertiesWithHistory?.opda_requested_working_groups;
+  const current = latest(history), selected = latest(history, decision.at);
+  if (!current || !selected) return failed('group-history-missing-or-ambiguous');
+  if (current.value !== contact?.properties?.opda_requested_working_groups) return failed('group-history-inconsistent');
+  if (typeof selected.value !== 'string' || selected.value.length > 1024) return failed('group-selection-invalid');
+  const values = selected.value === '' ? [] : selected.value.split(';');
+  if (values.length > APPROVED_GROUPS.length || new Set(values).size !== values.length
+    || values.some(value => !APPROVED_GROUPS.includes(value))) return failed('group-selection-invalid');
+  const groups = APPROVED_GROUPS.filter(group => values.includes(group));
+  return { snapshotStatus: groups.length ? 'approved' : 'empty', groups,
+    groupDigest: digest(JSON.stringify(groups)), groupsAt: selected.at,
+    reason: groups.length ? 'reviewed-group-selection' : 'empty-group-selection' };
 }
 
 /** Only a current manual CRM edit is approval authority. Webhook values are not. */

@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { APPROVAL } from '../hubspot-participation/import.mjs';
 import { CONTACT_ID, PORTAL_ID, mappingKey, emailHash, digest, mayApprove } from './domain.mjs';
+import { onboardingKey, planOnboarding } from './onboarding.mjs';
 
 function encodeValue(v) {
   if (v === null) return { NULL: true };
@@ -19,6 +20,9 @@ const decode = item => item ? Object.fromEntries(Object.entries(item).map(([k, v
 
 export function createStore(config, overrides = {}) {
   const table = config.participantsTableName;
+  if (config.onboardingCutover !== undefined && (!Number.isSafeInteger(config.onboardingCutover) || config.onboardingCutover < 0)) {
+    throw new TypeError('Invalid onboarding activation cutoff');
+  }
   let service;
   async function send(command, input) {
     if (overrides.send) return overrides.send(command, input);
@@ -111,16 +115,22 @@ export function createStore(config, overrides = {}) {
   async function change(map, row, decision, now, holdReason) {
     if (!holdReason && (decision.id === map.decisionId || decision.at <= (map.decisionAt ?? 0)
       || decision.at <= (map.holdAt ?? 0))) return { binding: map, account: row };
-    if (holdReason && map.holdReason === holdReason && row.active === false && row.suspended) return { binding: map, account: row };
+    if (holdReason && map.holdReason === holdReason && row.active === false && row.suspended
+      && (!map.onboarding || map.onboarding.accessVersion === row.accessVersion)) return { binding: map, account: row };
     const grant = !holdReason && mayApprove(row, decision, now);
     const externalHold = row.suspended && row.suspensionSource !== 'hubspot-review';
     const fields = { reviewStatus: holdReason ? 'under_review' : decision.status, active: Boolean(grant),
       suspended: !grant, suspensionSource: externalHold ? (row.suspensionSource ?? 'external') : grant ? '' : 'hubspot-review',
       accessVersion: row.accessVersion + 1, updatedAt: now,
       ...(grant ? { approvedAt: decision.at, approvalId: decision.id } : {}) };
+    const auditId = holdReason ? digest(`${map.contactId}:${holdReason}:${row.accessVersion}`) : decision.id;
+    const onboarding = planOnboarding({ map, row, decision, grant, holdReason, auditId,
+      accessVersion: fields.accessVersion, now, cutover: config.onboardingCutover });
+    if (onboarding) fields.onboarding = onboarding.snapshot;
     const next = { ...map, revision: map.revision + 1,
       ...(holdReason ? { holdReason, holdAt: now } : { decisionId: decision.id, decisionAt: decision.at,
         decisionStatus: decision.status, holdReason: grant ? null : map.holdReason ?? null }),
+      ...(onboarding ? { onboarding: onboarding.snapshot } : {}),
     };
     const names = Object.fromEntries(Object.keys(fields).map((key, i) => [`#f${i}`, key]));
     const values = Object.fromEntries(Object.values(fields).map((v, i) => [`:f${i}`, encodeValue(v)]));
@@ -133,7 +143,6 @@ export function createStore(config, overrides = {}) {
       conditions.push('attribute_not_exists(erasedAt)', 'attribute_not_exists(deletedAt)', '(attribute_not_exists(expiresAt) OR expiresAt > :now)');
       values[':now'] = encodeValue(Math.floor(now / 1000));
     }
-    const auditId = holdReason ? digest(`${map.contactId}:${holdReason}:${row.accessVersion}`) : decision.id;
     await send('TransactWriteItemsCommand', { TransactItems: [put(next, map), { Update: {
       TableName: table, Key: { pk: { S: row.pk } },
       UpdateExpression: `SET ${Object.keys(fields).map((_, i) => `#f${i} = :f${i}`).join(', ')}`,
@@ -141,9 +150,37 @@ export function createStore(config, overrides = {}) {
     } }, put({ pk: `CRM#AUDIT#${map.contactId}#${auditId}`, contactId: map.contactId,
       participantId: map.participantId, decisionId: auditId, actor: decision?.actor ?? null, at: now,
       reviewStatus: fields.reviewStatus, active: fields.active, accessVersion: fields.accessVersion,
-      reason: holdReason ?? decision.reason }), ...(grant ? [bindingGuard(map), ...suppressions(map),
+      reason: holdReason ?? decision.reason, ...(onboarding ? { onboarding: onboarding.snapshot } : {}) }),
+      ...(onboarding ? [put(onboarding.operation)] : []), ...(grant ? [bindingGuard(map), ...suppressions(map),
       ...(!row.approvedAt ? sourceGuard(map, now) : [])] : [])] });
     return { binding: next, account: { ...row, ...fields } };
+  }
+  async function pendingOnboarding() {
+    const operations = [], cursors = new Set();
+    let cursor, pages = 0;
+    do {
+      const page = await send('ScanCommand', { TableName: table, ConsistentRead: true,
+        FilterExpression: 'begins_with(pk, :outbox) AND #status = :pending',
+        ExpressionAttributeNames: { '#status': 'status' },
+        ExpressionAttributeValues: { ':outbox': { S: 'CRM#ONBOARDING#' }, ':pending': { S: 'pending' } },
+        ...(cursor ? { ExclusiveStartKey: cursor } : {}),
+      });
+      if (!Array.isArray(page.Items ?? [])) throw new Error('Invalid onboarding outbox inventory');
+      for (const item of page.Items ?? []) {
+        const operation = decode(item);
+        if (operation.pk !== onboardingKey(operation.operationId) || operation.schemaVersion !== 1
+          || operation.status !== 'pending') throw new Error('Invalid onboarding outbox reference');
+        operations.push(operation);
+      }
+      if (++pages > 100 || operations.length > 5000) throw new Error('Onboarding outbox inventory bound exceeded');
+      cursor = page.LastEvaluatedKey;
+      if (cursor) {
+        const key = JSON.stringify(cursor);
+        if (cursors.has(key)) throw new Error('Incomplete onboarding outbox inventory');
+        cursors.add(key);
+      }
+    } while (cursor);
+    return operations;
   }
   async function inventory() {
     const accounts = [], bindings = [];
@@ -164,7 +201,8 @@ export function createStore(config, overrides = {}) {
     } while (cursor);
     return { accounts, bindings };
   }
-  return { binding, reserve, attach, account, inventory, checkPending,
+  return { binding, reserve, attach, account, inventory, checkPending, pendingOnboarding,
+    onboardingOperation: id => get(onboardingKey(id)),
     apply: (map, row, decision, now) => change(map, row, decision, now),
     hold: (map, row, reason, now) => change(map, row, null, now, reason),
     async markEffects(map, row) {

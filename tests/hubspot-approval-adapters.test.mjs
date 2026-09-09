@@ -42,7 +42,7 @@ test('approval CRM reader pins the app and requests all agreed fields and approv
   assert.equal(read.url.origin, 'https://api.hubapi.com');
   assert.equal(read.url.pathname, '/crm/v3/objects/contacts/123');
   assert.deepEqual(read.url.searchParams.get('properties').split(','), CONTACT_PROPERTIES);
-  assert.deepEqual(read.url.searchParams.get('propertiesWithHistory').split(','), ['opda_review_status', 'email']);
+  assert.deepEqual(read.url.searchParams.get('propertiesWithHistory').split(','), ['opda_review_status', 'email', 'opda_requested_working_groups']);
   assert.ok(f.calls.every(({ init }) => init.redirect === 'error'));
   assert.ok(f.calls.every(({ init }) => init.signal instanceof AbortSignal));
 });
@@ -106,7 +106,7 @@ test('approval CRM inventory consumes bounded pages, preserves histories and ign
     assert.equal(url.searchParams.get('limit'), '100');
     assert.equal(url.searchParams.get('archived'), 'false');
     assert.deepEqual(url.searchParams.get('properties').split(','), CONTACT_PROPERTIES);
-    assert.deepEqual(url.searchParams.get('propertiesWithHistory').split(','), ['opda_review_status', 'email']);
+    assert.deepEqual(url.searchParams.get('propertiesWithHistory').split(','), ['opda_review_status', 'email', 'opda_requested_working_groups']);
   }
   assert.equal(requests[1].searchParams.get('after'), 'cursor-2');
 });
