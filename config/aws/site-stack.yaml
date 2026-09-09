@@ -24,6 +24,8 @@ Parameters:
     Type: String
     Default: arn:aws:secretsmanager:eu-west-2:355653384628:secret:opda/hubspot/participant-crm-bridge-IOhsJX
     Description: ARN only, never the token; runtime reads the existing private app credential.
+  OnboardingCutover: { Type: String, Default: '' }
+  OnboardingEnabled: { Type: String, Default: 'false', AllowedValues: ['false', 'true'] }
 
 Resources:
   AuthSessionApplication:
@@ -93,6 +95,8 @@ Resources:
     Properties:
       TemplateURL: hubspot-approval-stack.yaml
       Parameters:
+        OnboardingCutover: !Ref OnboardingCutover
+        OnboardingEnabled: !Ref OnboardingEnabled
         RegistrationsTableName: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName
         RegistrationsTableArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableArn
         ParticipantsTableName:

@@ -113,7 +113,9 @@ test('worker cannot mutate import/sync markers, intake, sessions or Cognito pass
   assert.deepEqual([...cognito.matchAll(/cognito-idp:([A-Za-z]+)/g)].map(match => match[1]).sort(), [
     'AdminCreateUser', 'AdminDisableUser', 'AdminEnableUser', 'AdminGetUser', 'AdminUserGlobalSignOut',
   ].sort());
-  assert.doesNotMatch(role, /dynamodb:(?:DeleteItem|TransactWriteItems)|SessionsTable|SigningSecret|sqs:SendMessage/);
+  assert.match(statement(role, 'NotifyOnboardingOnly'), /Action: \[sqs:SendMessage\][\s\S]*Resource: !GetAtt OnboardingApplication\.Outputs\.QueueArn/);
+  assert.equal((role.match(/sqs:SendMessage/g) ?? []).length, 1);
+  assert.doesNotMatch(role, /dynamodb:(?:DeleteItem|TransactWriteItems)|SessionsTable|SigningSecret/);
   assert.doesNotMatch(role, /Action: \[[^\]]*\*|Resource: ['"]?\*['"]?\s*\n/);
 });
 

@@ -2,6 +2,12 @@
   "schemaVersion": 1,
   "tiers": ["release-blocking", "pull-request-blocking", "scheduled-assurance", "development-aid", "delete"],
   "tests": [
+    { "path": "tests/approval-onboarding-graph.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/approval-onboarding-handler.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/approval-onboarding-infra.test.mjs", "owner": "platform", "tier": "pull-request-blocking", "lane": "infrastructure" },
+    { "path": "tests/approval-onboarding-runtime-store.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/approval-onboarding-sharepoint.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/approval-onboarding-worker.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-invitation.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-microsoft-auth.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-outbox.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },

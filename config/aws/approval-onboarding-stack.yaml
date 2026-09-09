@@ -1,0 +1,196 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Bounded Microsoft and Postmark participation follow-up, including workflow-owned access withdrawal.
+
+Parameters:
+  ParticipantsTableName:
+    Type: String
+  ParticipantsTableArn:
+    Type: String
+  OnboardingEnabled:
+    Type: String
+    Default: 'false'
+    AllowedValues: ['false', 'true']
+  AlarmTopicArn:
+    Type: String
+    Default: ''
+
+Conditions:
+  HasAlarmTopic: !Not [!Equals [!Ref AlarmTopicArn, '']]
+
+Resources:
+  FailureQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: opda-participant-onboarding-failures
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+
+  Queue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: opda-participant-onboarding
+      MessageRetentionPeriod: 1209600
+      VisibilityTimeout: 1800
+      ReceiveMessageWaitTimeSeconds: 20
+      SqsManagedSseEnabled: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt FailureQueue.Arn
+        maxReceiveCount: 5
+
+  QueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref Queue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Deny
+            Principal: '*'
+            Action: sqs:*
+            Resource: !GetAtt Queue.Arn
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } }
+
+  FailureQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref FailureQueue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Deny
+            Principal: '*'
+            Action: sqs:*
+            Resource: !GetAtt FailureQueue.Arn
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } }
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/opda-participant-onboarding
+      RetentionInDays: 14
+
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: participation-effects-only
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-participant-onboarding:*'
+              - Sid: ConsumeOwnQueueOnly
+                Effect: Allow
+                Action: [sqs:ReceiveMessage, sqs:DeleteMessage, sqs:GetQueueAttributes, sqs:ChangeMessageVisibility]
+                Resource: !GetAtt Queue.Arn
+              - Sid: CurrentAuthorityReadOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:ConditionCheckItem]
+                Resource: !Ref ParticipantsTableArn
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['CRM#ONBOARDING#*', 'CRM#ONBOARDING_STATE#*', 'CRM#CONTACT#*', 'CRM#AUDIT#*', 'USER#*', 'EMAIL#*', 'SYNC#SUPPRESS#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              # Transactions are authorized by underlying item actions, not an IAM TransactWriteItems action.
+              - Sid: ReceiptAndOperationWritesOnly
+                Effect: Allow
+                Action: [dynamodb:PutItem, dynamodb:UpdateItem]
+                Resource: !Ref ParticipantsTableArn
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['CRM#ONBOARDING#*', 'CRM#ONBOARDING_STATE#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              - Sid: TwoServiceCredentialsOnly
+                Effect: Allow
+                Action: [secretsmanager:GetSecretValue]
+                Resource:
+                  - !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/microsoft/participation-onboarding-??????'
+                  - !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/postmark/participation-onboarding-??????'
+
+  Worker:
+    Type: AWS::Serverless::Function
+    DependsOn: LogGroup
+    Properties:
+      FunctionName: opda-participant-onboarding
+      CodeUri: ./onboarding-bundle/
+      Handler: src/approval-onboarding/index.handler
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      MemorySize: 256
+      Timeout: 300
+      ReservedConcurrentExecutions: 1
+      Role: !GetAtt Role.Arn
+      Environment:
+        Variables:
+          PARTICIPANTS_TABLE_NAME: !Ref ParticipantsTableName
+          ONBOARDING_QUEUE_ARN: !GetAtt Queue.Arn
+          ONBOARDING_ENABLED: !Ref OnboardingEnabled
+          MICROSOFT_SECRET_ARN: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/microsoft/participation-onboarding-nmTdmF'
+          POSTMARK_SECRET_ARN: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/postmark/participation-onboarding-U02V9v'
+
+  Mapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !GetAtt Queue.Arn
+      FunctionName: !Ref Worker
+      BatchSize: 1
+      FunctionResponseTypes: [ReportBatchItemFailures]
+
+  AttentionMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref LogGroup
+      FilterPattern: '{ $.event = "onboarding_attention" }'
+      MetricTransformations:
+        - MetricNamespace: OPDA/Participation
+          MetricName: OnboardingNeedsAttention
+          MetricValue: '$.count'
+          DefaultValue: 0
+
+  AttentionAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Participation follow-up requires human review; private receipts explain the affected operations.
+      Namespace: OPDA/Participation
+      MetricName: OnboardingNeedsAttention
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: !If [HasAlarmTopic, [!Ref AlarmTopicArn], !Ref AWS::NoValue]
+
+  FailureAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Participation effects exhausted queue retries; the private outbox remains the recovery source.
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions: [{ Name: QueueName, Value: !GetAtt FailureQueue.QueueName }]
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: !If [HasAlarmTopic, [!Ref AlarmTopicArn], !Ref AWS::NoValue]
+
+Outputs:
+  WorkerName:
+    Value: !Ref Worker
+  QueueArn:
+    Value: !GetAtt Queue.Arn
+  QueueUrl:
+    Value: !Ref Queue
+  FailureQueueUrl:
+    Value: !Ref FailureQueue

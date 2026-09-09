@@ -208,7 +208,7 @@ Provider acceptance and an open event are not proof of inbox placement or Micros
 ADR-0072's AI-inbox-agent disclosure applies to that agent. This deterministic approval worker
 must not falsely claim an AI agent wrote or reviewed the invitation.
 
-### 5. Withdrawal and communication preferences
+### 5. Withdrawal, reapproval and communication preferences
 
 ADR-0084 immediately removes website eligibility, invalidates existing session versions and
 disables Cognito access. Its open-tab check updates the visible sign-in state; it is not the
@@ -219,6 +219,28 @@ owned by this approval workflow. Remove membership references only, never the En
 organisation folder or source material. Preserve other approved participants and unrelated
 manual grants; if a pre-existing grant prevents complete Microsoft removal, report that fact
 for explicit review rather than claiming access has gone. Microsoft propagation is not instant.
+
+The withdrawal path is:
+
+1. Staff change the HubSpot review status from **Approved** to **Withdrawn**. Other loss of
+   eligibility, including rejection, suspension or contact removal, follows the same deny path.
+2. AWS records the new decision and access version first. Protected requests reject the former
+   session immediately; Cognito is disabled and globally signed out through the existing worker.
+3. The same committed decision creates an opaque withdrawal operation. Cancel unsent invitation
+   work before attempting Microsoft cleanup. An email already dispatched cannot be recalled.
+4. Read the participant-bound ownership receipts. Remove owned SharePoint contributor and index
+   memberships first, then owned Microsoft 365 group membership references. Never delete an
+   identity, company folder, source document or another participant's access.
+5. Read back removal. Keep Microsoft propagation pending and retry through the existing
+   15-minute outbox relay; do not exhaust short queue retries while waiting for normal Teams
+   synchronisation. Ambiguous writes, manual grants and policy drift require explicit review.
+6. A later, fresh human approval may restore the newly selected access. Older grant and withdrawal
+   jobs cannot override it. Reuse verified identities and folders; independently re-added manual
+   memberships remain manual rather than becoming workflow-owned.
+
+Cleanup uses immutable identity and permission references, not a fresh lookup by mutable email.
+Retained ownership evidence allows cleanup after the public profile is erased. Authenticated
+receipt encryption remains recoverable independently of the Microsoft certificate lifetime.
 
 Email unsubscribe does not revoke membership. Participation approval is not consent to receive
 marketing campaigns. Recruitment outreach, newsletters, Cognito codes and Microsoft onboarding
@@ -256,9 +278,20 @@ The initial certificate expires on 2027-03-07. Its temporary local private-key c
 after the Secrets Manager copy was verified. No delegated refresh session was transferred.
 
 Approval-time group snapshots, atomic reference-only outbox records, cancellation/withdrawal
-work, a certificate-authenticated API boundary, encrypted receipt support and the Postmark
-delivery adapter are implemented and tested. The consumer and its live activation remain
-separate work; these preparation steps do not make the follow-up live.
+work, a certificate-authenticated API boundary, encrypted receipt storage and the Microsoft,
+SharePoint and Postmark adapters are implemented and tested locally. The consumer now covers
+guarded provisioning, withdrawal, reapproval, erased-profile cleanup, stale jobs and ambiguous
+email outcomes. Its dedicated queue and narrowly scoped role are defined in CloudFormation;
+the deployment package copies only the runtime dependencies and CID logo.
+The packaged runtime also passed read-only assembly against the actual service secrets:
+participant-bound receipt encryption round-tripped, all six private Teams and typed membership
+reads succeeded, member sharing remained disabled on each intake site, and the live Postmark
+template matched its pin. No participant record, membership or invitation was changed by this check.
+
+Automatic grants default to disabled. CI requires both `OPDA_ONBOARDING_ENABLED=true` and a
+prospective UTC `OPDA_ONBOARDING_CUTOVER` in `YYYY-MM-DDTHH:mm:ssZ` form to begin new onboarding.
+Managed withdrawal remains enabled when prospective onboarding is paused. The current source
+and infrastructure changes are not deployed; these preparation steps do not make follow-up live.
 
 Before activating automatic follow-up, verify:
 

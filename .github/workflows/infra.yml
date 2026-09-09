@@ -25,6 +25,11 @@ on:
       - 'tests/hubspot-approval-*.test.mjs'
       - 'tests/auth-session.test.mjs'
       - 'tests/hubspot-sync.test.mjs'
+      - 'src/approval-onboarding/**'
+      - 'src/agents/working-group-inbox/domain.mjs'
+      - 'scripts/package-approval-onboarding.mjs'
+      - 'docs/templates/assets/opda-email-logo.png'
+      - 'tests/approval-onboarding-*.test.mjs'
   # Manual escape hatch, and the sequencing tool for the rare coupled case
   # (infra change that replaces the site bucket/distribution → run this, then
   # the site deploy) — ADR-0040 §5.
@@ -50,7 +55,10 @@ jobs:
           node-version: 22
 
       - name: Test participant approval boundary
-        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs
+        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs
+
+      - name: Package bounded onboarding runtime locally
+        run: node scripts/package-approval-onboarding.mjs
 
       - name: Lint templates
         run: |
@@ -143,7 +151,9 @@ jobs:
             --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
             --no-fail-on-empty-changeset \
             --parameter-overrides \
-              CertificateArn="$OPDA_CERTIFICATE_ARN"
+              CertificateArn="$OPDA_CERTIFICATE_ARN" \
+              OnboardingCutover="${{ vars.OPDA_ONBOARDING_CUTOVER || '' }}" \
+              OnboardingEnabled="${{ vars.OPDA_ONBOARDING_ENABLED || 'false' }}"
 
       # Reconcile the old edge stack only after CloudFront has deployed the site
       # update without viewer-request Lambda associations. On the first retirement
