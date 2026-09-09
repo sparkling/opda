@@ -18,7 +18,7 @@ Parameters:
     Description: ACM certificate ARN (us-east-1, from the opda-edge stack).
   GateFunctionVersionArn:
     Type: String
-    AllowedPattern: '^arn:aws:lambda:us-east-1:[0-9]{12}:function:opda-gate:[0-9]+$'
+    AllowedPattern: '^arn:aws:lambda:us-east-1:[0-9]{12}:function:opda-session-gate:[0-9]+$'
   IdentityStackName:
     Type: String
     Default: opda-participant-identity

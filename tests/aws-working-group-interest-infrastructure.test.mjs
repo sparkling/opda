@@ -16,11 +16,17 @@ test('the restored edge gate shares current approvals and never restores the old
   assert.match(site, /AuthSessionApplication:[\s\S]*TemplateURL: auth-session-stack\.yaml/u);
   assert.match(edge, /AutoPublishAlias: live/u);
   assert.match(edge, /CodeUri: ..\/..\/_build\/edge-gate\//u);
+  assert.match(edge, /RoleName: opda-session-gate/u);
+  assert.match(edge, /FunctionName: opda-session-gate/u);
+  assert.match(edge, /log-group:\/aws\/lambda\/\*opda-session-gate\*:\*/u);
+  assert.doesNotMatch(edge, /opda-edge-gate|opda-gate/u);
   assert.match(edge, /Action: dynamodb:GetItem/u);
   assert.doesNotMatch(edge, /dynamodb:(?:PutItem|UpdateItem|Scan|Query)|Environment:|ssm:/u);
   assert.doesNotMatch(workflow, /members\.txt/u);
   assert.match(workflow, /--stack-name opda-participant-identity/u);
   assert.doesNotMatch(workflow, /OPDA_AUTH0_CLIENT_ID|OPDA_MEMBER_EMAILS/u);
+  assert.match(site, /AllowedPattern: '\^arn:aws:lambda:us-east-1:\[0-9\]\{12\}:function:opda-session-gate:\[0-9\]\+\$'/u);
+  assert.doesNotMatch(site, /function:opda-gate:/u);
   assert.ok(workflow.indexOf('name: Deploy comments stack') < workflow.indexOf('name: Deploy site stack'),
     'the origin read-only boundary must deploy before the session cutover');
   assert.ok(workflow.indexOf('name: Deploy versioned gate') < workflow.indexOf('name: Deploy site stack'));

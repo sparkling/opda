@@ -34,7 +34,7 @@ Resources:
   GateFunctionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: opda-edge-gate
+      RoleName: opda-session-gate
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -48,7 +48,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action: [logs:CreateLogGroup, logs:CreateLogStream, logs:PutLogEvents]
-                Resource: !Sub 'arn:aws:logs:*:${AWS::AccountId}:log-group:/aws/lambda/*opda-gate*:*'
+                Resource: !Sub 'arn:aws:logs:*:${AWS::AccountId}:log-group:/aws/lambda/*opda-session-gate*:*'
               - Effect: Allow
                 Action: dynamodb:GetItem
                 Resource: !Sub 'arn:aws:dynamodb:eu-west-2:${AWS::AccountId}:table/opda-participants'
@@ -65,7 +65,7 @@ Resources:
   GateFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: opda-gate
+      FunctionName: opda-session-gate
       CodeUri: ../../_build/edge-gate/
       Handler: index.handler
       Runtime: nodejs22.x

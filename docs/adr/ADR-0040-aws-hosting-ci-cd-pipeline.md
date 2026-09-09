@@ -17,6 +17,9 @@ implements: [ADR-0038]
 > with that version while preserving private OAC origins and browser no-store.
 > Bootstrap permits the SAM transform in both required regions. The existing
 > `main`/GitHub-OIDC release process remains authoritative; no unguarded step exists.
+> The restored function and role are named `opda-session-gate`: the retired
+> `opda-gate` function remained after its replicated version could not be deleted.
+> Do not delete or reuse that orphan to force the deployment through.
 
 > **Amended 2026-09-07 by [ADR-0083](./ADR-0083-rebuild-proportionate-risk-based-ci-cd.md).**
 > `.github/workflows/deploy-aws.yml` is now a thin trigger for the reusable
