@@ -3,8 +3,8 @@ name: Infrastructure (CloudFormation)
 # Infra CI/CD per ADR-0040 §3: validates and deploys the CloudFormation stacks
 # in dependency order — certificate discovery/bootstrap (us-east-1) → regional
 # artifacts + site (eu-west-2) → certificate-only edge reconciliation. The site
-# update comes before removal of the former Lambda@Edge resources so CloudFront
-# first drops every viewer-request association (ADR-0079). Change-set based and
+# update comes before removal of former Lambda@Edge resources. The separate
+# CloudFront Function development barrier remains enforced (ADR-0079). Change-set based and
 # idempotent (--no-fail-on-empty-changeset), so a run that touches only one
 # stack is a no-op for the others.
 #
@@ -24,6 +24,7 @@ on:
       - '.github/workflows/infra.yml'
       - 'tests/hubspot-approval-*.test.mjs'
       - 'tests/auth-session.test.mjs'
+      - 'tests/aws-working-group-interest-infrastructure.test.mjs'
       - 'tests/hubspot-sync.test.mjs'
       - 'src/approval-onboarding/**'
       - 'src/agents/working-group-inbox/domain.mjs'
@@ -55,7 +56,7 @@ jobs:
           node-version: 22
 
       - name: Test participant approval boundary
-        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs
+        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs
 
       - name: Package bounded onboarding runtime locally
         run: node scripts/package-approval-onboarding.mjs

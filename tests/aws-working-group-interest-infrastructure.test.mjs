@@ -4,7 +4,7 @@ import test from 'node:test';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('the CloudFront site stays public while sign-in is a separate regional service', async () => {
+test('the development barrier does not reinstate the retired identity implementation', async () => {
   const [site, edge, workflow] = await Promise.all([
     read('config/aws/site-stack.yaml'),
     read('config/aws/edge-stack.yaml'),
@@ -62,36 +62,38 @@ test('the auth service exposes only the four GET session routes with bounded cap
   assert.doesNotMatch(stack, /CLIENT_SECRET|client_secret|AWS::ApiGatewayV2::DomainName|CorsConfiguration/u);
 });
 
-test('the static origin resolves Astro directory builds at clean public URLs', async () => {
+test('the development barrier denies every site behavior before cache or origin access', async () => {
   const site = await read('config/aws/site-stack.yaml');
-  const rewrite = site.match(/CleanUrlRewriteFunction:[\s\S]*?(?=\n\s{2}Distribution:)/u)?.[0];
-  const defaultBehavior = site.match(/DefaultCacheBehavior:[\s\S]*?(?=\n\s{8}CacheBehaviors:)/u)?.[0];
-
-  assert.ok(rewrite, 'clean-URL CloudFront Function exists');
-  assert.match(rewrite, /Type: AWS::CloudFront::Function/u);
-  assert.match(rewrite, /Runtime: cloudfront-js-2\.0/u);
-  assert.match(rewrite, /uri\.charAt\(uri\.length - 1\) === '\/'[\s\S]*uri \+ 'index\.html'/u);
-  assert.match(rewrite, /leaf\.indexOf\('\.'\) === -1[\s\S]*uri \+ '\/index\.html'/u);
-  assert.ok(defaultBehavior, 'default static-site cache behavior exists');
-  assert.match(defaultBehavior, /EventType: viewer-request\n\s+FunctionARN: !GetAtt CleanUrlRewriteFunction\.FunctionARN/u);
-
-  const source = rewrite.match(/FunctionCode: \|\n([\s\S]*)$/u)?.[1]
+  const gate = site.match(/DevelopmentBarrierFunction:[\s\S]*?(?=\n\s{2}Distribution:)/u)?.[0];
+  assert.ok(gate, 'the development barrier exists');
+  assert.match(gate, /Type: AWS::CloudFront::Function/u);
+  assert.match(gate, /AutoPublish: true/u);
+  assert.match(gate, /Runtime: cloudfront-js-2\.0/u);
+  const behaviors = site.match(/DefaultCacheBehavior:[\s\S]*?(?=\n\s{8}CustomErrorResponses:)/u)?.[0];
+  assert.ok(behaviors);
+  assert.equal((behaviors.match(/TargetOriginId:/gu) ?? []).length, 6);
+  assert.equal((behaviors.match(/EventType: viewer-request\n\s+FunctionARN: !GetAtt DevelopmentBarrierFunction\.FunctionARN/gu) ?? []).length, 6);
+  const source = gate.match(/FunctionCode: \|\n([\s\S]*)$/u)?.[1]
     .split('\n').map((line) => line.replace(/^ {8}/u, '')).join('\n');
-  assert.ok(source, 'clean-URL function source is extractable');
+  assert.ok(source, 'barrier source is extractable');
   const handler = Function(`${source}\nreturn handler;`)();
-  for (const [uri, expected] of [
-    ['/', '/index.html'],
-    ['/join', '/join/index.html'],
-    ['/join/', '/join/index.html'],
-    ['/join/privacy', '/join/privacy/index.html'],
-    ['/robots.txt', '/robots.txt'],
-    ['/_astro/app.js', '/_astro/app.js'],
-  ]) {
-    assert.equal(handler({ request: { uri } }).uri, expected, uri);
+  for (const uri of ['/', '/join', '/programme', '/index.html', '/robots.txt', '/sitemap-index.xml',
+    '/_astro/app.js', '/data/site-search-index.json', '/resources/model.ttl', '/api/v2/comment',
+    '/_auth/login', '/_auth/callback', '/api/working-group-interest', '/api/newsletter-subscription',
+    '/%2e%2e/programme', '//programme', '/programme?config']) {
+    for (const method of ['GET', 'HEAD', 'POST']) {
+      const result = handler({ request: { uri, method, cookies: { '__Host-opda_sid': { value: 'forged' } } } });
+      assert.equal(result.statusCode, 503, `${method} ${uri}`);
+      assert.equal(result.headers['cache-control'].value, 'no-store, max-age=0');
+      assert.match(result.headers['x-robots-tag'].value, /noindex/u);
+      assert.match(result.body, /Under development/u);
+      assert.doesNotMatch(result.body, /<script|<iframe|https?:\/\//u);
+      assert.equal(result.uri, undefined, 'must never return an origin request');
+    }
   }
 });
 
-test('the public API remains same-origin and cache-disabled without the retired gate', async () => {
+test('the registration API configuration stays same-origin and cache-disabled behind containment', async () => {
   const site = await read('config/aws/site-stack.yaml');
   assert.match(site, /Type: AWS::CloudFormation::Stack[\s\S]*TemplateURL: working-group-interest-stack\.yaml/u);
   assert.match(site, /Id: working-group-interest-api[\s\S]*OriginProtocolPolicy: https-only/u);

@@ -1,11 +1,11 @@
-# Regional site, public APIs and participant services (ADR-0038/0040/0079/0084).
+# Regional site and participant services (ADR-0038/0040/0079/0084).
 # CI passes the us-east-1 certificate ARN and packages local nested templates.
 # Artalk runtime is independent; only its CloudFront origin/behavior live here.
-# CI detaches the old viewer gate before reconciling the certificate-only edge.
+# A fail-closed development barrier protects every CloudFront behavior.
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
   opda.org.uk site resources (eu-west-2): S3 + CloudFront, Route 53 records,
-  public site, path-scoped auth session, public submission APIs and their shared
+  development-restricted site, path-scoped auth session, submission APIs and their shared
   post-persistence event boundary
   (ADR-0038/ADR-0040/ADR-0069/ADR-0079).
 
@@ -237,50 +237,33 @@ Resources:
         SigningBehavior: always
         SigningProtocol: sigv4
 
-  # Rewrites /resources/<path> → /<path> before the resources-s3 origin fetch.
-  # The bucket mirrors source/ at its root, so the object key carries no
-  # `resources/` prefix; CloudFront otherwise forwards the full URI and every
-  # /resources/* request 404s. A CloudFront Function (viewer-request) is the
-  # cheapest, lowest-latency way to do this — no Lambda@Edge needed.
-  ResourcesPrefixStripFunction:
+  # Emergency privacy barrier, 2026-09-09. Deliberately denies all viewers,
+  # including existing sessions, until approved-user federation is restored.
+  # Runs before cache lookup on EVERY behavior, not only HTML navigation.
+  # No cookie-presence bypass, asset exception, external dependency or origin fetch.
+  DevelopmentBarrierFunction:
     Type: AWS::CloudFront::Function
     Properties:
-      Name: opda-resources-prefix-strip
+      Name: opda-under-development
       AutoPublish: true
       FunctionConfig:
-        Comment: Strip the /resources prefix for the resources-s3 origin
+        Comment: Fail-closed under-development barrier for every site request
         Runtime: cloudfront-js-2.0
       FunctionCode: |
         function handler(event) {
-          var request = event.request;
-          request.uri = request.uri.replace(/^\/resources/, '');
-          if (request.uri === '') { request.uri = '/'; }
-          return request;
-        }
-
-  # Astro's directory build emits /path/index.html while the public IA uses
-  # bare slugs such as /programme and /join. S3 origins do not apply
-  # DefaultRootObject below nested paths, so resolve clean document requests
-  # before the origin lookup while leaving explicit asset filenames unchanged.
-  CleanUrlRewriteFunction:
-    Type: AWS::CloudFront::Function
-    Properties:
-      Name: opda-clean-url-rewrite
-      AutoPublish: true
-      FunctionConfig:
-        Comment: Resolve bare and trailing-slash document URLs to index.html
-        Runtime: cloudfront-js-2.0
-      FunctionCode: |
-        function handler(event) {
-          var request = event.request;
-          var uri = request.uri;
-          var leaf = uri.substring(uri.lastIndexOf('/') + 1);
-          if (uri.charAt(uri.length - 1) === '/') {
-            request.uri = uri + 'index.html';
-          } else if (leaf.indexOf('.') === -1) {
-            request.uri = uri + '/index.html';
-          }
-          return request;
+          return {
+            statusCode: 503,
+            statusDescription: 'Service Unavailable',
+            headers: {
+              'content-type': { value: 'text/html; charset=utf-8' },
+              'cache-control': { value: 'no-store, max-age=0' },
+              'retry-after': { value: '3600' },
+              'x-robots-tag': { value: 'noindex, nofollow, noarchive' },
+              'x-content-type-options': { value: 'nosniff' },
+              'content-security-policy': { value: "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" }
+            },
+            body: '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>OPDA | Under development</title><style>:root{color-scheme:light dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;align-items:center;background:#131225;color:#fff;font-family:Arial,sans-serif;padding:clamp(24px,6vw,80px)}main{width:100%;max-width:1024px;margin-inline:auto;border-top:6px solid #ffcc2a;padding-block:40px}.brand{font-size:clamp(18px,3vw,26px);margin:0 0 64px}.brand span{color:#77b4ed}.status{color:#ffcc2a;text-transform:uppercase;font-size:14px;font-weight:700;letter-spacing:.12em}h1{font-family:Georgia,serif;font-size:clamp(44px,8vw,88px);line-height:1.05;margin:16px 0 28px}p{font-size:clamp(18px,2.5vw,24px);line-height:1.6;max-width:720px;margin:0}@media(prefers-color-scheme:light){body{background:#fff;color:#131225}.brand span{color:#185a91}.status{color:#554600}}</style></head><body><main><p class="brand">Open Property Data <span>Association</span></p><p class="status">OPDA knowledge base</p><h1>Under development</h1><p>Our website is being developed. Access is temporarily restricted while we prepare the site for approved participants.</p></main></body></html>'
+          };
         }
 
   Distribution:
@@ -343,7 +326,7 @@ Resources:
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
           FunctionAssociations:
             - EventType: viewer-request
-              FunctionARN: !GetAtt CleanUrlRewriteFunction.FunctionARN
+              FunctionARN: !GetAtt DevelopmentBarrierFunction.FunctionARN
         CacheBehaviors:
           # Explicit member sign-in only. This does not gate or inspect any
           # public content path and cannot match the default site behavior.
@@ -354,6 +337,9 @@ Resources:
             Compress: true
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref AuthSessionOriginRequestPolicy
+            FunctionAssociations:
+              - EventType: viewer-request
+                FunctionARN: !GetAtt DevelopmentBarrierFunction.FunctionARN
           # Public static assets. Long-TTL via the
           # same managed CachingOptimized policy the default behavior uses.
           # Ordered ahead of the default behavior.
@@ -362,12 +348,10 @@ Resources:
             ViewerProtocolPolicy: redirect-to-https
             Compress: true
             CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
-            # Strip the /resources prefix so the request maps to the bucket key
-            # (the bucket mirrors source/ at its root, e.g. 08-foo/bar.pdf —
-            # NOT resources/08-foo/bar.pdf). Without this every /resources/* 404s.
+            # Resources are protected too; an HTML-only barrier would leak files.
             FunctionAssociations:
               - EventType: viewer-request
-                FunctionARN: !GetAtt ResourcesPrefixStripFunction.FunctionARN
+                FunctionARN: !GetAtt DevelopmentBarrierFunction.FunctionARN
           - PathPattern: '/api/v2/*'
             TargetOriginId: comments
             ViewerProtocolPolicy: redirect-to-https
@@ -375,6 +359,9 @@ Resources:
             AllowedMethods: [GET, HEAD, OPTIONS]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref CommentsOriginRequestPolicy  # no cookies to Artalk
+            FunctionAssociations:
+              - EventType: viewer-request
+                FunctionARN: !GetAtt DevelopmentBarrierFunction.FunctionARN
           # Public same-origin API. HTTP API exposes only the registration POST route;
           # CloudFront's POST-capable method set necessarily includes the
           # remaining verbs, which API Gateway rejects because no routes exist.
@@ -384,12 +371,18 @@ Resources:
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref PublicFormOriginRequestPolicy
+            FunctionAssociations:
+              - EventType: viewer-request
+                FunctionARN: !GetAtt DevelopmentBarrierFunction.FunctionARN
           - PathPattern: '/api/newsletter-subscription*'
             TargetOriginId: newsletter-subscription-api
             ViewerProtocolPolicy: redirect-to-https
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref PublicFormOriginRequestPolicy
+            FunctionAssociations:
+              - EventType: viewer-request
+                FunctionARN: !GetAtt DevelopmentBarrierFunction.FunctionARN
         CustomErrorResponses:
           # OAC without ListBucket → S3 answers missing keys with 403.
           - ErrorCode: 403

@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-27
-updated: 2026-09-01
+updated: 2026-09-09
 tags: [infrastructure, hosting, authentication, cloudfront, lambda-edge, public-access]
 supersedes: []
 amends: [ADR-0038, ADR-0040, ADR-0054, ADR-0069]
@@ -10,6 +10,27 @@ implements: [config/aws/site-stack.yaml, config/aws/auth-session-stack.yaml, con
 ---
 
 # Make the site public and retire the edge authentication gate
+
+## Amendment: restore the development access barrier, 2026-09-09
+
+The owner has withdrawn public-access approval. This amendment supersedes the
+public-reading decision below. The website must not expose its pages, search data,
+downloads, resources or comments anonymously while under development.
+
+The immediate containment is a fail-closed CloudFront viewer-request function on
+every cache behavior. It returns a self-contained **Under development** response
+with HTTP 503, no-store and noindex, before either cache or origin access. It
+deliberately blocks existing sessions too; a cookie's presence is not authorization.
+The site sources, private S3 origins, participant records, HubSpot decisions and
+background Microsoft/email integration are preserved, not reverted or deleted.
+
+Restoring approved-user access and the previous social sign-in providers is a
+separate, subsequent change. A successful OAuth login must not bypass OPDA approval.
+The barrier must remain in place until that access boundary is implemented and
+verified. Deployment uses the existing CI infrastructure workflow; source and live
+readback, not this decision alone, establish that the restriction is active.
+
+The remaining sections record the historical public-site decision and rollout.
 
 ## Amendment: restore explicit member sign-in without restoring a site gate
 
