@@ -3,6 +3,8 @@
   "tiers": ["release-blocking", "pull-request-blocking", "scheduled-assurance", "development-aid", "delete"],
   "tests": [
     { "path": "tests/approval-onboarding-graph.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/approval-onboarding-domain-templates.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/approval-onboarding-domains.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-handler.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-infra.test.mjs", "owner": "platform", "tier": "pull-request-blocking", "lane": "infrastructure" },
     { "path": "tests/approval-onboarding-runtime-store.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
@@ -39,6 +41,9 @@
     { "path": "tests/grlc-handler.test.mjs", "owner": "linked-data-api", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/header-brand-palette.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/hubspot-approval-adapters.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/hubspot-approval-domain-reviews.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/hubspot-approval-domain-store.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/hubspot-approval-domain-worker.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/hubspot-approval-infra.test.mjs", "owner": "platform", "tier": "pull-request-blocking", "lane": "infrastructure" },
     { "path": "tests/hubspot-approval-store.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/hubspot-approval-webhook.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
