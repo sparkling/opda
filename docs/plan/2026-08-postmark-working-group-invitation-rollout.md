@@ -4,7 +4,7 @@
 |---|---|
 | Status | In progress; Waves 2 and 3 scheduled for 2026-08-12 and 2026-08-13 at 10:00 Europe/London |
 | Prepared | 2026-08-05 |
-| Updated | 2026-08-11 |
+| Updated | 2026-09-09 |
 | Initial scope | Finance and Banking Working Group |
 | Reusable scope | None; later working groups use the ADR-0069 public campaign, selective trade/professional-body outreach and sign-up |
 
@@ -24,6 +24,12 @@ as Wave 3 at 10:00 Europe/London on 2026-08-13. Because that population depends 
 start of the scheduled job and passed unchanged into execution. A changed population
 between those two operations blocks the send. A test, dry run, earlier approval or
 approval of another wave is not reusable authority.
+
+**2026-09-09 tracking correction:** ADR-0085 adds untracked approval invitations on the same
+server and suppression stream. Disable the server's forced open-tracking default, which otherwise
+overrides a message's explicit false value. Historical waves still send `TrackOpens: true`
+explicitly; their content, tracking choice, recipients and send authority are unchanged. The August
+configuration evidence below remains a dated historical record, not the current server requirement.
 
 ## Goal
 
@@ -192,8 +198,8 @@ Implement a repository sender with these invariants:
   `smartdata@openpropdata.org.uk`, the recipient's `display_name` and that recipient's
   own `access_url`;
 - the tracked logo is attached inline with CID `opda-logo`;
-- `TrackOpens` is true and `TrackLinks` is `None` at message level; the dedicated
-  server also enforces open tracking and keeps link tracking disabled;
+- `TrackOpens` is true and `TrackLinks` is `None` at message level; the server keeps
+  link tracking disabled but need not force open tracking onto other workflows;
 - one recipient-specific message is constructed per participant, although bounded
   sub-batches may be submitted through Postmark's template batch endpoint;
 - every per-message response is inspected because Postmark can return HTTP success
@@ -232,8 +238,9 @@ Immediately before a wave:
 3. Confirm the `broadcast` stream uses Postmark unsubscribe handling and that the
    visible `pm:unsubscribe` link remains in both template variants.
 4. Confirm SPF, DKIM and DMARC alignment and run Postmark's content/template checks.
-5. Confirm open tracking remains enabled and link tracking remains disabled at both
-   server and per-message level.
+5. Confirm the wave payload explicitly enables open tracking and disables link tracking.
+   The server must report a boolean open-tracking setting and disabled link tracking;
+   its open-tracking default does not replace the wave's explicit opt-in.
 6. Review the rendered HTML and text using a synthetic model; do not send another live
    test unless separately approved.
 7. Stratify the first wave across organisations and receiving domains rather than

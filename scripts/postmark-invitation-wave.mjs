@@ -249,7 +249,9 @@ function validatePostmark(template, server, stream) {
     throw new Error('The live Postmark template is missing its unsubscribe link');
   }
   if (!template.HtmlBody.includes('cid:opda-logo')) throw new Error('The live template is missing its inline logo');
-  if (server.TrackOpens !== true || String(server.TrackLinks).toLowerCase() !== 'none') {
+  // These historical waves explicitly opt in per message. The shared server must
+  // also support untracked approval invitations; a forced-on default is unnecessary.
+  if (typeof server.TrackOpens !== 'boolean' || String(server.TrackLinks).toLowerCase() !== 'none') {
     throw new Error('Postmark tracking configuration has changed');
   }
   if (stream.ID !== 'broadcast' || stream.MessageStreamType !== 'Broadcasts') {
@@ -390,5 +392,6 @@ export {
   sha256,
   validatePrerequisiteDelivery,
   validatePrerequisiteWave,
+  validatePostmark,
   waveConfig,
 };

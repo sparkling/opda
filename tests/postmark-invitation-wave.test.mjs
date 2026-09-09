@@ -7,6 +7,7 @@ import {
   sha256,
   validatePrerequisiteDelivery,
   validatePrerequisiteWave,
+  validatePostmark,
   waveConfig,
 } from '../scripts/postmark-invitation-wave.mjs';
 
@@ -124,4 +125,20 @@ test('template message preserves recipient URL, CID logo and tracking policy', (
   assert.equal(message.TrackOpens, true);
   assert.equal(message.TrackLinks, 'None');
   assert.equal(message.Attachments[0].ContentID, 'cid:opda-logo');
+});
+
+test('historical waves opt in to opens without requiring a forced server default', () => {
+  const template = { TemplateId: 45998430, Alias: 'finance-banking-working-group-invitation',
+    Subject: 'You’re invited to help shape the Smart Property Data Trust Framework',
+    HtmlBody: 'pm:unsubscribe cid:opda-logo', TextBody: 'pm:unsubscribe' };
+  const stream = { ID: 'broadcast', MessageStreamType: 'Broadcasts',
+    SubscriptionManagementConfiguration: { UnsubscribeHandlingType: 'Postmark' } };
+  for (const TrackOpens of [false, true]) {
+    assert.doesNotThrow(() => validatePostmark(template, { TrackOpens, TrackLinks: 'None' }, stream));
+    assert.equal(messageFor(candidates(1)[0], 'base64-logo', 'b'.repeat(64)).TrackOpens, true);
+  }
+  for (const server of [{ TrackLinks: 'None' }, { TrackOpens: 'false', TrackLinks: 'None' },
+    { TrackOpens: false, TrackLinks: 'HtmlAndText' }]) {
+    assert.throws(() => validatePostmark(template, server, stream), /tracking configuration/);
+  }
 });

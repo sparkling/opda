@@ -16,6 +16,7 @@ const template = {
 };
 const logoBase64 = readFileSync(new URL('../docs/templates/assets/opda-email-logo.png', import.meta.url)).toString('base64');
 const stream = { ID: 'broadcast', ServerID: template.AssociatedServerId, MessageStreamType: 'Broadcasts', SubscriptionManagementConfiguration: { UnsubscribeHandlingType: 'Postmark' }, ArchivedAt: null };
+const server = { ID: template.AssociatedServerId, DeliveryType: 'Live', TrackOpens: false, TrackLinks: 'None' };
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } });
 
 function fixture(overrides = {}) {
@@ -34,6 +35,7 @@ function fixture(overrides = {}) {
     const override = overrides[parsed.pathname];
     if (override) return override({ url: parsed, options });
     if (parsed.pathname === `/templates/${INVITATION_TEMPLATE_ALIAS}`) return json(template);
+    if (parsed.pathname === '/server') return json(server);
     if (parsed.pathname === '/message-streams/broadcast') return json(stream);
     if (parsed.pathname === '/message-streams/broadcast/suppressions/dump') return json({ Suppressions: [] });
     if (parsed.pathname === '/email/withTemplate') return json({ ErrorCode: 0, MessageID: messageId, SubmittedAt: date, To: input.email });
@@ -97,6 +99,24 @@ test('every suppression origin or reason blocks and unavailable/malformed checks
     assert.equal(result.attempted, false);
     assert.equal(result.reason, 'suppression-check-unavailable');
     assert.doesNotMatch(JSON.stringify(result), /secret-value|synthetic@/);
+    assert.equal(calls.some((call) => call.method === 'POST'), false);
+  }
+});
+
+test('server-wide tracking, identity drift and unavailable settings block before the send claim', async () => {
+  for (const reply of [
+    ...[{ TrackOpens: true }, { TrackOpens: undefined }, { TrackOpens: 'false' },
+      { TrackLinks: 'HtmlAndText' }, { TrackLinks: undefined }, { ID: 1 },
+      { DeliveryType: 'Sandbox' }, { DeliveryType: undefined }]
+      .map((change) => () => json({ ...server, ...change })),
+    () => json(server, 503), () => json({ ...server, ErrorCode: 500 }),
+    () => new Response('unavailable'), () => { throw new Error('private provider token'); },
+  ]) {
+    const { adapter, request, calls, sequence } = fixture({ '/server': reply });
+    assert.deepEqual(await adapter.send(request), {
+      status: 'failed', attempted: false, reason: 'server-verification-failed',
+    });
+    assert.equal(sequence.includes('approval-guard'), false);
     assert.equal(calls.some((call) => call.method === 'POST'), false);
   }
 });

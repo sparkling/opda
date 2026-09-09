@@ -51,6 +51,7 @@ export function fingerprintTemplate(template) {
  * https://postmarkapp.com/developer/api/templates-api
  * https://postmarkapp.com/developer/api/suppressions-api
  * https://postmarkapp.com/developer/api/messages-api
+ * https://postmarkapp.com/developer/user-guide/tracking-opens/tracking-opens-per-email
  */
 export function createPostmarkInvitationAdapter(config) {
   object(config, ['token', 'fetchImpl', 'expectedServerId', 'expectedTemplateId', 'expectedTemplateFingerprint', 'timeoutMs']);
@@ -94,6 +95,15 @@ export function createPostmarkInvitationAdapter(config) {
       return readSucceeded(status, data) && data.ID === 'broadcast' && data.ServerID === expectedServerId
         && data.MessageStreamType === 'Broadcasts' && data.ArchivedAt === null
         && data.SubscriptionManagementConfiguration?.UnsubscribeHandlingType === 'Postmark';
+    } catch { return false; }
+  }
+
+  async function verifyServer(signal) {
+    try {
+      const { status, data } = await request('/server', { signal });
+      // Server-wide open tracking overrides a message's explicit false value.
+      return readSucceeded(status, data) && data.ID === expectedServerId
+        && data.DeliveryType === 'Live' && data.TrackOpens === false && data.TrackLinks === 'None';
     } catch { return false; }
   }
 
@@ -144,10 +154,13 @@ export function createPostmarkInvitationAdapter(config) {
       return result;
     };
     try {
-      const [templateValid, streamValid] = await Promise.all([verifyTemplate(signal), verifyStream(signal)]);
+      const [templateValid, streamValid, serverValid] = await Promise.all([
+        verifyTemplate(signal), verifyStream(signal), verifyServer(signal),
+      ]);
       if (signal?.aborted) return finish(failed('stale-or-cancelled'));
       if (!templateValid) return finish(failed('template-verification-failed'));
       if (!streamValid) return finish(failed('stream-verification-failed'));
+      if (!serverValid) return finish(failed('server-verification-failed'));
       // Pin the verified numeric ID so an alias reassignment cannot redirect a send.
       delete payload.TemplateAlias;
       payload.TemplateId = expectedTemplateId;

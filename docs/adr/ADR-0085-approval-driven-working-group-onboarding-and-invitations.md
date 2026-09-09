@@ -195,9 +195,14 @@ and text are escaped, not accepted as arbitrary HTML.
 
 Use the existing Postmark `broadcast` stream. Check its suppressions immediately before sending;
 an unavailable check blocks the send. Do not remove a suppression or use a different stream to
-bypass it. Set `TrackLinks: None` and `TrackOpens: false` on these messages without changing the
-historical wave or server defaults. Postmark supports template models and per-message tracking
-settings. [Postmark templates API](https://postmarkapp.com/developer/api/templates-api)
+bypass it. Set `TrackLinks: None` and `TrackOpens: false` on these messages. The shared server
+must also have forced open tracking disabled: Postmark's server-wide `TrackOpens: true`
+overrides a message's explicit false value. Read back the pinned live server and its tracking
+settings before claiming a send. Keep historical wave messages' explicit `TrackOpens: true`
+unchanged; they retain their existing behaviour without requiring a forced server default.
+Keep the same templates, stream and suppressions rather than migrating recipients to another
+server. [Postmark per-message tracking](https://postmarkapp.com/developer/user-guide/tracking-opens/tracking-opens-per-email),
+[Postmark templates API](https://postmarkapp.com/developer/api/templates-api)
 
 Deduplicate by participant, immutable approval decision and group-set digest; pin the template
 version in the operation. A template edit does not trigger another invitation. Record attempted,
@@ -311,7 +316,15 @@ additional effective grants, and leaving company-folder ACL checks unchanged. No
 or permission was replaced to make the check pass. This follows Microsoft's documented
 [automatic Limited Access behaviour](https://learn.microsoft.com/en-us/sharepoint/understanding-permission-levels).
 The regression was reproduced before the fix; all 34 focused SharePoint tests then passed.
-The invitation and general activation remain pending completion of the live test.
+The correction was deployed from `fe54166b873259c1bec409e42efcf8ab183deb04` through
+successful infrastructure run `34345211765`; the deployed verifier matched the committed bytes.
+The controlled recipient subsequently completed real website login, withdrawal and reapproval.
+Withdrawal invalidated the open website session, disabled Cognito and removed both workflow-owned
+Microsoft memberships; reapproval restored them and reused the existing company folders. Unrelated
+Finance membership and source material were preserved. One combined invitation was delivered,
+but Postmark reported open tracking enabled despite the per-message false value. The documented
+server override exposed a missing server-settings preflight, now covered by a reproduced regression
+test. General activation remains disabled pending a clean untracked invitation readback.
 
 Before activating automatic follow-up, verify:
 
