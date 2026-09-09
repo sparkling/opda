@@ -19,6 +19,8 @@ test('every Astro page belongs to an explicit visual route family', async () => 
   const routes = await filesWithExtension('src/pages', '.astro');
   const standalone = new Set([
     'src/pages/index.astro',
+    // Restored self-contained public landing: protected site assets cannot be dependencies.
+    'src/pages/under-development.astro',
     'src/pages/presentation/working-group-kickoff.astro',
   ]);
   for (const path of routes) {

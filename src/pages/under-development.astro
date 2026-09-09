@@ -1,0 +1,41 @@
+---
+// Original public work-in-progress landing, recovered from f11d40c2.
+// The edge maps anonymous / here, preserving the signed-in homepage.
+const title = 'OPDA — Work in progress';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>{title}</title>
+  <style is:inline>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body { min-height: 100vh; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(120% 120% at 50% 0%, #3a2a1e 0%, #1a1310 55%, #0d0a08 100%);
+      color: #f3e9dc; text-align: center; padding: clamp(4rem, 9vh, 6rem) clamp(1rem, 4vw, 3rem) 3rem; }
+    .cs-signin { position: absolute; top: 1.5rem; right: 2rem; font-size: 1rem; font-weight: 600;
+      color: #d9c4a8; text-decoration: none; }
+    .cs-signin:hover, .cs-signin:focus-visible { color: white; text-decoration: underline; }
+    .cs-wordmark { display: block; margin: 0 0 clamp(1rem, 3vh, 2rem); font-weight: 800;
+      font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem); letter-spacing: .04em; color: inherit; text-decoration: none; }
+    .cs-art { display: block; margin: 0 auto; max-width: min(100%, 1500px); max-height: 74vh;
+      width: auto; height: auto; border-radius: 14px;
+      box-shadow: 0 24px 60px -20px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1 class="sr-only">Under development — the OPDA Knowledge Base is being prepared</h1>
+    <a class="cs-signin" href="/_auth/login?return=%2Fprogramme">Sign in to the Knowledge Base →</a>
+    <a class="cs-wordmark" href="/">Open Property Data Association</a>
+    <img class="cs-art" src="/coming-soon.jpg" width="2400" height="1339" fetchpriority="high"
+      alt="A colony of cartoon beavers building a dam at sunset, beside a sign reading ‘Coming soon — our new home is being built. Stay tuned for our grand opening.’" />
+  </main>
+</body>
+</html>
