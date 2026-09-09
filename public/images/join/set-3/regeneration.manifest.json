@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "provider": "OpenAI built-in image generation",
+  "toolModelVersion": "Not exposed by the built-in tool; no version override requested",
+  "generated": "2026-09-09",
+  "style": "OPDA editorial watercolour, ADR-0073 and /design-system",
+  "purpose": "Decorative human-facing editorial illustration; not technical notation or evidence.",
+  "export": "Preserve existing active asset dimensions. Remove only deliberately composed blank padding, using each recorded exportBounds, then proportional resize. No stretching or subject cropping.",
+  "assets": [
+    {
+      "id": "finance-and-banking",
+      "subject": "A mortgage adviser and prospective buyers compare distinct evidence sheets before a lending decision.",
+      "lightPrompt": "Use case: illustration-story.\nAsset type: OPDA Finance and Banking working-group card, new replacement artwork. Generate ONE image, exact 1200 x 300 pixels, ultra-wide 4:1 composition, matching the existing image slot. Input image 1 is a STYLE REFERENCE only: preserve its refined ink and rich watercolour voice, NOT its house-and-coins composition.\nScene: an experienced mortgage adviser and a couple considering a home purchase sit in a calm advice room in a shallow left-to-right narrative. The adviser at left opens a source folder; one prospective buyer at centre compares two separate unlettered evidence sheets while the other listens, hands naturally resting near a pencil. At far right a broad window shows a modest British terraced home, connecting the decision to a real dwelling. Calm attentive expressions, no congratulation or implied loan approval. The different documents remain distinct and visible.\nStyle: expressive organic pen-and-ink contours, rich translucent watercolour and softly opaque gouache, delicate hatching, visible pigment texture, warm professional editorial storytelling. Cool off-white #F9F9F9 paper, deep-purple #231F2F ink, generous OPDA golden-yellow #FEC92B, petrol/teal #0E8478, violet #6C5BD4 and coral accents, natural skin tones. Colour substantial surfaces, not pale generic line art.\nComposition: unusually shallow panorama filling the width, complete heads, natural hands and useful objects safely within image, no clipped people, no enormous blank bands. Not a grid or contact sheet. No readable text, digits, symbols, labels, arrows, coins, charts, approval stamps, handshake, logos, watermark, floating icons, 3D, photography, neon or glow. No architectural cutaway: this subject concerns human financial judgement.",
+      "geometryCorrectionPrompt": "Use case: style-transfer.\nInput image 1 is the edit target. Keep its OPDA mortgage-advice illustration, same three people, identities, clothes, attentive expressions, folder, evidence papers, window and terraced houses. Keep warm ink and watercolour medium.\nPRODUCTION GEOMETRY: Produce a 3:1 canvas at 2172×724. Within it, the ENTIRE visible illustration must occupy ONLY a CENTRAL 4:1 STRIP from y=91 through y=633, across x=0 through x=2172. Top y=0..90 and bottom y=634..723 must be COMPLETELY EMPTY uniform cool off-white #F9F9F9 paper, no border, no ink, no pigment, no texture. Scale down and arrange ALL scene artwork including every head, hand, folder, plant, house and brush stroke inside the central 2172×543 strip. It is essential that this strip has a height exactly one quarter its width, so the empty top and bottom margins can be mechanically removed without losing any artwork. Do not put any object or pigment into the empty 91px top/bottom margins. This is one panorama, not a montage. Every meaningful subject inside the central strip, not clipped by its edges. No lettering, labels, readable text, logo, watermark or frame. Do not stretch objects. Generous OPDA gold, petrol, violet, coral on clean light paper.",
+      "darkPrompt": "Use case: style-transfer.\nAsset type: matching dark-mode counterpart of approved OPDA mortgage-advice working-group card.\nInput image 1 is the EXACT EDIT TARGET. Change ONLY paper, ink values and pigment treatment. Preserve exact three people, identities, poses, expressions, hands, folder, two evidence sheets, notebook, furniture, window, houses, plants, object counts, perspective, relative sizes, geometry, framing and all negative space. Do not redesign.\nCanvas: exactly 2172×724, retaining the original drawing's placement ENTIRELY WITHIN its central 4:1 strip y=91..633; keep top and bottom 91px margins COMPLETELY EMPTY of objects or pigment. Those empty margins will be removed mechanically for a 1200×300 card export. Keep every artwork edge and stroke inside the same central strip as the light image.\nReplace off-white paper with flat deep-purple #231F2F paper right to every canvas edge and throughout the blank top/bottom margins. Keep rich OPDA gold #FEC92B, petrol teal, blue-violet, coral and warm natural skin tones in watercolour/gouache. Change ink details to pale lavender or off-white where needed for legibility. Tactile luminous pigment, no glow. This is dark paper, not night-time.\nNo additions, removals, rearrangement, cropping, scaling, fluorescent outline, stars, inversion, text, labels, numbers, logos or watermark.",
+      "light": {
+        "file": "finance-and-banking-light.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 111066,
+        "quality": 84,
+        "sha256": "127ba017e5df2cc9aa24d5043ba23c832893b5ba94429b6396a0a7c76d809d12",
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-462d1873-742d-4592-8299-03f0ac7d15d9.png",
+        "sourceSha256": "c2e2f9145a26cce65ff7558bbb0ea0d73b44e33e601785a50862f770f67e8ca5",
+        "sourceWidth": 2170,
+        "sourceHeight": 725,
+        "exportBounds": {
+          "left": 1,
+          "top": 91,
+          "width": 2168,
+          "height": 542
+        }
+      },
+      "dark": {
+        "file": "finance-and-banking-dark.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 127118,
+        "quality": 84,
+        "sha256": "b7b32591ac69e993bd668ad71459ad710611d6be1c85da063d251f5d1a9f5eb6",
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-ab4fabab-8108-4435-8e92-2bf7a49511ac.png",
+        "sourceSha256": "53fc6b166345886f22dc6f63a2e452f8bc18028ac849ce95acd1f53cb599bed8",
+        "sourceWidth": 2171,
+        "sourceHeight": 724,
+        "exportBounds": {
+          "left": 1,
+          "top": 91,
+          "width": 2168,
+          "height": 542
+        },
+        "editedFrom": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-462d1873-742d-4592-8299-03f0ac7d15d9.png"
+      }
+    },
+    {
+      "id": "conveyancing",
+      "subject": "Practitioners compare separate property-title and enquiry sketches with source folders and search papers.",
+      "lightPrompt": "Use case: illustration-story.\nAsset type: new OPDA Conveyancing working-group card. Input image 1 is STYLE REFERENCE only, not subject or composition.\nScene: a close, low horizontal study of a property conveyancing case opened on a long shallow archive ledge. At left a pair of practitioner's hands unfolds a large title-boundary sketch showing one modest terraced home and its garden plot; in the middle several clearly separate violet, teal and golden source folders lean against a small stack of search papers; at right another hand compares a separate coral enquiry sheet with the property sketch. Two sets of careful hands, no faces needed. All papers are blank apart from purely pictorial unlabelled house/plot drawings, no text or numbers. The story is separate legal evidence being compared before transfer, not approval or a completed transaction. No gavel, scales of justice, seal, checkmark, handshake, coins or courthouse.\nStyle: refined organic purple pen-and-ink, rich translucent watercolour and softly opaque gouache, paper highlights, delicate hatching, generous OPDA gold #FEC92B, petrol/teal #0E8478, violet #6C5BD4 and coral on cool off-white #F9F9F9 paper. Strong readable silhouettes and tactile pigment. Familiar warm professional OPDA editorial voice, no 3D, photography, glossy vector or glow.\nPRODUCTION GEOMETRY: generate one 2172×724 3:1 canvas, BUT compose the entire drawing inside central 4:1 artwork strip y=110..615 and x=20..2150, safe within eventual y=91..633 crop. Top and bottom 91 pixels must be completely empty uniform off-white paper, NO border. All hands and objects complete within strip. This deliberate blank padding will be removed for exactly1200×300 final card. Spread scene laterally and keep shallow; no clipped subject, grid, montage, text, label, logo or watermark.",
+      "darkPrompt": "Use case: style-transfer. Input image 1 is the EXACT EDIT TARGET, approved OPDA Conveyancing card. Change ONLY paper, ink values and pigments for dark mode. Preserve exact hands, source sketch, separate enquiry sheet, folders, search papers, plant, ledge, mugs, object counts, proportions, positions, perspective, framing and blank margins. Identical canvas and artwork geometry. Keep the whole drawing inside the same central 4:1 strip; upper and lower 91px padding remains completely empty dark paper. Replace cool off-white paper with flat deep-purple #231F2F reaching every edge. Keep rich golden yellow, petrol teal, violet and coral watercolour/gouache, warm natural skin, pale lavender/off-white drawing detail where needed. Tactile pigment on dark paper, not night-time or negative inversion. No redesign, new objects, omissions, movement, crop, text, digits, labels, logo, watermark, glow, stars, neon or fluorescent outlines. Exactly the same drawing and blank-padding bounds, palette edit only.",
+      "light": {
+        "file": "conveyancing-light.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 89382,
+        "quality": 84,
+        "sha256": "06c711562f6d47803c2f8367f9830d9c9fa0901e7bd44099052e1eded4c75cd8",
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-4305cf9c-d925-4379-977b-9e9b45d0bc4b.png",
+        "sourceSha256": "9eb8a1c6d1b3e948a2c206737aed3d2a9609ebc9841b33ca4117799951bb2f14",
+        "sourceWidth": 2170,
+        "sourceHeight": 725,
+        "exportBounds": {
+          "left": 1,
+          "top": 91,
+          "width": 2168,
+          "height": 542
+        }
+      },
+      "dark": {
+        "file": "conveyancing-dark.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 93306,
+        "quality": 84,
+        "sha256": "73e561d9f4ee9e1548c53c54e7709fb530118719f5cef3cd10725a45d932db4a",
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-cc68413c-b94a-4c92-bc7c-470d9b27f900.png",
+        "sourceSha256": "bf31a03b1a6a7813e1444b912633d6fcda8a828da1596cca05bbbe53d6d0aa5e",
+        "sourceWidth": 2169,
+        "sourceHeight": 725,
+        "exportBounds": {
+          "left": 0,
+          "top": 91,
+          "width": 2168,
+          "height": 542
+        },
+        "editedFrom": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-4305cf9c-d925-4379-977b-9e9b45d0bc4b.png"
+      }
+    }
+  ]
+}
