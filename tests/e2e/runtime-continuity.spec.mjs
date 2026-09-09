@@ -65,20 +65,21 @@ test.describe('runtime continuity boundaries', () => {
     clean();
   });
 
-  test('comments remain anonymously readable without identity exchange or mutations', async ({ page, baseURL }) => {
+  test('approved comments use same-origin credentials and post only after deliberate submission', async ({ page, baseURL }) => {
     const clean = watchRuntime(page);
     const apiRequests = [];
     const loginRequests = [];
     const content = '<strong>Retained comment, displayed as plain text.</strong>';
+    const comments = [{ id: 41, rid: 0, nick: 'Test Participant', date: '2026-09-08T12:00:00Z', content }];
 
-    // A real cookie proves the reader omits credentials, rather than merely
-    // passing because this isolated browser context happens to be empty.
+    // A non-auth fixture cookie proves same-origin browser transport. The real
+    // HttpOnly session and approval checks are covered by gateway contracts.
     await page.context().addCookies([{ name: 'legacy-comment-session', value: 'synthetic-old-session', url: baseURL }]);
 
     await page.route('**/_auth/me', (route) => route.fulfill({
-      status: 401,
+      status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ error: 'signed out' }),
+      body: JSON.stringify({ email: 'member@example.test', name: 'Test Member' }),
     }));
     await page.route('**/_auth/login**', async (route) => {
       loginRequests.push(route.request().url());
@@ -88,26 +89,33 @@ test.describe('runtime continuity boundaries', () => {
       const request = route.request();
       const url = new URL(request.url());
       apiRequests.push({ url, method: request.method(), headers: await request.allHeaders(), body: request.postData() });
-      if (url.pathname !== '/api/v2/comments' || request.method() !== 'GET') {
+      if (url.pathname !== '/api/v2/comments' || !['GET', 'POST'].includes(request.method())) {
         await route.fulfill({ status: 403, contentType: 'application/json', body: '{}' });
         return;
       }
+      if (request.method() === 'POST') {
+        const submitted = JSON.parse(request.postData());
+        const comment = { id: 42, rid: submitted.rid, nick: 'Test Member', date: '2026-09-09T12:00:00Z', content: submitted.content };
+        comments.push(comment);
+        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ data: comment }) });
+        return;
+      }
       await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({
-        data: { comments: [{ id: 41, nick: 'Test Participant', date: '2026-09-08T12:00:00Z', content }], count: 1 },
+        data: { comments, count: comments.length, viewer: { name: 'Test Member' } },
       }) });
     });
 
     await visit(page, '/governance/stakeholder-engagement');
     await page.locator('.comments-section').scrollIntoViewIfNeeded();
-    await expect(page.locator('.comments-section__notice')).toHaveText(
-      'Comments are temporarily read-only while sign-in is upgraded.',
-    );
+    await expect(page.locator('.comments-section__notice')).toHaveCount(0);
     await expect(page.locator('#atk-comment-41 .comments-section__content')).toHaveText(content);
     await expect(page.locator('#atk-comment-41 header strong')).toHaveText('Test Participant');
     await expect(page.locator('#atk-comment-41 .comments-section__content strong')).toHaveCount(0);
     await expect(page.locator('#opda-comments-status')).toBeEmpty();
     await expect(page.locator('#opda-comments-more')).toBeHidden();
-    await expect(page.locator('#opda-comments input, #opda-comments textarea, #opda-comments [contenteditable="true"], #opda-comments a[href*="/_auth/"]')).toHaveCount(0);
+    await expect(page.locator('#opda-comments-form')).toBeVisible();
+    await expect(page.locator('#opda-comments-author')).toHaveText('Commenting as Test Member');
+    await expect(page.locator('#opda-comments-sign-in')).toBeHidden();
     expect(apiRequests).toHaveLength(1);
     const [read] = apiRequests;
     expect(read.url.origin).toBe(new URL(page.url()).origin);
@@ -119,8 +127,32 @@ test.describe('runtime continuity boundaries', () => {
     expect(read.method).toBe('GET');
     expect(read.body).toBeNull();
     expect(read.headers.authorization).toBeUndefined();
-    expect(read.headers.cookie).toBeUndefined();
+    expect(read.headers.cookie).toContain('legacy-comment-session=synthetic-old-session');
+    await page.locator('#atk-comment-41').getByRole('button', { name: 'Reply', exact: true }).click();
+    await page.getByLabel('Your comment', { exact: true }).fill('A deliberate reply');
+    await page.getByRole('button', { name: 'Post comment', exact: true }).click();
+    await expect(page.locator('#atk-comment-42 .comments-section__content')).toHaveText('A deliberate reply');
+    await expect(page.locator('#atk-comment-42 .comments-section__reply')).toHaveText('Reply to comment #41');
+    await expect(page.locator('#opda-comments-status')).toHaveText('Your comment has been posted.');
+    const posts = apiRequests.filter(request => request.method === 'POST');
+    expect(posts).toHaveLength(1);
+    expect(JSON.parse(posts[0].body)).toEqual({ page_key: read.url.searchParams.get('page_key'), content: 'A deliberate reply', rid: 41 });
+    expect(posts[0].headers.authorization).toBeUndefined();
+    expect(posts[0].headers.cookie).toContain('legacy-comment-session=synthetic-old-session');
     expect(loginRequests).toEqual([]);
+    clean();
+  });
+
+  test('signed-out comments expose only the explicit sign-in link, not an editor or retained content', async ({ page }) => {
+    const clean = watchRuntime(page);
+    await page.route('**/_auth/me', route => route.fulfill({ status: 401, contentType: 'application/json', body: '{}' }));
+    await page.route('**/api/v2/comments?**', route => route.fulfill({ status: 401, contentType: 'application/json', body: '{}' }));
+    await visit(page, '/governance/stakeholder-engagement');
+    await page.locator('.comments-section').scrollIntoViewIfNeeded();
+    await expect(page.locator('#opda-comments-sign-in')).toBeVisible();
+    await expect(page.locator('#opda-comments-form')).toBeHidden();
+    await expect(page.locator('#opda-comments-list')).toBeEmpty();
+    await expect(page.locator('#opda-comments-status')).toHaveText('Please sign in with an approved account to use comments.');
     clean();
   });
 
