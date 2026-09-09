@@ -51,6 +51,16 @@ test('the same-origin auth surface forwards cookies and query strings without ca
   assert.match(policy ?? '', /QueryStringBehavior: all/u);
 });
 
+test('private responses use CloudFront security-header fields, not forbidden custom headers', async () => {
+  const site = await read('config/aws/site-stack.yaml');
+  const policy = site.match(/PrivateResponseHeaders:[\s\S]*?(?=\n\s{2}#|\n\s{2}\w)/u)?.[0];
+  assert.ok(policy, 'the browser response policy exists');
+  assert.match(policy, /Header: Cache-Control, Value: 'private, no-store, max-age=0', Override: true/u);
+  assert.match(policy, /Header: X-Robots-Tag, Value: 'noindex, nofollow, noarchive', Override: true/u);
+  assert.match(policy, /SecurityHeadersConfig:\n\s+ContentTypeOptions: \{ Override: true \}\n\s+ReferrerPolicy: \{ ReferrerPolicy: no-referrer, Override: true \}/u);
+  assert.doesNotMatch(policy, /Header: (?:Referrer-Policy|X-Content-Type-Options)/u);
+});
+
 test('the auth service exposes only the four GET session routes with bounded capacity', async () => {
   const stack = await read('config/aws/auth-session-stack.yaml');
   for (const route of ['login', 'callback', 'me', 'logout']) {

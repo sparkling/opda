@@ -249,8 +249,9 @@ Resources:
           Items:
             - { Header: Cache-Control, Value: 'private, no-store, max-age=0', Override: true }
             - { Header: X-Robots-Tag, Value: 'noindex, nofollow, noarchive', Override: true }
-            - { Header: Referrer-Policy, Value: 'no-referrer', Override: true }
-            - { Header: X-Content-Type-Options, Value: nosniff, Override: true }
+        SecurityHeadersConfig:
+          ContentTypeOptions: { Override: true }
+          ReferrerPolicy: { ReferrerPolicy: no-referrer, Override: true }
 
   # Retained emergency fallback; normal associations use the approved-session gate.
   # This denies every viewer if reattached during incident containment.
