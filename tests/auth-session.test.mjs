@@ -364,6 +364,36 @@ test('invalid configuration and unsupported routes/methods fail without provider
   }
 });
 
+test('real DynamoDB approval lists and maps survive session reads and deny withdrawn groups', async () => {
+  const encode = (value) => value === null ? { NULL: true }
+    : Array.isArray(value) ? { L: value.map(encode) }
+      : typeof value === 'object' ? { M: Object.fromEntries(Object.entries(value).map(([k, v]) => [k, encode(v)])) }
+        : typeof value === 'boolean' ? { BOOL: value }
+          : typeof value === 'number' ? { N: String(value) } : { S: value };
+  const row = participant({ enrolmentStatus: 'complete', approvalPolicy: 'individual-domains-v1',
+    approvedDomains: ['conveyancing'], domainApprovals: { conveyancing: { status: 'approved' } },
+    holdReason: null, history: [] });
+  const token = base64url(Buffer.alloc(32, 3));
+  const saved = { pk: sessionKey(token), sub: SUB, email: row.email, participantId: row.participantId,
+    accessVersion: row.accessVersion, createdAt: NOW, expiresAt: NOW + 3600 };
+  class Command { constructor(input) { this.input = input; } }
+  const store = createStore(CONFIG, {
+    loadAws: async () => ({ GetItemCommand: Command }),
+    client: { async send({ input }) {
+      assert.equal(input.ConsistentRead, true);
+      return { Item: encode(input.TableName === CONFIG.participantsTableName ? row : saved).M };
+    } },
+  });
+  assert.deepEqual(await store.getParticipant(SUB), row);
+  const handler = createHandler({ config: CONFIG, store, now: () => NOW * 1000 });
+  const request = event('/_auth/me', { cookies: ['__Host-opda_session=' + token] });
+  assert.equal((await handler(request)).statusCode, 200);
+  row.domainApprovals.conveyancing.status = 'withdrawn';
+  assert.equal((await handler(request)).statusCode, 401);
+  row.approvedDomains = [];
+  assert.equal((await handler(request)).statusCode, 401);
+});
+
 test('DynamoDB adapter uses strong reads and atomic approval-bound enrollment/session writes', async () => {
   const commands = [];
   class Command { constructor(input) { this.input = input; } }

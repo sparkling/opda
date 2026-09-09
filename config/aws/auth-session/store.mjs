@@ -9,12 +9,17 @@ function attribute(value) {
   throw new Error('Unsupported authentication attribute.');
 }
 
-function decode(item) {
-  if (!item) return null;
-  return Object.fromEntries(Object.entries(item).map(([key, value]) => [key,
-    value.S ?? (value.N !== undefined ? Number(value.N) : value.BOOL),
-  ]));
+function decodeValue(value) {
+  if (typeof value?.S === 'string') return value.S;
+  if (value?.N !== undefined && Number.isFinite(Number(value.N))) return Number(value.N);
+  if (typeof value?.BOOL === 'boolean') return value.BOOL;
+  if (value?.NULL === true) return null;
+  if (Array.isArray(value?.L)) return value.L.map(decodeValue);
+  if (value?.M && typeof value.M === 'object') return decode(value.M);
+  throw new Error('Unsupported authentication attribute.');
 }
+const decode = (item) => item
+  ? Object.fromEntries(Object.entries(item).map(([key, value]) => [key, decodeValue(value)])) : null;
 
 // The Lambda runtime supplies AWS SDK v3; no provider credentials or tokens are stored.
 export function createStore(config, overrides = {}) {
