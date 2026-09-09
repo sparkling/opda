@@ -1,19 +1,28 @@
 ---
 /**
- * Temporary anonymous comment reader during the identity migration.
- * Member mutations are also blocked at CloudFront and the comments origin.
- * No Artalk widget is mounted: it would restore browser tokens and emit writes.
+ * Member comments use the same opaque, HttpOnly session as the website.
+ * No provider or Artalk bearer token is exposed to the browser.
  */
 import { getLegacyCommentKey } from '@/lib/site-route-migrations.mjs';
 const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
 ---
-<section class="comments-section" aria-label="Comments" data-comment-page-key={commentPageKey}>
+<section id="comments" class="comments-section" aria-label="Comments" data-comment-page-key={commentPageKey}>
   <h2 class="comments-section__heading">Comments</h2>
-  <p class="comments-section__notice">Comments are temporarily read-only while sign-in is upgraded.</p>
   <div id="opda-comments" class="comments-section__widget">
     <div id="opda-comments-list" class="comments-section__list"></div>
     <p id="opda-comments-status" role="status">Loading comments…</p>
     <button id="opda-comments-more" class="btn btn--compact" type="button" hidden>Load more comments</button>
+    <a id="opda-comments-sign-in" href={`/_auth/login?return=${encodeURIComponent(Astro.url.pathname + '#comments')}`} hidden>Sign in to read and join the discussion</a>
+    <form id="opda-comments-form" class="comments-section__form" hidden>
+      <p id="opda-comments-author"></p>
+      <p id="opda-comments-reply" hidden></p>
+      <label for="opda-comments-content">Your comment</label>
+      <textarea id="opda-comments-content" name="content" rows="5" maxlength="5000" required placeholder="Share a question, an observation or evidence that will help improve this page."></textarea>
+      <div class="comments-section__actions">
+        <button id="opda-comments-submit" class="btn btn--compact" type="submit">Post comment</button>
+        <button id="opda-comments-cancel" class="btn btn--compact btn--ghost" type="button" hidden>Cancel reply</button>
+      </div>
+    </form>
   </div>
 </section>
 
@@ -34,7 +43,7 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
     observedContainer = undefined;
   }
 
-  function commentElement(comment) {
+  function commentElement(comment, onReply, signal) {
     const article = document.createElement('article');
     article.className = 'comments-section__entry';
     article.id = 'atk-comment-' + comment.id;
@@ -58,9 +67,15 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
     }
     const content = document.createElement('p');
     content.className = 'comments-section__content';
-    // Raw text is intentional during migration; never execute returned HTML/Markdown.
+    // Comments are plain text: never execute returned HTML/Markdown.
     content.textContent = comment.content;
     article.append(content);
+    const reply = document.createElement('button');
+    reply.type = 'button';
+    reply.className = 'btn btn--compact btn--ghost';
+    reply.textContent = 'Reply';
+    reply.addEventListener('click', () => onReply(comment), { signal });
+    article.append(reply);
     return article;
   }
 
@@ -75,13 +90,46 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
     const list = document.getElementById('opda-comments-list');
     const status = document.getElementById('opda-comments-status');
     const more = document.getElementById('opda-comments-more');
-    if (!list || !status || !(more instanceof HTMLButtonElement)) return;
+    const form = document.getElementById('opda-comments-form');
+    const content = document.getElementById('opda-comments-content');
+    const submit = document.getElementById('opda-comments-submit');
+    const author = document.getElementById('opda-comments-author');
+    const replyLabel = document.getElementById('opda-comments-reply');
+    const cancel = document.getElementById('opda-comments-cancel');
+    const signIn = document.getElementById('opda-comments-sign-in');
+    if (!list || !status || !more || !form || !content || !submit || !author || !replyLabel || !cancel || !signIn) return;
     const pageKey = document.querySelector('.comments-section')?.dataset.commentPageKey || window.location.pathname;
     let offset = 0;
     let busy = false;
+    let posting = false;
+    let replyId = 0;
     const seen = new Set();
     list.replaceChildren();
     more.hidden = true;
+    form.hidden = true;
+    signIn.hidden = true;
+
+    function replyTo(comment) {
+      replyId = comment.id;
+      replyLabel.textContent = 'Replying to comment #' + comment.id + ' by ' + comment.nick;
+      replyLabel.hidden = false;
+      cancel.hidden = false;
+      content.focus();
+    }
+
+    function cancelReply() {
+      replyId = 0;
+      replyLabel.hidden = true;
+      cancel.hidden = true;
+    }
+
+    function denied() {
+      form.hidden = true;
+      more.hidden = true;
+      list.replaceChildren();
+      signIn.hidden = false;
+      status.textContent = 'Please sign in with an approved account to use comments.';
+    }
 
     async function load() {
       if (busy || signal.aborted) return;
@@ -95,9 +143,10 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
           flat_mode: 'true', sort_by: 'date_asc',
         }).toString();
         const response = await fetch(target.toString(), {
-          method: 'GET', credentials: 'omit', cache: 'no-store', redirect: 'error',
+          method: 'GET', credentials: 'same-origin', cache: 'no-store', redirect: 'error',
           headers: { accept: 'application/json' }, signal,
         });
+        if (response.status === 401 || response.status === 403) { denied(); return; }
         if (!response.ok) throw new Error('Comments unavailable');
         const body = await response.json();
         const data = body.data ?? body;
@@ -111,12 +160,16 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
         for (const comment of data.comments) {
           if (seen.has(comment.id)) continue;
           seen.add(comment.id);
-          list.append(commentElement(comment));
+          list.append(commentElement(comment, replyTo, signal));
         }
         offset += data.comments.length;
         more.hidden = data.comments.length === 0 || offset >= data.count;
         more.textContent = 'Load more comments';
         status.textContent = seen.size === 0 ? 'No comments yet.' : '';
+        if (typeof data.viewer?.name !== 'string' || !data.viewer.name) throw new Error('Missing member identity');
+        author.textContent = 'Commenting as ' + data.viewer.name;
+        form.hidden = false;
+        return true;
       } catch {
         if (signal.aborted) return;
         status.textContent = 'Comments are temporarily unavailable. Please try again.';
@@ -127,7 +180,44 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
         more.disabled = false;
       }
     }
-    more.addEventListener('click', () => { void load(); });
+    more.addEventListener('click', () => { void load(); }, { signal });
+    cancel.addEventListener('click', cancelReply, { signal });
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const text = content.value.trim();
+      if (posting || busy || !text || text.length > 5000 || signal.aborted) return;
+      posting = true;
+      submit.disabled = true;
+      more.disabled = true;
+      status.textContent = 'Posting your comment…';
+      try {
+        const response = await fetch('/api/v2/comments', {
+          method: 'POST', credentials: 'same-origin', cache: 'no-store', redirect: 'error',
+          headers: { accept: 'application/json', 'content-type': 'application/json' }, signal,
+          body: JSON.stringify({ page_key: pageKey, content: text, rid: replyId }),
+        });
+        if (response.status === 401 || response.status === 403) { denied(); return; }
+        if (!response.ok) throw new Error('Could not post');
+        const result = await response.json();
+        if (signal.aborted) return;
+        const comment = result.data ?? result;
+        if (!Number.isSafeInteger(comment.id) || comment.id < 1) throw new Error('Invalid response');
+        content.value = '';
+        cancelReply();
+        list.replaceChildren(); seen.clear(); offset = 0;
+        const refreshed = await load();
+        if (!form.hidden && !signal.aborted) {
+          status.textContent = (comment.is_pending ? 'Your comment has been submitted for review.' : 'Your comment has been posted.')
+            + (refreshed ? '' : ' The list could not be refreshed; use Try again to reload it.');
+        }
+      } catch {
+        if (!signal.aborted) status.textContent = 'Your comment could not be confirmed. Your text has been kept; check the discussion before trying again.';
+      } finally {
+        posting = false;
+        submit.disabled = false;
+        more.disabled = false;
+      }
+    }, { signal });
     if (typeof IntersectionObserver === 'undefined') {
       void load();
     } else {
@@ -149,7 +239,11 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
 </script>
 
 <style>
-  .comments-section__notice { margin-block: 1rem; }
+  .comments-section__widget { max-width: 1024px; }
+  .comments-section__form { margin-block-start: 2rem; }
+  .comments-section__form label { display: block; margin-block: 0.75rem; font-weight: 600; }
+  .comments-section__form textarea { box-sizing: border-box; display: block; width: 100%; resize: vertical; min-height: 8rem; padding: 1rem; color: var(--color-text); background: var(--color-bg); border: 1px solid var(--color-border); font: inherit; }
+  .comments-section__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-block-start: 1rem; }
   .comments-section__list :global(.comments-section__entry) { border-block-start: 1px solid var(--color-border); padding-block: 1rem; }
   .comments-section__list :global(header) { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: baseline; }
   .comments-section__list :global(time), .comments-section__list :global(.comments-section__reply) { font-size: 0.875rem; }

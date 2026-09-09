@@ -47,6 +47,10 @@ export function createHandler(overrides = {}) {
     try { approved = validSessionToken(token) ? await readApprovedSession(token, store, now) : null; }
     catch { return respond(503, 'Under development. Sign-in is temporarily unavailable.'); }
     if (!approved) {
+      if (uri.startsWith('/api/v2/')) return respond(401, '{"error":"Sign-in required."}', {
+        'content-type': [{ key: 'Content-Type', value: 'application/json; charset=utf-8' }],
+        'set-cookie': [{ key: 'Set-Cookie', value: expire }],
+      });
       if (read && (uri === '/' || uri === '/index.html')) {
         request.uri = '/under-development/index.html'; return request;
       }

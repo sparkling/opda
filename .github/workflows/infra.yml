@@ -26,6 +26,8 @@ on:
       - 'tests/auth0-session.test.mjs'
       - 'tests/edge-gate.test.mjs'
       - 'scripts/package-edge-gate.mjs'
+      - 'scripts/package-comments-api.mjs'
+      - 'tests/comments-*.test.mjs'
       - 'tests/aws-working-group-interest-infrastructure.test.mjs'
       - 'tests/hubspot-sync.test.mjs'
       - 'src/approval-onboarding/**'
@@ -58,13 +60,16 @@ jobs:
           node-version: 22
 
       - name: Test participant approval boundary
-        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs
+        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs tests/comments-*.test.mjs
 
       - name: Package bounded onboarding runtime locally
         run: node scripts/package-approval-onboarding.mjs
 
       - name: Package shared edge authorization
         run: node scripts/package-edge-gate.mjs
+
+      - name: Package shared comments authorization
+        run: node scripts/package-comments-api.mjs
 
       - name: Lint templates
         run: |
@@ -92,26 +97,6 @@ jobs:
             --template-file config/aws/artifacts-stack.yaml \
             --no-fail-on-empty-changeset
 
-      # ---- eu-west-2: comments stack (Artalk runtime; independent of edge/site) ----
-      - name: Deploy comments stack (eu-west-2)
-        if: hashFiles('config/aws/comments-stack.yaml') != ''
-        run: |
-          # CloudFront's origin-facing ranges as a managed prefix list — the
-          # task security group admits only these (no direct ingress).
-          PREFIX_LIST_ID=$(aws ec2 describe-managed-prefix-lists --region eu-west-2 \
-            --filters Name=prefix-list-name,Values=com.amazonaws.global.cloudfront.origin-facing \
-            --query 'PrefixLists[0].PrefixListId' --output text)
-          aws cloudformation deploy --region eu-west-2 \
-            --stack-name opda-comments \
-            --template-file config/aws/comments-stack.yaml \
-            --capabilities CAPABILITY_NAMED_IAM \
-            --no-fail-on-empty-changeset \
-            --parameter-overrides \
-              CloudFrontOriginFacingPrefixListId="$PREFIX_LIST_ID" \
-              DesiredCount="${{ vars.OPDA_ARTALK_DESIRED_COUNT || '0' }}"
-
-      # ---- eu-west-2: site stack (consumes the certificate ARN as a parameter;
-      # CloudFormation exports do not cross regions, ADR-0040 §3) ----
       - name: Deploy participant identity stores (eu-west-2)
         run: |
           aws cloudformation deploy --region eu-west-2 \
@@ -119,6 +104,35 @@ jobs:
             --template-file config/aws/participant-identity-stack.yaml \
             --no-fail-on-empty-changeset
 
+      # ---- eu-west-2: comments gateway and single-writer Artalk runtime ----
+      - name: Deploy comments stack (eu-west-2)
+        if: hashFiles('config/aws/comments-stack.yaml') != ''
+        run: |
+          # The gateway uses a free DynamoDB gateway endpoint, not NAT.
+          PREFIX_LIST_ID=$(aws ec2 describe-managed-prefix-lists --region eu-west-2 \
+            --filters Name=prefix-list-name,Values=com.amazonaws.eu-west-2.dynamodb \
+            --query 'PrefixLists[0].PrefixListId' --output text)
+          GATEWAY_KEY=$(aws ssm get-parameter --region eu-west-2 --name /opda/comments/gateway-key \
+            --with-decryption --query Parameter.Value --output text)
+          echo "::add-mask::$GATEWAY_KEY"
+          KEY_VERSION=$(aws ssm get-parameter --region eu-west-2 --name /opda/comments/gateway-key \
+            --query Parameter.Version --output text)
+          ARTIFACTS_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
+            --stack-name opda-artifacts --query "Stacks[0].Outputs[?OutputKey=='ArtifactsBucketName'].OutputValue" --output text)
+          aws cloudformation package --region eu-west-2 \
+            --template-file config/aws/comments-stack.yaml --s3-bucket "$ARTIFACTS_BUCKET" \
+            --output-template-file /tmp/comments-packaged.yaml
+          aws cloudformation deploy --region eu-west-2 \
+            --stack-name opda-comments \
+            --template-file /tmp/comments-packaged.yaml \
+            --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
+            --no-fail-on-empty-changeset \
+            --parameter-overrides \
+              DynamoDbPrefixListId="$PREFIX_LIST_ID" GatewayKey="$GATEWAY_KEY" GatewayKeyVersion="$KEY_VERSION" \
+              DesiredCount="${{ vars.OPDA_ARTALK_DESIRED_COUNT || '0' }}"
+
+      # ---- eu-west-2: site stack (consumes the certificate ARN as a parameter;
+      # CloudFormation exports do not cross regions, ADR-0040 §3) ----
       - name: Deploy versioned gate and certificate (us-east-1)
         run: |
           aws cloudformation deploy --region us-east-1 \

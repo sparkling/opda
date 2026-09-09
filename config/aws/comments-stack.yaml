@@ -1,7 +1,7 @@
 # Comments stack — opda.org.uk AWS hosting (ADR-0038 / ADR-0040)
 #
 # The Artalk comments runtime (eu-west-2): a single always-on Fargate task
-# running the sparkling/Artalk fork behind a temporary read-only proxy, SQLite on
+# running the sparkling/Artalk fork behind an approval-bound private gateway, SQLite on
 # the task's ephemeral disk, persisted via Litestream to S3 (ADR-0038
 # §Comments/§Database/§Persistence — "SQLite backed by a bucket").
 #
@@ -10,12 +10,11 @@
 # (minimumHealthyPercent=0, maximumPercent=100) — never two writers. The
 # pipeline relies on this declared configuration, not scripting (ADR-0040).
 #
-# Ingress: there is no load balancer (cost — ADR-0038 rejected an always-on
-# ALB at this scale). The task gets a public IP; a tiny EventBridge→Lambda
-# updater keeps comments-origin.opda.org.uk pointed at it (TTL 60), and the
-# site stack's CloudFront distribution routes /api/v2/* to that origin. The
-# security group admits only CloudFront's origin-facing address ranges
-# (managed prefix list), so the task is not directly reachable.
+# Ingress: CloudFront calls the HTTPS API, which reaches a session-checked VPC
+# Lambda; only that Lambda's security group can reach private Artalk. There is
+# no public or CloudFront-prefix access to the task. The task retains outbound
+# internet for ECR/Litestream; DNS points to its private IP. No ALB, NAT
+# gateway, paid interface endpoints or user reconciliation loop.
 #
 # The container image is built and pushed by the sparkling/Artalk fork's own
 # workflow (OIDC → opda-artalk-deploy role → ECR push → service bump),
@@ -23,7 +22,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
   opda.org.uk comments runtime (eu-west-2): Artalk on ECS Fargate, Litestream
-  S3 persistence, CloudFront-only ingress, origin DNS updater
+  S3 persistence, private authenticated gateway, private-origin DNS updater
   (ADR-0038/ADR-0040).
 
 Parameters:
@@ -35,11 +34,9 @@ Parameters:
     Default: 0
     AllowedValues: [0, 1]   # single-writer: never more than one task
     Description: Set to 1 once the fork has pushed the first image to ECR.
-  CloudFrontOriginFacingPrefixListId:
-    Type: String
-    Description: >-
-      Regional ID (pl-...) of the managed prefix list
-      com.amazonaws.global.cloudfront.origin-facing (looked up by infra.yml).
+  DynamoDbPrefixListId: { Type: String }
+  GatewayKey: { Type: String, NoEcho: true, AllowedPattern: '^[a-f0-9]{64}$' }
+  GatewayKeyVersion: { Type: String }
 
 Resources:
   # ---------------- Network (self-contained: no console-built VPC) ----------------
@@ -103,13 +100,33 @@ Resources:
   TaskSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Artalk task - CloudFront origin-facing ingress only
+      GroupDescription: Artalk task - private comments gateway ingress only
       VpcId: !Ref Vpc
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 23366
-          ToPort: 23366
-          SourcePrefixListId: !Ref CloudFrontOriginFacingPrefixListId
+
+  GatewayApplication:
+    Type: AWS::CloudFormation::Stack
+    Metadata:
+      cfn-lint:
+        config: { ignore_checks: [W3002] }
+    Properties:
+      TemplateURL: comments-api-stack.yaml
+      Parameters:
+        VpcId: !Ref Vpc
+        SubnetIds: !Join [',', [!Ref SubnetA, !Ref SubnetB]]
+        RouteTableId: !Ref RouteTable
+        TaskSecurityGroupId: !Ref TaskSecurityGroup
+        DynamoDbPrefixListId: !Ref DynamoDbPrefixListId
+        OriginHostname: !Sub 'comments-origin.${DomainName}'
+        GatewayKey: !Ref GatewayKey
+
+  GatewayIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref TaskSecurityGroup
+      IpProtocol: tcp
+      FromPort: 23366
+      ToPort: 23366
+      SourceSecurityGroupId: !GetAtt GatewayApplication.Outputs.GatewaySecurityGroupId
 
   # ---------------- Image + persistence ----------------
 
@@ -163,6 +180,14 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      Policies:
+        - PolicyName: comments-gateway-key
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: ssm:GetParameters
+                Resource: !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/opda/comments/gateway-key'
 
   TaskRole:
     Type: AWS::IAM::Role
@@ -201,8 +226,8 @@ Resources:
         - Name: artalk
           Image: !Sub '${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/opda-artalk:latest'
           Essential: true
-          # The fork's AWS entrypoint hardcodes public port 23366. Override it
-          # while preserving Litestream restore/replicate and the single writer.
+          PortMappings: [{ ContainerPort: 23366, Protocol: tcp }]
+          # Preserve the existing SQLite restore/replicate and single writer.
           EntryPoint: [/bin/bash, -ec]
           Command:
             - |
@@ -217,8 +242,9 @@ Resources:
             - { Name: LITESTREAM_BUCKET, Value: !Ref LitestreamBucket }
             - { Name: AWS_REGION, Value: !Ref 'AWS::Region' }
             # Artalk reads YAML then ATK_*; its host/port flags are unbound.
-            - { Name: ATK_HOST, Value: '127.0.0.1' }
-            - { Name: ATK_PORT, Value: '23367' }
+            - { Name: ATK_HOST, Value: '0.0.0.0' }
+            - { Name: ATK_PORT, Value: '23366' }
+            - { Name: OPDA_GATEWAY_KEY_VERSION, Value: !Ref GatewayKeyVersion }
             - { Name: ATK_DB_TYPE, Value: sqlite }
             - { Name: ATK_DB_FILE, Value: /data/artalk.db }
             - { Name: ATK_TRUSTED_DOMAINS, Value: !Sub 'https://${DomainName}' }
@@ -247,70 +273,12 @@ Resources:
             - { Name: ATK_AUTH_LINE_ENABLED, Value: 'false' }
             - { Name: ATK_AUTH_PATREON_ENABLED, Value: 'false' }
             - { Name: ATK_IMG_UPLOAD_ENABLED, Value: 'false' }
-          LogConfiguration:
-            LogDriver: awslogs
-            Options:
-              awslogs-group: !Ref LogGroup
-              awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: artalk
-        - Name: comments-readonly
-          # Public ECR nginx 1.30.4 linux/amd64, manifest verified by SHA-256.
-          Image: public.ecr.aws/docker/library/nginx@sha256:862dc06c359bfe5d3211e4106269f040d261e269e58ebf17060d8328c45067c0
-          Essential: true
-          PortMappings: [{ ContainerPort: 23366, Protocol: tcp }]
-          EntryPoint: [/bin/sh, -ec]
-          Command:
-            - 'printf ''%s\n'' "$OPDA_NGINX_CONF" > /tmp/nginx.conf; exec nginx -c /tmp/nginx.conf -g ''daemon off;'''
-          Environment:
-            - Name: OPDA_NGINX_CONF
-              Value: |
-                worker_processes 1;
-                pid /tmp/nginx.pid;
-                error_log stderr warn;
-                events { worker_connections 128; }
-                http {
-                  access_log off;
-                  server_tokens off;
-                  client_body_temp_path /tmp/client_body;
-                  proxy_temp_path /tmp/proxy;
-                  fastcgi_temp_path /tmp/fastcgi;
-                  uwsgi_temp_path /tmp/uwsgi;
-                  scgi_temp_path /tmp/scgi;
-                  map $request_method $read_method { default 0; GET 1; HEAD 1; }
-                  map $args $valid_read_args {
-                    default 0;
-                    "~^(?=.{1,2300}$)page_key=(?:%2[Ff]|/)(?:[A-Za-z0-9._~/-]|%[0-9A-Fa-f]{2})*&site_name=OPDA&limit=([1-9]|[1-4][0-9]|50)&offset=(0|[1-9][0-9]{0,5})&flat_mode=true&sort_by=date_asc$" 1;
-                  }
-                  server {
-                    listen 23366;
-                    client_max_body_size 1k;
-                    add_header Cache-Control "no-store" always;
-                    add_header X-Content-Type-Options "nosniff" always;
-                    location = /healthz {
-                      if ($read_method = 0) { return 405; }
-                      return 200 "read-only\n";
-                    }
-                    location = /api/v2/comments {
-                      if ($read_method = 0) { return 405; }
-                      if ($valid_read_args = 0) { return 400; }
-                      proxy_pass_request_headers off;
-                      proxy_set_header Authorization "";
-                      proxy_set_header Cookie "";
-                      proxy_set_header Content-Length "";
-                      proxy_set_header Accept "application/json";
-                      proxy_pass_request_body off;
-                      proxy_hide_header Set-Cookie;
-                      proxy_http_version 1.1;
-                      proxy_set_header Connection "";
-                      proxy_connect_timeout 3s;
-                      proxy_read_timeout 10s;
-                      proxy_pass http://127.0.0.1:23367/api/v2/comments?$args;
-                    }
-                    location / { return 403; }
-                  }
-                }
+          Secrets:
+            - Name: OPDA_COMMENTS_GATEWAY_KEY
+              ValueFrom: !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/opda/comments/gateway-key'
           HealthCheck:
-            Command: [CMD-SHELL, 'wget -q -O - http://127.0.0.1:23366/healthz >/dev/null || exit 1']
+            # The Artalk image includes Alpine wget; probe the native API, not a sidecar.
+            Command: [CMD-SHELL, 'wget -q -O - http://127.0.0.1:23366/api/v2/version >/dev/null || exit 1']
             Interval: 30
             Timeout: 5
             Retries: 3
@@ -320,7 +288,7 @@ Resources:
             Options:
               awslogs-group: !Ref LogGroup
               awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: comments-readonly
+              awslogs-stream-prefix: artalk
 
   Service:
     Type: AWS::ECS::Service
@@ -348,9 +316,10 @@ Resources:
           SecurityGroups: [!Ref TaskSecurityGroup]
 
   # ---------------- Origin DNS updater ----------------
-  # No ALB at this scale: when the (single) task reaches RUNNING, point
-  # comments-origin.<domain> at its public IP so CloudFront's /api/v2/*
-  # origin follows task replacements (TTL 60).
+  # No ALB at this scale: when the single task reaches RUNNING, point
+  # comments-origin.<domain> at its private task ENI address so the
+  # session-checked VPC Lambda can reach Artalk (TTL 60). CloudFront only
+  # reaches the HTTPS API; it never reaches this record directly.
 
   DnsUpdaterRole:
     Type: AWS::IAM::Role
@@ -401,15 +370,16 @@ Resources:
           const { EC2Client, DescribeNetworkInterfacesCommand } = require('@aws-sdk/client-ec2');
           const { Route53Client, ChangeResourceRecordSetsCommand } = require('@aws-sdk/client-route-53');
           exports.handler = async (event) => {
-            const { clusterArn, taskArn, lastStatus } = event.detail;
-            if (lastStatus !== 'RUNNING') return;
+            const { clusterArn, taskArn, group, lastStatus } = event.detail;
+            if (group !== 'service:opda-artalk' || lastStatus !== 'RUNNING') return;
             const ecs = new ECSClient();
             const { tasks } = await ecs.send(new DescribeTasksCommand({ cluster: clusterArn, tasks: [taskArn] }));
+            if (tasks?.[0]?.group !== 'service:opda-artalk' || tasks[0].lastStatus !== 'RUNNING') return;
             const eniId = tasks?.[0]?.attachments?.[0]?.details?.find((d) => d.name === 'networkInterfaceId')?.value;
             if (!eniId) return;
             const ec2 = new EC2Client();
             const { NetworkInterfaces } = await ec2.send(new DescribeNetworkInterfacesCommand({ NetworkInterfaceIds: [eniId] }));
-            const ip = NetworkInterfaces?.[0]?.Association?.PublicIp;
+            const ip = NetworkInterfaces?.[0]?.PrivateIpAddress;
             if (!ip) return;
             const r53 = new Route53Client();
             await r53.send(new ChangeResourceRecordSetsCommand({
@@ -431,6 +401,7 @@ Resources:
         detail-type: ['ECS Task State Change']
         detail:
           clusterArn: [!GetAtt Cluster.Arn]
+          group: ['service:opda-artalk']
           lastStatus: [RUNNING]
       Targets:
         - Id: dns-updater
@@ -452,3 +423,8 @@ Outputs:
     Value: !Ref LitestreamBucket
   CommentsOriginRecord:
     Value: !Sub 'comments-origin.${DomainName}'
+  CommentsApiOriginDomainName:
+    Description: HTTPS API origin for the session-checked VPC comments gateway.
+    Value: !GetAtt GatewayApplication.Outputs.ApiOriginDomainName
+    Export:
+      Name: opda-comments-ApiOriginDomainName

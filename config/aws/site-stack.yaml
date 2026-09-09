@@ -181,20 +181,16 @@ Resources:
               StringEquals:
                 AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
 
-  # Artalk authenticates via the Authorization header and uses no cookies —
-  # and MUST NOT receive the viewer's cookie jar: legacy cookies can push the
-  # Cookie header past fasthttp's 4 KB request-header cap, and Artalk answers
-  # 431 before routing (root-caused 2026-06-06: the
-  # browser SSO exchange failed while a minimal-cookie curl succeeded). The
-  # origin therefore gets everything except cookies.
+  # Only the opaque website cookie reaches the HTTPS comments gateway.
+  # The gateway does not forward browser cookies or tokens to private Artalk.
   CommentsOriginRequestPolicy:
     Type: AWS::CloudFront::OriginRequestPolicy
     Properties:
       OriginRequestPolicyConfig:
-        Name: opda-comments-no-cookies
-        Comment: All viewer headers except Host, all query strings, NO cookies
-        HeadersConfig: { HeaderBehavior: allViewer }
-        CookiesConfig: { CookieBehavior: none }
+        Name: opda-comments-approved-session
+        Comment: Same-origin content and one opaque session cookie only
+        HeadersConfig: { HeaderBehavior: whitelist, Headers: [Content-Type, Origin, Sec-Fetch-Site] }
+        CookiesConfig: { CookieBehavior: whitelist, Cookies: [__Host-opda_session] }
         QueryStringsConfig: { QueryStringBehavior: all }
 
   PublicFormOriginRequestPolicy:
@@ -308,15 +304,13 @@ Resources:
             OriginAccessControlId: !Ref ResourcesOriginAccessControl
             S3OriginConfig:
               OriginAccessIdentity: ''
-          # Artalk comments origin — the comments stack maintains this DNS
-          # name (single Fargate task's public IP). Resolution happens at
-          # request time, so the origin may predate the record; /api/v2/*
-          # 502s until the comments stack is live, which is harmless.
+          # HTTPS approval gateway; Artalk itself is reachable only inside its VPC.
           - Id: comments
-            DomainName: !Sub 'comments-origin.${DomainName}'
+            DomainName: !ImportValue opda-comments-ApiOriginDomainName
             CustomOriginConfig:
-              HTTPPort: 23366
-              OriginProtocolPolicy: http-only
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols: [TLSv1.2]
           - Id: working-group-interest-api
             DomainName: !GetAtt WorkingGroupInterestApplication.Outputs.ApiOriginDomainName
             CustomOriginConfig:
@@ -375,10 +369,11 @@ Resources:
             TargetOriginId: comments
             ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
             ViewerProtocolPolicy: redirect-to-https
-            # Read-only until the current-session comment-write boundary is proven.
-            AllowedMethods: [GET, HEAD, OPTIONS]
+            # CloudFront's POST-capable set is all seven methods; the gateway
+            # exposes only exact GET/POST /api/v2/comments and rejects the rest.
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
-            OriginRequestPolicyId: !Ref CommentsOriginRequestPolicy  # no cookies to Artalk
+            OriginRequestPolicyId: !Ref CommentsOriginRequestPolicy
             LambdaFunctionAssociations:
               - EventType: viewer-request
                 LambdaFunctionARN: !Ref GateFunctionVersionArn

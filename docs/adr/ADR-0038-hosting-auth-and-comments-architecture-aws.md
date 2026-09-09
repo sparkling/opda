@@ -25,10 +25,52 @@ implements: []
 > token cookie, browser token storage or per-request Auth0 call is restored.
 > A final-group withdrawal denies the next protected request; already downloaded
 > or rendered content cannot be recalled. Provider/database failures deny access.
-> Comments are temporarily suspended (`OPDA_ARTALK_DESIRED_COUNT=0`), with their
-> persisted data retained. A CloudFront IP-range allowlist does not identify our
-> distribution; authenticated origin isolation is required before comments resume.
+> Comments were suspended during restoration, with their persisted data retained.
+> A CloudFront IP-range allowlist does not identify our distribution. The
+> approval-bound private gateway below replaces that insufficient origin boundary.
 > The amendments below describe the intervening historical public-site period.
+
+### Approval-bound comments, 2026-09-09
+
+The website's opaque HttpOnly session is the sole browser credential for comments.
+CloudFront forwards only that session cookie to an HTTPS API with two routes:
+`GET /api/v2/comments` and `POST /api/v2/comments`. A small regional Lambda uses
+the byte-identical shared session reader to check the current participant and
+approval version with strongly consistent DynamoDB reads on every request.
+Expired, withdrawn and invalid sessions cannot read or write comments. Writes
+also require the exact website Origin and JSON; the browser cannot supply an
+author identity, provider token or Artalk token.
+
+Artalk remains one Fargate Spot task with the existing SQLite/Litestream data.
+Its security group accepts only the gateway Lambda's security group. The task's
+origin DNS record points to its private IP; its public IP is retained solely for
+outbound ECR and persistence access. No CloudFront-prefix or public ingress is
+permitted. The Lambda reaches DynamoDB through a free gateway endpoint, with
+only `GetItem` access to the two existing identity tables. There is no NAT
+gateway, load balancer, paid interface endpoint or scheduled user reconciliation.
+API and Lambda requests remain metered; this does not make the existing always-on
+Fargate task free.
+
+For each deliberate post, the gateway signs a one-use, 15-second assertion of the
+immutable participant ID and reviewed display name. The private Artalk endpoint
+binds that ID to a normal, non-administrator comment account without merging by
+name or email. Its 30-second Artalk token is used only inside the gateway for the
+immediate post and is never returned to Chrome. The signing key is a standard
+SSM SecureString injected into the task and supplied as a masked, NoEcho
+deployment parameter to Lambda. It is never written into source or static assets.
+Legacy Artalk social, email, anonymous and SSO login paths remain disabled.
+Existing users, comments and retained page-thread keys are not migrated or erased.
+
+The client renders comments as plain text, supports explicit replies and preserves
+drafts on uncertain submissions. It never automatically retries a write. The
+gateway has a 15-second execution limit, five concurrent executions, bounded
+upstream reads and API throttling. A restart between exchange and post can fail a
+submission safely; the draft remains available for a deliberate retry.
+
+Activation requires the exact fork image, gateway and protected CloudFront routes,
+followed by a live read/post/reply check and a task-restart persistence check.
+Negative tests cover forged or stale sessions, cross-site writes, identity
+injection, replayed assertions and direct-origin isolation.
 
 > **Amended 2026-08-27 by [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md).**
 > The AWS static-hosting, private-S3/OAC, DNS, Artalk, SQLite/Litestream and

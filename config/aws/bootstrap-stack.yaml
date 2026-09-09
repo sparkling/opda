@@ -201,6 +201,9 @@ Resources:
                   - ec2:CreateVpc
                   - ec2:DeleteVpc
                   - ec2:ModifyVpcAttribute
+                  - ec2:CreateVpcEndpoint
+                  - ec2:ModifyVpcEndpoint
+                  - ec2:DeleteVpcEndpoints
                   - ec2:CreateSubnet
                   - ec2:DeleteSubnet
                   - ec2:ModifySubnetAttribute
@@ -219,6 +222,10 @@ Resources:
                   - logs:*
                   - application-autoscaling:Describe*
                 Resource: '*'
+              - Sid: CommentsGatewaySecretForDeployment
+                Effect: Allow
+                Action: ssm:GetParameter
+                Resource: !Sub 'arn:${AWS::Partition}:ssm:eu-west-2:${AWS::AccountId}:parameter/opda/comments/gateway-key'
               - Sid: StackIamRoles
                 Effect: Allow
                 Action:

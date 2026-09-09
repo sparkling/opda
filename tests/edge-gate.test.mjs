@@ -52,8 +52,8 @@ test('all content, downloads, scripts, search data and API routes are gated, not
     for (const cookie of [undefined, '__Host-opda_session=forged', 'opda_id=legacy-token',
       '__Host-opda_session=' + TOKEN + '; __Host-opda_session=' + TOKEN]) {
       const result = await s.handler(event(uri, { cookie }));
-      assert.equal(result.status, '302', uri);
-      assert.ok(result.headers.location[0].value.startsWith('/_auth/login?return='));
+      assert.equal(result.status, uri.startsWith('/api/v2/') ? '401' : '302', uri);
+      if (!uri.startsWith('/api/v2/')) assert.ok(result.headers.location[0].value.startsWith('/_auth/login?return='));
       assert.equal(result.uri, undefined);
       assert.match(result.headers['cache-control'][0].value, /no-store/u);
     }

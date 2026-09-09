@@ -26,6 +26,8 @@
     { "path": "tests/auth0-session.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/edge-gate.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/comments-origin-readonly.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/comments-client.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/comments-api.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/aws-working-group-interest-infrastructure.test.mjs", "owner": "platform", "tier": "pull-request-blocking", "lane": "infrastructure" },
     { "path": "tests/baspi5_round_trip/test_exemplar_regression.py", "owner": "ontology", "tier": "release-blocking", "lane": "ontology" },
     { "path": "tests/baspi5_round_trip/test_round_trip.py", "owner": "ontology", "tier": "release-blocking", "lane": "ontology" },

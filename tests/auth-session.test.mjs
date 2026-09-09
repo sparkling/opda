@@ -437,17 +437,19 @@ test('DynamoDB adapter uses strong reads and atomic approval-bound enrollment/se
   assert.equal(commands.length, 5);
 });
 
-test('comment migration reader has no login, bearer token, editor or background mutation path', async () => {
+test('comments use the opaque website session without browser bearer tokens or automatic writes', async () => {
   const source = await readFile(new URL('../src/components/Comments.astro', import.meta.url), 'utf8');
-  assert.match(source, /temporarily read-only/u);
+  assert.doesNotMatch(source, /temporarily read-only/u);
   assert.match(source, /localStorage\.removeItem\('ArtalkUser'\)/u);
-  assert.match(source, /credentials: 'omit'/u);
+  assert.match(source, /credentials: 'same-origin'/u);
   assert.match(source, /method: 'GET'/u);
-  assert.doesNotMatch(source, /sso\/exchange|\/_auth\/me|Artalk\.init|localStorage\.(getItem|setItem)|innerHTML|method: 'POST'/u);
+  assert.doesNotMatch(source, /sso\/exchange|\/_auth\/me|Artalk\.init|localStorage\.(getItem|setItem)|innerHTML/u);
+  assert.match(source, /method: 'POST'/u);
+  assert.match(source, /addEventListener\('submit'/u);
   assert.match(source, /getLegacyCommentKey\(Astro\.url\.pathname\)/u);
 });
 
-test('anonymous comment reads omit credentials and render remote text without interpreting HTML', async () => {
+test('approved comment reads include same-origin credentials and render remote text without interpreting HTML', async () => {
   const source = await readFile(new URL('../src/components/Comments.astro', import.meta.url), 'utf8');
   const script = source.match(/<script>([\s\S]*?)<\/script>/u)[1];
   class Element {
@@ -457,7 +459,9 @@ test('anonymous comment reads omit credentials and render remote text without in
     setAttribute() {}
     addEventListener() {}
   }
-  const ids = new Map(['opda-comments', 'opda-comments-list', 'opda-comments-status', 'opda-comments-more']
+  const ids = new Map(['opda-comments', 'opda-comments-list', 'opda-comments-status', 'opda-comments-more',
+    'opda-comments-form', 'opda-comments-content', 'opda-comments-submit', 'opda-comments-author',
+    'opda-comments-reply', 'opda-comments-cancel', 'opda-comments-sign-in']
     .map(id => [id, new Element()]));
   const section = new Element(); section.dataset.commentPageKey = '/retained-thread';
   const requests = [], removed = [];
@@ -469,7 +473,7 @@ test('anonymous comment reads omit credentials and render remote text without in
       createElement: () => new Element(), addEventListener() {} },
     fetch: async (url, options) => {
       requests.push({ url, options });
-      return { ok: true, json: async () => ({ data: { count: 1, comments: [
+      return { ok: true, json: async () => ({ data: { viewer: { name: 'Member' }, count: 1, comments: [
         { id: 1, nick: malicious, content: malicious, date: '2026-09-08T10:00:00Z', rid: 0 },
       ] } }) };
     },
@@ -479,7 +483,7 @@ test('anonymous comment reads omit credentials and render remote text without in
   assert.deepEqual(removed, ['ArtalkUser']);
   assert.equal(requests.length, 1);
   assert.equal(requests[0].options.method, 'GET');
-  assert.equal(requests[0].options.credentials, 'omit');
+  assert.equal(requests[0].options.credentials, 'same-origin');
   assert.equal(requests[0].options.headers.Authorization, undefined);
   const target = new URL(requests[0].url);
   assert.equal(target.pathname, '/api/v2/comments');
