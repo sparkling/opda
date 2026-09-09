@@ -1,5 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { isDeepStrictEqual } from 'node:util';
+import { setTimeout as pause } from 'node:timers/promises';
+import { retryAfter } from '../../config/aws/hubspot-sync/errors.mjs';
 import { readCsv } from './csv.mjs';
 import { APPROVED_GROUPS, contactProfile, digest, mayApprove } from '../../config/aws/hubspot-approval/domain.mjs';
 import { planDomainApprovals } from '../../config/aws/hubspot-approval/domain-onboarding.mjs';
@@ -10,6 +12,28 @@ export const ROSTER_FILE = new URL('../../source/_inbox/finance-banking-working-
 export const IMPORT_PREFIX = `FINANCE_IMPORT#${FINANCE_IMPORT_ID}#`;
 export const LEGACY_APPROVAL_ID = 'legacy-auth0-allowlist-2026-09-08';
 const REVIEW_PROPERTY = 'opda_review_finance_and_banking';
+
+/** Local bulk-import pacing; not another scheduled Lambda reconciliation workload. */
+export function createFinanceImportFetch(overrides = {}) {
+  const fetcher = overrides.fetch ?? globalThis.fetch, now = overrides.now ?? Date.now, wait = overrides.pause ?? pause;
+  let queue = Promise.resolve(), nextAt = 0;
+  return (url, options = {}) => {
+    const request = queue.then(async () => {
+      for (let attempt = 0; attempt < 5; attempt++) {
+        await wait(Math.max(0, nextAt - now()));
+        nextAt = now() + 200;
+        const response = await fetcher(url, { ...options, signal: AbortSignal.timeout(10000) });
+        if (response.status !== 429 || attempt === 4) return response;
+        const seconds = retryAfter(response.headers.get('retry-after'), now());
+        if (seconds > 60) return response;
+        await response.body?.cancel();
+        nextAt = Math.max(nextAt, now() + seconds * 1000);
+      }
+    });
+    queue = request.then(() => undefined, () => undefined);
+    return request;
+  };
+}
 
 export function indexFinanceContacts(roster, contacts) {
   const target = new Set(roster.map(row => row.email)), matched = new Map();

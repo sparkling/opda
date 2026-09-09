@@ -1,12 +1,29 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { financeProperties, assertImportAccount, planFinanceSeed, planFinanceRecovery, legacyFinanceIdentity, LEGACY_APPROVAL_ID, indexFinanceContacts } from '../scripts/_lib/finance-roster-import.mjs';
+import { financeProperties, assertImportAccount, planFinanceSeed, planFinanceRecovery, legacyFinanceIdentity, LEGACY_APPROVAL_ID, indexFinanceContacts, createFinanceImportFetch } from '../scripts/_lib/finance-roster-import.mjs';
 import { digest } from '../config/aws/hubspot-approval/domain.mjs';
 import { DOMAIN_POLICY, planDomainApprovals } from '../config/aws/hubspot-approval/domain-onboarding.mjs';
 import { financeImportDecisions } from '../config/aws/hubspot-approval/finance-import.mjs';
 
 const roster = { email: 'reader@example.test', display_name: 'Example Reader' };
+test('bulk CRM requests are paced globally and retry only explicit rate-limit rejections', async () => {
+  let now = 0; const starts = [], replies = [429, 200, 200];
+  const request = createFinanceImportFetch({ now: () => now, pause: async ms => { now += ms; },
+    fetch: async () => { starts.push(now); return new Response('{}', { status: replies.shift(), headers: { 'retry-after': '1' } }); } });
+  const results = await Promise.all([request('https://example.test/one'), request('https://example.test/two')]);
+  assert.deepEqual(results.map(r => r.status), [200, 200]);
+  assert.deepEqual(starts, [0, 1000, 1200]);
+  let failures = 0;
+  const uncertain = createFinanceImportFetch({ fetch: async () => { failures++; throw new Error('transport failure'); } });
+  await assert.rejects(uncertain('https://example.test/create', { method: 'POST' }));
+  assert.equal(failures, 1, 'an ambiguous contact creation must never be retried blindly');
+  let attempts = 0;
+  const limited = createFinanceImportFetch({ now: () => now, pause: async ms => { now += ms; },
+    fetch: async () => { attempts++; return new Response('{}', { status: 429, headers: { 'retry-after': '1' } }); } });
+  assert.equal((await limited('https://example.test/limited')).status, 429);
+  assert.equal(attempts, 5);
+});
 test('CRM lookup rejects duplicate, archived and secondary-email identity collisions', () => {
   const contact = { id: '1', properties: { email: roster.email } };
   assert.equal(indexFinanceContacts([roster], [contact]).get(roster.email), contact);

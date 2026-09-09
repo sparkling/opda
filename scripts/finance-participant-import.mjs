@@ -16,7 +16,7 @@ import { createStore } from '../config/aws/hubspot-approval/store.mjs';
 import { contactProfile, digest, ordinaryAccess } from '../config/aws/hubspot-approval/domain.mjs';
 import { financeImportDecisions, FINANCE_IMPORT_ID, FINANCE_ROSTER_SHA256, FINANCE_DOMAIN_ID } from '../config/aws/hubspot-approval/finance-import.mjs';
 import { readFinanceRoster, financeProperties, assertImportAccount, planFinanceSeed, planFinanceRecovery, IMPORT_PREFIX,
-  legacyFinanceIdentity, LEGACY_APPROVAL_ID, indexFinanceContacts } from './_lib/finance-roster-import.mjs';
+  legacyFinanceIdentity, LEGACY_APPROVAL_ID, indexFinanceContacts, createFinanceImportFetch } from './_lib/finance-roster-import.mjs';
 import { createMicrosoftClient } from '../src/approval-onboarding/microsoft-auth.mjs';
 import { WORKSPACES } from '../src/approval-onboarding/settings.mjs';
 
@@ -59,10 +59,11 @@ async function allRows() {
 async function bridge() {
   const secret = await readSecret('opda/hubspot/participant-crm-bridge');
   assert.equal(secret.portalId, 144765514); assert.equal(secret.appId, 52397854); assert.equal(secret.role, 'bridge');
+  const crmFetch = createFinanceImportFetch();
   async function api(path, { method = 'GET', body } = {}) {
     const info = path === '/oauth/v2/private-apps/get/access-token-info';
     if (!info && !path.startsWith('/crm/v3/objects/contacts')) throw new Error('Unsupported import endpoint');
-    const response = await fetch(`https://api.hubapi.com${path}`, {
+    const response = await crmFetch(`https://api.hubapi.com${path}`, {
       method: info ? 'POST' : method, redirect: 'error', signal: AbortSignal.timeout(20000),
       headers: { Authorization: `Bearer ${secret.accessToken}`, 'Content-Type': 'application/json' },
       ...(info || body ? { body: JSON.stringify(info ? { tokenKey: secret.accessToken } : body) } : {}),
@@ -71,7 +72,7 @@ async function bridge() {
     return response.json();
   }
   await verifyPrivateApp(api, { portalId: 144765514, appId: 52397854, scopes: APP_SCOPES.bridge });
-  return { api, hubspot: createHubSpotClient({ getSecret: async () => secret }) };
+  return { api, hubspot: createHubSpotClient({ getSecret: async () => secret, fetch: crmFetch }) };
 }
 
 async function crmInventory(api, roster) {
