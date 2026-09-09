@@ -107,5 +107,5 @@ export const ADR_REGISTRY = [
   { id: "adr-0082", number: "0082", title: "Add a progressively enhanced site-search dialog", status: "implemented", date: "2026-09-02" },
   { id: "adr-0083", number: "0083", title: "Rebuild proportionate risk-based CI/CD", status: "accepted", date: "2026-09-07" },
   { id: "adr-0084", number: "0084", title: "Integrate HubSpot with working-group signup and Cognito authentication", status: "accepted", date: "2026-09-08" },
-  { id: "adr-0085", number: "0085", title: "Follow approved participation with Microsoft access and one Postmark invitation", status: "accepted", date: "2026-09-09" },
+  { id: "adr-0085", number: "0085", title: "Follow each domain approval with Microsoft access and its own Postmark invitation", status: "accepted", date: "2026-09-09" },
 ];
