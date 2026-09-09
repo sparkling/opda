@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "provider": "OpenAI built-in image generation",
+  "generated": "2026-09-09",
+  "modelVersionEvidence": "The built-in tool exposes neither a model selector nor a returned model-version identifier; no specific model version is asserted.",
+  "purpose": "Active homepage method flow: authorised evidence enters once; preparation, candidate publication and working-group review form the revision cycle; consensus exits to a draft that is not yet ratified or adopted.",
+  "owner": "src/components/home/MethodFlowFigure.astro",
+  "style": "OPDA editorial pen-and-ink with restrained watercolour vignettes; unchanged five-node process meanings, transition directions and live HTML explanation.",
+  "lightPrompt": "Use case: diagram.\nAsset type: OPDA homepage method-loop LIGHT-MODE raster illustration, already an image on a website. Create one polished publication-quality image at exactly 2752×1216 pixels, aspect ratio 43:19 (approximately 2.26316:1). High-resolution lettering and crisp illustration detail; preserve this unusual exact canvas rather than substituting 16:9 or 3:1.\nPrimary request: redraw a five-node human-governed modelling process with restrained OPDA editorial watercolour vignettes supporting very clear professionally set text. The process is specification and domain modelling, not operating a SaaS. Keep five distinct nodes and exactly five arrows; do not invent stages, agents, data formats, approvals or operational claims.\nLayout: a wide horizontal arrangement with Source material at far left, Prepare candidate at centre-left, Working-group review at centre-right, and Draft standard at far right, these four nodes vertically centred near y=610. Publish candidate sits lower, between Prepare and Review, centred near x=1376,y=980. The three middle nodes form a revision cycle: Prepare candidate → Publish candidate → Working-group review → Prepare candidate. The review-to-prepare return travels across the wide empty top area and is labelled Changes requested. Source material enters Prepare candidate once through a horizontal right-pointing arrow labelled Initial intake. Working-group review has a separate horizontal right-pointing gold arrow to Draft standard labelled Consensus reached. Arrowheads must clearly point at the named destination. No reverse arrows, no return to Source material, no shortcut from Prepare directly to Review, no arrow from Draft back into the cycle. The curved return and lower cycle connectors must be individually traceable without overlapping nodes, text or each other. Keep every part of the five nodes and every arrow inside the canvas with at least 36 pixels breathing room.\nVisual hierarchy: elegant fine deep-purple organic ink outlines around modest rectangular node areas, very gently rounded corners. One small restrained watercolour vignette at the top inside each node, followed by large very legible sans-serif heading and smaller clear sans-serif body text. Source vignette: a teal evidence folio and a few ivory sheets. Prepare vignette: violet pencil and a small partly assembled card study, no robot or screen. Publish vignette: an open petrol-teal portfolio on a low display support, coral amendment sheet. Review vignette: two adults thoughtfully discussing a sheet, simple natural half-length ink silhouettes, human judgement central. Draft vignette: a thin ivory manuscript with gold stitching, no certificate seal, checkmark or approval stamp. Vignettes must stay secondary to words and must not touch the arrows. This is one coherent editorial watercolour-and-ink treatment, not a mix of photorealistic assets, UI boxes and cartoons.\nText: reproduce exactly the following, without quotation marks. Node 1 heading: Source material. Body: Authorised evidence enters once. Node 2 heading: Prepare candidate. Body: AI assists extraction and comparison. Node 3, the bottom node, heading: Publish candidate. Body: Sources, changes and open questions stay visible. Node 4 heading: Working-group review. Body: Members challenge, correct and decide. Node 5 heading: Draft standard. Body: Reviewed, but not ratified or adopted. Arrow labels exactly: Initial intake; Changes requested; Consensus reached. No other text, numbers, overall title, footer or caption; those belong to live HTML outside this raster.\nPalette: cool off-white #F9F9F9 paper reaching every edge; deep-purple #231F2F crisp readable type and ink; petrol teal #0E8478, blue-violet #6C5BD4 and restrained coral watercolour. Revision-cycle and initial-intake arrows blue-violet. Gold #FEC92B is reserved for the consensus exit and draft emphasis. Text areas remain clean and uncluttered. Tactile pigment only within the small vignettes and restrained arrow washes; no heavy background texture, no beige cast, gradient, drop shadow, glow, neon, ornamental plants, floating icons, logo, watermark, signature, computer UI or JSON/code. Produce the single image only, at the exact requested geometry.",
+  "darkEditPrompt": "Use case: style-transfer.\nImage 1 is the approved OPDA homepage method-flow light illustration and the exact EDIT TARGET. Change only the theme colours. Keep the SAME five nodes, five arrows and their directions, every vignette, every person and face, every object, all paper shapes, border geometry, line breaks, font sizes, letterforms, relative sizes, framing and negative space. Preserve the current aspect ratio and all content; desired production frame remains 2752×1216 pixels. Do not move or redesign anything.\nDARK palette: flat deep purple #231F2F paper to every edge and inside node areas; pale warm-white #F9F9F9 crisp legible primary text and node outlines; secondary text pale lavender. Gold #FEC92B remains the consensus-exit arrow and draft stitching; revision-cycle and initial-intake arrows readable blue-violet/lavender #9C8BE8. Small editorial vignettes retain petrol teal #0E8478, violet #6C5BD4, coral and ivory paper highlights, with fine pale ink and expressive watercolour/gouache rather than dark muddy silhouettes. Keep the exact restrained professional ink-and-watercolour character, no glow, neon, inversion filter, shadow, night scenery, stars or added decoration.\nCopy must remain exact: Source material / Authorised evidence enters once. Prepare candidate / AI assists extraction and comparison. Publish candidate / Sources, changes and open questions stay visible. Working-group review / Members challenge, correct and decide. Draft standard / Reviewed, but not ratified or adopted. Arrow labels: Initial intake; Changes requested; Consensus reached. No additional text, logo, watermark, signature, diagram node, arrow, symbol, badge, technical payload, title or caption. Preserve source → preparation only once, preparation → publication → working-group review → preparation as the cycle, and review → draft as a separate exit.",
+  "generationWorkflow": "Fresh light generation followed by a dark palette edit anchored to the inspected light source. An unused resolution-correction edit also returned the same smaller native dimensions.",
+  "nativeResolutionLimitation": {
+    "requested": {
+      "width": 2752,
+      "height": 1216,
+      "aspectRatio": "43:19"
+    },
+    "returned": {
+      "width": 1886,
+      "height": 834
+    },
+    "correctionAttempt": {
+      "source": "exec-b67d0efc-e7d9-4d32-8dfc-8b0b786bdb47.png",
+      "width": 1886,
+      "height": 834,
+      "prompt": "Use case: restoration-upscale.\nImage 1 is the exact approved light-mode OPDA process illustration and the edit target. Deliver a higher-resolution version at EXACTLY 2752 pixels wide by 1216 pixels high, the final website's intrinsic dimensions. Do not output a smaller 1886×834 image. Preserve every word, spelling, glyph, line break, node, vignette, face, colour, outline, arrow, arrow direction, attachment, relative size and position. Keep the same five-node composition, no added title/footer or objects. The target ratio is 2752:1216 = 43:19, not 1886:834. Achieve this negligible aspect correction only through the clean paper margin, never by stretching or cropping subjects. All node boxes, text and arrowheads must remain fully visible. Raise clean typographic and fine ink detail naturally without excessive sharpening. Keep the cool off-white #F9F9F9 paper background and the same restrained OPDA editorial watercolour vignettes and palette. This is resolution and paper-canvas geometry correction only, not a new scene.",
+      "used": false
+    },
+    "resolution": "Proportional enlargement to 2750×1216 followed by one copied edge-paper pixel on each side preserves the original 2752×1216 production frame without subject cropping or stretching. This is not a native-resolution 2752×1216 generation."
+  },
+  "export": {
+    "format": "avif",
+    "width": 2752,
+    "height": 1216,
+    "quality": 65,
+    "effort": 6,
+    "chromaSubsampling": "4:4:4",
+    "operation": "Sharp 0.34.5 proportional resize by height, then copied-edge extension and AVIF encoding.",
+    "proportionalContent": {
+      "width": 2750,
+      "height": 1216
+    },
+    "edgeExtension": {
+      "left": 1,
+      "right": 1,
+      "top": 0,
+      "bottom": 0,
+      "method": "copy"
+    },
+    "cropping": "none",
+    "stretching": "none",
+    "enlargement": true
+  },
+  "nodes": [
+    {
+      "heading": "Source material",
+      "body": "Authorised evidence enters once."
+    },
+    {
+      "heading": "Prepare candidate",
+      "body": "AI assists extraction and comparison."
+    },
+    {
+      "heading": "Publish candidate",
+      "body": "Sources, changes and open questions stay visible."
+    },
+    {
+      "heading": "Working-group review",
+      "body": "Members challenge, correct and decide."
+    },
+    {
+      "heading": "Draft standard",
+      "body": "Reviewed, but not ratified or adopted."
+    }
+  ],
+  "transitions": [
+    {
+      "from": "Source material",
+      "to": "Prepare candidate",
+      "label": "Initial intake"
+    },
+    {
+      "from": "Prepare candidate",
+      "to": "Publish candidate"
+    },
+    {
+      "from": "Publish candidate",
+      "to": "Working-group review"
+    },
+    {
+      "from": "Working-group review",
+      "to": "Prepare candidate",
+      "label": "Changes requested"
+    },
+    {
+      "from": "Working-group review",
+      "to": "Draft standard",
+      "label": "Consensus reached"
+    }
+  ],
+  "verification": {
+    "reviewed": "2026-09-09",
+    "visual": "Inspected source PNGs and decoded final AVIFs. All five node headings and bodies, three arrow labels and five transition directions are readable and correct. No extra transition, cropped node, invented approval or model payload. Light and dark retain the same subjects and layout.",
+    "geometry": "Both final files are 2752×1216. The one-pixel side extensions copy existing edge paper.",
+    "accessibility": "Existing semantic HTML process, caption, mobile, forced-colour and print alternatives were not changed.",
+    "browser": "Not inspected by this asset worker; integration owner handles rendered-site verification."
+  },
+  "light": {
+    "file": "/images/home/method-loop-light.avif",
+    "width": 2752,
+    "height": 1216,
+    "bytes": 96980,
+    "sha256": "646986d8e2b14d368b6e404c0e8c45956579a4bc6b9a3fe3c297d5dcba851637",
+    "source": "exec-38fd6903-111c-4771-96d0-240ded9e4803.png",
+    "sourceWidth": 1886,
+    "sourceHeight": 834,
+    "sourceSha256": "16292acd5b755b072508413862d1e4f254920e7314988f475b585f7628ba27f4"
+  },
+  "dark": {
+    "file": "/images/home/method-loop-dark.avif",
+    "width": 2752,
+    "height": 1216,
+    "bytes": 90942,
+    "sha256": "96401c3ee37c54ddc14e23ea8b9735c5a626fb9816427509879cc4eea6f62869",
+    "source": "exec-206fb826-3d54-4113-81e5-e1ab084f5c80.png",
+    "sourceWidth": 1886,
+    "sourceHeight": 834,
+    "sourceSha256": "b08c17c0bf1ae4e021c8a495f5effea2ac64e5366a77f67dcb96af1aef9e6241",
+    "editedFrom": "exec-38fd6903-111c-4771-96d0-240ded9e4803.png"
+  }
+}

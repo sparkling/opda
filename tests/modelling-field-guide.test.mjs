@@ -244,7 +244,15 @@ test('every live modelling page has its own relevant, paired header artwork', ()
       assert.equal(bytes.length, asset.bytes);
       assert.ok(bytes.length <= 150_000, asset.file + ' exceeds the editorial asset budget');
       assert.ok(asset.width <= 1200 && asset.width / asset.height >= 2, asset.file + ' is not a shallow landscape');
-      assert.ok(Math.abs(asset.width / asset.height - asset.sourceWidth / asset.sourceHeight) < 0.01,
+      const content = asset.exportContentBounds ?? { left: 0, top: 0, width: asset.width, height: asset.height };
+      assert.ok(Object.values(content).every(Number.isSafeInteger) && content.width > 0 && content.height > 0
+        && content.left >= 0 && content.top >= 0 && content.left + content.width <= asset.width
+        && content.top + content.height <= asset.height, asset.file + ' has invalid artwork bounds');
+      if (asset.exportContentBounds) assert.deepEqual(asset.exportPadding, {
+        left: content.left, top: content.top, right: asset.width - content.left - content.width,
+        bottom: asset.height - content.top - content.height,
+      }, asset.file + ' must account for every paper-padding pixel');
+      assert.ok(Math.abs(content.width / content.height - asset.sourceWidth / asset.sourceHeight) < 0.01,
         asset.file + ' must preserve the uncropped source proportions');
     }
   }

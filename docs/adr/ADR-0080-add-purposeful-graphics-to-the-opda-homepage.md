@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-30
-updated: 2026-09-06
+updated: 2026-09-09
 tags: [website, homepage, design-system, brand, accessibility, avif, infographic, ai, presentation]
 supersedes: []
 amends: [ADR-0073, ADR-0074]
@@ -92,14 +92,16 @@ improve it. Feedback and new evidence begin the next modelling pass. A separate
 consensus exit leads to a stable working-group draft, which is explicitly not yet
 ratified or adopted.
 
-The checked-in light and dark method assets are a reviewed Gemini 3 Pro Image
-composition rather than a client-side diagram runtime. The two variants preserve the
-same words, geometry and transition directions while applying the OPDA light and dark
-palette. The title and closing authority statement are cropped from the raster because
-the page owns them as live heading and caption text. Both images are stored as compact
-2752 by 1216 AVIF assets; the component loads only the active wide-screen theme.
-The image is displayed within a centred 84rem maximum measure without changing or
-regenerating either source asset.
+The checked-in light and dark method assets use the OPDA editorial watercolour voice
+rather than a client-side diagram runtime. Both preserve the five process nodes and
+transition directions while applying their corresponding light and dark palettes.
+The page owns the title and authority statement as live heading and caption text.
+Both images retain their existing 2752 by 1216 AVIF canvases and the component's
+centred 84rem maximum measure; only the active wide-screen theme is loaded.
+The 9 September regeneration replaces the earlier Gemini composition through native
+OpenAI image generation. Its exact backend model version is not exposed by the tool
+and is not asserted. The manifest records the prompts, native source dimensions,
+checksums and proportional export geometry, including any upscaling or paper padding.
 Equivalent semantic HTML describes the complete process and becomes the visible
 treatment at narrow widths, in forced-colour mode and in print. The visible guardrail
 states that AI may extract, compare and draft while people decide what is true, resolve
@@ -143,6 +145,9 @@ than competing with the homepage's primary proposition.
 
 ### Confirmation
 
+The following evidence records the original August/September implementation. The
+9 September asset replacement and its verification are recorded in Amendments.
+
 - The accepted composition is present in `src/pages/index.astro` and the two bounded
   homepage components named in `implements`.
 - `DESIGN.md`, ADR-0073 and ADR-0074 record the same homepage sequence, motif exception
@@ -176,6 +181,18 @@ than competing with the homepage's primary proposition.
 
 ## Amendments
 
+- **2026-09-09 — regenerate the method illustration in the shared editorial voice.**
+  At the operator's request, native OpenAI image generation produced distinct light
+  and dark editorial watercolour illustrations. The full five-node flow remains:
+  source material enters preparation; preparation, publication and review form the
+  revision cycle; review has a separate consensus exit to a working-group draft.
+  Both exported images were visually checked for labels and all five directed links.
+  The generation prompt, provenance, export checksums and exact geometry are in
+  `public/images/home/method-loop.manifest.json`. Native 1886 by 834 artwork was
+  proportionally enlarged to 2750 by 1216 with one paper-colour pixel on each side,
+  preserving the existing canvas without cropping or stretching. This replaces the
+  previous generation treatment, not the content, component, dimensions or accessible
+  HTML alternative. Publication remains separately authorised.
 - **2026-09-06 — prioritise participation in the hero actions.** “Join a working group”
   is first and uses the shared yellow primary button with `btn--emphasis`, matching
   the outline variant's weight and spacing while retaining a readable dark label.

@@ -5,7 +5,7 @@
   "generated": "2026-09-09",
   "style": "OPDA editorial watercolour, ADR-0073 and /design-system",
   "purpose": "Decorative human-facing editorial illustration; not technical notation or evidence.",
-  "export": "Preserve existing active asset dimensions. Remove only deliberately composed blank padding, using each recorded exportBounds, then proportional resize. No stretching or subject cropping.",
+  "export": "Preserve every existing active asset dimension. Card export removes only deliberately composed blank padding using recorded exportBounds, then resizes proportionally. Landscape export contains the whole source proportionally with theme-colour padding only for native ratio rounding. No stretching or subject cropping.",
   "assets": [
     {
       "id": "finance-and-banking",
@@ -92,6 +92,278 @@
           "height": 542
         },
         "editedFrom": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-4305cf9c-d925-4379-977b-9e9b45d0bc4b.png"
+      }
+    },
+    {
+      "id": "estate-agency",
+      "subject": "Estate agents and a seller verify side access while a buyer compares property particulars.",
+      "lightPrompt": "Use case: illustration-story. Asset type: new OPDA Estate Agency working-group card. Input image 1 is a STYLE REFERENCE only, not composition.\nScene: an estate agent in a petrol coat stands at the open garden gate of a modest British terraced home, listening as a seller points out the side access; at the opposite end of the shallow street scene, a prospective buyer checks a purely pictorial, unlettered property particulars sheet against the actual doorway and garden. Show people establishing accurate information during a sale, warm conversational gestures without handshake or celebration. Exactly three adults with varied ages and natural skin tones. The home is intact, no cutaway. No desk, coins, key handover, SOLD sign, signboard, arrow or approval symbol.\nRefined organic deep-purple pen-and-ink, rich translucent watercolour and opaque gouache, visible pigment, fine hatching, warm professional OPDA magazine voice. Cool off-white #F9F9F9 paper with generous gold #FEC92B, petrol/teal, violet and coral. Complete heads, bodies down to practical waist/leg silhouettes, natural hands, gate and architecture all kept in the image.\nPRODUCTION: one2172×724 canvas with entire artwork carefully arranged inside a shallow central4:1 strip y=110..615, x=20..2150. Upper and lower91px remain COMPLETELY EMPTY off-white paper, no ink/pigment/border. Blank padding alone will be removed for1200×300 card. No subject outside central strip, no giant vertical building, no labels, text, numerals, logo, watermark, montage, photograph,3D,neon or glow.",
+      "darkPrompt": "Use case: style-transfer. Input image 1 is EXACT EDIT TARGET for the OPDA Estate Agency dark card. Preserve identical three adults, identities, expressions, poses, natural hands, property particulars sheet, folder, open gate, side access, houses, garden, counts, arrangements, geometry, viewpoint and crop. No redesign. Change ONLY paper and pigment values: cool light paper becomes flat deep-purple #231F2F; rich gold, petrol teal, violet and coral watercolour/gouache with warm natural skin; pale lavender and off-white ink for legibility. Keep all artwork precisely inside its existing central4:1 shallow strip; same empty top and bottom padding entirely dark paper. Same native canvas size. No additions, removals, repositioning, inverting, night scene, stars, glow, neon outlines, text, labels, numbers, logos or watermark. A carefully matched dark-paper painting, not a new scene.",
+      "light": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-d3c98d7b-f7f5-4080-a345-b3b751f42185.png",
+        "file": "estate-agency-light.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 141086,
+        "quality": 84,
+        "sha256": "9f4a50d064cebefa2a88466b7d1404b40cf64191a36aa3ed322a69dfffe76ca1",
+        "sourceSha256": "40039f9684127b623edded7bc9114e77890f9666fe96bb4497277a98bbb2e132",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportBounds": {
+          "left": 0,
+          "top": 90,
+          "width": 2172,
+          "height": 543
+        }
+      },
+      "dark": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-24bb483b-defe-4c56-9ee4-55d4a804f375.png",
+        "file": "estate-agency-dark.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 143660,
+        "quality": 84,
+        "sha256": "c164f36d933e55d8afad49440dcad5a6effdfa640dd9248390721759079d73dc",
+        "sourceSha256": "b62d7029a3f9fda5a0cbcde304e459daceda95bf2dcb096a70d2ce0f4ff930e2",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportBounds": {
+          "left": 0,
+          "top": 90,
+          "width": 2172,
+          "height": 543
+        },
+        "editedFrom": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-d3c98d7b-f7f5-4080-a345-b3b751f42185.png"
+      }
+    },
+    {
+      "id": "surveying-and-valuation",
+      "subject": "Surveyors distinguish a measured observation from its separate field record.",
+      "lightPrompt": "Use case: illustration-story. Asset type: new OPDA Surveying and Valuation working-group card. Input1 STYLE REFERENCE only. Scene: a single female building surveyor kneels beside a bay window in a modest British home, using a small unnumbered measuring tape at the sill while carefully observing a visible fine hairline crack in plaster; a second colleague at the far right draws that observed detail into an otherwise unlettered field notebook, with a separate closed report folio left on a low windowsill. A lateral interior view with bay window, sill, a little skirting and doorway; physical observation remains distinct from the written report. Exactly two adults, focused natural hands, plausible inspection tools. No dangerous defect, conclusion of safety, price, currency, house model, magnifying glass, charts, stamp or measurement numerals.\nWarm OPDA editorial pen-and-ink watercolour, expressive organic purple contours, delicate hatching, rich translucent pigments and gouache, substantial gold #FEC92B, teal #0E8478, violet #6C5BD4, coral with natural skin on cool off-white #F9F9F9. Distinct from any desk meeting. Not photography, vector,3D,clipart,neon or glow.\nProduction: one2172×724 canvas. Every stroke and complete subject inside a central4:1 strip y=110..615 and x=20..2150. Keep the top/bottom91px entirely empty plain off-white paper; these deliberate blank margins alone are removed for1200×300 export. Shallow panorama, no clipped heads/hands, no text, labels, numbers, arrow, logo, watermark, frame or montage.",
+      "geometryCorrectionPrompt": "Use case: style-transfer. Input1 exact edit target. Keep this entire OPDA surveyor inspection watercolour, same two women, identities, poses, hands, notebook, tape, observed plaster detail, window and room. Change ONLY the placement/scale of the artwork to satisfy production margins: fit the COMPLETE drawing within a central horizontal band that occupies only60%of canvas height, centred vertically on a3:1 canvas2172×724. Leave upper20%and lower20%of canvas completely plain off-white #F9F9F9, without ANY objects, hair, brushstrokes, texture or border. The entire drawing must be smaller vertically while retaining natural proportions; no stretching. Recompose laterally if necessary. Upper and lower20%blank paper clearly visible. Exact same subjects and rich OPDA pen-and-ink watercolour style. No cut heads or boots, no new subjects, no readable text, labels, logo, watermark or frame. This is necessary for removing blank margins to export a4:1 card with all artwork retained.",
+      "darkPrompt": "Use case: style-transfer. Input1 EXACT EDIT TARGET, OPDA surveying card. Change ONLY off-white paper and pigment values for dark mode. Preserve same two women, identities, expressions, poses, hands, tape, crack, notebook drawing, window, report folio, room, objects, composition and exact geometry. Every part of the drawing remains inside identical central horizontal band, with upper20%and lower20%completely empty paper. Same2172×724 canvas, no scaling or movement. Paper becomes flat deep-purple #231F2F reaching all edges and empty bands; rich petrol teal, violet, coral, gold watercolour/gouache; natural warm skin; pale lavender/off-white ink details. Inviting legibility on dark paper, not a night scene or inverted image. No redesign, additions, omissions, text, numbers, labels, logos, watermark, glow, neon or stars.",
+      "light": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-30b1f038-e922-4d0b-8b2c-5d8115005609.png",
+        "file": "surveying-and-valuation-light.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 82984,
+        "quality": 84,
+        "sha256": "262fdd2a212a93726633ac2c6edf5b9d9eed82ff0d8a417ce959eba9a31138f0",
+        "sourceSha256": "6be3d81b972cda7ce206c4ab7c935aba394486a3e0b248fa7500a9df1771a1b3",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportBounds": {
+          "left": 0,
+          "top": 90,
+          "width": 2172,
+          "height": 543
+        }
+      },
+      "dark": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-b17ef0c3-e504-4049-8dd9-610a59cd7dc6.png",
+        "file": "surveying-and-valuation-dark.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 91644,
+        "quality": 84,
+        "sha256": "6b338ed72f32adb482d10a4235e2a59d234b84329851c6e8a67ae4cd19ce41f2",
+        "sourceSha256": "862a60cc9f757a52485ce57d418c552b411e572fc05ae4c6d8b4babb32895907",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportBounds": {
+          "left": 0,
+          "top": 90,
+          "width": 2172,
+          "height": 543
+        },
+        "editedFrom": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-30b1f038-e922-4d0b-8b2c-5d8115005609.png"
+      }
+    },
+    {
+      "id": "property-data-services",
+      "subject": "An archivist compares aerial coverage, a separate parcel tracing, street imagery and source records.",
+      "lightPrompt": "Use case: illustration-story. Asset type: new OPDA Property Data Services working-group card. Input1 STYLE REFERENCE only.\nScene: a low horizontal archival inspection station displaying three distinct sources about one British residential neighbourhood: an open aerial-photo atlas at left, a transparent unlettered parcel tracing held above but separate from its atlas in the centre by a practitioner’s careful hand, and a row of coloured source folders plus a tablet showing only a pictorial street image at right. An archivist hand at far right selects one specific record folder while leaving the others in place. Clearly distinguish sources, coverage and provenance through tangible separate materials, not a single magical merged record. No people’s faces needed. No network nodes, charts, glowing links, magnifying glass, seals, prices, coins or copied mortgage desk.\nStyle: refined organic deep-purple pen-and-ink, rich translucent watercolour and softly opaque gouache, fine hatching, visible pigment, warm OPDA editorial voice. Cool off-white #F9F9F9 paper, substantial golden yellow #FEC92B, petrol/teal #0E8478, violet #6C5BD4 and coral. No photography,3D,clipart,glow or neon.\nPRODUCTION: one2172×724 canvas with ENTIRE illustration inside a very shallow central band only60%of canvas height (y=145..579), centred vertically, left/right natural quiet breathing space. Upper20%and lower20%of canvas MUST BE COMPLETELY EMPTY plain off-white paper with no objects, brushstrokes or border. All heads/hands/props inside band. Deliberate blank padding will be removed to1200×300 final4:1 card, no subject cropping. No readable text, letters,digits,labels,logo,watermark,montage or diagram arrows.",
+      "darkPrompt": "Use case: style-transfer. Input1 is EXACT EDIT TARGET, approved OPDA Property Data Services card. Change ONLY paper, ink values and pigment treatment. Preserve every person and hand, identities, poses, object counts, documents/devices/images, arrangement, dimensions, perspective, crop and complete illustration composition. Same native canvas size and all artwork contained in identical central shallow horizontal band, upper/lower20%padding remain completely empty. Replace off-white paper by flat deep-purple #231F2F everywhere including blank padding; retain rich gold/yellow, petrol teal, violet, coral watercolour and gouache, warm natural skin, pale lavender/off-white linework for readability. No redesign, new objects, omissions, repositioning, stretching, crop, night-time, negative inversion, neon outlines, glow, stars, text, numbers, labels, logos or watermark. One matched dark-paper painting only.",
+      "light": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-4985e2a2-5d04-4a3e-a92c-34ba25876f1b.png",
+        "file": "property-data-services-light.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 103306,
+        "quality": 84,
+        "sha256": "bbc4ce7dc6604d9145be562608a5c14ca6a26a9cdf3822b435d1d5d94301ace3",
+        "sourceSha256": "3dd581cd930831713b7255c03f6842f0552ca936d9b52626bec0cdd960ad15ae",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportBounds": {
+          "left": 0,
+          "top": 90,
+          "width": 2172,
+          "height": 543
+        }
+      },
+      "dark": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-d1611e66-b951-43d0-a023-b9f9967f1cf6.png",
+        "file": "property-data-services-dark.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 108752,
+        "quality": 84,
+        "sha256": "c5611a9d80f4735bb82bd37a7cc8d60499a75cb964f2c5d4c38dedaf9eeb01f5",
+        "sourceSha256": "2c3f7d0fd6d050fb0374b6408cbe48639ce6c6cf93b64a38d4a9adf3b58dff06",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportBounds": {
+          "left": 0,
+          "top": 90,
+          "width": 2172,
+          "height": 543
+        },
+        "editedFrom": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-4985e2a2-5d04-4a3e-a92c-34ba25876f1b.png"
+      }
+    },
+    {
+      "id": "property-technology",
+      "subject": "A product team tests a property interface with an older user across a tablet and laptop.",
+      "lightPrompt": "Use case: illustration-story. Asset type: new OPDA Property Technology working-group card. Input1 STYLE REFERENCE only.\nScene: a shallow shoulder-level view inside a small property-product testing studio. A developer in a violet overshirt at left watches an older user in a teal cardigan at centre try a tablet; a second practitioner at right compares the tablet’s simple pictorial home card with the same picture on a laptop. The tablet and laptop show only a small home illustration and simple solid rectangular interface blocks, NO words, letters, icons or numbers. Warm attentive gestures, three distinct adults with varied skin tones. Show testing compatibility and usefulness with real users, not a technology triumph. Quiet minimal background, tablet and laptop readable as physical devices; no desk clutter, robot, circuitry, network chart, cables, magic glow or abstract floating screens.\nStyle: refined organic deep-purple pen-and-ink, rich translucent watercolour and softly opaque gouache, fine hatching, visible pigment, warm OPDA editorial voice. Cool off-white #F9F9F9 paper, substantial golden yellow #FEC92B, petrol/teal #0E8478, violet #6C5BD4 and coral. No photography,3D,clipart,glow or neon.\nPRODUCTION: one2172×724 canvas with ENTIRE illustration inside a very shallow central band only60%of canvas height (y=145..579), centred vertically, left/right natural quiet breathing space. Upper20%and lower20%of canvas MUST BE COMPLETELY EMPTY plain off-white paper with no objects, brushstrokes or border. All heads/hands/props inside band. Deliberate blank padding will be removed to1200×300 final4:1 card, no subject cropping. No readable text, letters,digits,labels,logo,watermark,montage or diagram arrows.",
+      "darkPrompt": "Use case: style-transfer. Input1 is EXACT EDIT TARGET, approved OPDA Property Technology card. Change ONLY paper, ink values and pigment treatment. Preserve every person and hand, identities, poses, object counts, documents/devices/images, arrangement, dimensions, perspective, crop and complete illustration composition. Same native canvas size and all artwork contained in identical central shallow horizontal band, upper/lower20%padding remain completely empty. Replace off-white paper by flat deep-purple #231F2F everywhere including blank padding; retain rich gold/yellow, petrol teal, violet, coral watercolour and gouache, warm natural skin, pale lavender/off-white linework for readability. No redesign, new objects, omissions, repositioning, stretching, crop, night-time, negative inversion, neon outlines, glow, stars, text, numbers, labels, logos or watermark. One matched dark-paper painting only.",
+      "light": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-cbc17209-4c0d-4620-b01a-485513159dd8.png",
+        "file": "property-technology-light.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 81052,
+        "quality": 84,
+        "sha256": "79d46137a03bb9b179c732558cc050d3d595cea0d391f2b99dd13f6cbecd5156",
+        "sourceSha256": "a73229fc436823cef421db82a22704c109b5af75e9ead723a0c41f19a1b7a7fc",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportBounds": {
+          "left": 0,
+          "top": 90,
+          "width": 2172,
+          "height": 543
+        }
+      },
+      "dark": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-a844e8ad-79e5-422c-a2c1-a31975c27f2c.png",
+        "file": "property-technology-dark.webp",
+        "width": 1200,
+        "height": 300,
+        "bytes": 89330,
+        "quality": 84,
+        "sha256": "ee5e19ae27b3b6a82db953ece6ccd6060be8c11e9e48cdb51873529206333778",
+        "sourceSha256": "2cfa09c097efefbc100cb76ff4bbf0a378354ab65124558d0dd5b3254408093f",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportBounds": {
+          "left": 0,
+          "top": 90,
+          "width": 2172,
+          "height": 543
+        },
+        "editedFrom": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-cbc17209-4c0d-4620-b01a-485513159dd8.png"
+      }
+    },
+    {
+      "id": "motivation-landscape",
+      "lightPrompt": "Use case: illustration-story. Asset type: new OPDA Join-page campaign motivation landscape. Scene: outside a modest British neighbourhood community hall, a small group of four property practitioners listens to a wheelchair-using homeowner who points to a troublesome raised entrance threshold. A surveyor crouches nearby to see the threshold at the homeowner’s eye level, an older conveyancer carries a closed authorised folder, and a younger technology practitioner listens with tablet held down rather than dominating the discussion. Exactly four adults including the homeowner, varied ages and skin tones, natural respectful body language. The doorway, low planting and a short stretch of street make a lateral scene. Show why commercial practice, professional judgement and public needs must shape change; not a glossy success story or symbolic inclusion poster.\nStyle: OPDA editorial watercolour, rich translucent washes and softly opaque gouache, fine natural deep-purple pen-and-ink contours, delicate hatching and tactile pigment variation. Warm humane professional magazine illustration, not stock vector art. Cool off-white #F9F9F9 paper with generous OPDA gold #FEC92B, petrol teal #0E8478, blue-violet #6C5BD4 and supporting coral; natural skin tones. New faces and new setting, not a repeated generic desk scene. Final1536×512pixels,3:1ultra-wide shallow panorama; if larger native canvas, exact3:1. No layout change. All complete heads, hands and essential objects comfortably inside with narrow quiet margins, no large blank bands. One coherent illustration, no panels, border, montage, text, letters, numerals, labels, logos, watermark, approvals, stamps, arrows, diagrams, floatingicons, handshake,3D,photography,neon or glow. Human lesson, no architecturalcutaway.",
+      "refinementPrompt": "Use case: style-transfer. Input1 is the EDIT TARGET, OPDA campaign motivation scene. Input2 is a STYLE REFERENCE ONLY. Keep Input1's exact people, identities, gestures and subject idea, objects and setting, NOT Input2's mortgage subject or faces. Make two tightly bounded production corrections: (1) pull back slightly so EVERY person's head including top of hair and essential hands are comfortably inside the image with at least5%canvas-height quiet margin above the tallest head; retain a shallow3:1panorama, no cropping of people. (2) match Input2's visibly drawn, richer OPDA editorial pen-and-ink watercolour voice: expressive deep-purple contours, fine hatching, rich translucent violet, petrol teal, golden-yellow and coral pigments on cool off-white #F9F9F9 paper, avoid sepia/beige cast or photographic finish. Organic brush edges and tactile gouache, not an overly photo-real painted filter. Samefouradults and all essential props from Input1, new geometry only from gently pulling back to reveal complete heads. Exact2172×724canvas3:1, later proportional1536×512export. No new people, extra props, words, numbers, labels, logo, watermark, border, panels, glow, neon, arrows, technical diagrams or architecturalcutaways.",
+      "darkPrompt": "Use case: style-transfer. Asset type: OPDA motivation campaign panorama dark-mode counterpart. Input1 is the EXACT approved light EDIT TARGET. Preserve identical people, faces, clothing, natural warm skin, gestures, hands, all objects, evidence materials, setting, viewpoint, dimensions, relative size, composition and crop. Full heads remain inside same3:1canvas. Change ONLY paper/ground, ink values and pigment treatment: deep-purple #231F2F paper to every edge and visible between washes; rich petrol teal, violet, coral and OPDA golden-yellow gouache/watercolour, pale lavender and off-white ink details wherever needed. Keep readable rich midtones, inviting humane illustration on dark paper, no negative inversion. Not night-time: no new lights, spotlight, sky, stars or glowing windows. No redesign, new objects, omissions, movement, cropping, distortion, fluorescent outlines, neon, text, labels, numbers, logo or watermark. Same2172×724nativecanvas, final1536×5123:1export.",
+      "light": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-5e82824f-6d09-4d53-94d5-98854b2442d5.png",
+        "file": "motivation-landscape-light.webp",
+        "width": 1536,
+        "height": 512,
+        "bytes": 216564,
+        "quality": 76,
+        "sha256": "8364a03d22887543b17fff1b2ac75e2258bc65745c3dabc5baf2ac2cf1b298c6",
+        "sourceSha256": "b6c315847f23dab822e5c2b74ab7e508fe2d0be000c933e96088b805e9843f1d",
+        "sourceWidth": 2171,
+        "sourceHeight": 724,
+        "exportOperation": "Whole-image proportional contain; no cropping or stretching; theme-colour padding only for native ratio rounding."
+      },
+      "dark": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-b7c1a3fc-483e-4000-9a9b-590f872a6322.png",
+        "file": "motivation-landscape-dark.webp",
+        "width": 1536,
+        "height": 512,
+        "bytes": 218600,
+        "quality": 72,
+        "sha256": "0a1d3778011c01a5fc2f6f65fc4ad409871a3be5da45426079ae68e2d58d2d7e",
+        "sourceSha256": "58576310bac0a8274cda7944aa0289f18b4f99db82f565f771d8fc1261bace67",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportOperation": "Whole-image proportional contain; no cropping or stretching; theme-colour padding only for native ratio rounding.",
+        "editedFrom": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-5e82824f-6d09-4d53-94d5-98854b2442d5.png"
+      }
+    },
+    {
+      "id": "influence-landscape",
+      "lightPrompt": "Use case: illustration-story. Asset type: new OPDA Join-page campaign influence landscape. Scene: a long low workshop pinboard in a property practice; a middle-aged Black woman practitioner on the left points to an overlooked side entrance in a purely pictorial house sketch, a younger East Asian male facilitator in the middle replaces one separate blank violet draft card with a new blank gold card, and an older white woman at right compares the board with a separate unlettered source folio. Three standing/seated adults in an open lateral scene, visible thoughtful listening. Distinguish the evidence sketch, an unfinished proposal and the reviewer’s own source folder. No text or formal diagram relations on cards. No desk meeting. This is constructive challenge changing a draft, not automatic approval.\nStyle: OPDA editorial watercolour, rich translucent washes and softly opaque gouache, fine natural deep-purple pen-and-ink contours, delicate hatching and tactile pigment variation. Warm humane professional magazine illustration, not stock vector art. Cool off-white #F9F9F9 paper with generous OPDA gold #FEC92B, petrol teal #0E8478, blue-violet #6C5BD4 and supporting coral; natural skin tones. New faces and new setting, not a repeated generic desk scene. Final1536×512pixels,3:1ultra-wide shallow panorama; if larger native canvas, exact3:1. No layout change. All complete heads, hands and essential objects comfortably inside with narrow quiet margins, no large blank bands. One coherent illustration, no panels, border, montage, text, letters, numerals, labels, logos, watermark, approvals, stamps, arrows, diagrams, floatingicons, handshake,3D,photography,neon or glow. Human lesson, no architecturalcutaway.",
+      "refinementPrompt": "Use case: style-transfer. Input1 is the EDIT TARGET, OPDA campaign influence scene. Input2 is a STYLE REFERENCE ONLY. Keep Input1's exact people, identities, gestures and subject idea, objects and setting, NOT Input2's mortgage subject or faces. Make two tightly bounded production corrections: (1) pull back slightly so EVERY person's head including top of hair and essential hands are comfortably inside the image with at least5%canvas-height quiet margin above the tallest head; retain a shallow3:1panorama, no cropping of people. (2) match Input2's visibly drawn, richer OPDA editorial pen-and-ink watercolour voice: expressive deep-purple contours, fine hatching, rich translucent violet, petrol teal, golden-yellow and coral pigments on cool off-white #F9F9F9 paper, avoid sepia/beige cast or photographic finish. Organic brush edges and tactile gouache, not an overly photo-real painted filter. Samethreeadults and all essential props from Input1, new geometry only from gently pulling back to reveal complete heads. Exact2172×724canvas3:1, later proportional1536×512export. No new people, extra props, words, numbers, labels, logo, watermark, border, panels, glow, neon, arrows, technical diagrams or architecturalcutaways.",
+      "darkPrompt": "Use case: style-transfer. Asset type: OPDA influence campaign panorama dark-mode counterpart. Input1 is the EXACT approved light EDIT TARGET. Preserve identical people, faces, clothing, natural warm skin, gestures, hands, all objects, evidence materials, setting, viewpoint, dimensions, relative size, composition and crop. Full heads remain inside same3:1canvas. Change ONLY paper/ground, ink values and pigment treatment: deep-purple #231F2F paper to every edge and visible between washes; rich petrol teal, violet, coral and OPDA golden-yellow gouache/watercolour, pale lavender and off-white ink details wherever needed. Keep readable rich midtones, inviting humane illustration on dark paper, no negative inversion. Not night-time: no new lights, spotlight, sky, stars or glowing windows. No redesign, new objects, omissions, movement, cropping, distortion, fluorescent outlines, neon, text, labels, numbers, logo or watermark. Same2172×724nativecanvas, final1536×5123:1export.",
+      "light": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-6b06c5d3-8027-42b8-a9d0-192c285596fb.png",
+        "file": "influence-landscape-light.webp",
+        "width": 1536,
+        "height": 512,
+        "bytes": 220376,
+        "quality": 80,
+        "sha256": "f7b7f82253f9186321df90ee2bfbe34adbb6f2b7fa6e8df415655e2a122b10c8",
+        "sourceSha256": "102d1f1c38c43cf211aacc21ef20751ce526f842112efe1d6771cdb80c407cfb",
+        "sourceWidth": 2170,
+        "sourceHeight": 725,
+        "exportOperation": "Whole-image proportional contain; no cropping or stretching; theme-colour padding only for native ratio rounding."
+      },
+      "dark": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-49fac267-b639-4a65-bbd3-0f61777b4756.png",
+        "file": "influence-landscape-dark.webp",
+        "width": 1536,
+        "height": 512,
+        "bytes": 206040,
+        "quality": 76,
+        "sha256": "0af7a6543bae44ce138161de2d9a9b00d4256029b865d59fdde4e4503019c9d0",
+        "sourceSha256": "1b6e3109d33fa01b6377d030b7ed1b2e702af7589a1a9da3dc4c02731162fdd7",
+        "sourceWidth": 2170,
+        "sourceHeight": 725,
+        "exportOperation": "Whole-image proportional contain; no cropping or stretching; theme-colour padding only for native ratio rounding.",
+        "editedFrom": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-6b06c5d3-8027-42b8-a9d0-192c285596fb.png"
+      }
+    },
+    {
+      "id": "judgement-landscape",
+      "lightPrompt": "Use case: illustration-story. Asset type: new OPDA Join-page campaign professional judgement landscape. Scene: a mature South Asian female property practitioner in a petrol jacket calmly explains an unusual room detail to two colleagues at a broad window alcove, pointing with a pencil to her own open unlettered inspection sketchbook; the younger colleague in coral leans in and listens, while an older Black male colleague in violet retains a separate closed source portfolio securely in his own hands. The sketchbook shows a simple doorway observation only, not a house cutaway or technical diagram. Window and a quiet plain wall create a shallow setting; no large desk, no pile of files. Their attentive faces and distinct ownership of materials show professional experience and authority remaining with people.\nStyle: OPDA editorial watercolour, rich translucent washes and softly opaque gouache, fine natural deep-purple pen-and-ink contours, delicate hatching and tactile pigment variation. Warm humane professional magazine illustration, not stock vector art. Cool off-white #F9F9F9 paper with generous OPDA gold #FEC92B, petrol teal #0E8478, blue-violet #6C5BD4 and supporting coral; natural skin tones. New faces and new setting, not a repeated generic desk scene. Final1536×512pixels,3:1ultra-wide shallow panorama; if larger native canvas, exact3:1. No layout change. All complete heads, hands and essential objects comfortably inside with narrow quiet margins, no large blank bands. One coherent illustration, no panels, border, montage, text, letters, numerals, labels, logos, watermark, approvals, stamps, arrows, diagrams, floatingicons, handshake,3D,photography,neon or glow. Human lesson, no architecturalcutaway.",
+      "refinementPrompt": "Use case: style-transfer. Input1 is the EDIT TARGET, OPDA campaign judgement scene. Input2 is a STYLE REFERENCE ONLY. Keep Input1's exact people, identities, gestures and subject idea, objects and setting, NOT Input2's mortgage subject or faces. Make two tightly bounded production corrections: (1) pull back slightly so EVERY person's head including top of hair and essential hands are comfortably inside the image with at least5%canvas-height quiet margin above the tallest head; retain a shallow3:1panorama, no cropping of people. (2) match Input2's visibly drawn, richer OPDA editorial pen-and-ink watercolour voice: expressive deep-purple contours, fine hatching, rich translucent violet, petrol teal, golden-yellow and coral pigments on cool off-white #F9F9F9 paper, avoid sepia/beige cast or photographic finish. Organic brush edges and tactile gouache, not an overly photo-real painted filter. Samethreeadults and all essential props from Input1, new geometry only from gently pulling back to reveal complete heads. Exact2172×724canvas3:1, later proportional1536×512export. No new people, extra props, words, numbers, labels, logo, watermark, border, panels, glow, neon, arrows, technical diagrams or architecturalcutaways.",
+      "darkPrompt": "Use case: style-transfer. Asset type: OPDA judgement campaign panorama dark-mode counterpart. Input1 is the EXACT approved light EDIT TARGET. Preserve identical people, faces, clothing, natural warm skin, gestures, hands, all objects, evidence materials, setting, viewpoint, dimensions, relative size, composition and crop. Full heads remain inside same3:1canvas. Change ONLY paper/ground, ink values and pigment treatment: deep-purple #231F2F paper to every edge and visible between washes; rich petrol teal, violet, coral and OPDA golden-yellow gouache/watercolour, pale lavender and off-white ink details wherever needed. Keep readable rich midtones, inviting humane illustration on dark paper, no negative inversion. Not night-time: no new lights, spotlight, sky, stars or glowing windows. No redesign, new objects, omissions, movement, cropping, distortion, fluorescent outlines, neon, text, labels, numbers, logo or watermark. Same2172×724nativecanvas, final1536×5123:1export.",
+      "light": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-9b621b85-d93b-45c4-ba08-2d3938c15eef.png",
+        "file": "judgement-landscape-light.webp",
+        "width": 1536,
+        "height": 512,
+        "bytes": 208616,
+        "quality": 84,
+        "sha256": "80cc2d8625b8e66fa4eb3ab3b276c2a4dc9e15cbfa3689e5ec9d07ed04920689",
+        "sourceSha256": "b20b91bfda7e0b174edb7d7283f59179e5e62f2981d978aaf06bd2fa1c7df9b5",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportOperation": "Whole-image proportional contain; no cropping or stretching; theme-colour padding only for native ratio rounding."
+      },
+      "dark": {
+        "source": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-15e26756-a033-4c26-a64a-1cd980a7ed7a.png",
+        "file": "judgement-landscape-dark.webp",
+        "width": 1536,
+        "height": 512,
+        "bytes": 192648,
+        "quality": 80,
+        "sha256": "63d4f6f50375f52e74a904a143cde717cab8e56df99e6ec4e38f6bb05db0904f",
+        "sourceSha256": "20cdfe7e6f27d757f8bba7bbe037495f07a9f035b276c7d49be880186a7436c5",
+        "sourceWidth": 2172,
+        "sourceHeight": 724,
+        "exportOperation": "Whole-image proportional contain; no cropping or stretching; theme-colour padding only for native ratio rounding.",
+        "editedFrom": "/Users/henrik/.codex/generated_images/01a08605-5812-72f0-938b-2f7ac9cdfb73/exec-9b621b85-d93b-45c4-ba08-2d3938c15eef.png"
       }
     }
   ]
