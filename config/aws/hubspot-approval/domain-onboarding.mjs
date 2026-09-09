@@ -1,5 +1,4 @@
 import { isDeepStrictEqual } from 'node:util';
-import { APPROVAL } from '../hubspot-participation/import.mjs';
 import { APPROVED_GROUPS, digest, mayApprove, ordinaryAccess } from './domain.mjs';
 
 export const DOMAIN_POLICY = 'individual-domains-v1';
@@ -36,8 +35,8 @@ export function planDomainApprovals({ map, row, decisions = [], globalDecision, 
     || new Set(decisions.map(d => d.domainId)).size !== decisions.length) throw new Error('Invalid domain approval transition');
   const domains = initialDomains(map, row, cutover, now), previousDomains = structuredClone(domains);
   const migrated = row.approvalPolicy === DOMAIN_POLICY;
-  let legacyWebsiteApproved = migrated ? row.legacyWebsiteApproved === true
-    : map.imported === true && row.approvalId === APPROVAL.id && ordinaryAccess(row, now);
+  // Retire old website-only flags without inventing or discarding frozen domain approvals.
+  const legacyWebsiteApproved = false;
   const globalChanged = globalDecision && globalDecision.id !== map.domainGlobalDecisionId;
   const globalDenial = globalDecision && (!globalDecision.trusted || denied.has(globalDecision.status));
   const clearsGlobalHold = globalChanged && globalDecision.trusted && globalDecision.status === 'approved'
@@ -73,7 +72,6 @@ export function planDomainApprovals({ map, row, decisions = [], globalDecision, 
     if ((before?.status === 'approved') !== approved) changes.push({ domainId: id, before, next, decision, approved });
   }
   if (globalReason) {
-    legacyWebsiteApproved = false;
     for (const id of APPROVED_GROUPS) {
       const before = domains[id];
       if (before?.status !== 'approved') continue;
@@ -86,21 +84,22 @@ export function planDomainApprovals({ map, row, decisions = [], globalDecision, 
     }
   }
   const approvedDomains = APPROVED_GROUPS.filter(id => domains[id]?.status === 'approved');
-  const active = !globalReason && (legacyWebsiteApproved || approvedDomains.length > 0);
+  const active = !globalReason && approvedDomains.length > 0;
   // A change to one domain does not sign the person out of their remaining approved groups.
   // An external hold can already make ordinaryAccess false while the durable
   // active flag (and Cognito) is still true. Its disable must remain retryable.
   const eligibilityChanged = active !== row.active || active !== ordinaryAccess(row, now);
   const accessVersion = row.accessVersion + (eligibilityChanged ? 1 : 0);
   const operations = [], audits = [];
-  for (const { domainId, next, decision, approved } of changes) {
+  for (const { domainId, before, next, decision, approved } of changes) {
     const operationId = hash([2, row.participantId, domainId, decision.id, next.version]);
     const groups = approved ? [domainId] : [];
     const snapshot = { operationId, action: approved ? 'provision' : 'revoke', domainId, domainVersion: next.version,
       snapshotStatus: approved ? 'approved' : 'denied', groups, groupDigest: hash(groups),
       groupsAt: approved ? decision.groupSnapshot.groupsAt : null, reason: next.reason,
       decisionId: decision.id, decisionAt: decision.at, actor: decision.actor ?? null,
-      accessVersion, templateVersion: 2 };
+      accessVersion, templateVersion: 2,
+      ...(!approved && before?.status === 'approved' ? { notifyWithdrawal: true } : {}) };
     next.onboarding = snapshot;
     const auditKey = `CRM#AUDIT#${map.contactId}#${decision.id}`;
     operations.push({ pk: `CRM#ONBOARDING#${operationId}`, schemaVersion: 2, operationId, domainId,

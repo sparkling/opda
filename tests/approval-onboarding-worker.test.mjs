@@ -10,11 +10,15 @@ const CANARY = '388c735eec8225c4ad7a507944dd0a975296baea383198aa87177f29af2c6f69
 const copy = value => structuredClone(value);
 
 function harness({ action = 'provision', enabled = true, canaryEmailHash = '', groups = APPROVAL_GROUP_IDS,
-  email = 'test@example.org', domainId } = {}) {
+  email = 'test@example.org', domainId, notifyWithdrawal = false, websiteNotice = false } = {}) {
   const context = { operation: { operationId: ID, action, ...(domainId ? { schemaVersion: 2, domainId } : {}) }, account: { email, name: 'Test Participant' },
     audit: { onboarding: { snapshotStatus: action === 'provision' ? 'approved' : 'denied',
-      groups: action === 'provision' ? [...groups] : [], templateVersion: domainId ? 2 : 1 } },
+      groups: action === 'provision' ? [...groups] : [], templateVersion: domainId ? 2 : 1, notifyWithdrawal } },
     receipts: { graph: {}, sharepoint: {}, mail: {} } };
+  if (websiteNotice) {
+    context.operation = { operationId: ID, action: 'revoke', schemaVersion: 3, noticeKind: 'website-disabled', accessVersion: 2 };
+    context.binding = { providerAccessVersion: 2 };
+  }
   const state = { current: true, eligible: true, terminal: false, finishAccepted: true,
     context, calls: [], finishes: [], sends: 0, released: 0, saved: [] };
   const store = {
@@ -62,14 +66,16 @@ function harness({ action = 'provision', enabled = true, canaryEmailHash = '', g
       state.sentInput = copy(args.input);
       assert.equal(await args.beforeSend(), true);
       assert.equal(context.receipts.mail[ID].status, 'attempting');
-      assert.deepEqual(state.saved.at(-1).options, { requireEligible: true });
+      assert.deepEqual(state.saved.at(-1).options, args.kind ? { requireNotice: true } : { requireEligible: true });
+      if (args.kind) state.calls.push(`notice:${args.kind}`);
       state.sends++; return { status: 'accepted', attempted: true, messageId: 'ack' };
     },
     async reconcile() { state.calls.push('reconcile'); return { status: 'unknown', attempted: false }; },
   };
   const worker = createOnboardingWorker({ store, graph, sharepoint, postmark, enabled, canaryEmailHash, now: () => 1000,
     workspaces: WORKSPACES, invitationRegistry: INVITATION_REGISTRY, templatePin: TEMPLATE_PIN,
-    templatePins: domainId ? { [domainId]: { ...TEMPLATE_PIN, version: 2 } } : {}, logoBase64: 'test' });
+    templatePins: domainId ? { [domainId]: { ...TEMPLATE_PIN, version: 2 } } : {},
+    noticePins: { website: TEMPLATE_PIN, groups: Object.fromEntries(APPROVAL_GROUP_IDS.map(id => [id, TEMPLATE_PIN])) }, logoBase64: 'test' });
   return { state, context, store, graph, sharepoint, postmark, worker };
 }
 
@@ -117,6 +123,25 @@ test('a domain job can never dispatch a combined or different-domain invitation'
     assert.equal((await h.worker.process(ID)).stage, 'eligibility-unavailable');
     assert.equal(h.state.sends, 0); assert.deepEqual(h.state.calls, []);
   }
+});
+
+test('new group withdrawal sends one notice after scoped removal, preserving other groups', async () => {
+  const h = harness({ action: 'revoke', domainId: 'conveyancing', notifyWithdrawal: true });
+  ownedAccess(h, ['conveyancing', 'property-technology']);
+  assert.equal((await h.worker.process(ID)).status, 'complete');
+  assert.deepEqual(h.state.calls, ['remove-source:conveyancing', 'remove-team:conveyancing', 'notice:group-withdrawn']);
+  assert.equal(h.state.sends, 1);
+  assert.equal(h.context.receipts.mail[ID].kind, 'group-withdrawn');
+  assert.equal(h.context.receipts.graph.memberships[WORKSPACES['property-technology'].teamId].state, 'granted');
+  assert.equal((await h.worker.process(ID)).status, 'skipped'); assert.equal(h.state.sends, 1);
+});
+test('group notice waits for actual removal, while website notice does not run any Microsoft effects', async () => {
+  const group = harness({ action: 'revoke', domainId: 'conveyancing', notifyWithdrawal: true }); ownedAccess(group, ['conveyancing']);
+  group.graph.revokeMembership = async () => ({ status: 'pending' });
+  assert.equal((await group.worker.process(ID)).stage, 'withdrawal-propagating'); assert.equal(group.state.sends, 0);
+  const website = harness({ action: 'revoke', websiteNotice: true }); ownedAccess(website);
+  assert.equal((await website.worker.process(ID)).status, 'complete');
+  assert.deepEqual(website.state.calls, ['notice:website-disabled']); assert.equal(website.state.sends, 1);
 });
 
 test('activation gate leaves new provisioning pending without any provider effect', async () => {

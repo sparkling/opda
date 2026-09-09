@@ -5,6 +5,7 @@ import { DOMAIN_POLICY, planDomainApprovals } from '../config/aws/hubspot-approv
 import { relayPendingOnboarding } from '../config/aws/hubspot-approval/domain-worker.mjs';
 import { createWorker } from '../config/aws/hubspot-approval/index.mjs';
 import { digest, emailHash } from '../config/aws/hubspot-approval/domain.mjs';
+import { APPROVAL } from '../config/aws/hubspot-participation/import.mjs';
 
 const NOW = Date.parse('2026-09-09T16:00:00Z'), CUTOVER = NOW - 60000;
 const A = 'finance-and-banking', B = 'conveyancing', C = 'estate-agency';
@@ -156,9 +157,96 @@ test('partial withdrawal is atomic, keeps the other domain, and cannot be blocke
   assert.equal(f.transactions.at(-1).TransactItems.some(item => item.ConditionCheck), false);
 });
 
+test('last-domain withdrawal clears a stale legacy website flag and invalidates sessions only once', async () => {
+  const f = fixture(); await apply(f, [decision(A)]);
+  f.seed({ ...f.current().row, legacyWebsiteApproved: true });
+  const before = f.current(), withdrawn = decision(A, 'withdrawn', NOW);
+  const result = await apply(f, [withdrawn]);
+  assert.equal(result.account.active, false); assert.equal(result.account.legacyWebsiteApproved, false);
+  assert.equal(result.account.accessVersion, before.row.accessVersion + 1);
+  assert.deepEqual(result.account.approvedDomains, []);
+  assert.equal(result.account.domainApprovals[A].status, 'withdrawn');
+  assert.deepEqual(result.binding.domainApprovals, result.account.domainApprovals);
+  const committed = f.current(), count = f.transactions.length;
+  await apply(f, [withdrawn], {}, NOW + 1000);
+  assert.deepEqual(f.current(), committed); assert.equal(f.transactions.length, count);
+});
+
+test('only new approved-to-denied domain snapshots opt in to a withdrawal notice', async () => {
+  for (const status of ['received', 'under_review', 'rejected', 'withdrawn']) {
+    const f = fixture(); await apply(f, [decision(A)]);
+    assert.equal(f.current().row.domainApprovals[A].onboarding.notifyWithdrawal, undefined);
+    await apply(f, [decision(A, status, NOW)]);
+    const snapshot = f.current().row.domainApprovals[A].onboarding;
+    assert.equal(snapshot.action, 'revoke'); assert.equal(snapshot.notifyWithdrawal, true);
+    assert.deepEqual(f.audits().find(audit => audit.decisionId === snapshot.decisionId).onboarding, snapshot);
+    await apply(f, [decision(A, status, NOW + 1000)], {}, NOW + 2000);
+    assert.equal(f.operations().filter(op => op.schemaVersion === 2 && op.action === 'revoke').length, 1);
+    assert.deepEqual(f.current().row.domainApprovals[A].onboarding, snapshot);
+  }
+});
+
+test('denial churn preserves the committed withdrawal operation and creates no second website notice', async () => {
+  const f = fixture(); await apply(f, [decision(A)]); await apply(f, [decision(A, 'withdrawn', NOW)]);
+  const snapshot = f.current().row.domainApprovals[A].onboarding, operations = f.operations();
+  const originalAudit = f.audits().find(audit => audit.decisionId === snapshot.decisionId);
+  const websiteNotice = f.current().row.accessNotice, version = f.current().row.accessVersion;
+  assert.equal(operations.filter(op => op.schemaVersion === 3).length, 1);
+  for (const [i, status] of ['rejected', 'under_review', 'received'].entries()) {
+    const at = NOW + (i + 1) * 1000, review = decision(A, status, at);
+    const result = await apply(f, [review], {}, at);
+    assert.deepEqual(result.account.domainApprovals[A].onboarding, snapshot);
+    assert.deepEqual(result.binding.domainApprovals[A].onboarding, snapshot);
+    assert.deepEqual(f.operations(), operations);
+    assert.deepEqual(f.audits().find(audit => audit.decisionId === snapshot.decisionId), originalAudit);
+    assert.deepEqual(result.account.accessNotice, websiteNotice);
+    assert.equal(result.account.accessVersion, version); assert.equal(result.account.active, false);
+    const count = f.transactions.length; await apply(f, [review], {}, at + 1);
+    assert.equal(f.transactions.length, count);
+  }
+});
+
+test('initial denials and repeated denied edits do not create withdrawal work or website access', async () => {
+  const f = fixture(); await apply(f, [decision(A, 'rejected')]);
+  await apply(f, [decision(A, 'withdrawn', NOW)]);
+  assert.equal(f.current().row.active, false); assert.equal(f.current().row.accessVersion, 1);
+  assert.equal(f.current().row.domainApprovals[A].onboarding, null); assert.equal(f.operations().length, 0);
+});
+
+test('normalizing a stale legacy flag does not opt historical withdrawal snapshots in to new notices', async () => {
+  const f = fixture(); await apply(f, [decision(A)]); await apply(f, [decision(A, 'withdrawn', NOW)]);
+  const { row, map } = f.current(), domains = structuredClone(row.domainApprovals);
+  delete domains[A].onboarding.notifyWithdrawal;
+  const audit = f.audits().find(item => item.decisionId === domains[A].onboarding.decisionId);
+  delete audit.onboarding.notifyWithdrawal; f.seed(audit);
+  f.seed({ ...row, domainApprovals: domains, legacyWebsiteApproved: true });
+  f.seed({ ...map, domainApprovals: domains });
+  const before = f.operations();
+  const result = await apply(f, [], {}, NOW + 1000);
+  assert.equal(result.account.legacyWebsiteApproved, false);
+  assert.deepEqual(result.account.domainApprovals, domains);
+  assert.deepEqual(f.operations(), before);
+  const rejected = await apply(f, [decision(A, 'rejected', NOW + 2000)], {}, NOW + 2000);
+  assert.equal(rejected.account.domainApprovals[A].onboarding.notifyWithdrawal, undefined);
+  assert.deepEqual(rejected.account.domainApprovals[A].onboarding, domains[A].onboarding);
+  assert.deepEqual(f.operations(), before);
+});
+
+test('website-only historical imports cannot qualify without an approved domain or manufacture invitations', async () => {
+  const f = fixture(), { map, row } = f.current();
+  f.seed({ ...map, imported: true });
+  f.seed({ ...row, active: true, reviewStatus: 'approved', approvalId: APPROVAL.id });
+  const result = await apply(f);
+  assert.equal(result.account.active, false); assert.equal(result.account.legacyWebsiteApproved, false);
+  assert.equal(result.account.accessVersion, row.accessVersion + 1);
+  assert.deepEqual(result.account.approvedDomains, []); assert.equal(f.operations().length, 0);
+  const committed = f.current(); await apply(f, [], {}, NOW + 1000); assert.deepEqual(f.current(), committed);
+});
+
 test('completed v1 migration preserves only frozen scopes, never interests or historical invitation resends', async () => {
   const f = fixture(), old = historical(f), result = await apply(f);
   assert.equal(result.account.approvalPolicy, DOMAIN_POLICY); assert.deepEqual(result.account.approvedDomains, [A, B]);
+  assert.equal(result.account.active, true); assert.equal(result.account.legacyWebsiteApproved, false);
   assert.equal(f.operations().length, 1); assert.equal(f.audits().length, 0);
   const guard = f.transactions.at(-1).TransactItems.find(item => item.ConditionCheck?.Key.pk?.S === old.pk);
   assert.ok(guard); assert.equal(guard.ConditionCheck.ExpressionAttributeValues[':complete'].S, 'complete');

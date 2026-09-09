@@ -129,6 +129,43 @@ test('approving and withdrawing individual domains preserves the other domain an
   assert.equal([...f.operations.values()].filter(item => item.action === 'revoke').length, 1);
 });
 
+test('withdrawing the last approved domain disables Cognito despite a stale legacy flag and replays without churn', async () => {
+  const f = fixture(); await f.worker.processContact('123');
+  Object.assign(f.row(), { legacyWebsiteApproved: true });
+  const version = f.row().accessVersion;
+  f.calls.length = 0;
+  edit(f.crm, DOMAIN_REVIEW_PROPERTIES[A], 'withdrawn', NOW + 1000); f.time(NOW + 2000);
+  await f.worker.processContact('123');
+  assert.equal(f.row().active, false); assert.equal(f.row().legacyWebsiteApproved, false);
+  assert.equal(f.row().accessVersion, version + 1); assert.deepEqual(f.row().approvedDomains, []);
+  assert.equal(f.row().domainApprovals[A].onboarding.notifyWithdrawal, true);
+  assert.equal(f.calls.filter(value => value === 'disable').length, 1);
+  assert.equal(f.calls.includes('enable'), false); assert.equal(f.crm.properties.opda_active, 'false');
+  const denied = structuredClone(f.row()); f.calls.length = 0;
+  await f.worker.processContact('123');
+  assert.deepEqual(f.row(), denied);
+  assert.ok(!f.calls.some(value => ['enable', 'disable', 'project', 'effects'].includes(value)));
+});
+
+test('CRM denied-status changes keep notifying the same pending withdrawal without provider churn', async () => {
+  const f = fixture(); await f.worker.processContact('123');
+  edit(f.crm, DOMAIN_REVIEW_PROPERTIES[A], 'withdrawn', NOW + 1000); f.time(NOW + 2000);
+  await f.worker.processContact('123');
+  const snapshot = structuredClone(f.row().domainApprovals[A].onboarding), version = f.row().accessVersion;
+  const operationCount = f.operations.size; f.calls.length = 0; f.notifications.length = 0;
+  for (const [i, status] of ['rejected', 'under_review'].entries()) {
+    const at = NOW + (i + 3) * 1000;
+    edit(f.crm, DOMAIN_REVIEW_PROPERTIES[A], status, at); f.time(at + 1);
+    await f.worker.processContact('123');
+    assert.equal(f.row().domainApprovals[A].status, status);
+    assert.deepEqual(f.row().domainApprovals[A].onboarding, snapshot);
+    assert.equal(f.row().accessVersion, version); assert.equal(f.operations.size, operationCount);
+  }
+  assert.equal(f.notifications.length, 2);
+  assert.ok(f.notifications.every(hint => hint.operationId === snapshot.operationId));
+  assert.ok(!f.calls.some(value => ['enable', 'disable', 'project', 'effects'].includes(value)));
+});
+
 test('clearing a previously managed field and losing its history denies only that domain', async () => {
   const f = fixture({ crm: contact({ [A]: 'approved', [B]: 'approved' }) });
   await f.worker.processContact('123');
@@ -167,14 +204,17 @@ test('Received is harmless initially but cannot clear a previous global hold', a
   assert.equal(f.row().active, true);
 });
 
-test('historically approved website-only imports retain access without receiving a domain invitation', async () => {
+test('historically approved website-only imports lose eligibility without receiving a domain invitation', async () => {
   const value = contact({}); value.properties.opda_active = 'true';
   const f = fixture({ crm: value, rowPatch: { approvalPolicy: undefined, domainApprovals: undefined,
     approvalId: APPROVAL.id, active: true, suspended: false, reviewStatus: 'approved' },
   mapPatch: { imported: true, approvalPolicy: undefined, domainApprovals: undefined } });
   await f.worker.processContact('123');
-  assert.equal(f.row().active, true);
-  assert.equal(f.row().legacyWebsiteApproved, true);
+  assert.equal(f.row().active, false);
+  assert.equal(f.row().legacyWebsiteApproved, false);
+  assert.equal(f.row().accessVersion, 2);
+  assert.equal(f.calls.includes('disable'), true);
+  assert.equal(f.calls.includes('enable'), false);
   assert.deepEqual(f.row().approvedDomains, []);
   assert.equal(f.operations.size, 0);
 });
@@ -205,6 +245,7 @@ test('external account suspension revokes all owned domains and notifications su
   assert.deepEqual(f.row().approvedDomains, []);
   assert.equal(f.notifications.length, 2);
   assert.ok(f.notifications.every(hint => f.operations.get(hint.operationId).action === 'revoke'));
+  assert.ok(Object.values(f.row().domainApprovals).every(state => state.onboarding.notifyWithdrawal === true));
 });
 
 test('a failed Cognito disable after external suspension is durably retried without a new review edit', async () => {

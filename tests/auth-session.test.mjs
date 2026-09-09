@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import { createHandler, safeReturnPath } from '../config/aws/auth-session/index.mjs';
 import { createStore, sessionKey } from '../config/aws/auth-session/store.mjs';
+import { approvedParticipant } from '../config/aws/auth-session/identity.mjs';
 
 const NOW = 1_800_000_000;
 const SUB = '11111111-2222-3333-4444-555555555555';
@@ -39,6 +40,17 @@ function participant(overrides = {}) {
     createdAt: '2026-09-08T10:00:00Z', approvedAt: '2026-09-08T10:00:00Z', ...overrides,
   };
 }
+
+test('domain-policy login requires a real approved group even before legacy projections reconcile', () => {
+  const identity = { sub: SUB, email: 'member@example.test' };
+  const row = participant({ approvalPolicy: 'individual-domains-v1', legacyWebsiteApproved: true,
+    approvedDomains: [], domainApprovals: {} });
+  assert.equal(approvedParticipant(row, identity, NOW), false);
+  row.approvedDomains = ['conveyancing']; row.domainApprovals.conveyancing = { status: 'approved' };
+  assert.equal(approvedParticipant(row, identity, NOW), true);
+  row.domainApprovals.conveyancing.status = 'withdrawn';
+  assert.equal(approvedParticipant(row, identity, NOW), false);
+});
 
 function event(path, { query = {}, cookies = [], method = 'GET' } = {}) {
   return { rawPath: path, queryStringParameters: query, cookies, requestContext: { http: { method } } };

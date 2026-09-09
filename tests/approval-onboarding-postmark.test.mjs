@@ -105,14 +105,13 @@ test('every suppression origin or reason blocks and unavailable/malformed checks
   }
 });
 
-test('server-wide tracking, identity drift and unavailable settings block before the send claim', async () => {
+test('server-wide tracking, identity drift and provider configuration errors block before the send claim', async () => {
   for (const reply of [
     ...[{ TrackOpens: true }, { TrackOpens: undefined }, { TrackOpens: 'false' },
       { TrackLinks: 'HtmlAndText' }, { TrackLinks: undefined }, { ID: 1 },
       { DeliveryType: 'Sandbox' }, { DeliveryType: undefined }]
       .map((change) => () => json({ ...server, ...change })),
-    () => json(server, 503), () => json({ ...server, ErrorCode: 500 }),
-    () => new Response('unavailable'), () => { throw new Error('private provider token'); },
+    () => json({ ...server, ErrorCode: 500 }),
   ]) {
     const { adapter, request, calls, sequence } = fixture({ '/server': reply });
     assert.deepEqual(await adapter.send(request), {
@@ -121,6 +120,34 @@ test('server-wide tracking, identity drift and unavailable settings block before
     assert.equal(sequence.includes('approval-guard'), false);
     assert.equal(calls.some((call) => call.method === 'POST'), false);
   }
+});
+
+test('transient template, stream and server reads are unavailable, fail closed and permit a later guarded retry', async () => {
+  for (const [path, valid] of [[`/templates/${INVITATION_TEMPLATE_ALIAS}`, template], ['/message-streams/broadcast', stream], ['/server', server]]) {
+    for (const unavailable of [
+      ...[408, 429, 500, 502, 503].map(status => () => json({ ErrorCode: 100 }, status)),
+      () => new Response('temporarily unavailable'),
+      () => { throw new Error('private provider token'); },
+    ]) {
+      let reads = 0;
+      const { adapter, request, calls, sequence } = fixture({ [path]: () => ++reads === 1 ? unavailable() : json(valid) });
+      assert.deepEqual(await adapter.send(request), { status: 'failed', attempted: false, reason: 'preflight-unavailable' });
+      assert.equal(sequence.includes('approval-guard'), false);
+      assert.equal(calls.some(call => call.method === 'POST'), false);
+      assert.equal((await adapter.send(request)).status, 'accepted');
+      assert.equal(reads, 2);
+      assert.equal(calls.filter(call => call.method === 'POST').length, 1);
+    }
+  }
+});
+
+test('a verified resource mismatch remains terminal even when another preflight read is unavailable', async () => {
+  const { adapter, request, calls } = fixture({
+    [`/templates/${INVITATION_TEMPLATE_ALIAS}`]: () => json({ ...template, Active: false }),
+    '/server': () => json({}, 503),
+  });
+  assert.deepEqual(await adapter.send(request), { status: 'failed', attempted: false, reason: 'template-verification-failed' });
+  assert.equal(calls.some(call => call.method === 'POST'), false);
 });
 
 test('template identity/content/layout changes and non-Postmark broadcast handling block dispatch', async () => {

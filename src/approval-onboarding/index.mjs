@@ -7,7 +7,7 @@ import { createPostmarkInvitationAdapter } from './postmark.mjs';
 import { createMicrosoftClient, MICROSOFT_CLIENT_ID } from './microsoft-auth.mjs';
 import { createReceiptProtection } from './receipt-protection.mjs';
 import { OPDA_TENANT_ID } from './invitation.mjs';
-import { WORKSPACES, INVITATION_REGISTRY, TEMPLATE_PIN, TEMPLATE_PINS } from './settings.mjs';
+import { WORKSPACES, INVITATION_REGISTRY, TEMPLATE_PIN, TEMPLATE_PINS, NOTICE_PINS } from './settings.mjs';
 
 const REGION = 'eu-west-2', ACCOUNT = '355653384628', CACHE_MS = 300000;
 const QUEUE = new RegExp(`^arn:aws:sqs:${REGION}:${ACCOUNT}:[A-Za-z0-9_-]{1,80}$`);
@@ -123,17 +123,21 @@ export async function createProductionWorker(config, { now = Date.now, getSecret
   const store = factories.createOnboardingStore({ tableName: config.participantsTableName, now, ...receiptHooks });
   const postmarkAdapters = new Map();
   let postmarkToken;
-  async function postmark(groupId) {
+  async function postmark(groupId, kind) {
     const secret = await secrets.postmark();
     if (secret.serverToken !== postmarkToken) { postmarkAdapters.clear(); postmarkToken = secret.serverToken; }
-    const pin = groupId === undefined ? TEMPLATE_PIN : TEMPLATE_PINS[groupId];
+    const pin = kind === 'website-disabled' && groupId === undefined ? NOTICE_PINS.website
+      : kind === 'group-withdrawn' ? NOTICE_PINS.groups[groupId]
+      : kind === undefined ? groupId === undefined ? TEMPLATE_PIN : TEMPLATE_PINS[groupId] : undefined;
     if (!pin || !Number.isSafeInteger(pin.templateId)) throw new Error('Domain invitation template is not configured');
-    const key = groupId ?? 'legacy';
+    const key = `${kind ?? 'invitation'}:${groupId ?? 'legacy'}`;
     if (!postmarkAdapters.has(key)) {
       postmarkAdapters.set(key, factories.createPostmarkInvitationAdapter({ token: secret.serverToken,
         expectedServerId: pin.serverId, expectedTemplateId: pin.templateId,
         expectedTemplateFingerprint: pin.fingerprint,
-        ...(groupId ? { expectedGroupId: groupId, expectedTemplateAlias: pin.alias, expectedSubject: pin.subject } : {}) }));
+        ...(kind ? { noticeKind: kind } : {}),
+        ...(groupId ? { expectedGroupId: groupId } : {}),
+        ...(groupId || kind ? { expectedTemplateAlias: pin.alias, expectedSubject: pin.subject } : {}) }));
     }
     return postmarkAdapters.get(key);
   }
@@ -146,10 +150,10 @@ export async function createProductionWorker(config, { now = Date.now, getSecret
   return factories.createOnboardingWorker({ store,
     graph: factories.createGraphAdapter({ request: microsoft.graph, workspaces: WORKSPACES }),
     sharepoint: factories.createSharePointAdapter({ request: microsoft.sharepoint, workspaces: WORKSPACES }),
-    postmark: { send: async ({ groupId, ...input }) => (await postmark(groupId)).send(input),
-      reconcile: async ({ groupId, ...input }) => (await postmark(groupId)).reconcile(input) },
+    postmark: { send: async ({ groupId, kind, ...input }) => (await postmark(groupId, kind)).send(input),
+      reconcile: async ({ groupId, kind, ...input }) => (await postmark(groupId, kind)).reconcile(input) },
     workspaces: WORKSPACES, invitationRegistry: INVITATION_REGISTRY, templatePin: TEMPLATE_PIN, templatePins: TEMPLATE_PINS,
-    logoBase64: logo.toString('base64'), enabled: config.enabled, canaryEmailHash: config.canaryEmailHash ?? '', now });
+    noticePins: NOTICE_PINS, logoBase64: logo.toString('base64'), enabled: config.enabled, canaryEmailHash: config.canaryEmailHash ?? '', now });
 }
 
 function operationReference(record, queueArn) {

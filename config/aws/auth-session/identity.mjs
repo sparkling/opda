@@ -96,6 +96,9 @@ export function approvedParticipant(participant, identity, now) {
     && typeof participant.participantId === 'string' && participant.participantId.length > 0
     && participant.reviewStatus === 'approved' && participant.suspended === false
     && participant.active === true
+    && (participant.approvalPolicy !== 'individual-domains-v1'
+      || Array.isArray(participant.approvedDomains) && participant.approvedDomains.some(domainId =>
+        participant.domainApprovals?.[domainId]?.status === 'approved'))
     && Number.isSafeInteger(participant.accessVersion) && participant.accessVersion >= 0
     && (participant.expiresAt === undefined || (Number.isSafeInteger(participant.expiresAt) && participant.expiresAt > now))
     && ['not_invited', 'complete'].includes(participant.enrolmentStatus));

@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { buildInvitationPayload, INVITATION_SUBJECT, INVITATION_TEMPLATE_ALIAS } from './invitation.mjs';
 import { domainTemplateContract } from './domain-templates.mjs';
+import { buildWithdrawalNoticePayload, withdrawalNoticeContract } from './withdrawal-notice.mjs';
 
 const ORIGIN = 'https://api.postmarkapp.com';
 const DIGEST = /^[a-f0-9]{64}$/;
@@ -24,19 +25,24 @@ const validDate = (value) => typeof value === 'string' && DATE.test(value) && Nu
 const readSucceeded = (status, data) => status === 200 && (data.ErrorCode === undefined || data.ErrorCode === 0);
 const failed = (reason, attempted = false, extra = {}) => ({ status: 'failed', attempted, reason, ...extra });
 const unknown = (reason, attempted = false) => ({ status: 'unknown', attempted, reason });
+const templateContract = (groupId, noticeKind) => noticeKind === undefined
+  ? groupId === undefined ? { alias: INVITATION_TEMPLATE_ALIAS, subject: INVITATION_SUBJECT } : domainTemplateContract(groupId)
+  : withdrawalNoticeContract(noticeKind, groupId);
 
 /** Byte-exact content pin; no provider-native immutable version is assumed. */
 export function fingerprintTemplate(template, options = {}) {
   object(template);
-  object(options, ['groupId']);
-  const contract = options.groupId === undefined
-    ? { alias: INVITATION_TEMPLATE_ALIAS, subject: INVITATION_SUBJECT } : domainTemplateContract(options.groupId);
+  object(options, ['groupId', 'noticeKind']);
+  const contract = templateContract(options.groupId, options.noticeKind);
   const { Alias = contract.alias, Subject = contract.subject,
     HtmlBody, TextBody, TemplateType = 'Standard', LayoutTemplate = null } = template;
   requireValue(Alias === contract.alias && Subject === contract.subject
     && TemplateType === 'Standard' && LayoutTemplate === null, 'unexpected template contract');
-  for (const body of [HtmlBody, TextBody]) requireValue(typeof body === 'string' && body.length > 0
-    && body.length <= 500_000 && body.includes('pm:unsubscribe'), 'bounded body with unsubscribe required');
+  for (const body of [HtmlBody, TextBody]) {
+    requireValue(typeof body === 'string' && body.length > 0 && body.length <= 500_000, 'bounded template body required');
+    requireValue(options.noticeKind === undefined ? body.includes('pm:unsubscribe')
+      : !body.includes('pm:unsubscribe') && !body.includes('{{{'), 'unexpected template communication controls');
+  }
   requireValue(HtmlBody.includes('cid:opda-logo'), 'CID logo required');
   return createHash('sha256').update(JSON.stringify([Alias, Subject, HtmlBody, TextBody, TemplateType, LayoutTemplate])).digest('hex');
 }
@@ -44,7 +50,7 @@ export function fingerprintTemplate(template, options = {}) {
 /**
  * No secret loading, logging, template writes, suppression removal or automatic retry.
  * beforeSend must recheck CURRENT approval/withdrawal and acquire the caller's durable
- * per-review send claim. A true return authorizes exactly one POST. Keep this callback
+ * per-review or per-access-change send claim. A true return authorizes exactly one POST. Keep this callback
  * bounded. Cancellation is checked after it returns, immediately before dispatch.
  * That guard cannot be atomic with Postmark: a dispatched message cannot be recalled.
  * A same-process map supplements, but NEVER replaces, the durable caller-owned ledger.
@@ -55,15 +61,17 @@ export function fingerprintTemplate(template, options = {}) {
  * https://postmarkapp.com/developer/api/templates-api
  * https://postmarkapp.com/developer/api/suppressions-api
  * https://postmarkapp.com/developer/api/messages-api
+ * https://postmarkapp.com/developer/api/message-streams-api
+ * https://postmarkapp.com/developer/api/overview
  * https://postmarkapp.com/developer/user-guide/tracking-opens/tracking-opens-per-email
  */
 export function createPostmarkInvitationAdapter(config) {
   object(config, ['token', 'fetchImpl', 'expectedServerId', 'expectedTemplateId', 'expectedTemplateFingerprint',
-    'expectedGroupId', 'expectedTemplateAlias', 'expectedSubject', 'timeoutMs']);
+    'expectedGroupId', 'expectedTemplateAlias', 'expectedSubject', 'noticeKind', 'timeoutMs']);
   const { token, fetchImpl = globalThis.fetch, expectedServerId, expectedTemplateId,
-    expectedTemplateFingerprint, expectedGroupId, timeoutMs = 10_000 } = config;
-  const contract = expectedGroupId === undefined
-    ? { alias: INVITATION_TEMPLATE_ALIAS, subject: INVITATION_SUBJECT } : domainTemplateContract(expectedGroupId);
+    expectedTemplateFingerprint, expectedGroupId, noticeKind, timeoutMs = 10_000 } = config;
+  const contract = templateContract(expectedGroupId, noticeKind);
+  const messageStream = noticeKind === undefined ? 'broadcast' : 'outbound';
   const expectedTemplateAlias = config.expectedTemplateAlias ?? contract.alias;
   const expectedSubject = config.expectedSubject ?? contract.subject;
   requireValue(expectedTemplateAlias === contract.alias && expectedSubject === contract.subject, 'unexpected domain template contract');
@@ -89,38 +97,40 @@ export function createPostmarkInvitationAdapter(config) {
     return { status: response.status, data };
   }
 
-  async function verifyTemplate(signal) {
-    try {
-      const { status, data } = await request(`/templates/${expectedTemplateAlias}`, { signal });
-      return readSucceeded(status, data) && data.Active === true && data.TemplateId === expectedTemplateId
-        && data.AssociatedServerId === expectedServerId && data.Alias === expectedTemplateAlias
-        && data.Subject === expectedSubject && data.TemplateType === 'Standard' && data.LayoutTemplate === null
-        && fingerprintTemplate(data, { groupId: expectedGroupId }) === expectedTemplateFingerprint;
-    } catch { return false; }
+  async function verifyResource(path, signal, matches) {
+    let result;
+    try { result = await request(path, { signal }); } catch { return 'unavailable'; }
+    const { status, data } = result;
+    // Read failures can be retried; a verified resource mismatch needs operator review.
+    if (status === 408 || status === 429 || status >= 500) return 'unavailable';
+    try { return readSucceeded(status, data) && matches(data) ? 'valid' : 'mismatch'; }
+    catch { return 'mismatch'; }
   }
 
-  async function verifyStream(signal) {
-    try {
-      const { status, data } = await request('/message-streams/broadcast', { signal });
-      return readSucceeded(status, data) && data.ID === 'broadcast' && data.ServerID === expectedServerId
-        && data.MessageStreamType === 'Broadcasts' && data.ArchivedAt === null
-        && data.SubscriptionManagementConfiguration?.UnsubscribeHandlingType === 'Postmark';
-    } catch { return false; }
+  function verifyTemplate(signal) {
+    return verifyResource(`/templates/${expectedTemplateAlias}`, signal, data => data.Active === true && data.TemplateId === expectedTemplateId
+      && data.AssociatedServerId === expectedServerId && data.Alias === expectedTemplateAlias
+      && data.Subject === expectedSubject && data.TemplateType === 'Standard' && data.LayoutTemplate === null
+      && fingerprintTemplate(data, { groupId: expectedGroupId, noticeKind }) === expectedTemplateFingerprint);
   }
 
-  async function verifyServer(signal) {
-    try {
-      const { status, data } = await request('/server', { signal });
-      // Server-wide open tracking overrides a message's explicit false value.
-      return readSucceeded(status, data) && data.ID === expectedServerId
-        && data.DeliveryType === 'Live' && data.TrackOpens === false && data.TrackLinks === 'None';
-    } catch { return false; }
+  function verifyStream(signal) {
+    return verifyResource(`/message-streams/${messageStream}`, signal, data => data.ID === messageStream && data.ServerID === expectedServerId
+      && data.MessageStreamType === (noticeKind === undefined ? 'Broadcasts' : 'Transactional') && data.ArchivedAt === null
+      && (noticeKind === undefined ? data.SubscriptionManagementConfiguration?.UnsubscribeHandlingType === 'Postmark'
+        : ['None', 'none'].includes(data.SubscriptionManagementConfiguration?.UnsubscribeHandlingType)));
+  }
+
+  function verifyServer(signal) {
+    // Server-wide open tracking overrides a message's explicit false value.
+    return verifyResource('/server', signal, data => data.ID === expectedServerId
+      && data.DeliveryType === 'Live' && data.TrackOpens === false && data.TrackLinks === 'None');
   }
 
   async function checkSuppression(email, signal) {
     try {
       const query = new URLSearchParams({ EmailAddress: email });
-      const { status, data } = await request(`/message-streams/broadcast/suppressions/dump?${query}`, { signal });
+      const { status, data } = await request(`/message-streams/${messageStream}/suppressions/dump?${query}`, { signal });
       if (!readSucceeded(status, data) || !Array.isArray(data.Suppressions) || data.Suppressions.length > 100
         || !data.Suppressions.every((row) => typeof row?.EmailAddress === 'string'
           && row.EmailAddress.toLowerCase() === email)) return 'unavailable';
@@ -142,7 +152,7 @@ export function createPostmarkInvitationAdapter(config) {
     return unknown('send-outcome-unknown', true);
   }
 
-  /** Input is the invitation builder contract plus a hash key and final guard. */
+  /** Input is the selected invitation/notice builder contract plus a hash key and final guard. */
   async function send(args) {
     let payload;
     try {
@@ -150,7 +160,9 @@ export function createPostmarkInvitationAdapter(config) {
       requireValue(typeof args.operationKey === 'string' && DIGEST.test(args.operationKey), 'opaque operation key required');
       requireValue(typeof args.beforeSend === 'function', 'final approval guard required');
       requireValue(args.signal === undefined || args.signal instanceof AbortSignal, 'AbortSignal required');
-      payload = buildInvitationPayload(args.input, args.registry, { logoBase64: args.logoBase64, groupId: expectedGroupId });
+      payload = noticeKind === undefined
+        ? buildInvitationPayload(args.input, args.registry, { logoBase64: args.logoBase64, groupId: expectedGroupId })
+        : buildWithdrawalNoticePayload(args.input, { logoBase64: args.logoBase64, groupId: expectedGroupId, kind: noticeKind });
     } catch { return failed('invalid-input'); }
     const { operationKey, beforeSend, signal } = args;
     if (signal?.aborted) return failed('stale-or-cancelled');
@@ -168,15 +180,17 @@ export function createPostmarkInvitationAdapter(config) {
         verifyTemplate(signal), verifyStream(signal), verifyServer(signal),
       ]);
       if (signal?.aborted) return finish(failed('stale-or-cancelled'));
-      if (!templateValid) return finish(failed('template-verification-failed'));
-      if (!streamValid) return finish(failed('stream-verification-failed'));
-      if (!serverValid) return finish(failed('server-verification-failed'));
+      if (templateValid === 'mismatch') return finish(failed('template-verification-failed'));
+      if (streamValid === 'mismatch') return finish(failed('stream-verification-failed'));
+      if (serverValid === 'mismatch') return finish(failed('server-verification-failed'));
+      if ([templateValid, streamValid, serverValid].includes('unavailable')) return finish(failed('preflight-unavailable'));
       // Pin the verified numeric ID so an alias reassignment cannot redirect a send.
       delete payload.TemplateAlias;
       payload.TemplateId = expectedTemplateId;
       payload.Tag = TAG;
       payload.Metadata = { opda_onboarding_key: operationKey, opda_template_sha256: expectedTemplateFingerprint };
       if (expectedGroupId !== undefined) payload.Metadata.opda_domain_id = expectedGroupId;
+      if (noticeKind !== undefined) payload.Metadata.opda_notice_kind = noticeKind;
       const suppression = await checkSuppression(payload.To, signal);
       if (signal?.aborted) return finish(failed('stale-or-cancelled'));
       if (suppression === 'unavailable') return finish(failed('suppression-check-unavailable'));
@@ -208,7 +222,7 @@ export function createPostmarkInvitationAdapter(config) {
     const { operationKey, signal } = args;
     let result;
     try {
-      const query = new URLSearchParams({ count: '2', offset: '0', messagestream: 'broadcast', metadata_opda_onboarding_key: operationKey });
+      const query = new URLSearchParams({ count: '2', offset: '0', messagestream: messageStream, metadata_opda_onboarding_key: operationKey });
       const { status, data } = await request(`/messages/outbound?${query}`, { signal });
       if (!readSucceeded(status, data) || !Number.isSafeInteger(data.TotalCount) || data.TotalCount < 0
         || !Array.isArray(data.Messages) || data.Messages.length > 2) result = unknown('activity-unavailable');
@@ -217,10 +231,12 @@ export function createPostmarkInvitationAdapter(config) {
       else {
         const row = data.Messages[0];
         const matches = data.TotalCount === 1 && data.Messages.length === 1 && row
-          && UUID.test(row.MessageID ?? '') && row.MessageStream === 'broadcast'
+          && UUID.test(row.MessageID ?? '') && row.MessageStream === messageStream
           && row.Metadata?.opda_onboarding_key === operationKey
           && row.Metadata?.opda_template_sha256 === expectedTemplateFingerprint
-          && (expectedGroupId === undefined || row.Metadata?.opda_domain_id === expectedGroupId)
+          && row.Metadata?.opda_notice_kind === noticeKind
+          && (expectedGroupId === undefined ? noticeKind === undefined || row.Metadata?.opda_domain_id === undefined
+            : row.Metadata?.opda_domain_id === expectedGroupId)
           && row.Tag === TAG && row.Subject === expectedSubject
           && ['Queued', 'Sent', 'Processed'].includes(row.Status) && validDate(row.ReceivedAt)
           && row.TrackOpens === false && row.TrackLinks === 'None' && row.Sandboxed === false

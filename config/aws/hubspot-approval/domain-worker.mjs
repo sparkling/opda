@@ -150,6 +150,7 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
       // Attempt every independent revocation even when Cognito or another queue
       // notification fails. The durable outbox repairs any interrupted handoff.
       await notifyAll([
+        ...(binding.accessNotice ? [binding.accessNotice.operationId] : []),
         ...(binding.approvalPolicy !== DOMAIN_POLICY && binding.onboarding ? [binding.onboarding.operationId] : []),
         ...Object.values(binding.domainApprovals ?? {}).flatMap(state => state.onboarding ? [state.onboarding.operationId] : []),
       ]);

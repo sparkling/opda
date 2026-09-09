@@ -59,12 +59,14 @@ const operationKey = id => { requireValue(typeof id === 'string' && HEX.test(id)
 const stateKey = op => `CRM#ONBOARDING_STATE#${op.participantId}`;
 const immutableKeys = ['pk', 'schemaVersion', 'operationId', 'participantId', 'contactId', 'cognitoSub',
   'accountKey', 'bindingKey', 'auditKey', 'decisionId', 'accessVersion', 'action', 'createdAt'];
-const keysOf = op => op.schemaVersion === 2 ? [...immutableKeys, 'domainId', 'domainVersion'] : immutableKeys;
+const keysOf = op => op.schemaVersion === 2 ? [...immutableKeys, 'domainId', 'domainVersion']
+  : op.schemaVersion === 3 ? [...immutableKeys, 'noticeKind'] : immutableKeys;
 const sameOperation = (a, b) => a && b && keysOf(b).every(key => a[key] === b[key]);
-const rowSnapshot = (op, row) => op.schemaVersion === 2 ? row?.domainApprovals?.[op.domainId]?.onboarding : row?.onboarding;
+const rowSnapshot = (op, row) => op.schemaVersion === 2 ? row?.domainApprovals?.[op.domainId]?.onboarding
+  : op.schemaVersion === 3 ? row?.accessNotice : row?.onboarding;
 
 function validOperation(op) {
-  requireValue(plain(op) && op.pk === operationKey(op.operationId) && [1, 2].includes(op.schemaVersion)
+  requireValue(plain(op) && op.pk === operationKey(op.operationId) && [1, 2, 3].includes(op.schemaVersion)
     && typeof op.participantId === 'string' && ID.test(op.participantId)
     && typeof op.cognitoSub === 'string' && ID.test(op.cognitoSub) && /^[1-9][0-9]{0,19}$/.test(op.contactId)
     && typeof op.contactId === 'string' && HEX.test(op.decisionId)
@@ -72,11 +74,12 @@ function validOperation(op) {
     && Number.isSafeInteger(op.createdAt) && op.createdAt >= 0 && STATUSES.includes(op.status)
     && ['provision', 'revoke'].includes(op.action) && op.accountKey === `USER#${op.cognitoSub}`
     && op.bindingKey === `CRM#CONTACT#${op.contactId}` && op.auditKey === `CRM#AUDIT#${op.contactId}#${op.decisionId}`
-    && (op.schemaVersion === 1 || APPROVAL_GROUP_IDS.includes(op.domainId)
-      && Number.isSafeInteger(op.domainVersion) && op.domainVersion >= 1)
+    && (op.schemaVersion === 1 || op.schemaVersion === 2 && APPROVAL_GROUP_IDS.includes(op.domainId)
+      && Number.isSafeInteger(op.domainVersion) && op.domainVersion >= 1
+      || op.schemaVersion === 3 && op.action === 'revoke' && op.noticeKind === 'website-disabled')
     && op.operationId === hash(JSON.stringify(op.schemaVersion === 2
       ? [2, op.participantId, op.domainId, op.decisionId, op.domainVersion]
-      : [1, op.participantId, op.decisionId, op.accessVersion]))
+      : [op.schemaVersion, op.participantId, op.decisionId, op.accessVersion]))
     && Object.keys(op).every(key => [...keysOf(op), 'status', 'stage', 'reason'].includes(key)));
 }
 function validAudit(op, audit) {
@@ -85,8 +88,10 @@ function validAudit(op, audit) {
     && audit.contactId === op.contactId && audit.decisionId === op.decisionId
     && audit.accessVersion === op.accessVersion && audit.at === op.createdAt
     && snap?.operationId === op.operationId && snap.action === op.action && snap.decisionId === op.decisionId
-    && snap.accessVersion === op.accessVersion && snap.templateVersion === op.schemaVersion
-    && (op.schemaVersion === 1 || snap.domainId === op.domainId && snap.domainVersion === op.domainVersion)
+    && snap.accessVersion === op.accessVersion && snap.templateVersion === (op.schemaVersion === 3 ? 1 : op.schemaVersion)
+    && (op.schemaVersion !== 2 || snap.domainId === op.domainId && snap.domainVersion === op.domainVersion)
+    && (op.schemaVersion !== 3 || snap.noticeKind === op.noticeKind)
+    && (snap.notifyWithdrawal === undefined || op.schemaVersion === 2 && op.action === 'revoke' && snap.notifyWithdrawal === true)
     && Number.isSafeInteger(snap.decisionAt) && snap.decisionAt >= 0 && snap.decisionAt <= audit.at + 60000
     && (snap.actor === null || typeof snap.actor === 'string' && /^[1-9][0-9]{0,19}$/.test(snap.actor))
     && snap.actor === audit.actor && Array.isArray(snap.groups) && snap.groups.length <= APPROVAL_GROUP_IDS.length
@@ -111,6 +116,8 @@ function sameIdentity(op, account, binding, state) {
   return !(account?.email && binding?.email && account.email !== binding.email);
 }
 function currentSnapshot(op, account, binding, snapshot) {
+  if (op.schemaVersion === 3) return account?.accessVersion === op.accessVersion
+    && isDeepStrictEqual(account?.accessNotice, snapshot) && isDeepStrictEqual(binding?.accessNotice, snapshot);
   if (op.schemaVersion === 2) return (!account || isDeepStrictEqual(rowSnapshot(op, account), snapshot))
     && (!binding || isDeepStrictEqual(rowSnapshot(op, binding), snapshot));
   // Once migrated, old contact-wide jobs cannot restore memberships or send old invitations.
@@ -205,8 +212,8 @@ export function createOnboardingStore({ tableName, now = Date.now, send: injecte
     contexts.set(context, { operation: structuredClone(op), snapshot: structuredClone(audit.onboarding) });
     return context;
   }
-  async function guard(context, { requireEligible = false } = {}) {
-    requireValue(typeof requireEligible === 'boolean');
+  async function guard(context, { requireEligible = false, requireNotice = false } = {}) {
+    requireValue(typeof requireEligible === 'boolean' && typeof requireNotice === 'boolean' && !(requireEligible && requireNotice));
     const { operation: expected, snapshot } = ref(context), time = clock();
     const [op, account, binding, state] = await Promise.all([expected.pk, expected.accountKey, expected.bindingKey, stateKey(expected)].map(get));
     if (!sameOperation(op, expected) || op.status !== 'pending' || !owned(context, state, time)
@@ -214,12 +221,19 @@ export function createOnboardingStore({ tableName, now = Date.now, send: injecte
     if (requireEligible && (op.action !== 'provision' || !eligible(account, time)
       || op.schemaVersion === 2 && (account.approvalPolicy !== 'individual-domains-v1'
         || account.domainApprovals?.[op.domainId]?.status !== 'approved'))) return false;
+    if (requireNotice && (!account || !binding || op.action !== 'revoke' || account.deletedAt || account.erasedAt
+      || account.expiresAt && account.expiresAt <= Math.floor(time / 1000)
+      || ['contact-unavailable', 'identity-changed'].includes(binding.holdReason)
+      || (op.schemaVersion === 3 ? account.active !== false || account.approvedDomains?.length !== 0
+        || Object.values(account.domainApprovals ?? {}).some(state => state.status === 'approved')
+        : op.schemaVersion !== 2 || snapshot.notifyWithdrawal !== true
+          || account.domainApprovals?.[op.domainId]?.status === 'approved'))) return false;
     const email = emailOf(account, binding);
     if (email) {
       const owner = await get(`EMAIL#${hash(email)}`);
       if (owner && (owner.participantId !== op.participantId || owner.approvalKey && owner.approvalKey !== op.bindingKey)) return false;
-      if (!owner && (requireEligible || op.action !== 'revoke')) return false;
-    } else if (requireEligible || op.action !== 'revoke') return false;
+      if (!owner && (requireEligible || requireNotice || op.action !== 'revoke')) return false;
+    } else if (requireEligible || requireNotice || op.action !== 'revoke') return false;
     if (requireEligible) {
       if (await get(`SYNC#SUPPRESS#EMAIL#${hash(email)}`)) return false;
       if (binding.registrationId && (typeof binding.registrationId !== 'string' || !ID.test(binding.registrationId)
@@ -250,15 +264,32 @@ export function createOnboardingStore({ tableName, now = Date.now, send: injecte
     check(`SYNC#SUPPRESS#EMAIL#${hash(emailOf(row, binding))}`, 'attribute_not_exists(pk)'),
     ...(binding.registrationId ? [check(`SYNC#SUPPRESS#REGISTRATION#${binding.registrationId}`, 'attribute_not_exists(pk)')] : [])];
   }
-  async function saveReceipts(context, nextReceipts, { requireEligible = false } = {}) {
-    requireValue(typeof requireEligible === 'boolean');
+  function noticeChecks(context, time) {
+    const { operation: op } = ref(context), row = context.account, binding = context.binding;
+    const field = op.schemaVersion === 3 ? 'accessNotice' : 'domainApprovals';
+    return [check(op.accountKey, `participantId = :pid AND cognitoSub = :sub AND accessVersion = :version AND ${field} = :snapshot`
+      + ' AND active = :active AND email = :email AND attribute_not_exists(deletedAt) AND attribute_not_exists(erasedAt)'
+      + ' AND (attribute_not_exists(expiresAt) OR expiresAt > :now)',
+    { ':pid': op.participantId, ':sub': op.cognitoSub, ':version': row.accessVersion, ':snapshot': row[field],
+      ':active': row.active, ':email': row.email, ':now': Math.floor(time / 1000) }),
+    check(op.bindingKey, `participantId = :pid AND revision = :revision AND ${field} = :snapshot AND email = :email`
+      + (op.schemaVersion === 3 ? ' AND providerAccessVersion = :providerVersion' : ''),
+      { ':pid': op.participantId, ':revision': binding.revision, ':snapshot': binding[field], ':email': row.email,
+        ...(op.schemaVersion === 3 ? { ':providerVersion': op.accessVersion } : {}) }),
+    check(`EMAIL#${hash(row.email)}`, 'participantId = :pid AND (attribute_not_exists(approvalKey) OR approvalKey = :binding)',
+      { ':pid': op.participantId, ':binding': op.bindingKey })];
+  }
+  async function saveReceipts(context, nextReceipts, { requireEligible = false, requireNotice = false } = {}) {
+    requireValue(typeof requireEligible === 'boolean' && typeof requireNotice === 'boolean' && !(requireEligible && requireNotice));
     const { operation: op } = ref(context), receipts = receiptsCopy(nextReceipts), previous = context.revision;
     if (requireEligible && !await guard(context, { requireEligible: true })) return false;
+    if (requireNotice && !await guard(context, { requireNotice: true })) return false;
     const protectedValue = await protect(receipts, op.participantId), time = clock(), revision = previous + 1;
     const lease = leaseCheck(context, time, previous).ConditionCheck;
     const accepted = await attempt([{ Update: { ...lease, UpdateExpression: 'SET receipts = :receipts, revision = :next',
       ExpressionAttributeValues: { ...lease.ExpressionAttributeValues, ':receipts': encodeValue(protectedValue), ':next': encodeValue(revision) },
-    } }, ...(requireEligible ? [operationCheck(op), ...eligibleChecks(context, time)] : [])]);
+    } }, ...(requireEligible ? [operationCheck(op), ...eligibleChecks(context, time)] : []),
+    ...(requireNotice ? [operationCheck(op), ...noticeChecks(context, time)] : [])]);
     if (accepted) { context.receipts = receipts; context.revision = revision; }
     return accepted;
   }

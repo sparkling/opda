@@ -1,0 +1,21 @@
+[[NOTICE_LABEL]]
+
+[[NOTICE_TITLE]]
+
+Hello {{display_name}},
+
+[[NOTICE_LEAD]]
+
+YOUR ACCESS
+
+[[ACCESS_DETAIL]]
+
+[[PRESERVED_DETAIL]]
+
+NEED HELP?
+
+If you believe this change is incorrect, please reply to this email or contact
+smartdata@openpropdata.org.uk so that OPDA can review it.
+
+Open Property Data Association · [[NOTICE_LABEL]]
+[[FOOTER_PURPOSE]]

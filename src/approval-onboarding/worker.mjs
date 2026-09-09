@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { classifyEmailDomain } from '../agents/working-group-inbox/domain.mjs';
 import { APPROVAL_GROUP_IDS } from './invitation.mjs';
+import { sendAccessNotice } from './notice-worker.mjs';
 
 const OPERATION_ID = /^[a-f0-9]{64}$/;
 const EMAIL_HASH = /^[a-f0-9]{64}$/;
@@ -9,7 +10,7 @@ const emailHash = value => createHash('sha256').update(String(value).trim().toLo
 
 /** Deterministic effects; provider receipts are private, reference-only jobs are not authority. */
 export function createOnboardingWorker({ store, graph, sharepoint, postmark, workspaces, invitationRegistry,
-  templatePin, templatePins = {}, logoBase64, enabled = false, canaryEmailHash = '', now = Date.now }) {
+  templatePin, templatePins = {}, noticePins = {}, logoBase64, enabled = false, canaryEmailHash = '', now = Date.now }) {
   if (typeof canaryEmailHash !== 'string' || canaryEmailHash !== '' && !EMAIL_HASH.test(canaryEmailHash)) {
     throw new TypeError('Invalid onboarding canary configuration');
   }
@@ -42,8 +43,14 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
         throw new Error('Onboarding source access unavailable');
       }
     }
+    async function notice(kind, domainId) {
+      const result = await sendAccessNotice({ context, store, postmark, kind, ...(domainId ? { groupId: domainId } : {}),
+        pin: kind === 'website-disabled' ? noticePins.website : noticePins.groups?.[domainId], logoBase64, now });
+      return finish(result.status, result.stage, result.reason);
+    }
     try {
       if (!await guard(false)) return await finish('cancelled', 'superseded');
+      if (context.operation.schemaVersion === 3) return await notice('website-disabled');
       const snapshot = context.audit.onboarding;
       const provisioning = context.operation.action === 'provision';
       const domainId = context.operation.schemaVersion === 2 ? context.operation.domainId : undefined;
@@ -64,6 +71,7 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
       let pending = false, attention = false;
       if (!provisioning) await save(next => {
         for (const mail of Object.values(next.mail)) {
+          if (mail.kind) continue; // Access notices are not invitations awaiting cancellation.
           if (domainId && mail.domainId !== domainId) continue;
           if (['prepared', 'pending'].includes(mail.status)) mail.status = 'cancelled';
           if (['attempting', 'unknown'].includes(mail.status)) mail.cancellationRequestedAt = now();
@@ -89,6 +97,7 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
       if (!await guard(provisioning)) return await finish('cancelled', 'superseded');
       if (!provisioning) {
         if (attention) return await finish('attention', 'withdrawal-review', 'manual-or-ambiguous-grants-retained');
+        if (!pending && snapshot.notifyWithdrawal === true) return await notice('group-withdrawn', domainId);
         return await finish(pending ? 'pending' : 'complete', pending ? 'withdrawal-propagating' : 'withdrawn');
       }
       if (attention) return await finish('attention', 'previous-grants-review', 'manual-or-ambiguous-grants-retained');

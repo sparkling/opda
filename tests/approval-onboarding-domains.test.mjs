@@ -53,6 +53,29 @@ test('replayed/older approvals and re-confirming an unchanged approval never res
   const again = run(next(state, withdrawn), [decision('conveyancing', 'approved', now + 1)]);
   assert.equal(again.operations.length, 1); assert.notEqual(again.operations[0].operationId, first.operations[0].operationId);
 });
+test('denied status changes retain the original withdrawal notice snapshot until reapproval', () => {
+  const initial = base(), approved = run(initial, [decision('conveyancing')]);
+  let state = next(initial, approved);
+  const withdrawn = run(state, [decision('conveyancing', 'withdrawn', now)]);
+  state = next(state, withdrawn);
+  const snapshot = structuredClone(state.row.domainApprovals.conveyancing.onboarding);
+  assert.equal(snapshot.notifyWithdrawal, true);
+  for (const [i, status] of ['rejected', 'under_review', 'received'].entries()) {
+    const at = now + (i + 1) * 1000;
+    const denied = run(state, [decision('conveyancing', status, at)], { now: at });
+    assert.equal(denied.operations.length, 0);
+    assert.deepEqual(denied.fields.domainApprovals.conveyancing.onboarding, snapshot);
+    assert.equal(denied.fields.domainApprovals.conveyancing.status, status);
+    state = next(state, denied);
+  }
+  const restored = run(state, [decision('conveyancing', 'approved', now + 4000)], { now: now + 4000 });
+  const provision = restored.fields.domainApprovals.conveyancing.onboarding;
+  assert.equal(provision.action, 'provision'); assert.equal(provision.notifyWithdrawal, undefined);
+  const final = run(next(state, restored), [decision('conveyancing', 'withdrawn', now + 5000)], { now: now + 5000 });
+  assert.equal(final.operations.length, 1);
+  assert.notEqual(final.operations[0].operationId, snapshot.operationId);
+  assert.equal(final.fields.domainApprovals.conveyancing.onboarding.notifyWithdrawal, true);
+});
 test('interests, untrusted edits and global Approved never create domain grants', () => {
   assert.equal(run(base(), [], { globalDecision: { ...decision('conveyancing'), domainId: undefined } }).fields.active, false);
   for (const patch of [{ trusted: false }, { groupSnapshot: undefined }, { groupSnapshot: {
@@ -72,21 +95,24 @@ test('current global withdrawal overrides per-domain approvals and requires fres
   assert.equal(run(state, [decision('conveyancing')], { globalDecision: cleared }).fields.active, false);
   assert.equal(run(state, [decision('conveyancing', 'approved', now + 10)], { globalDecision: cleared }).fields.active, true);
 });
-test('historical website-only import is retained but never receives domain invitations', () => {
+test('historical website-only import loses eligibility without receiving domain invitations', () => {
   const input = base(); input.map.imported = true;
   Object.assign(input.row, { active: true, reviewStatus: 'approved', approvalId: APPROVAL.id });
   const plan = run(input, []);
-  assert.equal(plan.fields.legacyWebsiteApproved, true); assert.equal(plan.fields.active, true);
+  assert.equal(plan.fields.legacyWebsiteApproved, false); assert.equal(plan.fields.active, false);
+  assert.equal(plan.fields.accessVersion, input.row.accessVersion + 1);
   assert.deepEqual(plan.fields.approvedDomains, []); assert.equal(plan.operations.length, 0);
   assert.equal(plan.fields.approvalPolicy, DOMAIN_POLICY);
 });
 test('migration preserves only explicitly frozen completed approval scopes and does not resend', () => {
   const input = base(), onboarding = { action: 'provision', snapshotStatus: 'approved', decisionAt: cutover - 1,
     decisionId: digest('old-review'), actor: '42', groups: ['conveyancing'], groupDigest: digest('["conveyancing"]') };
-  Object.assign(input.row, { active: true, reviewStatus: 'approved', onboarding }); input.map.onboarding = onboarding;
+  Object.assign(input.row, { active: true, reviewStatus: 'approved', approvalId: APPROVAL.id, onboarding });
+  Object.assign(input.map, { imported: true, onboarding });
   input.row.profile = { opda_requested_working_groups: 'conveyancing;finance-and-banking' };
   const plan = run(input, []);
   assert.deepEqual(plan.fields.approvedDomains, ['conveyancing']); assert.equal(plan.operations.length, 0);
+  assert.equal(plan.fields.active, true); assert.equal(plan.fields.accessVersion, input.row.accessVersion);
   assert.equal(plan.fields.legacyWebsiteApproved, false);
 });
 

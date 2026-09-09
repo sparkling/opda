@@ -4,6 +4,7 @@ import { APPROVAL } from '../hubspot-participation/import.mjs';
 import { CONTACT_ID, PORTAL_ID, mappingKey, emailHash, digest, mayApprove, ordinaryAccess } from './domain.mjs';
 import { onboardingKey, planOnboarding } from './onboarding.mjs';
 import { DOMAIN_POLICY, planDomainApprovals } from './domain-onboarding.mjs';
+import { addWebsiteDisabledNotice } from './access-notices.mjs';
 
 function encodeValue(v) {
   if (v === null) return { NULL: true };
@@ -181,7 +182,7 @@ export function createStore(config, overrides = {}) {
       for (const item of page.Items ?? []) {
         try {
           const operation = decode(item);
-          if (operation.pk !== onboardingKey(operation.operationId) || ![1, 2].includes(operation.schemaVersion)
+          if (operation.pk !== onboardingKey(operation.operationId) || ![1, 2, 3].includes(operation.schemaVersion)
             || operation.status !== 'pending') throw new Error('Invalid onboarding outbox reference');
           operations.push(operation);
         } catch {
@@ -267,6 +268,7 @@ export function createStore(config, overrides = {}) {
       plan.mapFields.domainMigrationPending = null; plan.fields.domainMigrationPending = null; plan.changed = true;
     }
     if (!plan.changed) return { binding: map, account: row };
+    addWebsiteDisabledNotice(plan, map, row, now);
     const next = { ...map, ...plan.mapFields, revision: map.revision + 1 };
     const names = Object.fromEntries(Object.keys(plan.fields).map((key, i) => [`#f${i}`, key]));
     const values = Object.fromEntries(Object.values(plan.fields).map((v, i) => [`:f${i}`, encodeValue(v)]));

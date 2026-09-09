@@ -3,7 +3,7 @@ import test from 'node:test';
 import { createHandler, createProductionWorker } from '../src/approval-onboarding/index.mjs';
 import { MICROSOFT_CLIENT_ID } from '../src/approval-onboarding/microsoft-auth.mjs';
 import { OPDA_TENANT_ID } from '../src/approval-onboarding/invitation.mjs';
-import { TEMPLATE_PINS } from '../src/approval-onboarding/settings.mjs';
+import { TEMPLATE_PINS, NOTICE_PINS } from '../src/approval-onboarding/settings.mjs';
 
 const queueArn = 'arn:aws:sqs:eu-west-2:355653384628:opda-participation-onboarding';
 const microsoftSecretArn = 'arn:aws:secretsmanager:eu-west-2:355653384628:secret:opda/microsoft/participation-onboarding-Ab1234';
@@ -172,6 +172,21 @@ test('secret reads are single-flight and failed refresh cannot use a stale crede
   f.advance(300000); f.secrets(() => { throw new Error('provider-secret@example.test'); });
   await assert.rejects(f.captured.microsoft.getSecret(), error => error.message === 'Onboarding service credential unavailable');
   await assert.rejects(f.captured.microsoft.getSecret(), /credential unavailable/); assert.equal(f.reads.length, 3);
+});
+
+test('production routes seven access notices to pinned transactional contracts without invitation routing', async () => {
+  const f = runtimeFixture(); await createProductionWorker(config, f.deps);
+  for (const [groupId, pin] of [...Object.entries(NOTICE_PINS.groups), [undefined, NOTICE_PINS.website]]) {
+    const kind = groupId ? 'group-withdrawn' : 'website-disabled';
+    await f.captured.worker.postmark.send({ kind, groupId, operationKey: operationId });
+    const adapter = f.adapters.at(-1);
+    assert.equal(adapter.noticeKind, kind); assert.equal(adapter.expectedGroupId, groupId);
+    assert.equal(adapter.expectedTemplateId, pin.templateId);
+    assert.equal(adapter.expectedTemplateFingerprint, pin.fingerprint);
+    assert.equal(adapter.expectedTemplateAlias, pin.alias);
+  }
+  assert.equal(f.adapters.length, 7); assert.equal(f.reads.length, 1);
+  assert.deepEqual(f.captured.worker.noticePins, NOTICE_PINS);
 });
 
 test('native SecretsManager construction pins region, current version, retries and a five-second abort signal', async t => {

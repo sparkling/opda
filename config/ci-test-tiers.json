@@ -2,6 +2,10 @@
   "schemaVersion": 1,
   "tiers": ["release-blocking", "pull-request-blocking", "scheduled-assurance", "development-aid", "delete"],
   "tests": [
+    { "path": "tests/approval-onboarding-access-notices.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/approval-onboarding-notice-worker.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/approval-onboarding-postmark-notices.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/approval-onboarding-withdrawal-notice.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-graph.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-domain-templates.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-domains.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },

@@ -101,8 +101,9 @@ dropdowns were then created in OPDA participation and read back compatible, with
 fields or blockers and two slots remaining. Definition counts are not quota usage. No field
 retirement, paid upgrade or runtime permission expansion was needed.
 
-The frozen import remains an explicit website-only entitlement, not 1,001 Microsoft invitations.
-Ordinary migration preserves only matching, explicitly approved pre-cutover frozen scopes
+The frozen import is historical approval evidence, not a website-only entitlement or a wave
+of Microsoft invitations. CRM-managed website access requires at least one approved domain.
+Ordinary migration preserves only matching, explicitly approved pre-cutover frozen domain scopes
 after the bound version 1 operation is explicitly complete. Never infer domains from today's
 interests or replay old mail. Unresolved invitation effects must not delay access removal:
 
@@ -117,8 +118,8 @@ interests or replay old mail. Unresolved invitation effects must not delay acces
 Keep `domainMigrationPending` until the original participant-bound outcome is explicitly
 settled as complete. Missing, pending, cancelled, attention or unknown-send outcomes are not
 completion. Further denials continue during this hold; new grants remain blocked. Settlement
-must reconcile evidence, never resend ambiguous mail merely to complete the ledger. Global
-holds revoke preserved website-only eligibility too.
+must reconcile evidence, never resend ambiguous mail merely to complete the ledger. Enforce
+the approved-domain predicate at authentication without a bulk import reconciliation or mail wave.
 
 ### 2. Durable follow-up without delaying website access
 
@@ -260,8 +261,8 @@ must not falsely claim an AI agent wrote or reviewed the invitation.
 
 Withdrawing a domain removes only that person's approval, owned Microsoft grants and unsent
 mail for that domain. Other approved domains retain access and pending invitations. Website
-eligibility and its session version remain unchanged while another approved domain or an
-explicit preserved legacy website entitlement remains. Loss of the last eligible basis, or a
+eligibility and its session version remain unchanged while another approved domain remains.
+Historical website-only import approval cannot bypass this rule. Loss of the last domain, or a
 global hold, removes website eligibility, invalidates sessions and disables/signs out Cognito.
 The open-tab check updates the UI, not the security boundary; delivered data cannot be recalled.
 
@@ -286,14 +287,32 @@ The withdrawal path is:
 5. Read back removal. Keep Microsoft propagation pending and retry through the existing
    15-minute outbox relay; do not exhaust short queue retries while waiting for normal Teams
    synchronisation. Ambiguous writes, manual grants and policy drift require explicit review.
-6. A fresh human approval for that domain after its latest withdrawal/hold may restore it and
+6. Send one domain-specific withdrawal notice only after its managed Microsoft removals are
+   verified. An initial rejection, historical unmarked cleanup or another denied status does
+   not create a new notice. Pending propagation or retained manual grants must not produce a
+   false claim that the working group's access is gone.
+7. When the last approved domain is removed, create a separate website-disabled notice in the
+   same decision transaction. Its notification-only outbox operation uses the existing queue,
+   worker and private receipt ledger; it does not wait for Microsoft cleanup. Send only after
+   the matching Cognito disablement and global sign-out have succeeded. Reapproval cancels stale notices.
+8. A fresh human approval for that domain after its latest withdrawal/hold may restore it and
    send its own invitation. Clearing a global hold alone restores no domains. Repeated holds
    must retain a fresh denial boundary, never let an older approval reactivate access. Stale jobs
    cannot override current decisions. Reuse verified identities/folders and retain manual grants.
 
 Cleanup uses immutable identity and permission references, not a fresh lookup by mutable email.
 Retained ownership evidence allows cleanup after the public profile is erased. Authenticated
-receipt encryption remains recoverable independently of the Microsoft certificate lifetime.
+receipt encryption uses a separate key that must survive certificate rotation. The current
+credential loader still validates certificate lifetime before returning that key, so expired
+credentials can block cleanup and notices until rotated; independent recovery is not yet verified.
+
+Withdrawal notices retain the original invitation's layout, with six domain templates and one
+website template. They use Postmark's transactional `outbound` stream, no tracking and no campaign
+unsubscribe link. Invitations remain on their existing stream. Respect the selected stream's
+bounce/complaint suppressions; never remove a suppression to force delivery. Bind each notice to
+its immutable decision, exact template pin and current recipient identity. Repeated events reuse
+the original operation. Persist the send attempt before dispatch; reconcile ambiguous outcomes,
+never blindly resend. A definitively undispatched preflight interruption may retry safely.
 
 Email unsubscribe does not revoke membership. Participation approval is not consent to receive
 marketing campaigns. Recruitment outreach, newsletters, Cognito codes and Microsoft onboarding
@@ -310,12 +329,10 @@ remain distinct purposes with their own recipients and controls.
 
 ### Confirmation
 
-**Version 2 is accepted and implemented locally, but is not live at this amendment.**
-`DOMAIN_REVIEW_CUTOVER` remains unset, the six new webhook subscriptions are not enabled,
-and the domain-review policy is not deployed. All six properties were created through the
-existing OPDA Chrome profile and independently read back compatible by API. All remain blank;
-no participant approval was edited. The old global field description is intentionally unchanged
-until cutover, so it continues to describe live version 1 behaviour.
+**Version 2 readback, 2026-09-09:** the active approval Lambda reports
+`DOMAIN_REVIEW_CUTOVER=2026-09-09T14:35:15Z`. All six domain properties exist and the independent
+domain policy is deployed. This supersedes the earlier preparation-only status; it does not
+establish that the later withdrawal-notice amendment has been deployed or tested live.
 
 On 2026-09-09, all six version 2 templates passed Postmark parsing/rendering validation and
 were created on server `20188829`. Readback verified byte-exact HTML/text against the compiled
@@ -323,14 +340,17 @@ content pins; their IDs are listed in section 1 and pinned in `settings.mjs`. No
 sent by this preparation, and neither original Finance nor combined version 1 content changed.
 Template provisioning alone does not activate domain approval or prove end-to-end delivery.
 
-Activation requires deploying the version 2 policy, enabling the six signed webhook subscriptions
-and setting a prospective UTC `DOMAIN_REVIEW_CUTOVER`, with fresh schema and template-pin checks.
-Before enabling it, reconcile historical operations; verify completed frozen-scope migration
-and denial-only migration during unresolved effects, preserving explicit website entitlements
-without new grants or historical resends. Unresolved legacy mail cannot postpone revocation.
-Then prove separate approval, two-domain delivery, partial withdrawal, last-domain denial,
-global holds and stale/replayed events. Record version 2 deployment/readback independently;
-none of the historical evidence below establishes version 2 production readiness.
+On the same date, seven original-layout withdrawal templates passed provider validation and
+byte-exact readback on server `20188829`; their IDs and fingerprints are pinned in `settings.mjs`.
+Provisioning sent no mail. Live readback also confirmed six private Teams and six distinct,
+non-group-connected source-intake sites, with the expected organisation isolation. Team-connected
+collaboration files are a separate access path inherited from Microsoft 365 group membership.
+
+The notice amendment still requires exact-source deployment and a timed recipient test covering
+partial removal, last-domain denial and sign-out, each notice, signup deduplication and reapproval.
+Keep Microsoft propagation, provider acceptance and delivery timings distinct. Synthetic tests
+cover replay, denied-status churn, reapproval races, provider disablement and uncertain sends;
+none substitutes for the requested live recipient test or authorises historical bulk notifications.
 
 #### Historical version 1 rollout and live evidence, 2026-09-09
 
@@ -427,7 +447,7 @@ they are not represented as additional live recipient tests. Delivery evidence i
 inbox placement, readership or acceptance of a previously unredeemed Microsoft invitation.
 
 Keep dated runtime evidence and opaque receipts in the private operational register. Amend this
-confirmation after version 2 deployment and readback; accepted policy is not proof it is live.
+confirmation after withdrawal-notice deployment and readback; accepted policy is not proof it is live.
 
 ## More Information
 
@@ -443,4 +463,5 @@ confirmation after version 2 deployment and readback; accepted policy is not pro
 - [Shared original-style v2 invitation, HTML](https://github.com/sparkling/opda/blob/main/docs/templates/domain-working-group-approval-invitation-email.html)
 - [Shared original-style v2 invitation, plain text](https://github.com/sparkling/opda/blob/main/docs/templates/domain-working-group-approval-invitation-email.txt)
 - Six-domain content/compiler: `src/approval-onboarding/domain-templates.mjs`; payload boundary: `invitation.mjs`.
+- Withdrawal shells: `docs/templates/participation-access-change-email.{html,txt}`; compiler: `withdrawal-notice.mjs`; delivery guard: `notice-worker.mjs`.
 - Property contract: `config/aws/hubspot-participation/properties.mjs` (`DOMAIN_REVIEW_PROPERTIES`); policy/outbox: `config/aws/hubspot-approval/domain-onboarding.mjs`.

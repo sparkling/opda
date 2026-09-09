@@ -216,8 +216,8 @@ AWS-owned status mirrors; editing those mirrors does not change access.
 Staff use the **individual domain's review dropdown → Approved** after reviewing that
 requested interest. One approved domain enables ordinary email-code sign-in; another domain
 is not implied. Global Approved alone grants none. A domain withdrawal leaves other approved
-domains intact; loss of the last domain removes website access unless an explicit legacy
-website-only entitlement is preserved. Global holds override both. Initial integration-owned
+domains intact; loss of the last domain removes website access. Historical website-only
+import approval is no exception to this rule. Global holds override domain approvals. Initial integration-owned
 Received is neither approval nor a hold. Enrolment still requires mailbox proof at sign-in.
 
 The existing legacy private app supports property-change webhooks. Configure its
@@ -258,8 +258,8 @@ record inactive, reread the CRM decision, then activate transactionally. Check
 source expiry/deletion and suppressions before initial activation. Contact deletion
 or identity ambiguity suspends an existing mapping; restores and merges cannot
 transfer identity or replay an old approval. Independent AWS security suspensions,
-erasure and expiry cannot be cleared by CRM approval. Preserve explicit frozen website-only
-imports without inventing domain grants or invitations; global holds revoke them. ADR-0085
+erasure and expiry cannot be cleared by CRM approval. Retain frozen import evidence, but require
+an actual approved domain for CRM-managed website access; never invent grants or invitations. ADR-0085
 permits denial-only migration from matched prior approved scopes while legacy effects remain
 unresolved: withdrawals continue, new grants await explicit completion, and no mail is replayed.
 The six non-CRM legacy approvals are not revoked merely because they are absent from HubSpot.
@@ -268,14 +268,14 @@ The six non-CRM legacy approvals are not revoked merely because they are absent 
 
 The server-side eligibility predicate is:
 
-`(approvedDomain OR preservedLegacyWebsiteApproval) AND enrolmentComplete AND active AND NOT suspended AND verifiedBoundIdentity`
+`approvedDomain AND enrolmentComplete AND active AND NOT suspended AND verifiedBoundIdentity`
 
 | Stage | Website access |
 |---|---|
-| No approved domain or preserved legacy entitlement | Public pages only; no Cognito account created by submission. |
+| No approved domain | Public pages only; no Cognito account created by submission. |
 | Eligible, not enrolled | User-requested email code and restricted account setup only. |
 | Enrolled and active | Permitted member actions, subject to current grants. |
-| Last domain withdrawn, global hold, expired or inactive | No member actions, including with an old session; explicit legacy entitlement survives only domain-local withdrawal. |
+| Last domain withdrawn, global hold, expired or inactive | No member actions, including with an old session. |
 
 Disable Cognito self-service signup. Provision approved contacts using
 `AdminCreateUser` + `SUPPRESS`, without a temporary password or `email_verified`.
@@ -459,9 +459,10 @@ nested stack, including its schedules and alarms. DynamoDB PITR, the retained ev
 and one-off import contracts remain unchanged. Deployment is required to remove the live
 scheduled resources; this code change alone does not establish their removal in AWS.
 
-**Accepted v2 policy; not deployed or active.** `DOMAIN_REVIEW_CUTOVER` remains unset and
-the six new webhook subscriptions are not enabled. Six domain properties and six pinned
-Postmark templates are verified; no approval or mail was triggered. ADR-0085 records the evidence.
+**Version 2 runtime readback, 2026-09-09:** the active approval Lambda uses
+`DOMAIN_REVIEW_CUTOVER=2026-09-09T14:35:15Z`. Six domain properties and pinned invitation
+templates exist. The subsequent strict last-group rule and withdrawal notices require their
+own deployment and timed live verification; template creation alone does not prove delivery.
 
 **Historical v1 verification, 2026-09-08:** signup sync, contact-wide review webhooks and
 Cognito endpoints were live; CI deployed `803c5d33`, with both approval Lambdas matching it.
@@ -479,8 +480,7 @@ Cognito endpoints were live; CI deployed `803c5d33`, with both approval Lambdas 
 - Historical S3 recovery point from the now-retired feature, 2026-09-08 19:56:51 UTC: 3,023 register items covering 1,007 accounts,
   empty intake, 1,001 CRM profiles and 16 definitions. Counts/digests passed; no sessions or credentials.
 
-Outstanding: v2 field/template provisioning and gated activation,
-privileged access/MFA procedures, retention sweeps and authenticated comment writes. Comments remain public read-only.
+Outstanding: timed withdrawal-notice verification, privileged access/MFA procedures, retention sweeps and authenticated comment writes. Comments remain public read-only.
 
 ## More Information
 

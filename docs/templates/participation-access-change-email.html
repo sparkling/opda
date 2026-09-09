@@ -1,0 +1,54 @@
+<!doctype html>
+<!--
+  Subject: [[SUBJECT]]
+  Alias: [[ALIAS]]
+  Compiled from this shared original-invitation layout by withdrawal-notice.mjs.
+  Version 1: one recipient, one verified access change, one durable send claim.
+  Inline image: opda-logo -> assets/opda-email-logo.png
+  Transactional outbound; TrackLinks=None; TrackOpens=false. No raw interpolation.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>[[SUBJECT]]</title>
+</head>
+<body style="margin:0;padding:0;background:#faf9f5;color:#3d3d3a;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">[[NOTICE_SUMMARY]]</div>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#faf9f5;">
+    <tr><td align="center" style="padding:32px 14px;">
+      <table role="presentation" width="680" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:680px;background:#ffffff;border:1px solid #e6dfd0;border-radius:16px;overflow:hidden;">
+        <tr><td style="padding:22px 32px;background:#2c273b;color:#ffffff;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td><img src="cid:opda-logo" width="260" alt="Open Property Data Association" style="display:block;width:100%;max-width:260px;height:auto;border:0;"></td>
+              <td align="right" style="padding-left:18px;font-family:'Roboto Slab',Georgia,'Times New Roman',serif;font-size:13px;line-height:19px;font-weight:700;color:#e5b632;text-transform:uppercase;letter-spacing:1.2px;">Smart Property Data Trust Framework</td>
+            </tr>
+          </table>
+        </td></tr>
+        <tr><td style="padding:38px 32px 22px;">
+          <p style="margin:0 0 12px;font-size:14px;line-height:20px;font-weight:700;color:#a9583e;text-transform:uppercase;letter-spacing:1.2px;">[[NOTICE_LABEL]]</p>
+          <h1 style="margin:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-size:36px;line-height:43px;color:#141413;font-weight:700;">[[NOTICE_TITLE]]</h1>
+          <p style="margin:0 0 14px;font-size:17px;line-height:27px;color:#3d3d3a;">Hello {{display_name}},</p>
+          <p style="margin:0 0 14px;font-size:17px;line-height:27px;color:#3d3d3a;"><strong>[[NOTICE_LEAD]]</strong></p>
+        </td></tr>
+        <tr><td style="padding:28px 32px 30px;border-top:1px solid #e6dfd0;">
+          <h2 style="margin:0 0 14px;font-size:20px;line-height:28px;color:#141413;">🔐 Your access</h2>
+          <p style="margin:0 0 14px;font-size:15px;line-height:24px;color:#3d3d3a;">[[ACCESS_DETAIL]]</p>
+          <p style="margin:0;font-size:15px;line-height:24px;color:#3d3d3a;">[[PRESERVED_DETAIL]]</p>
+        </td></tr>
+        <tr><td style="padding:28px 32px;background:#efe9de;">
+          <h2 style="margin:0 0 14px;font-size:20px;line-height:28px;color:#141413;">✉️ Need help?</h2>
+          <p style="margin:0;font-size:15px;line-height:24px;color:#3d3d3a;">If you believe this change is incorrect, please reply to this email or contact <a href="mailto:smartdata@openpropdata.org.uk" style="color:#a9583e;text-decoration:underline;">smartdata@openpropdata.org.uk</a> so that OPDA can review it.</p>
+        </td></tr>
+        <tr><td style="padding:22px 32px;background:#211f1c;color:#b8b1a3;font-size:12px;line-height:19px;">
+          Open Property Data Association · [[NOTICE_LABEL]]<br>
+          [[FOOTER_PURPOSE]]
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

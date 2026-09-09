@@ -4,6 +4,7 @@ import { isDeepStrictEqual } from 'node:util';
 import test from 'node:test';
 import { createOnboardingStore } from '../src/approval-onboarding/store.mjs';
 import { planDomainApprovals } from '../config/aws/hubspot-approval/domain-onboarding.mjs';
+import { addWebsiteDisabledNotice } from '../config/aws/hubspot-approval/access-notices.mjs';
 
 const digest = value => createHash('sha256').update(value).digest('hex');
 const instant = Date.parse('2026-09-09T12:00:00Z');
@@ -121,6 +122,57 @@ function domainFixture() {
   plan.operations.forEach(f.seed); plan.audits.forEach(f.seed);
   return { ...f, plan, operation: plan.operations.find(op => op.domainId === 'conveyancing') };
 }
+
+function withdrawalFixture() {
+  const f = domainFixture(), map = f.read(f.operation.bindingKey), row = f.read(f.operation.accountKey);
+  const decisions = Object.keys(row.domainApprovals).map(domainId => ({ domainId, id: digest(`withdraw:${domainId}`),
+    trusted: true, status: 'withdrawn', actor: '42', at: instant + 100, reason: 'individual-domain-withdrawn' }));
+  const plan = planDomainApprovals({ map, row, decisions, now: instant + 200, cutover: instant - 10000 });
+  addWebsiteDisabledNotice(plan, map, row, instant + 200);
+  f.seed({ ...map, ...plan.mapFields, providerAccessVersion: plan.fields.accessVersion }); f.seed({ ...row, ...plan.fields });
+  plan.operations.forEach(f.seed); plan.audits.forEach(f.seed); f.advance(200);
+  return { ...f, plan, operation: plan.operations.find(op => op.schemaVersion === 3) };
+}
+
+test('website-disabled notification claims its own outbox and can send only against the current denial', async () => {
+  const f = withdrawalFixture(), ctx = await f.store.claim(f.operation.operationId);
+  assert.equal(ctx.operation.noticeKind, 'website-disabled');
+  assert.equal(await f.store.guard(ctx, { requireNotice: true }), true);
+  assert.equal(await f.store.guard(ctx, { requireEligible: true }), false);
+  assert.equal(await f.store.saveReceipts(ctx, empty(), { requireNotice: true }), true);
+  const row = f.read(f.operation.accountKey); row.active = true; row.suspended = false; f.seed(row);
+  assert.equal(await f.store.guard(ctx, { requireNotice: true }), false);
+  assert.equal(await f.store.saveReceipts(ctx, empty(), { requireNotice: true }), false);
+});
+
+test('notice guards reject missing identities, erasure, changed email ownership and later access versions', async () => {
+  for (const mutate of [
+    f => f.items.delete(f.operation.accountKey),
+    f => f.seed({ ...f.read(f.operation.accountKey), erasedAt: instant }),
+    f => f.seed({ ...f.read(f.operation.accountKey), accessVersion: 99 }),
+    f => f.seed({ ...f.email, participantId: 'someone-else' }),
+  ]) {
+    const f = withdrawalFixture(), ctx = await f.store.claim(f.operation.operationId); mutate(f);
+    assert.equal(await f.store.guard(ctx, { requireNotice: true }), false);
+  }
+});
+
+test('website notice attempt transaction requires the matching provider disablement marker', async () => {
+  for (const providerAccessVersion of [null, 1]) {
+    const f = withdrawalFixture(), ctx = await f.store.claim(f.operation.operationId);
+    f.race(() => f.seed({ ...f.read(f.operation.bindingKey), providerAccessVersion }));
+    assert.equal(await f.store.saveReceipts(ctx, empty(), { requireNotice: true }), false);
+    assert.equal(ctx.revision, 1);
+  }
+});
+
+test('a group removal notice requires a recorded approved-to-denied transition, not a first rejection', async () => {
+  const f = withdrawalFixture(), op = f.plan.operations.find(op => op.domainId === 'conveyancing');
+  const ctx = await f.store.claim(op.operationId);
+  assert.equal(await f.store.guard(ctx, { requireNotice: true }), true);
+  const row = f.read(op.accountKey); row.domainApprovals.conveyancing.status = 'approved'; f.seed(row);
+  assert.equal(await f.store.guard(ctx, { requireNotice: true }), false);
+});
 
 test('domain claims bind one immutable scope while sharing the participant receipt lease', async () => {
   const f = domainFixture(), context = await f.store.claim(f.operation.operationId);

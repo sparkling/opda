@@ -232,10 +232,12 @@ notice surface and the standalone intake site remains available through its dire
 No invitation or channel post is authorised merely by creating or updating this ADR.
 
 For prospective public applicants, [ADR-0085](./ADR-0085-approval-driven-working-group-onboarding-and-invitations.md)
-records the operator's subsequent policy: a trusted manual HubSpot Approved decision authorises
-the selected-group snapshot and one combined invitation, after access verification. It also
-requires company-folder creation for each newly approved company domain and removal of
-automation-owned grants after withdrawal. It does not authorise a historical roster resend.
+records the operator's subsequent policy: a trusted manual approval in each domain's HubSpot
+review field authorises that group and its own invitation after access verification. It also
+requires company-folder creation for each newly approved company domain and removal of that
+group's automation-owned grants after withdrawal, followed by its own access-removal notice.
+Loss of the last approved domain separately disables website login and triggers a website notice.
+Neither policy authorises a historical roster resend.
 
 ### 7. Workspace register and readiness
 
