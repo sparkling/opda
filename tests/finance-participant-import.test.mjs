@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { financeProperties, assertImportAccount, planFinanceSeed, legacyFinanceIdentity, LEGACY_APPROVAL_ID, indexFinanceContacts } from '../scripts/_lib/finance-roster-import.mjs';
+import { financeProperties, assertImportAccount, planFinanceSeed, planFinanceRecovery, legacyFinanceIdentity, LEGACY_APPROVAL_ID, indexFinanceContacts } from '../scripts/_lib/finance-roster-import.mjs';
 import { digest } from '../config/aws/hubspot-approval/domain.mjs';
 import { DOMAIN_POLICY, planDomainApprovals } from '../config/aws/hubspot-approval/domain-onboarding.mjs';
 import { financeImportDecisions } from '../config/aws/hubspot-approval/finance-import.mjs';
@@ -58,7 +58,7 @@ test('operator tooling contains no mail sender or Microsoft write capability', (
   assert.match(source, /TransactWriteCommand/);
 });
 
-test('seeding preserves another group and completed authentication, with no replay work', () => {
+function seedFixture() {
   const now = Date.parse('2026-09-10T12:00:00Z'), cutover = now - 60000;
   const observed = value => [{ value, timestamp: new Date(now - 5000).toISOString(), sourceType: 'INTEGRATION', sourceId: 'integration:123' }];
   const properties = { email: roster.email, opda_full_name: roster.display_name, opda_requested_working_groups: 'finance-and-banking;conveyancing',
@@ -76,6 +76,11 @@ test('seeding preserves another group and completed authentication, with no repl
   const input = { contact, map, row, now, cutover,
     actorArn: 'arn:aws:sts::355653384628:assumed-role/AWSReservedSSO_Administrator/user@example.test',
     microsoft: { userId: '20000000-0000-4000-8000-000000000001', state: 'PendingAcceptance', observedAt: now - 100 } };
+  return { input, other };
+}
+
+test('seeding preserves another group and completed authentication, with no replay work', () => {
+  const { input, other } = seedFixture(), { contact, row, now, cutover } = input;
   const seeded = planFinanceSeed(input);
   assert.deepEqual(seeded.operations, []);
   assert.equal(seeded.account.domainApprovals['finance-and-banking'].onboarding, null);
@@ -87,6 +92,44 @@ test('seeding preserves another group and completed authentication, with no repl
   const replay = planDomainApprovals({ map: seeded.binding, row: seeded.account, decisions: [decisions.domainDecision], globalDecision: decisions.globalDecision, now, cutover });
   assert.equal(replay.changed, false); assert.deepEqual(replay.operations, []);
   assert.throws(() => planFinanceSeed({ ...input, map: seeded.binding, row: seeded.account }));
+});
+
+test('recovery only clears this importer verification hold with unchanged approval evidence', () => {
+  const { input, other } = seedFixture(), seeded = planFinanceSeed(input), id = 'finance-and-banking';
+  const at = input.now + 1000, original = seeded.account.domainApprovals[id];
+  const held = { ...original, status: 'under_review', version: 2,
+    decisionId: digest(`${original.decisionId}:import-verification-failed`), decisionAt: at, holdAt: at,
+    reason: 'finance-import-verification-failed', onboarding: null };
+  const map = { ...seeded.binding, domainApprovals: { ...seeded.binding.domainApprovals, [id]: held } };
+  const row = { ...seeded.account, domainApprovals: structuredClone(map.domainApprovals), approvedDomains: ['conveyancing'], updatedAt: at };
+  const recovery = { contact: input.contact, map, row, audit: seeded.audit, actorArn: input.actorArn, now: at + 1000 };
+  const repaired = planFinanceRecovery(recovery);
+  assert.equal(repaired.account.domainApprovals[id].status, 'approved');
+  assert.equal(repaired.account.domainApprovals[id].version, 3);
+  assert.equal(repaired.account.domainApprovals[id].decisionId, original.decisionId);
+  assert.equal(repaired.account.domainApprovals[id].holdAt, undefined);
+  assert.equal(repaired.account.domainApprovals[id].onboarding, null);
+  assert.deepEqual(repaired.account.domainApprovals.conveyancing, other);
+  assert.equal(repaired.account.enrolmentStatus, 'complete');
+  assert.equal(repaired.account.accessVersion, row.accessVersion);
+  assert.equal(repaired.audit.notifications, 'suppressed');
+  assert.equal(repaired.audit.verificationRecoveredAt, recovery.now);
+  assert.deepEqual(repaired.binding.financeRosterImport, seeded.binding.financeRosterImport);
+  assert.deepEqual(repaired.operations, []);
+  const decisions = financeImportDecisions(input.contact, repaired.binding, { now: recovery.now });
+  const replay = planDomainApprovals({ map: repaired.binding, row: repaired.account, decisions: [decisions.domainDecision],
+    globalDecision: decisions.globalDecision, now: recovery.now, cutover: input.cutover });
+  assert.equal(replay.changed, false); assert.deepEqual(replay.operations, []);
+  for (const patch of [{ status: 'withdrawn' }, { version: 4 }, { decisionId: 'f'.repeat(64) },
+    { reason: 'staff-review' }, { onboarding: { operationId: 'real-work' } }]) {
+    const domains = { ...row.domainApprovals, [id]: { ...held, ...patch } };
+    assert.throws(() => planFinanceRecovery({ ...recovery, map: { ...map, domainApprovals: domains }, row: { ...row, domainApprovals: domains } }));
+  }
+  assert.throws(() => planFinanceRecovery({ ...recovery, audit: { ...seeded.audit, verificationRecoveredAt: at } }));
+  assert.throws(() => planFinanceRecovery({ ...recovery, row: { ...row, suspended: true, suspensionSource: 'security' } }));
+  const edited = structuredClone(input.contact);
+  edited.propertiesWithHistory.opda_review_finance_and_banking[0].sourceId = 'newer-review';
+  assert.throws(() => planFinanceRecovery({ ...recovery, contact: edited }));
 });
 
 test('legacy adoption requires the frozen email claim, operation, identity and migration marker', () => {

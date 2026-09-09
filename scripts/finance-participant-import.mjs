@@ -15,7 +15,7 @@ import { createIdentity } from '../config/aws/hubspot-approval/identity.mjs';
 import { createStore } from '../config/aws/hubspot-approval/store.mjs';
 import { contactProfile, digest, ordinaryAccess } from '../config/aws/hubspot-approval/domain.mjs';
 import { financeImportDecisions, FINANCE_IMPORT_ID, FINANCE_ROSTER_SHA256, FINANCE_DOMAIN_ID } from '../config/aws/hubspot-approval/finance-import.mjs';
-import { readFinanceRoster, financeProperties, assertImportAccount, planFinanceSeed, IMPORT_PREFIX,
+import { readFinanceRoster, financeProperties, assertImportAccount, planFinanceSeed, planFinanceRecovery, IMPORT_PREFIX,
   legacyFinanceIdentity, LEGACY_APPROVAL_ID, indexFinanceContacts } from './_lib/finance-roster-import.mjs';
 import { createMicrosoftClient } from '../src/approval-onboarding/microsoft-auth.mjs';
 import { WORKSPACES } from '../src/approval-onboarding/settings.mjs';
@@ -189,7 +189,7 @@ async function bindLegacy(person, contact, store) {
   return map;
 }
 
-async function seed(dbPlan, map, row) {
+async function seed(dbPlan, map, row, recoveryAudit = null) {
   const absent = pk => ({ ConditionCheck: { TableName: table, Key: { pk }, ConditionExpression: 'attribute_not_exists(pk)' } });
   const fields = Object.entries(dbPlan.account).filter(([key, value]) => !isDeepStrictEqual(value, row[key]));
   const names = Object.fromEntries(fields.map(([key], i) => [`#f${i}`, key]));
@@ -208,7 +208,13 @@ async function seed(dbPlan, map, row) {
         ':active': row.active, ':suspended': row.suspended, ':enrolment': row.enrolmentStatus,
         ...(row.updatedAt === undefined ? {} : { ':updated': row.updatedAt }),
         ':now': Math.floor(Date.now() / 1000) } } },
-    { Put: { TableName: table, Item: dbPlan.audit, ConditionExpression: 'attribute_not_exists(pk)' } },
+    { Put: { TableName: table, Item: dbPlan.audit,
+      ...(recoveryAudit ? { ConditionExpression: '#phase = :phase AND contactId = :contact AND participantId = :pid '
+        + 'AND cognitoSub = :sub AND #at = :at AND sourceDigest = :digest AND attribute_not_exists(verificationRecoveredAt)',
+        ExpressionAttributeNames: { '#phase': 'phase', '#at': 'at' }, ExpressionAttributeValues: { ':phase': 'approved',
+          ':contact': map.contactId, ':pid': row.participantId, ':sub': row.cognitoSub,
+          ':at': recoveryAudit.at, ':digest': FINANCE_ROSTER_SHA256 } }
+        : { ConditionExpression: 'attribute_not_exists(pk)' }) } },
     { ConditionCheck: { TableName: table, Key: { pk: `EMAIL#${digest(row.email)}` }, ConditionExpression: 'participantId = :pid',
       ExpressionAttributeValues: { ':pid': row.participantId } } },
     absent(`SYNC#SUPPRESS#EMAIL#${digest(row.email)}`),
@@ -277,6 +283,10 @@ try {
     const contact = await hubspot.getContact(contacts.get(person.email).id), binding = rows.get(`CRM#CONTACT#${contact?.id}`);
     const decisions = financeImportDecisions(contact, binding, { now: Date.now() });
     if (!decisions.globalDecision || !decisions.domainDecision) throw new Error('Historical import changed; individual review required');
+    if (binding.domainApprovals?.[FINANCE_DOMAIN_ID]?.reason === 'finance-import-verification-failed') {
+      planFinanceRecovery({ contact, map: binding, row: rows.get(`USER#${binding.cognitoSub}`),
+        audit: rows.get(`${IMPORT_PREFIX}${digest(person.email)}`), actorArn: actor.Arn, now: Date.now() });
+    }
   });
   console.log(JSON.stringify({ action, cohort: roster.length, existingContacts: contacts.size,
     newContacts: roster.length - contacts.size, microsoft: counts([...references.values()].map(r => r.state)),
@@ -314,6 +324,13 @@ try {
           now: Date.now(), cutover: Date.parse(env.DOMAIN_REVIEW_CUTOVER) });
         await seed(plan, map, row);
         map = plan.binding;
+      }
+      if (map.domainApprovals?.[FINANCE_DOMAIN_ID]?.reason === 'finance-import-verification-failed') {
+        const row = await store.account(map), audit = await get(`${IMPORT_PREFIX}${digest(person.email)}`);
+        contact = await hubspot.getContact(contact.id);
+        const recovery = planFinanceRecovery({ contact, map, row, audit, actorArn: actor.Arn, now: Date.now() });
+        await seed(recovery, map, row, audit);
+        map = recovery.binding;
       }
       const fresh = await hubspot.getContact(contact.id), row = await store.account(map);
       const decisions = financeImportDecisions(fresh, map, { now: Date.now() });

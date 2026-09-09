@@ -104,3 +104,34 @@ export function planFinanceSeed({ contact, map, row, actorArn, microsoft, now, c
     notifications: 'suppressed', microsoftProvisioning: 'not-requested', enrolmentStatus: row.enrolmentStatus };
   return { binding: nextMap, account, audit, operations: [] };
 }
+
+/** Recover only a first-attempt hold created by this importer, never a staff/security decision. */
+export function planFinanceRecovery({ contact, map, row, audit, actorArn, now }) {
+  assertImportAccount(map, row, now);
+  const receipt = map.financeRosterImport, state = row.domainApprovals?.[FINANCE_DOMAIN_ID];
+  const { globalDecision, domainDecision } = financeImportDecisions(contact, map, { now });
+  if (!globalDecision || !domainDecision || !isDeepStrictEqual(map.domainApprovals, row.domainApprovals)
+    || map.domainGlobalDecisionId !== receipt.globalDecisionId || row.updatedAt !== state?.holdAt
+    || state?.status !== 'under_review' || state.reason !== 'finance-import-verification-failed'
+    || state.version !== 2 || state.decisionId !== digest(`${receipt.domainDecisionId}:import-verification-failed`)
+    || state.actor !== receipt.actorArn || !Number.isSafeInteger(state.holdAt)
+    || state.holdAt !== state.decisionAt || state.holdAt < receipt.capturedAt || state.holdAt > now
+    || state.onboarding !== null || audit?.pk !== `${IMPORT_PREFIX}${digest(row.email)}`
+    || audit.importId !== FINANCE_IMPORT_ID || audit.sourceDigest !== FINANCE_ROSTER_SHA256
+    || audit.contactId !== map.contactId || audit.participantId !== row.participantId || audit.cognitoSub !== row.cognitoSub
+    || audit.phase !== 'approved' || audit.at !== receipt.capturedAt || audit.actorArn !== receipt.actorArn
+    || audit.notifications !== 'suppressed' || audit.microsoftProvisioning !== 'not-requested'
+    || audit.enrolmentStatus !== row.enrolmentStatus || audit.verificationRecoveredAt !== undefined
+    || !/^arn:aws:sts::355653384628:assumed-role\/[A-Za-z0-9+=,.@_/-]{1,256}\/[A-Za-z0-9+=,.@_-]{1,128}$/.test(actorArn ?? '')) {
+    throw new Error('Import verification hold requires individual review');
+  }
+  const restored = { ...state, status: 'approved', version: state.version + 1,
+    decisionId: domainDecision.id, decisionAt: domainDecision.at, reason: 'operator-approved-historical-finance-import' };
+  delete restored.holdAt;
+  const domains = { ...row.domainApprovals, [FINANCE_DOMAIN_ID]: restored };
+  const approvedDomains = APPROVED_GROUPS.filter(id => domains[id]?.status === 'approved');
+  const account = { ...row, domainApprovals: domains, approvedDomains, active: true, suspended: false,
+    suspensionSource: '', reviewStatus: 'approved', accessVersion: row.accessVersion + Number(!row.active), updatedAt: now };
+  return { binding: { ...map, domainApprovals: domains, revision: map.revision + 1, providerAccessVersion: null },
+    account, audit: { ...audit, verificationRecoveredAt: now, verificationRecoveryActor: actorArn }, operations: [] };
+}
