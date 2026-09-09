@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
 
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
@@ -131,7 +131,7 @@ test('approval observability covers stalled work, dead letters, handled HTTP fai
   assert.match(resource(template, 'PendingAgeAlarm'), /ApproximateAgeOfOldestMessage[\s\S]*Threshold: 900\n/);
 });
 
-test('identity exports and site nesting preserve the existing signup and backup services', () => {
+test('identity exports and site nesting preserve signup without the retired S3 backup service', () => {
   const identity = read('config/aws/participant-identity-stack.yaml');
   const site = read('config/aws/site-stack.yaml');
   assert.match(identity, /UserPoolId:\n\s+Value: !Ref UserPool\n\s+Export: \{ Name: !Sub '\$\{AWS::StackName\}-UserPoolId' \}/);
@@ -143,7 +143,18 @@ test('identity exports and site nesting preserve the existing signup and backup 
   }
   assert.match(application, /BridgeSecretArn: !Ref HubSpotBridgeSecretArn/);
   assert.match(resource(site, 'HubSpotSignupSyncApplication'), /TemplateURL: hubspot-sync-stack\.yaml/);
-  assert.match(resource(site, 'ParticipantBackupApplication'), /TemplateURL: participant-backup-stack\.yaml/);
+  assert.doesNotMatch(site, /ParticipantBackupApplication|ParticipantBackupFunctionName|participant-backup-stack\.yaml/);
+  for (const path of ['config/aws/participant-backup-stack.yaml', 'config/aws/participant-backup/index.mjs',
+    'config/aws/participant-backup/hubspot.mjs', 'config/aws/participant-backup/recovery.mjs']) {
+    assert.equal(existsSync(new URL(`../${path}`, import.meta.url)), false, 'retired backup runtime is not packaged');
+  }
+  assert.match(resource(identity, 'Participants'), /PointInTimeRecoveryEnabled: true[\s\S]*RecoveryPeriodInDays: 35/);
+  const retainedEvidence = resource(identity, 'RecoveryBucket');
+  assert.match(retainedEvidence, /DeletionPolicy: Retain[\s\S]*UpdateReplacePolicy: Retain/);
+  assert.match(retainedEvidence, /VersioningConfiguration: \{ Status: Enabled \}/);
+  assert.match(retainedEvidence, /Prefix: recovery\/[\s\S]*ExpirationInDays: 35/);
+  assert.match(identity, /Export: \{ Name: !Sub '\$\{AWS::StackName\}-RecoveryBucketName' \}/,
+    'one-off imports still resolve their pinned private migration evidence');
   assert.doesNotMatch(resource(site, 'Distribution'), /hubspot-approval/, 'the signed URL is direct, not CloudFront-rewritten');
   for (const output of ['ApiEndpoint', 'WebhookUrl', 'WorkerFunctionName', 'ApprovalQueueUrl', 'FailureQueueUrl']) {
     assert.match(site, new RegExp(`!GetAtt HubSpotApprovalApplication\\.Outputs\\.${output}`));

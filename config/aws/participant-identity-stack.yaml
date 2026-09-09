@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: OPDA approved participant identity and private recovery stores (ADR-0084).
+Description: OPDA approved participant identity and retained private migration evidence (ADR-0084).
 
 Parameters:
   DomainName:
@@ -32,6 +32,9 @@ Resources:
       SSESpecification: { SSEEnabled: true }
       TimeToLiveSpecification: { AttributeName: expiresAt, Enabled: true }
 
+  # Legacy logical/physical name retained for the pinned one-off import evidence.
+  # The automated S3 backup service is retired. Keep the bucket, its access policy
+  # and existing recovery/ lifecycle; removing the service must not erase evidence.
   RecoveryBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
@@ -178,5 +181,6 @@ Outputs:
     Value: !GetAtt Sessions.Arn
     Export: { Name: !Sub '${AWS::StackName}-SessionsTableArn' }
   RecoveryBucketName:
+    Description: Retained private migration evidence; not an automated backup service.
     Value: !Ref RecoveryBucket
     Export: { Name: !Sub '${AWS::StackName}-RecoveryBucketName' }

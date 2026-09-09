@@ -113,21 +113,6 @@ Resources:
           Fn::ImportValue: !Sub '${IdentityStackName}-UserPoolArn'
         BridgeSecretArn: !Ref HubSpotBridgeSecretArn
 
-  ParticipantBackupApplication:
-    Type: AWS::CloudFormation::Stack
-    Metadata:
-      cfn-lint:
-        config: { ignore_checks: [W3002] }
-    Properties:
-      TemplateURL: participant-backup-stack.yaml
-      Parameters:
-        ParticipantsTableArn:
-          Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableArn'
-        RegistrationsTableArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableArn
-        RecoveryBucketName:
-          Fn::ImportValue: !Sub '${IdentityStackName}-RecoveryBucketName'
-        HubSpotBridgeSecretArn: !Ref HubSpotBridgeSecretArn
-
   # ---------------- Static site: S3 + CloudFront ----------------
 
   SiteBucket:
@@ -443,8 +428,6 @@ Outputs:
     Value: !GetAtt HubSpotApprovalApplication.Outputs.ApprovalQueueUrl
   HubSpotApprovalFailureQueueUrl:
     Value: !GetAtt HubSpotApprovalApplication.Outputs.FailureQueueUrl
-  ParticipantBackupFunctionName:
-    Value: !GetAtt ParticipantBackupApplication.Outputs.FunctionName
   HubSpotSignupWorkerName:
     Value: !GetAtt HubSpotSignupSyncApplication.Outputs.WorkerFunctionName
   HubSpotSignupQueueUrl:

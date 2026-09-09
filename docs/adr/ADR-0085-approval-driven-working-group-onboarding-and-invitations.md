@@ -200,7 +200,9 @@ read permissions verify actual Team state rather than assuming group synchronisa
 The certificate and a separate receipt-encryption key are held in AWS Secrets Manager.
 Rotate the certificate before its expiry; preserve the separate encryption key while existing
 receipts require recovery. Encrypt the private receipt payload with authenticated encryption
-bound to its participant, so redemption URLs are not plaintext in DynamoDB or its S3 exports.
+bound to its participant, so redemption URLs are not plaintext in DynamoDB or retained recovery
+copies. Follow ADR-0084's native PITR boundary; onboarding does not require a separate S3 backup
+service, which the operator removed from scope on 2026-09-09.
 
 ### 4. One original-style Postmark invitation per approved domain
 

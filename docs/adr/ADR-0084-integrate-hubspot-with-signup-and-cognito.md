@@ -2,7 +2,7 @@
 status: accepted
 date: 2026-09-08
 updated: 2026-09-09
-tags: [aws, hubspot, cognito, identity, participants, recruitment, crm, privacy, backup, proportionality]
+tags: [aws, hubspot, cognito, identity, participants, recruitment, crm, privacy, proportionality]
 supersedes: []
 amends: [ADR-0038, ADR-0069, ADR-0079]
 depends-on: [ADR-0040, ADR-0070, ADR-0083]
@@ -289,7 +289,7 @@ else's existing Cognito account. Never force-transfer aliases or silently rebind
 changed CRM addresses. Retain source snapshot, operator decision and import results
 in private versioned S3. A durable DynamoDB marker pins the exact object version
 and byte digest; missing evidence fails closed and cannot recapture a later list.
-Migration evidence does not expire with 35-day recovery copies. Conditional email
+Migration evidence remains outside the legacy recovery copies' 35-day lifecycle. Conditional email
 claims and subject writes make retries resumable.
 [AdminCreateUser](https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminCreateUser.html)
 
@@ -349,14 +349,14 @@ Verify portal/app IDs and exact scopes, including implicit `oauth`, before each 
 
 The public form role remains write-only to intake. The CRM bridge can read in-scope applications
 and synchronise profiles but cannot approve, activate, change grants or administer Cognito.
-Only the isolated approval service changes eligibility and provisions identities; backup roles cannot.
+Only the isolated approval service changes eligibility and provisions identities.
 Separate eligibility/audit from projection/sync keys and enforce the write prohibition in IAM.
 The bridge never writes either existing membership/relationship property.
 Restrict the token to the expected portal, while recognising contact
 API scopes are not record-level isolation: the adapter must enforce the mapped
 OPDA subset and protect the token as a portal-wide contact-data capability.
 
-### 8. Privacy, S3 backup and recovery
+### 8. Privacy and native data recovery
 
 Before live transfer, update and version the join privacy notice for HubSpot as
 a processor, confirm the account's hosting/transfer terms and review integrations,
@@ -380,33 +380,28 @@ Domain withdrawal is scoped; last-domain loss or global denial is reconciled int
 effective after AWS commits it, not synchronously with the CRM click; API outages
 can delay this. Urgent security suspension uses the independent AWS access boundary.
 
-Keep intake PITR at seven days; enable 35-day PITR on the new participant table.
-Export intake and participant records daily at a native point in time to a
-separate private, encrypted, versioned S3 bucket. Check completed manifests, not
-just successful start requests; a live paginated Scan is not a consistent backup.
-Exclude sessions and credentials. Retain recovery objects and noncurrent
-versions for 35 days;
-restrict deletion/restore roles and prevent public/build-role access.
-[DynamoDB export](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html)
+Keep native DynamoDB PITR at seven days for intake and 35 days for the participant table.
+Do not run scheduled table exports or scoped HubSpot snapshots to S3. Retire the dedicated
+backup Lambda, its role, daily export and hourly verification schedules, alarms and runtime.
+There is no application-managed CRM backup or combined AWS/CRM recovery-point commitment.
+HubSpot-only profile changes are not protected by DynamoDB PITR. This deliberately removes
+the maintenance burden of a separate backup service for this low-traffic integration.
 
-Also take a daily scoped HubSpot API snapshot of mapped OPDA contacts and required
-property definitions/options. Notes/tasks and associations require a later extension.
-Record start/end times, counts, object IDs, revisions, failures and a completion
-manifest. This is a recoverable application snapshot, **not** HubSpot PITR or an
-atomic whole-portal backup. Native CRM backup omits associations/activity and is
-not the required S3 recovery path.
-[HubSpot backup scope](https://knowledge.hubspot.com/object-settings/back-up-crm-data)
+Preserve the existing private, encrypted, versioned S3 bucket and its access policy: it also
+holds the frozen, version-pinned migration evidence required by section 6. Removing the
+backup feature does not delete existing objects or change retention. Historical `recovery/`
+objects retain their 35-day lifecycle; `migration/` evidence is outside that lifecycle.
+Keeping this evidence is not an active S3 backup service or a new export schedule.
 
-Target a completed recovery point within 24 hours, alert at 26 hours and aim to restore within one
-working day after operator action; these are not guarantees. Restore in quarantine, apply subsequent
-erasures/withdrawals/suspensions, reconcile IDs and require fresh sessions. Uncertain access stays
-inactive; replay must not resurrect removed participation data.
+Any native restore is an explicit operator action into quarantine. Apply subsequent erasures,
+withdrawals and suspensions, reconcile identity bindings and require fresh sessions before
+returning restored records to use. Uncertain access stays inactive; a restore must not
+resurrect removed participation data. Keep the required deletion/suppression evidence through
+the applicable recovery and residual-retention windows, then expire it too.
 
-Cognito passwords, MFA secrets and original subjects cannot be recreated from
-these exports. Pool loss requires fresh credential/MFA enrolment and reviewed
-identity bindings; never bulk-reactivate restored users or administrative grants.
-Keep the deletion/suppression evidence needed through the backup residual period
-under a documented retention basis, then expire it too.
+DynamoDB recovery does not restore Cognito credentials or recreate original subjects. Pool
+loss requires fresh credential/MFA enrolment and reviewed identity bindings; never
+bulk-reactivate restored users or administrative grants.
 [Cognito profile-export limitations](https://docs.aws.amazon.com/solutions/latest/cognito-user-profiles-export-reference-architecture/guidance-components.html)
 
 ### 9. Cost, delivery and acceptance boundary
@@ -420,7 +415,7 @@ per account daily. Stay below these and stricter endpoint limits; no paid workfl
 
 For roughly 1,000 direct Cognito MAUs, Essentials' published 10,000-MAU
 direct/social allowance is relevant; federation terms differ. Price Secrets
-Manager, logging, PITR/exports, encryption, email and alarms in London before
+Manager, logging, native PITR, encryption, email and alarms in London before
 deployment. Target low tens of US dollars/month incremental, not a quote. Verify
 all editing-seat and renewal costs before a HubSpot upgrade.
 [Cognito pricing](https://aws.amazon.com/cognito/pricing/)
@@ -440,7 +435,7 @@ Deliver in independent, verified slices:
    reconcile new applications without automatic approval. The explicitly approved
    existing-contact snapshot is the bounded exception, not a standing CRM rule.
 3. Add the AWS register and signed approval webhooks; prove manual approval,
-   email verification, enrolment, suspension, safe retries and backup recovery.
+   email verification, enrolment, suspension and safe retries.
 4. Migrate sessions and **Artalk** together: proxy authenticated comment actions
    through the OPDA session backend, checking AWS eligibility on every action.
    The fork accepts only short-lived server-to-server assertions from that proxy
@@ -454,10 +449,15 @@ Deliver in independent, verified slices:
 
 ### Consequences
 
-Staff retain their CRM; ownership and approval stay explicit. OPDA owns identity integration and recovery.
-CRM snapshots may lag; trusted access actions, HubSpot capacity and Microsoft access remain separately governed.
+Staff retain their CRM; OPDA owns identity integration and native recovery, not a separate S3 backup service.
+CRM projections may lag; approval, trusted access, HubSpot capacity and Microsoft access remain separately governed.
 
 ### Confirmation
+
+**S3 backup retirement, 2026-09-09:** the repository removes the dedicated backup runtime and
+nested stack, including its schedules and alarms. DynamoDB PITR, the retained evidence bucket
+and one-off import contracts remain unchanged. Deployment is required to remove the live
+scheduled resources; this code change alone does not establish their removal in AWS.
 
 **Accepted v2 policy; not deployed or active.** `DOMAIN_REVIEW_CUTOVER` remains unset and
 the six new webhook subscriptions are not enabled. Six domain properties and six pinned
@@ -476,10 +476,10 @@ Cognito endpoints were live; CI deployed `803c5d33`, with both approval Lambdas 
 - Login presented the Cognito email-code challenge and unauthenticated sessions returned 401.
   The callback was not yet tested at that inspection; successful real sign-in on 2026-09-09
   is recorded in ADR-0085. The session Lambda no longer had Auth0 configuration.
-- Verified S3 recovery point, 2026-09-08 19:56:51 UTC: 3,023 register items covering 1,007 accounts,
+- Historical S3 recovery point from the now-retired feature, 2026-09-08 19:56:51 UTC: 3,023 register items covering 1,007 accounts,
   empty intake, 1,001 CRM profiles and 16 definitions. Counts/digests passed; no sessions or credentials.
 
-Outstanding: v2 field/template provisioning and gated activation, a quarantine restore drill,
+Outstanding: v2 field/template provisioning and gated activation,
 privileged access/MFA procedures, retention sweeps and authenticated comment writes. Comments remain public read-only.
 
 ## More Information
