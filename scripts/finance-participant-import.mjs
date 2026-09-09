@@ -169,13 +169,20 @@ async function bindLegacy(person, contact, store) {
     { Update: { TableName: table, Key: { pk: row.pk },
       UpdateExpression: 'SET hubspotContactId = :contact, hubspotPortalId = :portal, #profile = if_not_exists(#profile, :profile)',
       ConditionExpression: 'attribute_not_exists(hubspotContactId) AND participantId = :pid AND cognitoSub = :sub AND email = :email '
+        + 'AND #source = :source AND approvalId = :approval AND sourceSnapshotDigest = :digest AND sourceSnapshotVersionId = :snapshotVersion '
         + 'AND attribute_not_exists(deletedAt) AND attribute_not_exists(erasedAt)',
-      ExpressionAttributeNames: { '#profile': 'profile' }, ExpressionAttributeValues: { ':contact': contact.id, ':portal': 144765514,
-        ':profile': profile.profile, ':pid': row.participantId, ':sub': row.cognitoSub, ':email': row.email } } },
+      ExpressionAttributeNames: { '#profile': 'profile', '#source': 'source' }, ExpressionAttributeValues: { ':contact': contact.id, ':portal': 144765514,
+        ':profile': profile.profile, ':pid': row.participantId, ':sub': row.cognitoSub, ':email': row.email,
+        ':source': row.source, ':approval': LEGACY_APPROVAL_ID, ':digest': marker.digest, ':snapshotVersion': marker.versionId } } },
     { ConditionCheck: { TableName: table, Key: { pk: claim.pk }, ConditionExpression: 'participantId = :pid AND importKey = :key',
       ExpressionAttributeValues: { ':pid': row.participantId, ':key': op.pk } } },
-    { ConditionCheck: { TableName: table, Key: { pk: op.pk }, ConditionExpression: '#phase = :complete AND cognitoSub = :sub AND participantId = :pid',
-      ExpressionAttributeNames: { '#phase': 'phase' }, ExpressionAttributeValues: { ':complete': 'complete', ':sub': row.cognitoSub, ':pid': row.participantId } } },
+    { ConditionCheck: { TableName: table, Key: { pk: op.pk },
+      ConditionExpression: '#phase = :complete AND cognitoSub = :sub AND participantId = :pid AND email = :email AND sourceSnapshotDigest = :digest',
+      ExpressionAttributeNames: { '#phase': 'phase' }, ExpressionAttributeValues: { ':complete': 'complete', ':sub': row.cognitoSub,
+        ':pid': row.participantId, ':email': row.email, ':digest': marker.digest } } },
+    { ConditionCheck: { TableName: table, Key: { pk: marker.pk },
+      ConditionExpression: 'digest = :digest AND versionId = :version AND approvedCount = :count',
+      ExpressionAttributeValues: { ':digest': marker.digest, ':version': marker.versionId, ':count': 6 } } },
     { ConditionCheck: { TableName: table, Key: { pk: `SYNC#SUPPRESS#EMAIL#${digest(row.email)}` }, ConditionExpression: 'attribute_not_exists(pk)' } },
   ] }));
   await store.account(map);
