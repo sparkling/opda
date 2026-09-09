@@ -24,11 +24,13 @@ deliberately blocks existing sessions too; a cookie's presence is not authorizat
 The site sources, private S3 origins, participant records, HubSpot decisions and
 background Microsoft/email integration are preserved, not reverted or deleted.
 
-Restoring approved-user access and the previous social sign-in providers is a
-separate, subsequent change. A successful OAuth login must not bypass OPDA approval.
-The barrier must remain in place until that access boundary is implemented and
-verified. Deployment uses the existing CI infrastructure workflow; source and live
-readback, not this decision alone, establish that the restriction is active.
+The subsequent restoration uses ADR-0038's original Auth0 social login and public
+coming-soon page. Its Lambda@Edge gate shares the regional service's opaque-session
+reader and checks current per-group eligibility on every protected request. Only
+the holding page, its one illustration and exact GET authentication routes are public.
+The retained emergency function is replaced atomically by the versioned gate on all
+six behaviors, never by an unguarded configuration. Deployment uses existing CI;
+source and live readback, not this decision alone, establish activation.
 
 The remaining sections record the historical public-site decision and rollout.
 

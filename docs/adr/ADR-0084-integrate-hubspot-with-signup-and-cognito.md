@@ -9,12 +9,12 @@ depends-on: [ADR-0040, ADR-0070, ADR-0083]
 implements: []
 ---
 
-# Integrate HubSpot with working-group signup and Cognito authentication
+# Integrate HubSpot with working-group signup and approved website access
 ## Context and Problem Statement
 
-OPDA needs a CRM for roughly 1,000 participants, retaining join data, human approval, completed enrolment
-and active/inactive state. Participants need website accounts, not CRM seats. The existing HubSpot account
-replaces ADR-0084's **uncommitted bespoke-CRM draft**, not an accepted decision or deployed service.
+OPDA needs a CRM for roughly 1,000 participants, retaining join data, human approval, enrolment
+and active/inactive state. Participants need website accounts, not CRM seats. HubSpot replaces
+ADR-0084's **uncommitted bespoke-CRM draft**, not an accepted decision or deployed service.
 
 Anonymous `/join` submissions already use encrypted, on-demand DynamoDB in `eu-west-2`,
 followed by reference-only DynamoDB Streams/SNS/SQS events. The public handler creates no accounts.
@@ -22,9 +22,8 @@ Website sessions and Artalk SSO initially used **Auth0** with a commenter email 
 adopting Cognito is an authentication migration, not configuring an existing connector.
 
 The 2026-09-08 inspection found Free Tools, five of five Core seats allocated and 1,001 contacts.
-API inventory found `linkedin_account`, `membership_type` and `relationship_type`.
-Property quotas are a live preflight, not inferred from the plan name or definition count;
-the 2026-09-09 capacity readback for the per-domain amendment is recorded below.
+API inventory found `linkedin_account`, `membership_type` and `relationship_type`. Property quotas
+need live preflight; the 2026-09-09 per-domain capacity readback is recorded below.
 
 This governs website access, not SPDTF trust or standards authority; ADR-0085 governs Microsoft/email follow-up.
 On 2026-09-08 the operator authorised implementation, live website sign-in, and a
@@ -33,16 +32,15 @@ The frozen migration includes contacts created by 18:26:22 UTC that day; it does
 not automatically approve future contacts, establish marketing consent or grant
 website administration. All 1,001 current contacts passed the primary-email preflight.
 
-The operator subsequently requested approval directly in HubSpot. This amendment
-replaces the proposed bespoke ordinary-participant action page with manual CRM
-review decisions, authenticated webhooks and AWS enforcement. It does not grant CRM
+The operator subsequently requested approval directly in HubSpot, replacing the proposed bespoke
+ordinary-participant action page with manual CRM review, authenticated webhooks and AWS enforcement. It does not grant CRM
 editors website administration or make anonymous CRM writes trusted approvals.
 On 2026-09-09 the operator replaced blanket group approval with **independent approval
 for each domain**, and one original-style invitation per approved domain under ADR-0085.
 
 ## Decision Drivers
 
-Reuse the CRM; require approval and verified identity; keep public reading and signup independent;
+Reuse the CRM; require approval and verified identity; protect the website during development;
 preserve collection evidence without inventing consent; avoid paid tiers and disproportionate costs.
 
 ## Considered Options
@@ -51,18 +49,27 @@ preserve collection evidence without inventing consent; avoid paid tiers and dis
   HubSpot-hosted private content, not the existing public Astro/AWS site.
 - **Cognito with HubSpot as a live login-status lookup.** Avoids a local access
   register, but couples sign-in to CRM availability, editable fields and API limits.
-- **HubSpot and an AWS register with existing Auth0.** A viable lower-migration
-  option. Cognito is selected to meet the requested AWS identity direction, not
-  because HubSpot requires it. A clean cutover is preferred to parallel providers.
-- **HubSpot CRM plus an AWS eligibility register and Cognito (chosen).** Reuses CRM screens with a small, enforceable website access boundary.
+- **HubSpot and an AWS register with existing Auth0 (restored, 2026-09-09).** Preserves the existing social identities and public PKCE client.
+- **HubSpot CRM plus an AWS eligibility register and Cognito (historical choice).** Replaced as the website sign-in provider; existing pool records are retained.
 - **Custom AWS CRM plus Cognito.** Possible, but duplicates contact management, notes, tasks, searching and filtering already available in HubSpot.
 
 ## Decision Outcome
 
-Use **HubSpot for CRM, Cognito for authentication, and DynamoDB for website eligibility**.
-Implement narrow signup and approval bridges, not a custom CRM or ordinary-approval page.
-HubSpot is not called during participant login or protected requests. Its outage must not break
-the public site or revoke eligible access merely because CRM synchronisation is late.
+**Amended 2026-09-09: HubSpot for review, Auth0 for social sign-in, DynamoDB for eligibility.**
+Restore ADR-0038's existing Auth0 application and coming-soon/gated-site boundary.
+The later Cognito authentication passages below record the intervening migration,
+not the current website sign-in contract. Preserve the pool, canonical participant
+UUIDs, HubSpot mappings and Microsoft/email workers; no destructive migration or bulk replay.
+The PKCE callback verifies signature, issuer, audience, nonce, time and verified email.
+First enrolment may claim one unique, reviewed, unbound participant through the reserved
+email index, using conditional writes for both participant and immutable
+`issuer + subject` binding. Later logins resolve that binding, never rebind by email.
+A different provider identity requires reviewed recovery/linking, not an automatic merge.
+Only an active participant with at least one individually approved group gets an
+opaque, one-hour maximum session. Historical blanket-contact approval is not a bypass.
+The edge and regional service share strongly consistent session/participant checks; withdrawal,
+suspension, expiry or access-version changes deny the next request. HubSpot is not called
+during login or protected requests. Background integration remains unchanged.
 
 ### 1. What integrating authentication with HubSpot actually means
 
@@ -71,14 +78,14 @@ the public site or revoke eligible access merely because CRM synchronisation is 
 | HubSpot app authentication | A server integration accessing the HubSpot API | Required for the CRM bridge, not participant login. |
 | HubSpot staff sign-in or SSO | Staff using the HubSpot product | Keep separate; a HubSpot seat or Super Admin status grants no website administration rights. |
 | HubSpot content memberships | Visitors accessing eligible HubSpot-hosted private content | Not adopted; no website migration or paid membership feature is needed. |
-| Cognito OIDC sign-in | A person's identity presented to the OPDA website | Adopt, with separate server-side eligibility checks. |
+| Auth0 OIDC sign-in | A person's identity presented to the OPDA website | Restore existing social connections, with current AWS eligibility checks. |
 
 HubSpot documents static app authentication for one authorised account and OAuth
 for multi-account integrations. Its OAuth installation flow authorises CRM API
 access; it is not a general participant identity-provider flow. HubSpot also
 offers content memberships on qualifying Content/Service Professional or
-Enterprise subscriptions. **Our architectural conclusion** is to integrate
-contact and lifecycle data, not replace Cognito with HubSpot authentication.
+Enterprise subscriptions. **Our architectural conclusion** is to integrate contact and
+lifecycle data, not use HubSpot as the website identity provider.
 [HubSpot app authentication](https://developers.hubspot.com/docs/apps/developer-platform/build-apps/authentication/overview),
 [HubSpot memberships](https://knowledge.hubspot.com/website-pages/require-member-registration-to-access-private-content)
 
@@ -89,10 +96,10 @@ contact and lifecycle data, not replace Cognito with HubSpot authentication.
 | Existing AWS intake table | Validated original submissions, collection evidence and initial retention | Credentials, approvals or grants from anonymous input |
 | HubSpot Contacts | Staff-maintained contact details, requested participation, contribution preferences, manual ordinary-participant review decisions and CRM notes/tasks | Verified login identity, administrative grants or effective AWS access state |
 | New AWS participant register | Stable participant ID, application links, trusted decisions, approved groups, enrolment, active flag, identity binding, grants, audit and sync operations | Passwords, a second editable CRM directory, or a property-data model |
-| Cognito user pool | Credentials, verified identity attributes, MFA and authentication | Application evidence, CRM notes or approval inferred from an email address |
+| Auth0 / retained Cognito pool | Auth0 verifies website identity; Cognito records remain for existing lifecycle integration | Application evidence, CRM approvals or website authorization by themselves |
 
-The AWS register holds a labelled last-observed CRM profile/revision for recovery, not
-bidirectional ownership. Decisions reference application evidence that CRM edits cannot rewrite.
+The AWS register holds a labelled last-observed CRM profile/revision for recovery, not bidirectional
+ownership. Decisions reference application evidence that CRM edits cannot rewrite.
 
 Use immutable random participant IDs, separate registration IDs and a verified `issuer + sub`
 binding. Store the HubSpot portal/contact mapping in AWS; neither email nor a CRM field is a security
@@ -413,11 +420,9 @@ Free/Starter private apps allow 100 requests per ten seconds per app and 250,000
 per account daily. Stay below these and stricter endpoint limits; no paid workflow tier is needed.
 [HubSpot API limits](https://developers.hubspot.com/docs/developer-tooling/platform/usage-guidelines)
 
-For roughly 1,000 direct Cognito MAUs, Essentials' published 10,000-MAU
-direct/social allowance is relevant; federation terms differ. Price Secrets
-Manager, logging, native PITR, encryption, email and alarms in London before
-deployment. Target low tens of US dollars/month incremental, not a quote. Verify
-all editing-seat and renewal costs before a HubSpot upgrade.
+The restored login uses the existing Auth0 subscription, not new Cognito federation.
+Price request-driven edge/session reads, logging, native PITR, email and alarms at
+OPDA's actual traffic; do not include other applications or add a recurring reconciliation workload.
 [Cognito pricing](https://aws.amazon.com/cognito/pricing/)
 
 Live inspection found SES in its sandbox with no verified sender. Cognito's default
@@ -444,8 +449,8 @@ Deliver in independent, verified slices:
    to reviewed existing author IDs, never auto-merge by email. Invalidate old
    Artalk signing/session keys and clear legacy browser token storage at cutover.
    Keep anonymous reading; leave member comments off until this boundary is proven.
-5. Deploy only with explicit authority, then retire the Auth0/allowlist bypass.
-   Rollback may preserve public reading, not restore an unsafe access path.
+5. Deploy through CI, retaining Auth0 and retiring static-allowlist bypasses.
+   Rollback must keep the under-development barrier, never expose content anonymously.
 
 ### Consequences
 
@@ -467,20 +472,15 @@ notices and bounded retries. ADR-0085 records the timed live test and its browse
 **Historical v1 verification, 2026-09-08:** signup sync, contact-wide review webhooks and
 Cognito endpoints were live; CI deployed `803c5d33`, with both approval Lambdas matching it.
 
-- Imported 1,001 HubSpot contacts and preserved six allowlist approvals: 1,007 mapped accounts,
-  enabled but initially unenrolled. No passwords, bulk invitations, admin grants or verification
-  shortcuts. Both approval sources are pinned in S3; all 1,001 CRM status mirrors were projected.
-- A live synthetic signup verified ten mapped fields, pending/inactive status and no Cognito account.
-  Manual HubSpot approval enabled access in 1.8 seconds; withdrawal disabled it in 1.4 seconds,
-  using actual signed HubSpot notifications. The test contact was archived, intake removed and replay
-  suppressed; the disabled account/audit remain. Tests cover retries, signatures, expiry and denial.
-- Login presented the Cognito email-code challenge and unauthenticated sessions returned 401.
-  The callback was not yet tested at that inspection; successful real sign-in on 2026-09-09
-  is recorded in ADR-0085. The session Lambda no longer had Auth0 configuration.
+- Imported 1,001 contacts and six allowlist approvals into 1,007 initially unenrolled accounts;
+  no passwords, bulk invitations or administrative grants. The sources remain pinned in S3.
+- Synthetic signup verified ten fields and pending/inactive status. Signed CRM approval took
+  1.8 seconds and withdrawal 1.4 seconds; test intake/contact were removed or archived and replay suppressed.
+- Historical Cognito login and its callback limitations are recorded in ADR-0085; Auth0 is now restored.
 - Historical S3 recovery point from the now-retired feature, 2026-09-08 19:56:51 UTC: 3,023 register items covering 1,007 accounts,
   empty intake, 1,001 CRM profiles and 16 definitions. Counts/digests passed; no sessions or credentials.
 
-Outstanding: current-version browser-session logout verification, privileged access/MFA procedures, retention sweeps and authenticated comment writes. Comments remain public read-only.
+Outstanding: current-version browser-session logout verification, privileged access/MFA procedures, retention sweeps and authenticated comments. Comments are suspended with persisted data retained; see ADR-0038's origin-isolation requirement.
 
 ## More Information
 

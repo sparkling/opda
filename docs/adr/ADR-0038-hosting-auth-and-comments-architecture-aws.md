@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-06
-updated: 2026-09-01
+updated: 2026-09-09
 tags: [infrastructure, hosting, auth, deployment, comments]
 supersedes: []
 depends-on: []
@@ -9,6 +9,26 @@ implements: []
 ---
 
 # Hosting, auth, and comments architecture (AWS)
+
+> **Restored boundary, 2026-09-09.** The owner has withdrawn public-site access.
+> The original coming-soon illustration is again the anonymous apex experience;
+> the current homepage and all knowledge-base content require an approved session.
+> Auth0 Universal Login and its existing social connections are restored. This
+> amendment supersedes the public-site and Cognito-login passages in ADR-0079/0084.
+> The four exact GET `/_auth/*` endpoints and the holding page's single image are
+> the only unauthenticated exceptions; signup pages remain locked during development.
+>
+> The recovered Lambda@Edge topology now uses the **same** opaque-session and
+> current working-group approval reader as the regional auth service. It makes
+> bounded, strongly consistent DynamoDB reads in London before every protected
+> request, including cache hits and downloads. No static member list, provider
+> token cookie, browser token storage or per-request Auth0 call is restored.
+> A final-group withdrawal denies the next protected request; already downloaded
+> or rendered content cannot be recalled. Provider/database failures deny access.
+> Comments are temporarily suspended (`OPDA_ARTALK_DESIRED_COUNT=0`), with their
+> persisted data retained. A CloudFront IP-range allowlist does not identify our
+> distribution; authenticated origin isolation is required before comments resume.
+> The amendments below describe the intervening historical public-site period.
 
 > **Amended 2026-08-27 by [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md).**
 > The AWS static-hosting, private-S3/OAC, DNS, Artalk, SQLite/Litestream and

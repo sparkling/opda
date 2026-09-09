@@ -3,6 +3,7 @@ import {
   approvedParticipant, constantTimeEqual, createIdentityVerifier, environmentConfig, normaliseConfig,
 } from './identity.mjs';
 import { createStore, sessionKey } from './store.mjs';
+import { readApprovedSession, validSessionToken } from './session.mjs';
 
 const CALLBACK_PATH = '/_auth/callback';
 const LOGIN_PATH = '/_auth/login';
@@ -22,7 +23,6 @@ const NO_STORE_HEADERS = Object.freeze({
   'cache-control': 'no-store', 'referrer-policy': 'no-referrer', 'x-content-type-options': 'nosniff',
 });
 const base64url = (value) => Buffer.from(value).toString('base64url');
-const validSessionToken = (token) => typeof token === 'string' && /^[A-Za-z0-9_-]{43}$/u.test(token);
 
 export function safeReturnPath(value) {
   if (typeof value !== 'string' || value.length < 1 || value.length > 2048) return '/';
@@ -77,7 +77,7 @@ export function createHandler(overrides = {}) {
     const verifier = base64url(randomBytes(32));
     const state = base64url(randomBytes(32));
     const nonce = base64url(randomBytes(32));
-    const authorize = new URL(config.cognitoDomain + '/oauth2/authorize');
+    const authorize = new URL(config.providerOrigin + (config.provider === 'auth0' ? '/authorize' : '/oauth2/authorize'));
     authorize.search = new URLSearchParams({
       response_type: 'code', client_id: config.clientId,
       redirect_uri: config.siteOrigin + CALLBACK_PATH, scope: 'openid email profile', state, nonce,
@@ -100,7 +100,7 @@ export function createHandler(overrides = {}) {
       || !validSessionToken(query.state) || !constantTimeEqual(query.state, cookies[COOKIE.state])) {
       return json(400, { error: 'The sign-in transaction is invalid or has expired.' }, clearAllCookies());
     }
-    const tokenResult = await fetchImpl(config.cognitoDomain + '/oauth2/token', {
+    const tokenResult = await fetchImpl(config.providerOrigin + (config.provider === 'auth0' ? '/oauth/token' : '/oauth2/token'), {
       method: 'POST',
       headers: { accept: 'application/json', 'content-type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -114,21 +114,25 @@ export function createHandler(overrides = {}) {
     const tokens = await tokenResult.json();
     const identity = await verifyIdToken(tokens?.id_token, nonce);
     if (!identity) return json(401, { error: 'This account is not authorised.' }, clearAllCookies());
-    const participant = await store.getParticipant(identity.sub);
+    const resolved = config.provider === 'auth0' ? await store.resolveParticipant(identity)
+      : { participant: await store.getParticipant(identity.sub) };
+    const { participant, binding } = resolved ?? {};
+    const canonicalIdentity = { ...identity, sub: participant?.cognitoSub };
     const current = Math.floor(now() / 1000);
-    if (identity.exp <= current || !approvedParticipant(participant, identity, current)) {
+    if (identity.exp <= current || !approvedParticipant(participant, canonicalIdentity, current)) {
       return json(401, { error: 'This account is not authorised.' }, clearAllCookies());
     }
     const token = base64url(randomBytes(32));
     const expiresAt = Math.min(current + 3600, identity.exp, participant.expiresAt ?? Infinity);
     const session = {
-      pk: sessionKey(token), sub: identity.sub, email: identity.email,
+      pk: sessionKey(token), sub: canonicalIdentity.sub, email: identity.email,
       participantId: participant.participantId, accessVersion: participant.accessVersion,
       createdAt: current, expiresAt,
+      ...(binding ? { auth0BindingKey: binding.record.pk } : {}),
     };
     try {
       // Approval and version are checked again atomically with session persistence.
-      await store.issueSession({ participant, session, now: current });
+      await store.issueSession({ participant, session, now: current, identity, binding });
     } catch (error) {
       if (error?.name === 'TransactionCanceledException' || error?.name === 'ConditionalCheckFailedException') {
         return json(401, { error: 'This account is not authorised. Please sign in again.' }, clearAllCookies());
@@ -145,19 +149,9 @@ export function createHandler(overrides = {}) {
   async function session(event) {
     const token = parseCookies(event)[COOKIE.session];
     const denied = () => json(401, { authenticated: false }, clearAllCookies());
-    if (!validSessionToken(token)) return denied();
-    const key = sessionKey(token);
-    const saved = await store.getSession(key);
-    const current = Math.floor(now() / 1000);
-    if (!saved || saved.pk !== key || !Number.isSafeInteger(saved.expiresAt) || saved.expiresAt <= current
-      || !Number.isSafeInteger(saved.createdAt) || saved.createdAt > current + 60
-      || saved.expiresAt > saved.createdAt + 3600 || typeof saved.sub !== 'string'
-      || typeof saved.email !== 'string' || typeof saved.participantId !== 'string') return denied();
-    const participant = await store.getParticipant(saved.sub);
-    const checkedAt = Math.floor(now() / 1000);
-    if (saved.expiresAt <= checkedAt || !approvedParticipant(participant, saved, checkedAt) || participant.enrolmentStatus !== 'complete'
-      || participant.active !== true || participant.participantId !== saved.participantId
-      || participant.accessVersion !== saved.accessVersion) return denied();
+    const approved = await readApprovedSession(token, store, now);
+    if (!approved) return denied();
+    const { session: saved, participant } = approved;
     return json(200, {
       email: saved.email, name: typeof participant.name === 'string' ? participant.name : null,
       picture: null, authenticated: true, participantId: participant.participantId,
@@ -167,9 +161,9 @@ export function createHandler(overrides = {}) {
   async function logout(event) {
     const token = parseCookies(event)[COOKIE.session];
     if (validSessionToken(token)) await store.deleteSession(sessionKey(token));
-    const target = new URL(config.cognitoDomain + '/logout');
+    const target = new URL(config.providerOrigin + (config.provider === 'auth0' ? '/v2/logout' : '/logout'));
     target.search = new URLSearchParams({
-      client_id: config.clientId, logout_uri: config.siteOrigin + '/',
+      client_id: config.clientId, [config.provider === 'auth0' ? 'returnTo' : 'logout_uri']: config.siteOrigin + '/',
     }).toString();
     return redirect(target.toString(), clearAllCookies());
   }

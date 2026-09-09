@@ -1,10 +1,9 @@
 name: Infrastructure (CloudFormation)
 
 # Infra CI/CD per ADR-0040 §3: validates and deploys the CloudFormation stacks
-# in dependency order — certificate discovery/bootstrap (us-east-1) → regional
-# artifacts + site (eu-west-2) → certificate-only edge reconciliation. The site
-# update comes before removal of former Lambda@Edge resources. The separate
-# CloudFront Function development barrier remains enforced (ADR-0079). Change-set based and
+# in dependency order: participant stores → packaged/versioned edge gate → site.
+# CloudFront replaces its barrier with a validated gate, never an ungated state.
+# Change-set based and
 # idempotent (--no-fail-on-empty-changeset), so a run that touches only one
 # stack is a no-op for the others.
 #
@@ -14,7 +13,7 @@ name: Infrastructure (CloudFormation)
 # Auth: GitHub OIDC → opda-site-deploy role; no static AWS keys (ADR-0040 §1).
 # Repository configuration required:
 #   vars.OPDA_SITE_DEPLOY_ROLE_ARN — from the bootstrap stack outputs
-# Cognito client and store configuration come from CloudFormation exports.
+# Store configuration comes from CloudFormation exports; Auth0 reuses its client.
 
 on:
   push:
@@ -24,6 +23,9 @@ on:
       - '.github/workflows/infra.yml'
       - 'tests/hubspot-approval-*.test.mjs'
       - 'tests/auth-session.test.mjs'
+      - 'tests/auth0-session.test.mjs'
+      - 'tests/edge-gate.test.mjs'
+      - 'scripts/package-edge-gate.mjs'
       - 'tests/aws-working-group-interest-infrastructure.test.mjs'
       - 'tests/hubspot-sync.test.mjs'
       - 'src/approval-onboarding/**'
@@ -56,10 +58,13 @@ jobs:
           node-version: 22
 
       - name: Test participant approval boundary
-        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs
+        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs
 
       - name: Package bounded onboarding runtime locally
         run: node scripts/package-approval-onboarding.mjs
+
+      - name: Package shared edge authorization
+        run: node scripts/package-edge-gate.mjs
 
       - name: Lint templates
         run: |
@@ -78,28 +83,6 @@ jobs:
             aws cloudformation validate-template --region eu-west-2 \
               --template-body "file://$t" --query Description --output text
           done
-
-      # On an established installation, read the existing certificate without
-      # updating the old edge stack yet: its obsolete Lambda resources must not
-      # be deleted until the site distribution has removed their associations.
-      # On a clean installation, create the certificate-only stack first.
-      - name: Read or create certificate stack (us-east-1)
-        run: |
-          if ! aws cloudformation describe-stacks --region us-east-1 \
-            --stack-name opda-edge >/dev/null 2>&1; then
-            HOSTED_ZONE_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
-              --stack-name opda-bootstrap \
-              --query "Stacks[0].Outputs[?OutputKey=='HostedZoneId'].OutputValue" --output text)
-            aws cloudformation deploy --region us-east-1 \
-              --stack-name opda-edge \
-              --template-file config/aws/edge-stack.yaml \
-              --no-fail-on-empty-changeset \
-              --parameter-overrides HostedZoneId="$HOSTED_ZONE_ID"
-          fi
-          CERT_ARN=$(aws cloudformation describe-stacks --region us-east-1 \
-            --stack-name opda-edge \
-            --query "Stacks[0].Outputs[?OutputKey=='CertificateArn'].OutputValue" --output text)
-          echo "OPDA_CERTIFICATE_ARN=$CERT_ARN" >> "$GITHUB_ENV"
 
       # ---- eu-west-2: artifacts bucket (site Lambda + nested template) ----
       - name: Deploy artifacts stack (eu-west-2)
@@ -136,6 +119,31 @@ jobs:
             --template-file config/aws/participant-identity-stack.yaml \
             --no-fail-on-empty-changeset
 
+      - name: Deploy versioned gate and certificate (us-east-1)
+        run: |
+          aws cloudformation deploy --region us-east-1 \
+            --stack-name opda-artifacts --template-file config/aws/artifacts-stack.yaml \
+            --no-fail-on-empty-changeset
+          EDGE_ARTIFACTS_BUCKET=$(aws cloudformation describe-stacks --region us-east-1 \
+            --stack-name opda-artifacts \
+            --query "Stacks[0].Outputs[?OutputKey=='ArtifactsBucketName'].OutputValue" --output text)
+          HOSTED_ZONE_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
+            --stack-name opda-bootstrap \
+            --query "Stacks[0].Outputs[?OutputKey=='HostedZoneId'].OutputValue" --output text)
+          aws cloudformation package --region us-east-1 \
+            --template-file config/aws/edge-stack.yaml --s3-bucket "$EDGE_ARTIFACTS_BUCKET" \
+            --output-template-file /tmp/edge-packaged.yaml
+          aws cloudformation deploy --region us-east-1 --stack-name opda-edge \
+            --template-file /tmp/edge-packaged.yaml \
+            --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
+            --no-fail-on-empty-changeset --parameter-overrides HostedZoneId="$HOSTED_ZONE_ID"
+          CERT_ARN=$(aws cloudformation describe-stacks --region us-east-1 --stack-name opda-edge \
+            --query "Stacks[0].Outputs[?OutputKey=='CertificateArn'].OutputValue" --output text)
+          GATE_ARN=$(aws cloudformation describe-stacks --region us-east-1 --stack-name opda-edge \
+            --query "Stacks[0].Outputs[?OutputKey=='GateFunctionVersionArn'].OutputValue" --output text)
+          echo "OPDA_CERTIFICATE_ARN=$CERT_ARN" >> "$GITHUB_ENV"
+          echo "OPDA_GATE_FUNCTION_ARN=$GATE_ARN" >> "$GITHUB_ENV"
+
       - name: Deploy site stack (eu-west-2)
         if: hashFiles('config/aws/site-stack.yaml') != ''
         run: |
@@ -153,23 +161,8 @@ jobs:
             --no-fail-on-empty-changeset \
             --parameter-overrides \
               CertificateArn="$OPDA_CERTIFICATE_ARN" \
+              GateFunctionVersionArn="$OPDA_GATE_FUNCTION_ARN" \
               OnboardingCutover="${{ vars.OPDA_ONBOARDING_CUTOVER || '' }}" \
               DomainReviewCutover="${{ vars.OPDA_DOMAIN_REVIEW_CUTOVER || '' }}" \
               OnboardingEnabled="${{ vars.OPDA_ONBOARDING_ENABLED || 'false' }}" \
               OnboardingCanaryEmailHash="${{ vars.OPDA_ONBOARDING_CANARY_EMAIL_HASH || '' }}"
-
-      # Reconcile the old edge stack only after CloudFront has deployed the site
-      # update without viewer-request Lambda associations. On the first retirement
-      # run AWS may need additional time to delete replicated Lambda@Edge versions;
-      # a retry is safe because the public-site change is already in the site stack.
-      - name: Reconcile certificate-only edge stack (us-east-1)
-        if: hashFiles('config/aws/edge-stack.yaml') != ''
-        run: |
-          HOSTED_ZONE_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
-            --stack-name opda-bootstrap \
-            --query "Stacks[0].Outputs[?OutputKey=='HostedZoneId'].OutputValue" --output text)
-          aws cloudformation deploy --region us-east-1 \
-            --stack-name opda-edge \
-            --template-file config/aws/edge-stack.yaml \
-            --no-fail-on-empty-changeset \
-            --parameter-overrides HostedZoneId="$HOSTED_ZONE_ID"

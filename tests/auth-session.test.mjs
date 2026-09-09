@@ -37,6 +37,7 @@ function participant(overrides = {}) {
     pk: 'USER#' + SUB, participantId: 'participant-123', cognitoSub: SUB,
     email: 'member@example.test', name: 'Test Member', reviewStatus: 'approved',
     active: true, suspended: false, enrolmentStatus: 'not_invited', accessVersion: 1,
+    approvedDomains: ['conveyancing'], domainApprovals: { conveyancing: { status: 'approved' } },
     createdAt: '2026-09-08T10:00:00Z', approvedAt: '2026-09-08T10:00:00Z', ...overrides,
   };
 }

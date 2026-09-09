@@ -1,19 +1,16 @@
 # Edge stack — opda.org.uk AWS hosting (ADR-0038 / ADR-0040 / ADR-0079)
 #
-# The us-east-1 stack contains the ACM certificate required by CloudFront's
-# control plane. ADR-0079 removed the former Lambda@Edge authentication gate.
-#
-# CI creates this stack before the site on a new installation. On an existing
-# gated installation it first reads CertificateArn, deploys the ungated site,
-# then reconciles this certificate-only template (exports do not cross regions).
+# Certificate and restored viewer-request gate (ADR-0038, 2026-09-09).
+# OAuth runs regionally; the versioned gate shares its approval/session reader.
 #
 # Certificate validation note (cutover sequencing): the validation CNAME is
 # written into the Route 53 hosted zone automatically, but until the registrar
 # NS cutover Cloudflare is still authoritative — the same CNAME must be added
 # there (DNS-only) for the first issuance to complete (ADR-0040 cutover).
 AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
 Description: >-
-  opda.org.uk edge resource (us-east-1): CloudFront ACM certificate
+  opda.org.uk edge resources (us-east-1): certificate and approved-session gate
   (ADR-0038/ADR-0040/ADR-0079).
 
 Parameters:
@@ -34,6 +31,52 @@ Resources:
         - DomainName: !Ref DomainName
           HostedZoneId: !Ref HostedZoneId
 
+  GateFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-edge-gate
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: [lambda.amazonaws.com, edgelambda.amazonaws.com] }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: edge-session-read
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: [logs:CreateLogGroup, logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:aws:logs:*:${AWS::AccountId}:log-group:/aws/lambda/*opda-gate*:*'
+              - Effect: Allow
+                Action: dynamodb:GetItem
+                Resource: !Sub 'arn:aws:dynamodb:eu-west-2:${AWS::AccountId}:table/opda-participants'
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['USER#*']
+              - Effect: Allow
+                Action: dynamodb:GetItem
+                Resource: !Sub 'arn:aws:dynamodb:eu-west-2:${AWS::AccountId}:table/opda-participant-sessions'
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['SESSION#*']
+
+  GateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: opda-gate
+      CodeUri: ../../_build/edge-gate/
+      Handler: index.handler
+      Runtime: nodejs22.x
+      Architectures: [x86_64]
+      MemorySize: 128
+      Timeout: 5
+      Role: !GetAtt GateFunctionRole.Arn
+      AutoPublishAlias: live
+
 Outputs:
   CertificateArn:
     Value: !Ref Certificate
+  GateFunctionVersionArn:
+    Value: !Ref GateFunction.Version

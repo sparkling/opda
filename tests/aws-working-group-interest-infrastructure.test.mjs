@@ -1,28 +1,30 @@
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('the development barrier does not reinstate the retired identity implementation', async () => {
+test('the restored edge gate shares current approvals and never restores the old email allowlist', async () => {
   const [site, edge, workflow] = await Promise.all([
     read('config/aws/site-stack.yaml'),
     read('config/aws/edge-stack.yaml'),
     read('.github/workflows/infra.yml'),
   ]);
 
-  assert.doesNotMatch(site, /LambdaFunctionAssociations|GateFunctionVersionArn|GateConfigParameter|\/opda\/gate\/config/u);
+  assert.match(site, /LambdaFunctionAssociations/u);
+  assert.doesNotMatch(site, /GateConfigParameter|\/opda\/gate\/config|MemberEmails/u);
   assert.match(site, /AuthSessionApplication:[\s\S]*TemplateURL: auth-session-stack\.yaml/u);
-  assert.doesNotMatch(edge, /AWS::Serverless::Function|GateFunction(?:Role|VersionArn)?|CodeUri:\s*edge-gate\//u);
-  assert.doesNotMatch(workflow, /GateFunctionVersionArn|members\.txt|edge-packaged/u);
+  assert.match(edge, /AutoPublishAlias: live/u);
+  assert.match(edge, /CodeUri: ..\/..\/_build\/edge-gate\//u);
+  assert.match(edge, /Action: dynamodb:GetItem/u);
+  assert.doesNotMatch(edge, /dynamodb:(?:PutItem|UpdateItem|Scan|Query)|Environment:|ssm:/u);
+  assert.doesNotMatch(workflow, /members\.txt/u);
   assert.match(workflow, /--stack-name opda-participant-identity/u);
   assert.doesNotMatch(workflow, /OPDA_AUTH0_CLIENT_ID|OPDA_MEMBER_EMAILS/u);
   assert.ok(workflow.indexOf('name: Deploy comments stack') < workflow.indexOf('name: Deploy site stack'),
-    'the origin read-only barrier must deploy before the Cognito session cutover');
-  await assert.rejects(
-    access(new URL('../config/aws/edge-gate/index.mjs', import.meta.url)),
-    { code: 'ENOENT' },
-  );
+    'the origin read-only boundary must deploy before the session cutover');
+  assert.ok(workflow.indexOf('name: Deploy versioned gate') < workflow.indexOf('name: Deploy site stack'));
+  assert.match(workflow, /GateFunctionVersionArn="\$OPDA_GATE_FUNCTION_ARN"/u);
 });
 
 test('the same-origin auth surface forwards cookies and query strings without caching', async () => {
@@ -35,7 +37,7 @@ test('the same-origin auth surface forwards cookies and query strings without ca
   assert.match(behavior, /AllowedMethods: \[GET, HEAD, OPTIONS\]/u);
   assert.match(behavior, /4135ea2d-6df8-44a3-9df3-4b5a84be39ad/u);
   assert.match(behavior, /OriginRequestPolicyId: !Ref AuthSessionOriginRequestPolicy/u);
-  assert.doesNotMatch(behavior, /LambdaFunctionAssociations/u);
+  assert.match(behavior, /LambdaFunctionAssociations/u);
 
   const policy = site.match(/AuthSessionOriginRequestPolicy:[\s\S]*?(?=\n\s{2}\w)/u)?.[0];
   assert.match(policy ?? '', /HeaderBehavior: none/u);
@@ -53,16 +55,19 @@ test('the auth service exposes only the four GET session routes with bounded cap
   assert.match(stack, /ReservedConcurrentExecutions: 5/u);
   assert.match(stack, /ThrottlingBurstLimit: 20/u);
   assert.match(stack, /ThrottlingRateLimit: 10/u);
-  for (const variable of ['COGNITO_ISSUER', 'COGNITO_DOMAIN', 'COGNITO_CLIENT_ID', 'PARTICIPANTS_TABLE_NAME', 'SESSIONS_TABLE_NAME']) {
+  for (const variable of ['PARTICIPANTS_TABLE_NAME', 'SESSIONS_TABLE_NAME']) {
     assert.match(stack, new RegExp(`${variable}:\\n\\s+Fn::ImportValue:`, 'u'));
   }
   assert.match(stack, /dynamodb:ConditionCheckItem/u);
-  assert.doesNotMatch(stack, /AUTH0_|MEMBER_EMAILS/u);
+  assert.match(stack, /OIDC_PROVIDER: auth0/u);
+  assert.match(stack, /AUTH0_DOMAIN: !Ref Auth0Domain/u);
+  assert.match(stack, /AUTH0_CLIENT_ID: !Ref Auth0ClientId/u);
+  assert.doesNotMatch(stack, /MEMBER_EMAILS/u);
   assert.match(stack, /SITE_ORIGIN: !Sub 'https:\/\/\$\{DomainName\}'/u);
   assert.doesNotMatch(stack, /CLIENT_SECRET|client_secret|AWS::ApiGatewayV2::DomainName|CorsConfiguration/u);
 });
 
-test('the development barrier denies every site behavior before cache or origin access', async () => {
+test('every behavior is gated and the retained emergency fallback remains fail-closed', async () => {
   const site = await read('config/aws/site-stack.yaml');
   const gate = site.match(/DevelopmentBarrierFunction:[\s\S]*?(?=\n\s{2}Distribution:)/u)?.[0];
   assert.ok(gate, 'the development barrier exists');
@@ -72,7 +77,8 @@ test('the development barrier denies every site behavior before cache or origin 
   const behaviors = site.match(/DefaultCacheBehavior:[\s\S]*?(?=\n\s{8}CustomErrorResponses:)/u)?.[0];
   assert.ok(behaviors);
   assert.equal((behaviors.match(/TargetOriginId:/gu) ?? []).length, 6);
-  assert.equal((behaviors.match(/EventType: viewer-request\n\s+FunctionARN: !GetAtt DevelopmentBarrierFunction\.FunctionARN/gu) ?? []).length, 6);
+  assert.equal((behaviors.match(/EventType: viewer-request\n\s+LambdaFunctionARN: !Ref GateFunctionVersionArn/gu) ?? []).length, 6);
+  assert.equal((behaviors.match(/ResponseHeadersPolicyId: !Ref PrivateResponseHeaders/gu) ?? []).length, 6);
   const source = gate.match(/FunctionCode: \|\n([\s\S]*)$/u)?.[1]
     .split('\n').map((line) => line.replace(/^ {8}/u, '')).join('\n');
   assert.ok(source, 'barrier source is extractable');
@@ -102,7 +108,7 @@ test('the registration API configuration stays same-origin and cache-disabled be
   assert.ok(behavior, 'working-group API cache behavior exists');
   assert.match(behavior, /TargetOriginId: working-group-interest-api/u);
   assert.match(behavior, /4135ea2d-6df8-44a3-9df3-4b5a84be39ad/u);
-  assert.doesNotMatch(behavior, /LambdaFunctionAssociations/u);
+  assert.match(behavior, /LambdaFunctionAssociations/u);
 
   const policy = site.match(/PublicFormOriginRequestPolicy:[\s\S]*?(?=\n\s{2}\w)/u)?.[0];
   assert.match(policy ?? '', /Headers: \[Content-Type\]/u);

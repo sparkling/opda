@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >-
-  Path-scoped Cognito OAuth and opaque participant sessions. The public site
-  remains ungated; CloudFront routes only /_auth/* here (ADR-0084).
+  Auth0 social OAuth and approval-bound opaque participant sessions.
+  CloudFront protects site content separately (ADR-0038/ADR-0084).
 
 Parameters:
   DomainName:
@@ -12,6 +12,8 @@ Parameters:
     Type: String
     Default: opda-participant-identity
     Description: Regional stack exporting the approved-participant identity stores.
+  Auth0Domain: { Type: String, Default: sparklesparkle.auth0.com }
+  Auth0ClientId: { Type: String, Default: xjPgyXLJllYtefV6LZkZ6oYnce89RlZT }
 
 Resources:
   FunctionLogGroup:
@@ -46,6 +48,13 @@ Resources:
                 Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:DeleteItem]
                 Resource:
                   Fn::ImportValue: !Sub '${IdentityStackName}-SessionsTableArn'
+              - Effect: Allow
+                Action: dynamodb:PutItem
+                Resource:
+                  Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableArn'
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['IDENTITY#*']
 
   Function:
     Type: AWS::Serverless::Function
@@ -62,12 +71,9 @@ Resources:
       Role: !GetAtt FunctionRole.Arn
       Environment:
         Variables:
-          COGNITO_ISSUER:
-            Fn::ImportValue: !Sub '${IdentityStackName}-CognitoIssuer'
-          COGNITO_DOMAIN:
-            Fn::ImportValue: !Sub '${IdentityStackName}-CognitoDomain'
-          COGNITO_CLIENT_ID:
-            Fn::ImportValue: !Sub '${IdentityStackName}-CognitoClientId'
+          OIDC_PROVIDER: auth0
+          AUTH0_DOMAIN: !Ref Auth0Domain
+          AUTH0_CLIENT_ID: !Ref Auth0ClientId
           PARTICIPANTS_TABLE_NAME:
             Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableName'
           SESSIONS_TABLE_NAME:

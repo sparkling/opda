@@ -105,6 +105,7 @@ Resources:
                   # The packaged site stack uses the SAM transform; expanding it
                   # requires CreateChangeSet on the transform's AWS-owned ARN.
                   - 'arn:aws:cloudformation:eu-west-2:aws:transform/Serverless-2016-10-31'
+                  - 'arn:aws:cloudformation:us-east-1:aws:transform/Serverless-2016-10-31'
               - Sid: TemplateValidation
                 Effect: Allow
                 Action: ['cloudformation:ValidateTemplate']

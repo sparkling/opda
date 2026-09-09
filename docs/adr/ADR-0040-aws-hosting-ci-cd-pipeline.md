@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-06
-updated: 2026-09-07
+updated: 2026-09-09
 tags: [infrastructure, ci-cd, deployment, security]
 supersedes: []
 depends-on: [ADR-0021, ADR-0037]
@@ -9,6 +9,14 @@ implements: [ADR-0038]
 ---
 
 # AWS hosting CI/CD pipeline
+
+> **Gate restored, 2026-09-09 (ADR-0038).** Infra again packages a numbered
+> Lambda@Edge version in `us-east-1` before updating the regional site. The package
+> copies the regional session reader byte-for-byte; it introduces no SSM member
+> list or secret. Site deployment replaces all six viewer-request associations
+> with that version while preserving private OAC origins and browser no-store.
+> Bootstrap permits the SAM transform in both required regions. The existing
+> `main`/GitHub-OIDC release process remains authoritative; no unguarded step exists.
 
 > **Amended 2026-09-07 by [ADR-0083](./ADR-0083-rebuild-proportionate-risk-based-ci-cd.md).**
 > `.github/workflows/deploy-aws.yml` is now a thin trigger for the reusable
