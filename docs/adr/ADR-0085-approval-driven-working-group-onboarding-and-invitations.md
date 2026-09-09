@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-09-09
-updated: 2026-09-09
+updated: 2026-09-10
 tags: [hubspot, participants, working-groups, postmark, email, microsoft-365, teams, sharepoint, approval]
 supersedes: []
 amends: [ADR-0070, ADR-0071, ADR-0084]
@@ -88,12 +88,12 @@ interests only. Global `opda_review_status=approved` can clear an account review
 does not approve any domain. Global Under review, Rejected or Withdrawn blocks account access;
 the integration's initial Received marker neither approves a domain nor places a review hold.
 
-Record the HubSpot actor/time, immutable participant binding, decision ID, **domain version**
-and single-domain approved snapshot. Fetch current property history; approval requires a
-matching, attributable `CRM_UI` edit after `DOMAIN_REVIEW_CUTOVER`, with that domain requested
-at the decision time. Imports, forms, integrations and later interest edits cannot grant access.
-Missing, contradictory or unsupported evidence fails closed for that domain. Property Technology
-is never mapped to the separate cross-cutting Technology Working Group.
+Record actor/time, immutable participant binding, decision ID, **domain version** and reviewed scope.
+Normal approvals require current, attributable `CRM_UI` history after `DOMAIN_REVIEW_CUTOVER`, with that domain requested at review. Forms and later interest edits cannot grant access.
+The explicit 10 September Finance roster approval is a source-pinned, 372-person exception: a private AWS operator receipt binds the exact CRM observations, identity and Finance scope.
+That historical import creates no onboarding jobs or emails, changes no Microsoft grants and preserves website enrolment. Microsoft acceptance is separate observed metadata, not proof of website enrolment.
+Changed import observations lose their exception; later human reviews and withdrawals use the normal policy. Imports otherwise remain untrusted. No S3 backup or marketing consent is created.
+Missing or contradictory evidence fails closed. Property Technology is never mapped to the separate cross-cutting Technology Working Group.
 
 The 2026-09-09 read-only preflight reported eight remaining custom-property slots: overall
 limit 10/usage 2, contact-property limit 1,000/usage 11, with 403 active definitions. All six

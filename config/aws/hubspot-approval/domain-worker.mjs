@@ -2,6 +2,7 @@ import { CONTACT_ID, contactProfile, digest, ordinaryAccess, reviewDecision } fr
 import { domainReviewDecisions } from './domain-reviews.mjs';
 import { DOMAIN_POLICY } from './domain-onboarding.mjs';
 import { onboardingHint } from './onboarding.mjs';
+import { FINANCE_DOMAIN_ID, financeImportDecisions } from './finance-import.mjs';
 
 const NEGATIVE = new Set(['under_review', 'rejected', 'withdrawn']);
 const approved = decision => decision?.trusted && decision.status === 'approved'
@@ -37,8 +38,11 @@ export async function relayPendingOnboarding(store, notify) {
   finally { if (!Array.isArray(page)) await store.advanceOnboardingRelay(page); }
 }
 
-function globalReview(contact, cutover, now) {
+function globalReview(contact, binding, cutover, now) {
   if (!contact || contact.archived) return null;
+  const imported = financeImportDecisions(contact, binding, { now }).globalDecision;
+  if (imported) return imported;
+  const importedExpected = Object.hasOwn(binding ?? {}, 'financeRosterImport');
   const value = contact.properties?.opda_review_status;
   const history = contact.propertiesWithHistory?.opda_review_status;
   const evidence = Array.isArray(history) ? [history.length, ...history.slice(0, 2001)
@@ -51,17 +55,22 @@ function globalReview(contact, cutover, now) {
   if (decision?.at > now) return deny(); // Never persist a future revocation/approval ordering watermark.
   // The anonymous intake writes Received. It is not an administrator's hold and
   // must not suppress an independently reviewed domain. It cannot clear a hold.
-  if (value === 'received' && Array.isArray(history) && history.length && history.length <= 2000
+  if (!importedExpected && value === 'received' && Array.isArray(history) && history.length && history.length <= 2000
     && history.every(item => item?.value === 'received' && item.sourceType === 'INTEGRATION')) return null;
   if (value === 'received' && Array.isArray(history) && history.some(item => NEGATIVE.has(item?.value))) return deny();
   if (decision) return decision;
   // A current explicit denial is not ignored just because its provenance or
   // timestamp is missing/older than this deployment's activation boundary.
-  return NEGATIVE.has(value) ? deny() : null;
+  return NEGATIVE.has(value) || importedExpected ? deny() : null;
 }
 
 function domainDecisions(contact, binding, cutover, now) {
   const decisions = domainReviewDecisions(contact, { cutover, now });
+  const imported = financeImportDecisions(contact, binding, { now }).domainDecision;
+  if (imported) {
+    const index = decisions.findIndex(decision => decision.domainId === FINANCE_DOMAIN_ID);
+    if (index === -1) decisions.push(imported); else decisions[index] = imported;
+  }
   const present = new Set(decisions.map(decision => decision.domainId));
   for (const [domainId, state] of Object.entries(binding?.domainApprovals ?? {})) {
     if (present.has(domainId) || state.status !== 'approved' || state.legacy) continue;
@@ -112,7 +121,7 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
   async function processContact(contactId) {
     if (typeof contactId !== 'string' || !CONTACT_ID.test(contactId)) throw new Error('Invalid contact reference');
     let contact = await hubspot.getContact(contactId), binding = await store.binding(contactId);
-    let at = clock(), globalDecision = globalReview(contact, domainCutover, at);
+    let at = clock(), globalDecision = globalReview(contact, binding, domainCutover, at);
     let decisions = domainDecisions(contact, binding, domainCutover, at);
     const mayReserve = () => !globalDenial(globalDecision) && decisions.some(approved);
     if (!binding) {
@@ -127,7 +136,7 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
       binding = await store.attach(binding, await identity.ensure(binding), clock());
       contact = await hubspot.getContact(contactId); // Creation never turns an earlier observation into a grant.
       at = clock();
-      globalDecision = globalReview(contact, domainCutover, at);
+      globalDecision = globalReview(contact, binding, domainCutover, at);
       decisions = domainDecisions(contact, binding, domainCutover, at);
     }
     let account = await store.account(binding);
@@ -166,7 +175,7 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
     for (const contact of contacts) {
       const binding = maps.get(contact.id), account = rows.get(contact.id);
       try {
-        const global = globalReview(contact, domainCutover, at);
+        const global = globalReview(contact, binding, domainCutover, at);
         const decisions = domainDecisions(contact, binding, domainCutover, at);
         if (!binding && !account) {
           if (!globalDenial(global) && decisions.some(approved)) pending.add(contact.id);
