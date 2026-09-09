@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "generated": "2026-09-09",
+  "provider": "OpenAI built-in image generation",
+  "generationMethod": "Native built-in image generation for the light original; native built-in image edit from that approved light source for the dark counterpart. The built-in tool did not expose a revision identifier.",
+  "style": {
+    "id": "risograph-editorial",
+    "name": "Risograph editorial",
+    "medium": "Limited spot-colour risograph and screenprint with halftone, roller texture and restrained misregistration"
+  },
+  "route": "/semantic-modelling/method",
+  "title": "Ontology modelling",
+  "alt": "Three property practitioners compare one terraced house with an unlettered floor plan and a separate report folio in a bold risograph scene.",
+  "lightPrompt": "Use case: stylized-concept\nAsset type: OPDA semantic-modelling website manifesto header, light-mode editorial illustration\nPrimary request: Create one original risograph / screenprint editorial opener showing distinct professional perspectives on the same physical British property, while keeping the place, a drawn plan and a separate report visibly different.\nScene/backdrop: off-white #F9F9F9 uncoated paper to every edge. A continuous shallow streetside working scene centred on one modest British terraced house facade and front threshold. A real adult property practitioner stands in the same scene, thoughtfully comparing the physical house with a clearly hand-drawn unlettered floor plan spread on a portable angled drawing board; a separate closed unlettered report folio rests beside the board as its own object. Two additional adult practitioners with distinct professional dress and believable human proportions observe different physical details of the same house—one looks up at the roofline, one studies the threshold—without becoming symbolic icons. All attention converges on the same real place by gaze and posture only.\nStyle/medium: bold professional RISOGRAPH / SCREENPRINT editorial illustration; broad crisp graphic silhouettes, strong cut-paper shapes, visible coarse halftone dots, ink roller texture, limited spot-colour layers, elegant restrained misregistration and honest overprint grain. Sophisticated independent architecture/data magazine, not children's art, not watercolour.\nComposition/framing: exact intended export 1200×403, very wide near-3:1 manifesto opener; one continuous frameless scene, asymmetrical magazine composition; complete people, heads, hands, house silhouette, plan, board and report inside quiet outer margins. The physical house is the largest anchor; the plan is obviously a paper drawing, not another building; the report is visibly separate. Not a three-box diagram, not three arches, not a triptych, not a software screen.\nColor palette: limited OPDA spot inks only—deep purple #231F2F, petrol #0E8478, yellow/gold #FEC92B, violet #6C5BD4 and restrained coral—on #F9F9F9. Use overlapping inks to create texture, not gradients.\nMeaning boundary: this is human comparison and professional judgement, not a formal context mapping, operational system, ontology, survey result, validation proof or approval.\nConstraints: no words, letters, digits, labels, readable writing, arrows, connector lines, graph nodes, boxes, panels, arches, seals, stamps, ticks, checkmarks, badges, handshakes, logos, watermarks, computer UI, screens, charts, glow, neon, gradients, glossy 3D, photography, watercolour, night setting or claims of approval. No duplicated property and no floating icons. Generate only the full-bleed artwork.",
+  "darkPrompt": "Use case: style-transfer\nAsset type: dark-mode counterpart of an approved OPDA risograph / screenprint manifesto header\nInput image: Image 1 is the EXACT approved light-mode illustration and the EDIT TARGET, not inspiration.\nPrimary request: Change ONLY the paper/background and spot-ink palette values for dark mode. Preserve the exact one terraced property, every architectural shape, all THREE adult practitioners and their identities, faces, hair, bodies, poses, gazes, clothing, hands, the portable drawing board, the drawn plan, the separate closed report folio, every object count and every object's exact position, scale, silhouette, texture, perspective, framing, crop and negative-space balance. Do not add, remove, move, redesign, relight or reconnect anything.\nStyle/medium: retain exactly the same professional risograph / screenprint print character—broad crisp silhouettes, cut-paper shapes, visible halftone dots, ink roller texture, restrained misregistration and overprint grain. Do not turn it into watercolour, photography, night scenery or a new illustration.\nDark palette: replace off-white paper with flat deep-purple #231F2F paper reaching every edge. Translate deep-purple marks to pale lavender or warm off-white ink where needed for legibility. Preserve limited substantial #FEC92B yellow/gold, #0E8478 petrol, #6C5BD4 violet and restrained coral spot inks, adjusted only for contrast. Allow dark paper to show between halftone dots and ink shapes; keep an elegant editorial print, not luminous effects.\nMeaning boundary: identical scene of human professional comparison; no formal mapping, technical connection, operational system, evidence claim, validation result or approval.\nConstraints: preserve the exact reference geometry and near-3:1 aspect for proportional whole-image export to 1200×403. No negative/inversion effect, black paper, night sky, moon, stars, glow, neon, fluorescent outlines, gradients, vignette, new words, letters, digits, labels, writing, arrows, connector lines, graph nodes, boxes, panels, arches, seals, stamps, ticks, checkmarks, badges, logos, watermarks, computer UI or new objects. Generate only the palette-edited full artwork.",
+  "export": {
+    "width": 1200,
+    "height": 403,
+    "format": "webp",
+    "maxBytes": 150000,
+    "operation": "Whole-image proportional contain on the exact theme-colour canvas; no crop or stretching."
+  },
+  "light": {
+    "source": "/Users/henrik/.codex/generated_images/01a087f8-7875-7a31-a538-e8610548cd65/exec-e3d400f8-0b1e-45e4-8f0c-2bd399f9fd39.png",
+    "sourceSha256": "2984dd3e874ffc926b4c260f2e37b954c15279e8fa854bcf1ca8e5b2a49263f9",
+    "sourceWidth": 2164,
+    "sourceHeight": 727,
+    "sourceBytes": 3292891,
+    "file": "/images/modelling/style-variants/2026-09/riso/method-risograph-light.webp",
+    "workspacePath": "/Users/henrik/source/opda/public/images/modelling/style-variants/2026-09/riso/method-risograph-light.webp",
+    "sha256": "7eb95fcb58df6c6f1ec4ca778cb24a45272c94acbcfe4d4a95714d593e0d7539",
+    "width": 1200,
+    "height": 403,
+    "bytes": 148464,
+    "quality": 76,
+    "exportContentBounds": { "left": 0, "top": 0, "width": 1200, "height": 403 },
+    "exportPadding": { "left": 0, "right": 0, "top": 0, "bottom": 0 }
+  },
+  "dark": {
+    "source": "/Users/henrik/.codex/generated_images/01a087f8-7875-7a31-a538-e8610548cd65/exec-93084952-a155-482a-9c98-c8d9ee0782a0.png",
+    "editedFrom": "/Users/henrik/.codex/generated_images/01a087f8-7875-7a31-a538-e8610548cd65/exec-e3d400f8-0b1e-45e4-8f0c-2bd399f9fd39.png",
+    "sourceSha256": "172c7778eb7512e62c55bdc56f5a8e39be717b6e3e87b4d85fe6ff2ed5fe1bba",
+    "sourceWidth": 2164,
+    "sourceHeight": 727,
+    "sourceBytes": 3143001,
+    "file": "/images/modelling/style-variants/2026-09/riso/method-risograph-dark.webp",
+    "workspacePath": "/Users/henrik/source/opda/public/images/modelling/style-variants/2026-09/riso/method-risograph-dark.webp",
+    "sha256": "45dcf1fa403dc97848a4f917d08b43ce3e7f8df03a3714b2d73f9887475c5a0f",
+    "width": 1200,
+    "height": 403,
+    "bytes": 149046,
+    "quality": 78,
+    "exportContentBounds": { "left": 0, "top": 0, "width": 1200, "height": 403 },
+    "exportPadding": { "left": 0, "right": 0, "top": 0, "bottom": 0 }
+  }
+}

@@ -1,6 +1,7 @@
 ---
 import OntologyChapter from '@/layouts/OntologyChapter.astro';
 import JudgementNote from '@/components/modelling/judgement/JudgementNote.astro';
+import ModellingIllustration from '@/components/modelling/ModellingIllustration.astro';
 const revision = '67174057e6384b79d0b28b7736fe70a66e112895';
 const namespaceRevision = '5e083c3baf6837ab93698d883a6ff01338565bd8';
 const rules = [
@@ -187,6 +188,8 @@ const methodHref = (slug: string) => slug.startsWith('../')
     status and candidate implementation independently. Its external publication checks
     have their own dates; this adoption-provenance review does not refresh them.
   </p>
+
+  <ModellingIllustration kind="revision-review" />
 
   <h2 id="legacy">Use the legacy PDTF explanations as evidence, not a hidden specification</h2>
   <p>

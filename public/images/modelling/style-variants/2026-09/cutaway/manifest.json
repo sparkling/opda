@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "generated": "2026-09-09",
+  "provider": "OpenAI built-in image generation",
+  "generationMethod": "Native built-in image generation for the light original; native built-in image edit from that approved light source for the dark counterpart. The built-in tool did not expose a revision identifier.",
+  "style": {
+    "id": "architectural-cutaway",
+    "name": "Architectural field-guide cutaway",
+    "medium": "Deep-purple ink and coloured pencil with hand-drafted hatching; not watercolour"
+  },
+  "route": "/semantic-modelling/understand/a-property-story",
+  "title": "Harbour Court: follow a question through the model",
+  "alt": "Ink-and-coloured-pencil cutaway of one two-storey British building containing two separate homes, with a closed door to an enclosed lower-floor area and two report folios outside.",
+  "lightPrompt": "Use case: scientific-educational\nAsset type: OPDA semantic-modelling website page header, light-mode editorial illustration\nPrimary request: Create one original architectural field-guide cutaway that makes a physical distinction tangible without pretending to be survey evidence.\nScene/backdrop: cool off-white #F9F9F9 paper to every edge; a fictional modest British two-storey residential building grounded on a thin garden/stone ledge, seen in an oblique front-and-side cutaway with one exterior wall removed. Show the complete continuous building envelope and complete roof.\nSubject: EXACTLY TWO distinct self-contained dwellings, one dwelling on the lower floor and one separate dwelling on the upper floor. Each dwelling reads as a coherent home. In the lower dwelling, a clearly visible living space leads through one visibly CLOSED solid door to a small enclosed area. The upper dwelling remains physically separate. Outside the building on the ledge, place EXACTLY TWO separate closed unlettered report folios, clearly documentary artefacts and not part of the architecture.\nStyle/medium: architectural field-guide drawing in expressive deep-purple #231F2F ink and coloured pencil; hand-drafted line hatching, crisp construction contours, tactile pencil grain and restrained flat pencil washes. NOT watercolour, NOT gouache, NOT photorealistic.\nComposition/framing: exact intended export 1200×400, ultra-wide 3:1 shallow panorama; three-quarter oblique side/front viewpoint, different from a flat stacked frontal elevation; full house, roof, foundation edge, closed lower internal door and both folios entirely within quiet outer margins; no cropping, no detached floating floors.\nColor palette: #F9F9F9 paper; #231F2F deep-purple ink; substantial #FEC92B gold, #0E8478 petrol, #6C5BD4 violet, with restrained coral accents. No beige or sepia cast.\nMeaning boundary: communicate physical difference only. The closed door indicates an enclosed area but does not show its condition, contents, inspection result, access status or approval. The two folios are separate descriptions, not proof.\nConstraints: exactly one building; exactly two dwellings total; exactly one lower-floor closed internal door leading from living space to a small enclosed area; exactly two separate exterior report folios. No people needed. No words, letters, digits, labels, readable marks, arrows, callouts, dimensions, ticks, stamps, seals, checkmarks, badges, logos, watermarks, glow, computer UI, graph notation or approval cues. No extra buildings, third dwelling, extra storey, open door, night setting, watercolor, glossy 3D or impossible stairs. Generate only the full-bleed artwork.",
+  "darkPrompt": "Use case: style-transfer\nAsset type: dark-mode counterpart of an approved OPDA architectural field-guide page header\nInput image: Image 1 is the EXACT approved light-mode illustration and the EDIT TARGET, not inspiration.\nPrimary request: Change ONLY the paper/background, ink values and coloured-pencil pigment treatment for dark mode. Preserve the exact single building, full envelope, complete roof, EXACTLY TWO dwellings, every wall, room, closed door, furnishing, garden element, EXACTLY TWO separate report folios, object count, shape, arrangement, relative size, perspective, framing, crop, texture placement and negative-space balance. Do not add, remove, move, open, close, redesign or relight any object.\nStyle/medium: keep the same architectural field-guide ink-and-coloured-pencil technique, hand-drafted line hatching, crisp construction contours and tactile pencil grain. Do not turn it into watercolour, night scenery or a new illustration.\nDark palette: replace the off-white paper with flat deep-purple #231F2F paper reaching every edge. Convert dark linework to pale lavender or warm off-white pencil/ink where necessary for clear legibility. Preserve substantial gold/yellow #FEC92B, petrol #0E8478, violet #6C5BD4 and restrained coral pencil pigments, adjusted only for contrast on the deep-purple paper. Keep dark paper visible between marks. No black background.\nMeaning boundary: identical physical distinction only; do not imply condition, inspection result, access status, proof or approval.\nConstraints: exact same geometry and ultra-wide aspect as Image 1 for proportional whole-image export to 1200×400. No inversion or negative-image effect, night sky, moon, stars, glow, neon, fluorescent outlines, gradients, vignettes, new shadows, words, letters, digits, labels, arrows, callouts, dimensions, stamps, checkmarks, badges, logos, watermarks, computer UI, graph notation, extra buildings or extra dwellings. Generate only the palette-edited full artwork.",
+  "export": {
+    "width": 1200,
+    "height": 400,
+    "format": "webp",
+    "maxBytes": 150000,
+    "operation": "Whole-image proportional contain on the exact theme-colour canvas; no crop or stretching."
+  },
+  "light": {
+    "source": "/Users/henrik/.codex/generated_images/01a087f8-7875-7a31-a538-e8610548cd65/exec-372a4fb3-cd9f-4774-b746-d6f0b9e4ae20.png",
+    "sourceSha256": "ab970964eb0b5e2d723bb20f8c78d66046ee2c350f76ad04049704589d582bad",
+    "sourceWidth": 2172,
+    "sourceHeight": 724,
+    "sourceBytes": 2139824,
+    "file": "/images/modelling/style-variants/2026-09/cutaway/property-story-cutaway-light.webp",
+    "workspacePath": "/Users/henrik/source/opda/public/images/modelling/style-variants/2026-09/cutaway/property-story-cutaway-light.webp",
+    "sha256": "f9959c43a41ea83a7febceacaf7162c7896e178005d22bb0377dcece67c75539",
+    "width": 1200,
+    "height": 400,
+    "bytes": 79344,
+    "quality": 80,
+    "exportContentBounds": { "left": 0, "top": 0, "width": 1200, "height": 400 },
+    "exportPadding": { "left": 0, "right": 0, "top": 0, "bottom": 0 }
+  },
+  "dark": {
+    "source": "/Users/henrik/.codex/generated_images/01a087f8-7875-7a31-a538-e8610548cd65/exec-11a63575-da30-40fb-a3f8-f869d540c253.png",
+    "editedFrom": "/Users/henrik/.codex/generated_images/01a087f8-7875-7a31-a538-e8610548cd65/exec-372a4fb3-cd9f-4774-b746-d6f0b9e4ae20.png",
+    "sourceSha256": "7c7620bec291af347fe55e5f15b6280bf982d04d891aea6576626c64f16b726e",
+    "sourceWidth": 2172,
+    "sourceHeight": 724,
+    "sourceBytes": 2408287,
+    "file": "/images/modelling/style-variants/2026-09/cutaway/property-story-cutaway-dark.webp",
+    "workspacePath": "/Users/henrik/source/opda/public/images/modelling/style-variants/2026-09/cutaway/property-story-cutaway-dark.webp",
+    "sha256": "9df9093a305b11bb84d8467eae16db8cb6861ce571b79a51c3251d5353479c64",
+    "width": 1200,
+    "height": 400,
+    "bytes": 78990,
+    "quality": 80,
+    "exportContentBounds": { "left": 0, "top": 0, "width": 1200, "height": 400 },
+    "exportPadding": { "left": 0, "right": 0, "top": 0, "bottom": 0 }
+  }
+}

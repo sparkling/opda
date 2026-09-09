@@ -226,7 +226,7 @@ test('every live modelling page has its own relevant, paired header artwork', ()
     assert.equal(record.dark.editedFrom, record.light.source);
     for (const mode of ['light', 'dark']) {
       const asset = record[mode];
-      assert.match(asset.file, /^\/images\/modelling\/page-headers\/[a-z-]+\/[a-z-]+\.webp$/u);
+      assert.match(asset.file, /^\/images\/modelling\/(?:page-headers\/[a-z-]+|style-variants\/\d{4}-\d{2}\/[a-z-]+)\/[a-z-]+\.webp$/u);
       assert.match(asset.sourceSha256, /^[a-f0-9]{64}$/u);
       const bytes = readFileSync(new URL('../public' + asset.file, import.meta.url));
       const exportHash = createHash('sha256').update(bytes).digest('hex');
@@ -254,6 +254,65 @@ test('every live modelling page has its own relevant, paired header artwork', ()
       }, asset.file + ' must account for every paper-padding pixel');
       assert.ok(Math.abs(content.width / content.height - asset.sourceWidth / asset.sourceHeight) < 0.01,
         asset.file + ' must preserve the uncropped source proportions');
+    }
+  }
+});
+
+test('selected header styles preserve the original artwork and slot dimensions', () => {
+  const collections = ['understand', 'ontology', 'participate'].flatMap((name) =>
+    JSON.parse(read(`public/images/modelling/page-headers/${name}/manifest.json`)).pages);
+  const expected = new Map([
+    ['/semantic-modelling/understand/a-property-story', 'architectural-cutaway'],
+    ['/semantic-modelling/understand/what-we-are-building', 'sequential-ink-narrative'],
+    ['/semantic-modelling/method', 'risograph-editorial'],
+    ['/semantic-modelling/method/from-question-to-candidate', 'sequential-ink-narrative'],
+  ]);
+  for (const [route, style] of expected) {
+    const record = collections.find((entry) => entry.route === route);
+    assert.equal(record.style, style, route + ' needs the selected medium');
+    assert.ok(record.previousIllustrations?.length, route + ' must preserve its earlier illustration');
+    for (const previous of record.previousIllustrations) {
+      for (const mode of ['light', 'dark']) {
+        const oldAsset = previous[mode];
+        const bytes = readFileSync(new URL('../public' + oldAsset.file, import.meta.url));
+        assert.equal(createHash('sha256').update(bytes).digest('hex'), oldAsset.sha256,
+          route + ' must retain the original image unchanged');
+        assert.notEqual(record[mode].file, oldAsset.file);
+        assert.deepEqual([record[mode].width, record[mode].height], [oldAsset.width, oldAsset.height],
+          route + ' must preserve the header dimensions');
+      }
+    }
+  }
+});
+
+test('lower-page scene assets are shallower than headers and preserve their source geometry', () => {
+  for (const kind of ['working-package', 'revision-review']) {
+    const manifest = JSON.parse(read(`public/images/modelling/inline-scenes/2026-09/${kind}/manifest.json`));
+    assert.equal(manifest.id, kind);
+    assert.ok(manifest.alt && manifest.caption && manifest.lightPrompt && manifest.darkPrompt);
+    assert.equal(manifest.dark.editedFrom, manifest.light.source);
+    for (const mode of ['light', 'dark']) {
+      const asset = manifest[mode];
+      assert.match(asset.file, /^\/images\/modelling\/inline-scenes\/2026-09\/[a-z-]+\/[a-z-]+\.webp$/u);
+      const bytes = readFileSync(new URL('../public' + asset.file, import.meta.url));
+      assert.deepEqual(webpSize(bytes), [asset.width, asset.height]);
+      assert.equal(createHash('sha256').update(bytes).digest('hex'), asset.sha256);
+      assert.equal(bytes.length, asset.bytes);
+      assert.ok(bytes.length <= 150_000);
+      assert.ok(asset.width <= 1200 && asset.width / asset.height >= 3.8,
+        `${kind} needs a shallower composition than the 3:1 page headers`);
+      assert.deepEqual([asset.width, asset.height], [manifest.light.width, manifest.light.height]);
+      const content = asset.exportContentBounds ?? { width: asset.width, height: asset.height };
+      // The generator may add blank paper outside a deliberately composed strip.
+      // Only a recorded, visually reviewed paper trim may change canvas geometry.
+      const source = asset.sourceCrop ?? { x: 0, y: 0, width: asset.sourceWidth, height: asset.sourceHeight };
+      assert.ok(Object.values(source).every(Number.isSafeInteger) && source.x >= 0 && source.y >= 0
+        && source.width > 0 && source.height > 0 && source.x + source.width <= asset.sourceWidth
+        && source.y + source.height <= asset.sourceHeight);
+      assert.ok(asset.sourceWidth - source.width <= 4, `${kind} must retain the panoramic drawing's width`);
+      if (asset.sourceCrop) assert.match(asset.exportOperation, /blank.*paper/iu);
+      assert.ok(Math.abs(content.width / content.height - source.width / source.height) < 0.01,
+        `${kind} must not stretch its generated artwork`);
     }
   }
 });

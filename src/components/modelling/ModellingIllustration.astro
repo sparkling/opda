@@ -1,31 +1,51 @@
 ---
 import CampaignThemeImage from '../campaign/CampaignThemeImage.astro';
 
-interface Props { kind: 'property-story' | 'modelling-workbench'; }
+interface Props { kind: 'property-story' | 'modelling-workbench' | 'working-package' | 'revision-review'; }
+interface ImageAsset { file: string; width: number; height: number; }
+interface Illustration { id: string; alt: string; caption: string; light: ImageAsset; dark: ImageAsset; }
 const { kind } = Astro.props;
-const illustrations = {
+const legacyAsset = (name: string, mode: string): ImageAsset => ({
+  file: `/images/modelling/enrichment/${name}-${mode}.png`, width: 2172, height: 724,
+});
+const illustrations: Record<string, Omit<Illustration, 'id'>> = {
   'property-story': {
     alt: 'Watercolour cutaway of a residential building with separate dwelling entrances, alongside inspection reports and a floor plan.',
     caption: 'A fictional property situation: the building, its dwellings and the reports about them need distinct descriptions.',
+    light: legacyAsset('property-story', 'light'), dark: legacyAsset('property-story', 'dark'),
   },
   'modelling-workbench': {
     alt: 'Watercolour of practitioners examining building and dwelling studies, grouping vocabulary cards and comparing reports.',
     caption: 'Modelling makes professional distinctions explicit. The exact relationships and rules are explained in the examples below.',
+    light: legacyAsset('modelling-workbench', 'light'), dark: legacyAsset('modelling-workbench', 'dark'),
   },
 };
+const additions = import.meta.glob<Illustration>(
+  '/public/images/modelling/inline-scenes/*/*/manifest.json',
+  { eager: true, import: 'default' },
+);
+for (const artwork of Object.values(additions)) {
+  if (Object.hasOwn(illustrations, artwork.id)) throw new Error(`Duplicate modelling illustration: ${artwork.id}`);
+  illustrations[artwork.id] = artwork;
+}
 if (!Object.hasOwn(illustrations, kind)) throw new Error('Unknown modelling illustration');
 const illustration = illustrations[kind];
-const base = '/images/modelling/enrichment/' + kind;
 ---
 
-<figure class="modelling-editorial">
-  <CampaignThemeImage lightSrc={base + '-light.png'} darkSrc={base + '-dark.png'}
-    alt={illustration.alt} width={2172} height={724} />
+<figure class="modelling-editorial" data-modelling-scene={kind}>
+  <CampaignThemeImage lightSrc={illustration.light.file} darkSrc={illustration.dark.file}
+    alt={illustration.alt} width={illustration.light.width} height={illustration.light.height}
+    loading="lazy" />
   <figcaption>{illustration.caption}</figcaption>
 </figure>
 
 <style>
-  .modelling-editorial { margin: var(--space-6) 0; max-inline-size: 60rem; }
+  .modelling-editorial {
+    inline-size: 100%;
+    max-inline-size: min(100%, var(--editorial-text-max, 64rem));
+    margin-block: var(--space-6);
+    margin-inline: 0 auto;
+  }
   .modelling-editorial :global(img) { display: block; inline-size: 100%; block-size: auto; }
-  .modelling-editorial figcaption { margin-block-start: var(--space-3); font-size: var(--text-sm); color: var(--color-text-muted); }
+  .modelling-editorial figcaption { margin-block-start: var(--space-3); font: inherit; color: var(--color-text-muted); }
 </style>

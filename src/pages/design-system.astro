@@ -118,11 +118,20 @@ const tokenSample = `:root {
 
   <h2 id="editorial-illustration">Editorial illustration</h2>
   <p>
-    <strong>OPDA editorial watercolour</strong> is the approved style for approachable,
+    <strong>OPDA editorial watercolour</strong> is the familiar default for approachable,
     human-facing property and participation content. Expressive ink, watercolour and
     gouache make each subject recognisable and distinct without turning illustration
     into evidence, technical notation or identity. It never replaces official logos,
     documentary photography or a diagram that must state exact relationships.
+  </p>
+  <p>
+    Choose the medium to suit the lesson. Use <strong>architectural cutaways</strong>
+    in hand-drafted ink and coloured pencil when a physical distinction needs
+    explaining. Use <strong>sequential ink narratives</strong>, with crisp linework
+    and flat pastel gouache, when a short human story makes the lesson clearer.
+    A restrained <strong>risograph editorial</strong> can give a manifesto or section
+    opener its own identity. These are deliberate alternatives, not a requirement
+    to mix every style on every page.
   </p>
   <div class="editorial-illustration-grid" aria-label="Approved editorial illustration subjects in light and dark modes">
     {editorialIllustrations.map(([id, label]) => (
@@ -137,7 +146,7 @@ const tokenSample = `:root {
   </div>
   <div class="callout callout--key">
     <h3 class="callout__label"><span aria-hidden="true">◇</span> Illustration rule</h3>
-    <p>Give every subject its own concrete visual idea. Generate the light composition first, approve it, then edit that exact image into its dark counterpart. Preserve geometry across modes; never invert it with CSS. Keep all explanatory text in HTML.</p>
+    <p>Give every subject its own concrete visual idea and choose its medium deliberately. Generate the light composition first, approve it, then edit that exact image into its dark counterpart. Preserve geometry across modes; never invert it with CSS. Keep all explanatory text in HTML. Save replacements under new filenames and retain the earlier illustration files.</p>
   </div>
   <h3>Canonical light-mode prompt</h3>
   <p>Replace the bracketed subject. Use an approved set-3 image only as a style reference, not as a composition to copy.</p>
@@ -158,6 +167,13 @@ const tokenSample = `:root {
     and paired-mode prompts, changing the composition ratio to 3:1; never stretch
     a card image or change its 4:1 layout. ADR-0078 records the Astra-directed
     motivation and influence landscape variants; earlier assets remain available.
+  </p>
+  <p>
+    Lower-page illustrations provide selective pauses in longer explanations.
+    Compose these more shallowly than the page header, keep them within the
+    left-aligned 1024px reading width and load them lazily. Preserve complete artwork
+    rather than forcing a crop. Store the exact medium, scene brief and light-to-dark
+    edit prompt in the asset manifest so future replacements follow the same intent.
   </p>
 
   <h2 id="colour">Colour</h2>

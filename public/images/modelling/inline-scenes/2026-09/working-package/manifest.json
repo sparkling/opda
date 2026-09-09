@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "working-package",
+  "style": "approved OPDA editorial watercolour with expressive fine ink, translucent watercolour and restrained gouache",
+  "alt": "Watercolour of practitioners examining a fictional property draft package with a separate source report, choice cards and an unresolved detail.",
+  "caption": "Illustrative fictional package under review; the distinctions and evidence remain subject to human judgement, not a formal model or approval record.",
+  "lightPrompt": "Use case: illustration-story. Image 1 is a reference for the approved working-package subject and palette, not a pixel-perfect edit target. Recompose the same relevant scene as a genuinely shallow 4:1 editorial panorama. Output canvas may be 2048x768, but place the complete meaningful scene inside a centered 2048x512 horizontal band with only blank matching OPDA paper margin above and below; no object or hand may enter the top/bottom 128px margins. Preserve the coherent property-practitioner workbench: one open draft folio with a single unlettered property drawing, one separate survey report, two separate choice cards, and two adult hands holding one small alternative detail above the folio. Use approved OPDA editorial watercolour with expressive fine deep-purple ink, #F9F9F9 paper, #FEC92B gold, #0E8478 petrol, #6C5BD4 violet, restrained coral. Low oblique table view, wide lateral spacing, sparse composition. No plants, cups, pencils, pen pots, windows, extra sheets, multiple house drawings, text, letters, digits, labels, logos, watermark, arrows, nodes, graph notation, approval marks, software, pipeline, floating metaphors, or exact relationships. The central band itself must be a complete finished shallow panorama; the blank margins are disposable paper only.",
+  "darkPrompt": "Use case: style-transfer. Input image 1 is the EXACT approved light image and EDIT TARGET. Change ONLY the paper ground, ink values, and pigment treatment for matching OPDA dark mode. Preserve every subject, hand, pose, folio, survey report, choice card, held detail, central horizontal band, blank top/bottom paper margins, object count, arrangement, proportions, perspective, framing, and native geometry exactly. Do not crop, stretch, add, remove, move, redraw, or reinterpret. Change off-white paper to flat deep-purple #231F2F across the entire canvas, including the blank margins. Use rich gold #FEC92B, petrol teal #0E8478, violet #6C5BD4, coral, pale lavender and warm-white ink. Preserve watercolour and expressive fine ink. No night scene, inversion filter, glow, neon, stars, gradients, text, letters, digits, labels, logos, watermark, arrows, nodes, graph notation, approval marks, or software. Exact same shallow composition.",
+  "generated": "2026-09-09",
+  "provider": "OpenAI built-in image_gen",
+  "modelVersionEvidence": "C2PA metadata: OpenAI Media Service API; gpt-image version 2.0; C2PA specification 2.2.0; digitalSourceType trainedAlgorithmicMedia.",
+  "exportOperation": "Trimmed only generator-added blank matching paper above and below the deliberately composed shallow strip; no meaningful drawing was cropped and no geometry was stretched.",
+  "light": {
+    "file": "/images/modelling/inline-scenes/2026-09/working-package/light.webp",
+    "width": 1024,
+    "height": 256,
+    "bytes": 40268,
+    "sha256": "c4078ab4b37794f361bdd8f77fc6547bb293e59e20dcb6ce18f7707828e52468",
+    "source": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-72c17f08-8ba7-40c9-811f-0ed01531fbe6.png",
+    "sourceWidth": 2042,
+    "sourceHeight": 770,
+    "sourceSha256": "c17a2752a769eb8645e79629a8c46a0a79ae0805b760f4ab3fe42c7ebe6ec063",
+    "sourceCrop": {"x": 1, "y": 130, "width": 2040, "height": 510},
+    "exportOperation": "Trimmed only generator-added blank matching paper above and below the deliberately composed shallow strip; no meaningful drawing was cropped and no geometry was stretched.",
+    "exportContentBounds": {"left": 0, "top": 0, "width": 1024, "height": 256},
+    "exportPadding": {"left": 0, "top": 0, "right": 0, "bottom": 0}
+  },
+  "dark": {
+    "file": "/images/modelling/inline-scenes/2026-09/working-package/dark.webp",
+    "width": 1024,
+    "height": 256,
+    "bytes": 27766,
+    "sha256": "806dfc44c2203c79e85166ae6b89c8611c691cbc237fecad8149394c5119f74a",
+    "source": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-ce4f1b12-d420-41e9-b3af-4cb8df6c7cb0.png",
+    "sourceWidth": 2042,
+    "sourceHeight": 770,
+    "sourceSha256": "a30e03aa3657b1ca73ab8bd31d9780e75d3d19d6f284dc3a0ac1e5bb3136bfa3",
+    "sourceCrop": {"x": 1, "y": 130, "width": 2040, "height": 510},
+    "editedFrom": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-72c17f08-8ba7-40c9-811f-0ed01531fbe6.png",
+    "exportOperation": "Trimmed only generator-added blank matching paper above and below the deliberately composed shallow strip; no meaningful drawing was cropped and no geometry was stretched.",
+    "exportContentBounds": {"left": 0, "top": 0, "width": 1024, "height": 256},
+    "exportPadding": {"left": 0, "top": 0, "right": 0, "bottom": 0}
+  },
+  "previousIllustrations": [{
+    "note": "Preserved earlier 1024x384 export from the first approved, too-tall working-package generation; retained for history and not used by the page.",
+    "light": {
+      "file": "/images/modelling/inline-scenes/2026-09/working-package/previous-light.webp",
+      "width": 1024,
+      "height": 384,
+      "bytes": 68250,
+      "sha256": "1b573ba027e3b6214de84457d834d2bc3ceca49ba753efdc67f348bd9124a679",
+      "source": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-2be61cb6-c890-4915-8119-4cc273a39ee8.png",
+      "sourceWidth": 2048,
+      "sourceHeight": 768,
+      "sourceSha256": "655759ca023c7380053c67b2b1d33dd61232d5395804734a6de9d47fb84cf6da"
+    },
+    "dark": {
+      "file": "/images/modelling/inline-scenes/2026-09/working-package/previous-dark.webp",
+      "width": 1024,
+      "height": 384,
+      "bytes": 58946,
+      "sha256": "86d4a3ee7b8740613148fb5ec8dd91c9fd6bc6f74af78beb1fb9b0155ae211c4",
+      "source": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-1a7fa89d-b619-4ed6-baa8-6eb5a69dfae6.png",
+      "sourceWidth": 2048,
+      "sourceHeight": 768,
+      "sourceSha256": "48f3bb7facca047c6ac9ede704833826f8c77b2289a1d8bcd4c59577f97c10d0",
+      "editedFrom": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-2be61cb6-c890-4915-8119-4cc273a39ee8.png"
+    }
+  }]
+}

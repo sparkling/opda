@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "revision-review",
+  "style": "crisp deep-purple brush-ink narrative with flat pastel gouache",
+  "alt": "Ink narrative of two practitioners comparing separate source, local rule and proposed amendment papers.",
+  "caption": "Illustrative sequence: local review preserves provenance and keeps a proposed amendment separate; it is not a formal approval record.",
+  "lightPrompt": "Use case: illustration-story. Image 1 is a reference for the approved revision-review subject and style, not a pixel-perfect edit target. Recompose it as a genuinely shallow 4:1 sequential ink panorama. Output canvas may be 2048x768, but place all meaningful people and papers inside a centered 2048x512 horizontal band with only blank matching OPDA paper margin above and below; no head, hand, table, or sheet may enter the top/bottom 128px margins. Keep three frameless moments across one continuous strip: an expert examines separate plain upstream-source and local-rule sheets; the expert and a second adult compare a proposed plain sheet while retaining the originals separately; a loose plain amendment remains separate beside a maintained plain rule folio. Crisp deep-purple brush ink with flat pastel gouache, not watercolour and not a comic grid. New adult faces and poses; bare pale table only. No books, plants, mugs, pens, shelves, labels, drawings, diagrams, graph nodes, circles-and-lines, letters, words, digits, logos, watermark, stamps, seals, checkmarks, arrows, software, screens, pipeline, handshake, or exact relationships. Do not imply automatic adoption, approval, or truth. The central band must be a complete finished shallow panorama; blank margins are disposable paper only.",
+  "darkPrompt": "Use case: style-transfer. Input image 1 is the EXACT approved light image and EDIT TARGET. Change ONLY the paper ground, ink values, and flat gouache palette for matching OPDA dark mode. Preserve every subject, person, face, hair, clothing, hand, pose, blank paper, table edge, three sequential moments, central horizontal band, blank top/bottom paper margins, object count, arrangement, proportions, perspective, framing, and native geometry exactly. Do not crop, stretch, add, remove, move, redraw, or reinterpret. Change off-white paper to flat deep-purple #231F2F across the entire canvas, including blank margins. Use deep purple and pale lavender ink, rich gold #FEC92B, petrol teal #0E8478, violet #6C5BD4, coral, and warm-white paper highlights. Preserve crisp brush ink and flat pastel gouache. No night scene, inversion filter, glow, neon, stars, gradients, text, letters, digits, labels, logos, watermark, arrows, graph notation, stamps, seals, checkmarks, software, or panel borders. Exact same shallow composition.",
+  "generated": "2026-09-09",
+  "provider": "OpenAI built-in image_gen",
+  "modelVersionEvidence": "C2PA metadata: OpenAI Media Service API; gpt-image version 2.0; C2PA specification 2.2.0; digitalSourceType trainedAlgorithmicMedia.",
+  "exportOperation": "Trimmed only generator-added blank matching paper above and below the deliberately composed shallow strip; no meaningful drawing was cropped and no geometry was stretched.",
+  "light": {
+    "file": "/images/modelling/inline-scenes/2026-09/revision-review/light.webp",
+    "width": 1024,
+    "height": 256,
+    "bytes": 28662,
+    "sha256": "12577bf9b26edc60afb5a404639fd61e0a0f80f94f842d8a4078bcfd1bc1a391",
+    "source": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-b8cb7a39-fff1-40ef-a0b3-4dae6cb93989.png",
+    "sourceWidth": 1983,
+    "sourceHeight": 793,
+    "sourceSha256": "5bb4117e136d55b1e5dd2e572cb98452cdfb5c93d4e372220ac08767265b89c3",
+    "sourceCrop": {"x": 1, "y": 150, "width": 1980, "height": 495},
+    "exportOperation": "Trimmed only generator-added blank matching paper above and below the deliberately composed shallow strip; no meaningful drawing was cropped and no geometry was stretched.",
+    "exportContentBounds": {"left": 0, "top": 0, "width": 1024, "height": 256},
+    "exportPadding": {"left": 0, "top": 0, "right": 0, "bottom": 0}
+  },
+  "dark": {
+    "file": "/images/modelling/inline-scenes/2026-09/revision-review/dark.webp",
+    "width": 1024,
+    "height": 256,
+    "bytes": 27588,
+    "sha256": "7eadac8cbb7b61e17765d111bd26faf494bd8a2e19cb7811ba146459a3ba6159",
+    "source": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-cd8078d9-2008-4703-9ce7-8cff2f6da5d4.png",
+    "sourceWidth": 1983,
+    "sourceHeight": 793,
+    "sourceSha256": "5f692a6c5c8e79997e99505eb94dd34608173eaad5dc4e0dd8ac9de748e152d2",
+    "sourceCrop": {"x": 1, "y": 150, "width": 1980, "height": 495},
+    "editedFrom": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-b8cb7a39-fff1-40ef-a0b3-4dae6cb93989.png",
+    "exportOperation": "Trimmed only generator-added blank matching paper above and below the deliberately composed shallow strip; no meaningful drawing was cropped and no geometry was stretched.",
+    "exportContentBounds": {"left": 0, "top": 0, "width": 1024, "height": 256},
+    "exportPadding": {"left": 0, "top": 0, "right": 0, "bottom": 0}
+  },
+  "previousIllustrations": [{
+    "note": "Preserved earlier 1024x384 export from the first approved, too-tall revision-review generation; retained for history and not used by the page.",
+    "light": {
+      "file": "/images/modelling/inline-scenes/2026-09/revision-review/previous-light.webp",
+      "width": 1024,
+      "height": 384,
+      "bytes": 41938,
+      "sha256": "7ee09691f9e229f6b3b6d96deb411e78f3241ebc457eb515d69cda9a1b99186c",
+      "source": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-bb795216-79a9-4b0f-a215-0024843950b7.png",
+      "sourceWidth": 2048,
+      "sourceHeight": 768,
+      "sourceSha256": "d3e48979c7a51c4b11acaf735e989425df2a860254e93ad1126e10763eab977a"
+    },
+    "dark": {
+      "file": "/images/modelling/inline-scenes/2026-09/revision-review/previous-dark.webp",
+      "width": 1024,
+      "height": 384,
+      "bytes": 46150,
+      "sha256": "82505763ca9e594e74a4ca53c51644df23e8238dea6131e148d4913f5b008bb0",
+      "source": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-893910a6-f9e1-494b-ae92-c836e8b66720.png",
+      "sourceWidth": 2048,
+      "sourceHeight": 768,
+      "sourceSha256": "477290fce1af83ea8eaf10784fc7dce05e15e0e5814f4d176cdc06f6e367219d",
+      "editedFrom": "/Users/henrik/.codex/generated_images/01a087a0-5913-7cf0-82c3-00c8ab7d2051/exec-bb795216-79a9-4b0f-a215-0024843950b7.png"
+    }
+  }]
+}

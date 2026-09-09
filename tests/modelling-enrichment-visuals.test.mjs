@@ -35,6 +35,29 @@ test('editorial pairs preserve intrinsic landscape geometry without cropping', (
   assert.match(read('src/components/campaign/CampaignThemeImage.astro'), /width=\{width\}[\s\S]*height=\{height\}/u);
 });
 
+test('lower-page illustrations share the reading-width frame and stay below the header', () => {
+  const component = read('src/components/modelling/ModellingIllustration.astro');
+  assert.match(component, /inline-scenes\/\*\/\*\/manifest\.json/u);
+  assert.match(component, /width=\{illustration\.light\.width\} height=\{illustration\.light\.height\}/u);
+  assert.match(component, /max-inline-size: min\(100%, var\(--editorial-text-max, 64rem\)\)/u);
+  assert.match(component, /margin-inline: 0 auto/u);
+  assert.match(component, /loading="lazy"/u);
+  assert.doesNotMatch(component, /object-fit:\s*cover|aspect-ratio:|filter:|overflow:\s*hidden/u);
+
+  for (const [page, kind, section] of [
+    ['understand/how-the-work-is-done', 'working-package', 'small-package'],
+    ['method/standards-and-decisions', 'revision-review', 'legacy'],
+  ]) {
+    const source = read(`src/pages/semantic-modelling/${page}.astro`);
+    assert.equal([...source.matchAll(/<ModellingIllustration\b/gu)].length, 1);
+    assert.ok(source.includes(`kind="${kind}"`));
+    const artwork = source.indexOf('<ModellingIllustration');
+    assert.ok(artwork > source.indexOf('<section'), page + ' needs a lower-page illustration');
+    if (section === 'small-package') assert.ok(artwork > source.indexOf('id="small-package"'));
+    else assert.ok(artwork < source.indexOf('id="legacy"'));
+  }
+});
+
 test('learning term links resolve to the shared glossary and the new chapter is navigable', () => {
   const glossary = read('src/pages/glossary.astro');
   const routeRoot = new URL('../src/pages/semantic-modelling/', import.meta.url);

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "generated": "2026-09-09",
+  "method": "OpenAI built-in image generation; model revision not exposed",
+  "style": "sequential-ink-narrative",
+  "route": "/semantic-modelling/understand/what-we-are-building",
+  "contextualAlt": "Three ink-drawn panels show two property professionals questioning a closed door, comparing an inspection report and floor plan, and annotating a draft while retaining both sources and an unresolved alternative.",
+  "lightPrompt": "Use case: illustration-story.\nAsset type: OPDA semantic-modelling section header for /semantic-modelling/understand/what-we-are-building.\nPrimary request: Create ONE original wide 3:1 three-panel sequential ink narrative for adults. It tells one restrained left-to-right story about one agreement being inspectable through different views. The same two credible adult property professionals must be unmistakably retained in all three panels: a middle-aged Black woman building surveyor with short natural hair, petrol work jacket and coral scarf; and a white man in his late fifties with silver hair, round spectacles and violet overshirt. Their faces, clothes and proportions remain consistent across the strip.\nScene/backdrop: grounded British dwelling-inspection work, on cool off-white #F9F9F9 paper to every canvas edge. No decorative or abstract background.\nPanel one: at the entrance hall of a modest British dwelling after an inspection, the surveyor poses one clear ordinary-language question through natural questioning gesture and attention toward a visibly closed interior door; the colleague studies the same doorway and a plain clipboard. Do not use a speech bubble or any writing.\nPanel two: at a worktable, those same two adults compare two visibly distinct original source artefacts about that one inspection: one substantial report document with blank ruled strokes and one separate architectural floor-plan sheet with drawn room shapes but absolutely no labels, letters, numbers or symbols. Both originals are clearly separate and neither is treated as the winner.\nPanel three: those same two adults annotate a third draft comparison sheet between them, using only non-readable freehand marks and shaded areas; both distinct original report and floorplan remain fully visible and physically separate beside the draft; a second small blank alternative draft card remains set aside and visibly unresolved. Their expressions are thoughtful, provisional and professionally engaged, never celebratory.\nStyle/medium: elegant crisp brush-and-pen drawing with expressive deep-purple #231F2F contours and flat pastel opaque gouache fields; sophisticated adult editorial illustration; subtle dry-brush grain only; explicitly NOT watercolour, not a children's cartoon, not caricature, not comic-book action styling.\nComposition/framing: exact full 3:1 panoramic canvas, three equal shallow panels read left to right, separated by thin simple deep-purple gutters. Fill the strip with full subjects and complete props, no cropped heads or hands, no huge blank margins. Each panel is a distinct moment but the horizontal rhythm is cohesive and calm. Crisp and legible at 1200x400.\nColor palette: cool off-white #F9F9F9 paper, deep-purple ink #231F2F, generous flat OPDA gold #FEC92B, petrol #0E8478, violet #6C5BD4, restrained coral accents. No beige or sepia cast.\nMeaning constraints: show one agreement inspected through different views, not six competing models. The illustration is a fictional teaching scene, not evidence. Human discussion does not prove truth. Do not depict an operational application, automatic pipeline, approved outcome, consensus, green tick, checkmark, approval stamp or final truth.\nText constraints: absolutely NO embedded text of any kind: no words, letters, numbers, labels, speech bubbles, captions, signage, icons, symbols or arrows. Documents may contain only loose non-semantic blank strokes and areas, never text-like glyphs.\nAvoid: logos, watermarks, floating nodes, linked-network motifs, glow, neon, gradients, photography, glossy 3D, UI chrome, giant empty margins, extra people, extra panels, duplicated limbs or malformed hands. Full artwork only.",
+  "darkPrompt": "Use case: style-transfer.\nAsset type: exact dark-mode counterpart of the supplied approved light OPDA sequential ink narrative header.\nInput image: Image 1 is the EDIT TARGET. Preserve it, do not reinterpret it.\nPrimary request: change ONLY the paper, ink values and flat gouache pigment treatment so the supplied illustration works on a dark surface. The entire paper background, including every panel and gutter-adjacent area, becomes a single flat deep purple #231F2F to every outer edge.\nExact invariants: preserve pixel-for-pixel-equivalent composition and geometry: identical three panels, people, identities, faces, hair, clothes, poses, hands, expressions, actions, object count, doorway, room setting, tables, report, floorplan, comparison sheet, alternative card, plants, cups, gutters, relative positions, relative sizes, proportions, perspective, framing, crop and negative-space balance. Do not add, remove, move, resize, redraw or replace any subject or prop. The same two adults must remain exactly the same people in every panel.\nDark palette: retain rich flat OPDA gold #FEC92B, petrol #0E8478, violet #6C5BD4 and restrained coral accents as opaque pastel gouache. Convert the original deep linework to pale lavender, warm off-white or carefully chosen pale coloured ink wherever needed for excellent legibility. Leave the deep-purple paper visible between pen strokes and pigment fields. Maintain crisp brush-and-pen contours, dry-brush grain and sophisticated adult editorial character.\nCritical treatment: this is a careful dark-paper recolouring of the exact same drawing, not night scenery and not a colour inversion. Pigments may be vivid and readable but never fluorescent and never glowing.\nConstraints: absolutely no redesign, additions, removals, rearrangement, new marks, new story, new setting, night scenery, stars, moon, negative-image effect, neon, fluorescent outline, glow, gradients, photography, glossy 3D, UI chrome, text, words, letters, numbers, labels, speech bubbles, signs, symbols, arrows, logos or watermarks. Keep the full shallow 3:1 strip and thin simple gutters unchanged.",
+  "export": {
+    "width": 1200,
+    "height": 400,
+    "format": "webp",
+    "quality": 72,
+    "effort": 6,
+    "byteLimit": 150000,
+    "operation": "Whole-image proportional contain on a theme-colour 1200x400 canvas; no crop or stretching."
+  },
+  "light": {
+    "source": "/Users/henrik/.codex/generated_images/01a087f8-e1cc-7be3-b886-341b1e51f98a/exec-c644a972-5500-4ee6-af63-830009e79151.png",
+    "sourceSha256": "5fbbd6c029e9fd7618b777af86365fb9c93e0b3425378c62f9d871ee6f4e37fe",
+    "sourceWidth": 2172,
+    "sourceHeight": 724,
+    "file": "/images/modelling/style-variants/2026-09/ink-building/what-we-are-building-light.webp",
+    "sha256": "8a3ce7d91cd04e5903369e98878dee40eb830e7b9071f21915b82fffb72a707e",
+    "width": 1200,
+    "height": 400,
+    "bytes": 81952
+  },
+  "dark": {
+    "source": "/Users/henrik/.codex/generated_images/01a087f8-e1cc-7be3-b886-341b1e51f98a/exec-e65cca33-e0af-4153-9973-7879a61b3faf.png",
+    "sourceSha256": "962ac6aff6082d12e337b32363b4613b739289f054eb271631f1ab69956d368c",
+    "sourceWidth": 2172,
+    "sourceHeight": 724,
+    "file": "/images/modelling/style-variants/2026-09/ink-building/what-we-are-building-dark.webp",
+    "sha256": "65b1533f306a1f8ce894193ae89ff396e8c7158007cb828147aaddb04d1bd2ad",
+    "width": 1200,
+    "height": 400,
+    "bytes": 78116,
+    "editedFrom": "/Users/henrik/.codex/generated_images/01a087f8-e1cc-7be3-b886-341b1e51f98a/exec-c644a972-5500-4ee6-af63-830009e79151.png"
+  }
+}
