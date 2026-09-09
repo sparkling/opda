@@ -15,7 +15,10 @@ test('only runtime dependencies and the CID logo enter the private Lambda bundle
   const output = await mkdtemp(resolve(tmpdir(), 'opda-onboarding-package-'));
   t.after(() => rm(output, { recursive: true, force: true }));
   const files = await packageOnboarding({ output });
-  assert.equal(files.length, 12); assert.deepEqual(files, BUNDLE_FILES.map(([, target]) => target).sort());
+  assert.deepEqual(files, BUNDLE_FILES.map(([, target]) => target).sort());
+  for (const name of ['index', 'worker', 'store', 'settings', 'postmark', 'domain-templates']) {
+    assert.ok(files.includes(`src/approval-onboarding/${name}.mjs`));
+  }
   assert.ok(files.every(path => path.startsWith('src/')));
   assert.ok(files.every(path => !/gallery|design-explorations|\.env|secret|certificate|private.key/i.test(path)));
   for (const [source, target] of BUNDLE_FILES) assert.deepEqual(await readFile(resolve(output, target)), await readFile(new URL(`../${source}`, import.meta.url)));
@@ -55,16 +58,19 @@ test('Microsoft follow-up can write receipts but cannot change website approval 
 test('existing approval relay notifies the separate consumer without historical activation', async () => {
   const template = await read('config/aws/hubspot-approval-stack.yaml');
   assert.match(block(template, 'OnboardingCutover'), /Default: ''/);
+  assert.match(block(template, 'DomainReviewCutover'), /Default: ''/);
   assert.match(block(template, 'OnboardingEnabled'), /Default: 'false'/);
   assert.match(block(template, 'OnboardingCanaryEmailHash'), /Default: ''[\s\S]*AllowedPattern: '\^\$\|\^\[a-f0-9\]\{64\}\$'/);
   assert.match(block(template, 'OnboardingApplication'), /TemplateURL: approval-onboarding-stack\.yaml/);
   assert.match(block(template, 'OnboardingApplication'), /OnboardingCanaryEmailHash: !Ref OnboardingCanaryEmailHash/);
   assert.match(block(template, 'Worker'), /ONBOARDING_QUEUE_URL: !GetAtt OnboardingApplication\.Outputs\.QueueUrl/);
   assert.match(block(template, 'Worker'), /ONBOARDING_CUTOVER: !Ref OnboardingCutover/);
+  assert.match(block(template, 'Worker'), /DOMAIN_REVIEW_CUTOVER: !Ref DomainReviewCutover/);
   assert.match(block(template, 'WorkerRole'), /Sid: NotifyOnboardingOnly[\s\S]*Resource: !GetAtt OnboardingApplication\.Outputs\.QueueArn/);
   assert.match(block(template, 'RecoverySchedule'), /rate\(15 minutes\)/);
   const site = await read('config/aws/site-stack.yaml');
   assert.match(block(site, 'HubSpotApprovalApplication'), /OnboardingCutover: !Ref OnboardingCutover/);
+  assert.match(block(site, 'HubSpotApprovalApplication'), /DomainReviewCutover: !Ref DomainReviewCutover/);
   assert.match(block(site, 'HubSpotApprovalApplication'), /OnboardingCanaryEmailHash: !Ref OnboardingCanaryEmailHash/);
   assert.ok(site.trimEnd().split('\n').length < 500);
 });

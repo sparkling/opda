@@ -25,6 +25,7 @@ Parameters:
     Default: arn:aws:secretsmanager:eu-west-2:355653384628:secret:opda/hubspot/participant-crm-bridge-IOhsJX
     Description: ARN only, never the token; runtime reads the existing private app credential.
   OnboardingCutover: { Type: String, Default: '' }
+  DomainReviewCutover: { Type: String, Default: '' }
   OnboardingEnabled: { Type: String, Default: 'false', AllowedValues: ['false', 'true'] }
   OnboardingCanaryEmailHash: { Type: String, Default: '', AllowedPattern: '^$|^[a-f0-9]{64}$' }
 
@@ -97,6 +98,7 @@ Resources:
       TemplateURL: hubspot-approval-stack.yaml
       Parameters:
         OnboardingCutover: !Ref OnboardingCutover
+        DomainReviewCutover: !Ref DomainReviewCutover
         OnboardingEnabled: !Ref OnboardingEnabled
         OnboardingCanaryEmailHash: !Ref OnboardingCanaryEmailHash
         RegistrationsTableName: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName

@@ -35,6 +35,11 @@ Parameters:
     Type: String
     Default: 'false'
     AllowedValues: ['false', 'true']
+  DomainReviewCutover:
+    Type: String
+    Default: ''
+    AllowedPattern: '^$|^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$'
+    Description: Activate individual-domain reviews only after six CRM fields, subscriptions and pinned templates are verified.
   OnboardingCanaryEmailHash:
     Type: String
     Default: ''
@@ -245,6 +250,7 @@ Resources:
           APPROVAL_QUEUE_ARN: !GetAtt ApprovalQueue.Arn
           REVIEW_CUTOVER: '2026-09-08T21:00:00.000Z'
           ONBOARDING_CUTOVER: !Ref OnboardingCutover
+          DOMAIN_REVIEW_CUTOVER: !Ref DomainReviewCutover
           ONBOARDING_QUEUE_URL: !GetAtt OnboardingApplication.Outputs.QueueUrl
 
   ApprovalMapping:

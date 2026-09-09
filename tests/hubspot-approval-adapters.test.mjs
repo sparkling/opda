@@ -3,6 +3,7 @@ import test from 'node:test';
 import { createHubSpotClient } from '../config/aws/hubspot-approval/client.mjs';
 import { createIdentity } from '../config/aws/hubspot-approval/identity.mjs';
 import { CONTACT_PROPERTIES } from '../config/aws/hubspot-participation/import.mjs';
+import { DOMAIN_REVIEW_PROPERTIES } from '../config/aws/hubspot-participation/properties.mjs';
 import { APP_SCOPES } from '../config/aws/hubspot-participation/admin.mjs';
 import { RetryLater } from '../config/aws/hubspot-sync/errors.mjs';
 
@@ -31,7 +32,7 @@ function crm(options = {}) {
   return { client, calls, secretReads: () => reads };
 }
 
-test('approval CRM reader pins the app and requests all agreed fields and approval/email history', async () => {
+test('approval CRM reader pins the app and requests all fields and independent domain-review histories', async () => {
   const f = crm();
   assert.deepEqual(await f.client.getContact('123'), contact());
   assert.deepEqual(await f.client.getContact('123'), contact());
@@ -42,7 +43,8 @@ test('approval CRM reader pins the app and requests all agreed fields and approv
   assert.equal(read.url.origin, 'https://api.hubapi.com');
   assert.equal(read.url.pathname, '/crm/v3/objects/contacts/123');
   assert.deepEqual(read.url.searchParams.get('properties').split(','), CONTACT_PROPERTIES);
-  assert.deepEqual(read.url.searchParams.get('propertiesWithHistory').split(','), ['opda_review_status', 'email', 'opda_requested_working_groups']);
+  assert.deepEqual(read.url.searchParams.get('propertiesWithHistory').split(','),
+    ['opda_review_status', 'email', 'opda_requested_working_groups', ...Object.values(DOMAIN_REVIEW_PROPERTIES)]);
   assert.ok(f.calls.every(({ init }) => init.redirect === 'error'));
   assert.ok(f.calls.every(({ init }) => init.signal instanceof AbortSignal));
 });
@@ -106,9 +108,21 @@ test('approval CRM inventory consumes bounded pages, preserves histories and ign
     assert.equal(url.searchParams.get('limit'), '100');
     assert.equal(url.searchParams.get('archived'), 'false');
     assert.deepEqual(url.searchParams.get('properties').split(','), CONTACT_PROPERTIES);
-    assert.deepEqual(url.searchParams.get('propertiesWithHistory').split(','), ['opda_review_status', 'email', 'opda_requested_working_groups']);
+    assert.deepEqual(url.searchParams.get('propertiesWithHistory').split(','),
+      ['opda_review_status', 'email', 'opda_requested_working_groups', ...Object.values(DOMAIN_REVIEW_PROPERTIES)]);
   }
   assert.equal(requests[1].searchParams.get('after'), 'cursor-2');
+});
+
+test('domain history is preserved for independent denial instead of hiding another domain withdrawal', async () => {
+  const value = contact();
+  value.properties.opda_review_finance_and_banking = 'approved';
+  value.properties.opda_review_conveyancing = 'withdrawn';
+  value.propertiesWithHistory.opda_review_finance_and_banking = { malformed: true };
+  value.propertiesWithHistory.opda_review_conveyancing = [{ value: 'withdrawn',
+    timestamp: '2026-09-08T20:00:00Z', sourceType: 'CRM_UI', sourceId: 'userId:456' }];
+  const f = crm({ fetch: async url => url.includes('/oauth/') ? json(INFO) : json(value) });
+  assert.deepEqual(await f.client.getContact('123'), value);
 });
 
 test('approval CRM inventory rejects repeated cursors, duplicate contacts and incomplete paging', async () => {
@@ -154,6 +168,7 @@ test('approval CRM projection can write only active/enrolment snapshots, never r
     { active: true, enrolmentStatus: 'unknown' }, { active: true },
     { active: true, enrolmentStatus: 'complete', reviewStatus: 'approved' },
     { active: true, enrolmentStatus: 'complete', opda_review_status: 'approved' },
+    { active: true, enrolmentStatus: 'complete', opda_review_finance_and_banking: 'approved' },
     Object.assign(Object.create({ active: true }), { enrolmentStatus: 'complete', reviewStatus: 'approved' })]) {
     const before = f.calls.length;
     await assert.rejects(f.client.projectStatus('123', value));

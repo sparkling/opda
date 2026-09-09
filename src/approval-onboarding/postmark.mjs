@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { buildInvitationPayload, INVITATION_SUBJECT, INVITATION_TEMPLATE_ALIAS } from './invitation.mjs';
+import { domainTemplateContract } from './domain-templates.mjs';
 
 const ORIGIN = 'https://api.postmarkapp.com';
 const DIGEST = /^[a-f0-9]{64}$/;
@@ -25,11 +26,14 @@ const failed = (reason, attempted = false, extra = {}) => ({ status: 'failed', a
 const unknown = (reason, attempted = false) => ({ status: 'unknown', attempted, reason });
 
 /** Byte-exact content pin; no provider-native immutable version is assumed. */
-export function fingerprintTemplate(template) {
+export function fingerprintTemplate(template, options = {}) {
   object(template);
-  const { Alias = INVITATION_TEMPLATE_ALIAS, Subject = INVITATION_SUBJECT,
+  object(options, ['groupId']);
+  const contract = options.groupId === undefined
+    ? { alias: INVITATION_TEMPLATE_ALIAS, subject: INVITATION_SUBJECT } : domainTemplateContract(options.groupId);
+  const { Alias = contract.alias, Subject = contract.subject,
     HtmlBody, TextBody, TemplateType = 'Standard', LayoutTemplate = null } = template;
-  requireValue(Alias === INVITATION_TEMPLATE_ALIAS && Subject === INVITATION_SUBJECT
+  requireValue(Alias === contract.alias && Subject === contract.subject
     && TemplateType === 'Standard' && LayoutTemplate === null, 'unexpected template contract');
   for (const body of [HtmlBody, TextBody]) requireValue(typeof body === 'string' && body.length > 0
     && body.length <= 500_000 && body.includes('pm:unsubscribe'), 'bounded body with unsubscribe required');
@@ -54,9 +58,15 @@ export function fingerprintTemplate(template) {
  * https://postmarkapp.com/developer/user-guide/tracking-opens/tracking-opens-per-email
  */
 export function createPostmarkInvitationAdapter(config) {
-  object(config, ['token', 'fetchImpl', 'expectedServerId', 'expectedTemplateId', 'expectedTemplateFingerprint', 'timeoutMs']);
+  object(config, ['token', 'fetchImpl', 'expectedServerId', 'expectedTemplateId', 'expectedTemplateFingerprint',
+    'expectedGroupId', 'expectedTemplateAlias', 'expectedSubject', 'timeoutMs']);
   const { token, fetchImpl = globalThis.fetch, expectedServerId, expectedTemplateId,
-    expectedTemplateFingerprint, timeoutMs = 10_000 } = config;
+    expectedTemplateFingerprint, expectedGroupId, timeoutMs = 10_000 } = config;
+  const contract = expectedGroupId === undefined
+    ? { alias: INVITATION_TEMPLATE_ALIAS, subject: INVITATION_SUBJECT } : domainTemplateContract(expectedGroupId);
+  const expectedTemplateAlias = config.expectedTemplateAlias ?? contract.alias;
+  const expectedSubject = config.expectedSubject ?? contract.subject;
+  requireValue(expectedTemplateAlias === contract.alias && expectedSubject === contract.subject, 'unexpected domain template contract');
   requireValue(typeof token === 'string' && token.length > 0 && token.length <= 512 && /^[\x21-\x7e]+$/u.test(token), 'bounded token required');
   requireValue(typeof fetchImpl === 'function', 'fetch implementation required');
   requireValue([expectedServerId, expectedTemplateId].every((value) => Number.isSafeInteger(value) && value > 0), 'positive server and template IDs required');
@@ -81,11 +91,11 @@ export function createPostmarkInvitationAdapter(config) {
 
   async function verifyTemplate(signal) {
     try {
-      const { status, data } = await request(`/templates/${INVITATION_TEMPLATE_ALIAS}`, { signal });
+      const { status, data } = await request(`/templates/${expectedTemplateAlias}`, { signal });
       return readSucceeded(status, data) && data.Active === true && data.TemplateId === expectedTemplateId
-        && data.AssociatedServerId === expectedServerId && data.Alias === INVITATION_TEMPLATE_ALIAS
-        && data.Subject === INVITATION_SUBJECT && data.TemplateType === 'Standard' && data.LayoutTemplate === null
-        && fingerprintTemplate(data) === expectedTemplateFingerprint;
+        && data.AssociatedServerId === expectedServerId && data.Alias === expectedTemplateAlias
+        && data.Subject === expectedSubject && data.TemplateType === 'Standard' && data.LayoutTemplate === null
+        && fingerprintTemplate(data, { groupId: expectedGroupId }) === expectedTemplateFingerprint;
     } catch { return false; }
   }
 
@@ -140,7 +150,7 @@ export function createPostmarkInvitationAdapter(config) {
       requireValue(typeof args.operationKey === 'string' && DIGEST.test(args.operationKey), 'opaque operation key required');
       requireValue(typeof args.beforeSend === 'function', 'final approval guard required');
       requireValue(args.signal === undefined || args.signal instanceof AbortSignal, 'AbortSignal required');
-      payload = buildInvitationPayload(args.input, args.registry, { logoBase64: args.logoBase64 });
+      payload = buildInvitationPayload(args.input, args.registry, { logoBase64: args.logoBase64, groupId: expectedGroupId });
     } catch { return failed('invalid-input'); }
     const { operationKey, beforeSend, signal } = args;
     if (signal?.aborted) return failed('stale-or-cancelled');
@@ -166,6 +176,7 @@ export function createPostmarkInvitationAdapter(config) {
       payload.TemplateId = expectedTemplateId;
       payload.Tag = TAG;
       payload.Metadata = { opda_onboarding_key: operationKey, opda_template_sha256: expectedTemplateFingerprint };
+      if (expectedGroupId !== undefined) payload.Metadata.opda_domain_id = expectedGroupId;
       const suppression = await checkSuppression(payload.To, signal);
       if (signal?.aborted) return finish(failed('stale-or-cancelled'));
       if (suppression === 'unavailable') return finish(failed('suppression-check-unavailable'));
@@ -209,7 +220,8 @@ export function createPostmarkInvitationAdapter(config) {
           && UUID.test(row.MessageID ?? '') && row.MessageStream === 'broadcast'
           && row.Metadata?.opda_onboarding_key === operationKey
           && row.Metadata?.opda_template_sha256 === expectedTemplateFingerprint
-          && row.Tag === TAG && row.Subject === INVITATION_SUBJECT
+          && (expectedGroupId === undefined || row.Metadata?.opda_domain_id === expectedGroupId)
+          && row.Tag === TAG && row.Subject === expectedSubject
           && ['Queued', 'Sent', 'Processed'].includes(row.Status) && validDate(row.ReceivedAt)
           && row.TrackOpens === false && row.TrackLinks === 'None' && row.Sandboxed === false
           && Array.isArray(row.To) && row.To.length === 1 && typeof row.To[0]?.Email === 'string'

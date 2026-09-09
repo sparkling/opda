@@ -59,10 +59,12 @@ const operationKey = id => { requireValue(typeof id === 'string' && HEX.test(id)
 const stateKey = op => `CRM#ONBOARDING_STATE#${op.participantId}`;
 const immutableKeys = ['pk', 'schemaVersion', 'operationId', 'participantId', 'contactId', 'cognitoSub',
   'accountKey', 'bindingKey', 'auditKey', 'decisionId', 'accessVersion', 'action', 'createdAt'];
-const sameOperation = (a, b) => a && b && immutableKeys.every(key => a[key] === b[key]);
+const keysOf = op => op.schemaVersion === 2 ? [...immutableKeys, 'domainId', 'domainVersion'] : immutableKeys;
+const sameOperation = (a, b) => a && b && keysOf(b).every(key => a[key] === b[key]);
+const rowSnapshot = (op, row) => op.schemaVersion === 2 ? row?.domainApprovals?.[op.domainId]?.onboarding : row?.onboarding;
 
 function validOperation(op) {
-  requireValue(plain(op) && op.pk === operationKey(op.operationId) && op.schemaVersion === 1
+  requireValue(plain(op) && op.pk === operationKey(op.operationId) && [1, 2].includes(op.schemaVersion)
     && typeof op.participantId === 'string' && ID.test(op.participantId)
     && typeof op.cognitoSub === 'string' && ID.test(op.cognitoSub) && /^[1-9][0-9]{0,19}$/.test(op.contactId)
     && typeof op.contactId === 'string' && HEX.test(op.decisionId)
@@ -70,8 +72,12 @@ function validOperation(op) {
     && Number.isSafeInteger(op.createdAt) && op.createdAt >= 0 && STATUSES.includes(op.status)
     && ['provision', 'revoke'].includes(op.action) && op.accountKey === `USER#${op.cognitoSub}`
     && op.bindingKey === `CRM#CONTACT#${op.contactId}` && op.auditKey === `CRM#AUDIT#${op.contactId}#${op.decisionId}`
-    && op.operationId === hash(JSON.stringify([1, op.participantId, op.decisionId, op.accessVersion]))
-    && Object.keys(op).every(key => [...immutableKeys, 'status', 'stage', 'reason'].includes(key)));
+    && (op.schemaVersion === 1 || APPROVAL_GROUP_IDS.includes(op.domainId)
+      && Number.isSafeInteger(op.domainVersion) && op.domainVersion >= 1)
+    && op.operationId === hash(JSON.stringify(op.schemaVersion === 2
+      ? [2, op.participantId, op.domainId, op.decisionId, op.domainVersion]
+      : [1, op.participantId, op.decisionId, op.accessVersion]))
+    && Object.keys(op).every(key => [...keysOf(op), 'status', 'stage', 'reason'].includes(key)));
 }
 function validAudit(op, audit) {
   const snap = audit?.onboarding;
@@ -79,7 +85,8 @@ function validAudit(op, audit) {
     && audit.contactId === op.contactId && audit.decisionId === op.decisionId
     && audit.accessVersion === op.accessVersion && audit.at === op.createdAt
     && snap?.operationId === op.operationId && snap.action === op.action && snap.decisionId === op.decisionId
-    && snap.accessVersion === op.accessVersion && snap.templateVersion === 1
+    && snap.accessVersion === op.accessVersion && snap.templateVersion === op.schemaVersion
+    && (op.schemaVersion === 1 || snap.domainId === op.domainId && snap.domainVersion === op.domainVersion)
     && Number.isSafeInteger(snap.decisionAt) && snap.decisionAt >= 0 && snap.decisionAt <= audit.at + 60000
     && (snap.actor === null || typeof snap.actor === 'string' && /^[1-9][0-9]{0,19}$/.test(snap.actor))
     && snap.actor === audit.actor && Array.isArray(snap.groups) && snap.groups.length <= APPROVAL_GROUP_IDS.length
@@ -88,6 +95,7 @@ function validAudit(op, audit) {
     && ['approved', 'empty', 'review_required', 'denied'].includes(snap.snapshotStatus));
   requireValue(op.action === 'provision'
     ? snap.snapshotStatus === 'approved' && snap.groups.length > 0 && snap.actor !== null
+      && (op.schemaVersion === 1 || isDeepStrictEqual(snap.groups, [op.domainId]))
       && audit.reviewStatus === 'approved' && audit.active === true
       && Number.isSafeInteger(snap.groupsAt) && snap.groupsAt >= 0 && snap.groupsAt <= snap.decisionAt
     : snap.snapshotStatus !== 'approved' && snap.groups.length === 0);
@@ -103,6 +111,10 @@ function sameIdentity(op, account, binding, state) {
   return !(account?.email && binding?.email && account.email !== binding.email);
 }
 function currentSnapshot(op, account, binding, snapshot) {
+  if (op.schemaVersion === 2) return (!account || isDeepStrictEqual(rowSnapshot(op, account), snapshot))
+    && (!binding || isDeepStrictEqual(rowSnapshot(op, binding), snapshot));
+  // Once migrated, old contact-wide jobs cannot restore memberships or send old invitations.
+  if (account?.approvalPolicy === 'individual-domains-v1' || binding?.approvalPolicy === 'individual-domains-v1') return false;
   return (!account || account.accessVersion === op.accessVersion && isDeepStrictEqual(account.onboarding, snapshot))
     && (!binding || isDeepStrictEqual(binding.onboarding, snapshot));
 }
@@ -155,7 +167,7 @@ export function createOnboardingStore({ tableName, now = Date.now, send: injecte
   }
   function operationCheck(op) {
     const names = { '#status': 'status' }, values = { ':pending': 'pending' };
-    const clauses = immutableKeys.map((key, index) => {
+    const clauses = keysOf(op).map((key, index) => {
       names[`#o${index}`] = key; values[`:o${index}`] = op[key]; return `#o${index} = :o${index}`;
     });
     return check(op.pk, ['#status = :pending', ...clauses].join(' AND '), values, names);
@@ -171,7 +183,7 @@ export function createOnboardingStore({ tableName, now = Date.now, send: injecte
     const [account, binding, audit, state] = await Promise.all([op.accountKey, op.bindingKey, op.auditKey, stateKey(op)].map(get));
     validAudit(op, audit); requireValue(sameIdentity(op, account, binding, state));
     for (const row of [account, binding]) {
-      if (row?.onboarding?.operationId === op.operationId) requireValue(isDeepStrictEqual(row.onboarding, audit.onboarding));
+      if (rowSnapshot(op, row)?.operationId === op.operationId) requireValue(isDeepStrictEqual(rowSnapshot(op, row), audit.onboarding));
     }
     if (state) requireValue(Number.isSafeInteger(state.revision) && state.revision >= 1 && Number.isSafeInteger(state.leaseUntil));
     const time = clock(); if (state?.leaseUntil > time) return null;
@@ -199,7 +211,9 @@ export function createOnboardingStore({ tableName, now = Date.now, send: injecte
     const [op, account, binding, state] = await Promise.all([expected.pk, expected.accountKey, expected.bindingKey, stateKey(expected)].map(get));
     if (!sameOperation(op, expected) || op.status !== 'pending' || !owned(context, state, time)
       || !sameIdentity(expected, account, binding, state) || !currentSnapshot(expected, account, binding, snapshot)) return false;
-    if (requireEligible && (op.action !== 'provision' || !eligible(account, time))) return false;
+    if (requireEligible && (op.action !== 'provision' || !eligible(account, time)
+      || op.schemaVersion === 2 && (account.approvalPolicy !== 'individual-domains-v1'
+        || account.domainApprovals?.[op.domainId]?.status !== 'approved'))) return false;
     const email = emailOf(account, binding);
     if (email) {
       const owner = await get(`EMAIL#${hash(email)}`);
@@ -218,15 +232,19 @@ export function createOnboardingStore({ tableName, now = Date.now, send: injecte
   function eligibleChecks(context, time) {
     const { operation: op, snapshot } = ref(context), row = context.account, binding = context.binding;
     const emailKey = `EMAIL#${hash(emailOf(row, binding))}`;
-    return [check(op.accountKey, 'participantId = :pid AND cognitoSub = :sub AND accessVersion = :version AND onboarding = :snapshot'
+    const domain = op.schemaVersion === 2;
+    const approvalCheck = domain ? 'domainApprovals = :snapshot' : 'onboarding = :snapshot';
+    return [check(op.accountKey, 'participantId = :pid AND cognitoSub = :sub AND accessVersion = :version AND ' + approvalCheck
       + ' AND active = :active AND reviewStatus = :approved AND suspended = :suspended AND enrolmentStatus = :enrolment'
       + ' AND email = :email AND attribute_not_exists(deletedAt) AND attribute_not_exists(erasedAt)'
       + ' AND (attribute_not_exists(expiresAt) OR expiresAt > :now)',
-    { ':pid': op.participantId, ':sub': op.cognitoSub, ':version': op.accessVersion, ':snapshot': snapshot,
+    { ':pid': op.participantId, ':sub': op.cognitoSub, ':version': domain ? row.accessVersion : op.accessVersion,
+      ':snapshot': domain ? row.domainApprovals : snapshot,
       ':active': true, ':approved': 'approved', ':suspended': false, ':enrolment': row.enrolmentStatus,
       ':email': row.email, ':now': Math.floor(time / 1000) }),
-    check(op.bindingKey, 'participantId = :pid AND cognitoSub = :sub AND revision = :revision AND onboarding = :snapshot AND email = :email',
-      { ':pid': op.participantId, ':sub': op.cognitoSub, ':revision': binding.revision, ':snapshot': snapshot, ':email': row.email }),
+    check(op.bindingKey, 'participantId = :pid AND cognitoSub = :sub AND revision = :revision AND ' + approvalCheck + ' AND email = :email',
+      { ':pid': op.participantId, ':sub': op.cognitoSub, ':revision': binding.revision,
+        ':snapshot': domain ? binding.domainApprovals : snapshot, ':email': row.email }),
     check(emailKey, 'participantId = :pid AND (attribute_not_exists(approvalKey) OR approvalKey = :binding)',
       { ':pid': op.participantId, ':binding': op.bindingKey }),
     check(`SYNC#SUPPRESS#EMAIL#${hash(emailOf(row, binding))}`, 'attribute_not_exists(pk)'),

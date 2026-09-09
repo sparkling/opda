@@ -3,6 +3,7 @@ import test from 'node:test';
 import { createHandler, createProductionWorker } from '../src/approval-onboarding/index.mjs';
 import { MICROSOFT_CLIENT_ID } from '../src/approval-onboarding/microsoft-auth.mjs';
 import { OPDA_TENANT_ID } from '../src/approval-onboarding/invitation.mjs';
+import { TEMPLATE_PINS } from '../src/approval-onboarding/settings.mjs';
 
 const queueArn = 'arn:aws:sqs:eu-west-2:355653384628:opda-participation-onboarding';
 const microsoftSecretArn = 'arn:aws:secretsmanager:eu-west-2:355653384628:secret:opda/microsoft/participation-onboarding-Ab1234';
@@ -139,6 +140,30 @@ test('production secret caches refresh after five minutes and Postmark token ref
   await f.captured.microsoft.getSecret(); await f.captured.worker.postmark.send({});
   assert.equal(f.reads.length, 4); assert.equal(f.adapters.length, 2);
   assert.equal(f.adapters[1].token, 'rotated-synthetic-token'); assert.equal(f.adapters[1].expectedServerId, 20188829);
+});
+
+test('production routes each domain to its pinned adapter without forwarding routing fields', async () => {
+  const f = runtimeFixture(), calls = [];
+  f.deps.factories.createPostmarkInvitationAdapter = options => ({
+    send: async input => { calls.push({ options, input, method: 'send' }); return { status: 'accepted' }; },
+    reconcile: async input => { calls.push({ options, input, method: 'reconcile' }); return { status: 'unknown' }; },
+  });
+  await createProductionWorker(config, f.deps);
+  for (const groupId of Object.keys(TEMPLATE_PINS)) {
+    const input = { operationKey: operationId };
+    await f.captured.worker.postmark.send({ ...input, groupId });
+    await f.captured.worker.postmark.reconcile({ ...input, groupId });
+    for (const call of calls.slice(-2)) {
+      assert.deepEqual(call.input, input);
+      assert.equal(call.options.expectedGroupId, groupId);
+      assert.equal(call.options.expectedTemplateId, TEMPLATE_PINS[groupId].templateId);
+      assert.equal(call.options.expectedTemplateAlias, TEMPLATE_PINS[groupId].alias);
+      assert.equal(call.options.expectedTemplateFingerprint, TEMPLATE_PINS[groupId].fingerprint);
+      assert.equal(call.options.expectedSubject, TEMPLATE_PINS[groupId].subject);
+    }
+  }
+  assert.equal(calls.length, 12);
+  assert.equal(f.reads.length, 1);
 });
 
 test('secret reads are single-flight and failed refresh cannot use a stale credential', async () => {

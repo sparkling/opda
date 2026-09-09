@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   PARTICIPATION_PROPERTIES,
+  DOMAIN_REVIEW_PROPERTIES,
   OPTION_SET_VERSION,
   assessContactPropertySchema,
 } from '../config/aws/hubspot-participation/properties.mjs';
@@ -31,14 +32,23 @@ const allProperties = () => structuredClone([...standardProperties, ...PARTICIPA
 const sync = (record = registration(), contactMatches = []) =>
   planInitialContactSync(record, { now, contactMatches });
 
-test('the eight-property manifest preserves all current signup option IDs', () => {
+test('the fourteen-property manifest preserves signup choices and adds six independent domain reviews', () => {
   assert.equal(OPTION_SET_VERSION, 1);
-  assert.equal(PARTICIPATION_PROPERTIES.length, 8);
-  assert.equal(new Set(PARTICIPATION_PROPERTIES.map((item) => item.name)).size, 8);
+  assert.equal(PARTICIPATION_PROPERTIES.length, 14);
+  assert.equal(new Set(PARTICIPATION_PROPERTIES.map((item) => item.name)).size, 14);
   assert.deepEqual(property('opda_requested_working_groups').options.map((item) => item.value), [...WORKING_GROUPS]);
   assert.deepEqual(property('opda_contribution_preferences').options.map((item) => item.value), [...CONTRIBUTIONS]);
   assert.ok(PARTICIPATION_PROPERTIES.every((item) => item.groupName === 'opda_participation'));
   assert.ok(Object.isFrozen(property('opda_requested_working_groups').options[0]));
+  assert.deepEqual(Object.keys(DOMAIN_REVIEW_PROPERTIES), [...WORKING_GROUPS]);
+  assert.ok(Object.isFrozen(DOMAIN_REVIEW_PROPERTIES));
+  for (const name of Object.values(DOMAIN_REVIEW_PROPERTIES)) {
+    assert.equal(property(name).fieldType, 'select');
+    assert.deepEqual(property(name).options.map(({ value }) => value),
+      ['received', 'under_review', 'approved', 'rejected', 'withdrawn']);
+    assert.match(property(name).description, /only this domain/);
+  }
+  assert.match(property('opda_review_status').description, /no longer approves all selected groups/);
 });
 
 test('new-contact mapping uses only the agreed fields and never grants access', () => {
@@ -115,14 +125,14 @@ test('invalid persisted fields fail without including personal values in errors'
 });
 
 test('complete inventory and verified capacity are needed before proposing field creation', () => {
-  const assessment = assessContactPropertySchema({ inventory: inventory(), remainingCustomPropertySlots: 8 });
+  const assessment = assessContactPropertySchema({ inventory: inventory(), remainingCustomPropertySlots: 14 });
   assert.equal(assessment.ready, true);
-  assert.equal(assessment.propertiesToCreate.length, 8);
+  assert.equal(assessment.propertiesToCreate.length, 14);
   assert.deepEqual(assessment.blockers, []);
   for (const options of [
-    {}, { inventory: { complete: false, properties: standardProperties }, remainingCustomPropertySlots: 8 },
-    { inventory: inventory() }, { inventory: inventory(), remainingCustomPropertySlots: 7 },
-    { inventory: inventory(), remainingCustomPropertySlots: '8' },
+    {}, { inventory: { complete: false, properties: standardProperties }, remainingCustomPropertySlots: 14 },
+    { inventory: inventory() }, { inventory: inventory(), remainingCustomPropertySlots: 13 },
+    { inventory: inventory(), remainingCustomPropertySlots: '14' },
   ]) {
     const blocked = assessContactPropertySchema(options);
     assert.equal(blocked.ready, false);
@@ -145,11 +155,20 @@ test('matching schema is an idempotent no-op, preserving other custom properties
 
 test('only missing fields consume capacity on a partially completed setup', () => {
   const assessment = assessContactPropertySchema({
-    inventory: inventory([...standardProperties, ...PARTICIPATION_PROPERTIES.slice(0, 7)]),
+    inventory: inventory(allProperties().filter(item => item.name !== 'opda_active')),
     remainingCustomPropertySlots: 1,
   });
   assert.equal(assessment.ready, true);
   assert.deepEqual(assessment.propertiesToCreate.map((item) => item.name), ['opda_active']);
+});
+
+test('an existing eight-field setup needs only the six verified domain-review slots', () => {
+  const properties = [...standardProperties, ...PARTICIPATION_PROPERTIES.slice(0, 8)];
+  const result = assessContactPropertySchema({ inventory: inventory(properties), remainingCustomPropertySlots: 6 });
+  assert.equal(result.ready, true);
+  assert.deepEqual(result.missingProperties, Object.values(DOMAIN_REVIEW_PROPERTIES));
+  assert.equal(assessContactPropertySchema({ inventory: inventory(properties),
+    remainingCustomPropertySlots: 5 }).ready, false);
 });
 
 test('conflicting, archived, calculated or read-only fields block setup without changing them', () => {
@@ -197,7 +216,7 @@ test('missing default fields, duplicate names and malformed inventory are never 
 
 const bridgeScopes = ['oauth', 'crm.objects.contacts.read', 'crm.objects.contacts.write', 'crm.schemas.contacts.read'];
 const expectedApp = { portalId: 123, appId: 456, scopes: bridgeScopes };
-const limits = (overall = 8, contacts = 8) => ({
+const limits = (overall = 14, contacts = 14) => ({
   overallLimit: overall + 2, overallUsage: 2,
   byObjectType: [{ objectTypeId: '0-1', limit: contacts + 2, usage: 2 }],
 });
@@ -234,11 +253,11 @@ test('private app identity and exact scopes must match before credential use', a
 });
 
 test('live schema preflight uses the smaller of account-wide and contact capacity', async () => {
-  for (const capacity of [limits(7, 9), limits(9, 7)]) {
+  for (const capacity of [limits(13, 15), limits(15, 13)]) {
     const { api, calls } = mockApi({ capacity });
     const result = await readSchemaPreflight(api);
     assert.equal(result.ready, false);
-    assert.equal(result.remainingCustomPropertySlots, 7);
+    assert.equal(result.remainingCustomPropertySlots, 13);
     assert.ok(calls.every((call) => !call.method));
   }
   assert.equal((await readSchemaPreflight(mockApi().api)).ready, true);
@@ -264,13 +283,13 @@ test('incomplete inventory and incompatible groups fail closed', async () => {
 test('provisioning only creates missing OPDA definitions and is an idempotent no-op on rerun', async () => {
   const { api, calls } = mockApi({ properties: structuredClone(standardProperties) });
   const first = await createMissingProperties(api);
-  assert.equal(first.createdProperties.length, 8);
+  assert.equal(first.createdProperties.length, 14);
   assert.equal(first.verified, true);
   const writes = calls.filter(({ method }) => method === 'POST');
-  assert.equal(writes.length, 9);
+  assert.equal(writes.length, 15);
   assert.ok(writes.every(({ path }) => path.startsWith('/crm/v3/properties/contacts')));
   assert.equal((await createMissingProperties(api)).createdProperties.length, 0);
-  assert.equal(calls.filter(({ method }) => method === 'POST').length, 9);
+  assert.equal(calls.filter(({ method }) => method === 'POST').length, 15);
 });
 
 test('provisioning cannot write anything when preflight has a blocker', async () => {

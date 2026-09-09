@@ -3,17 +3,13 @@ import { createIdentity } from './identity.mjs';
 import { createStore } from './store.mjs';
 import { CONTACT_ID, contactProfile, reviewDecision, approvedGroupSnapshot, emailPredatesApproval, ordinaryAccess, parseHints } from './domain.mjs';
 import { createOnboardingNotifier, onboardingHint } from './onboarding.mjs';
+import { createDomainWorker, relayPendingOnboarding } from './domain-worker.mjs';
 
-export function createWorker({ store, hubspot, identity, cutover, notifyOnboarding, now = Date.now }) {
+export function createWorker({ store, hubspot, identity, cutover, domainCutover, notifyOnboarding, now = Date.now }) {
+  if (domainCutover !== undefined) return createDomainWorker({ store, hubspot, identity, domainCutover, notifyOnboarding, now });
   if (!Number.isFinite(cutover)) throw new Error('Approval cutover required');
   async function relayOnboarding() {
-    if (!notifyOnboarding) return { notified: 0 };
-    const pending = await store.pendingOnboarding();
-    for (const operation of pending) {
-      try { await notifyOnboarding(onboardingHint(operation.operationId)); }
-      catch { throw new Error('Onboarding notification incomplete'); }
-    }
-    return { notified: pending.length };
+    return relayPendingOnboarding(store, notifyOnboarding);
   }
   async function processContact(contactId) {
     if (!CONTACT_ID.test(contactId)) throw new Error('Invalid contact reference');
@@ -108,10 +104,12 @@ function defaults() {
   runtime ??= createWorker({
     store: createStore({ participantsTableName: process.env.PARTICIPANTS_TABLE_NAME,
       registrationsTableName: process.env.REGISTRATIONS_TABLE_NAME,
-      onboardingCutover: process.env.ONBOARDING_CUTOVER ? Date.parse(process.env.ONBOARDING_CUTOVER) : undefined }),
+      onboardingCutover: process.env.ONBOARDING_CUTOVER ? Date.parse(process.env.ONBOARDING_CUTOVER) : undefined,
+      domainReviewCutover: process.env.DOMAIN_REVIEW_CUTOVER ? Date.parse(process.env.DOMAIN_REVIEW_CUTOVER) : undefined }),
     hubspot: createHubSpotClient({ secretArn: process.env.BRIDGE_SECRET_ARN }),
     identity: createIdentity({ poolId: process.env.USER_POOL_ID }),
     cutover: Date.parse(process.env.REVIEW_CUTOVER),
+    domainCutover: process.env.DOMAIN_REVIEW_CUTOVER ? Date.parse(process.env.DOMAIN_REVIEW_CUTOVER) : undefined,
     notifyOnboarding: process.env.ONBOARDING_QUEUE_URL ? createOnboardingNotifier(process.env.ONBOARDING_QUEUE_URL) : undefined,
   });
   return runtime;

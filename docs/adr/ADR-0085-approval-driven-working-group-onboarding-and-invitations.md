@@ -9,7 +9,7 @@ depends-on: [ADR-0069, ADR-0072]
 implements: [ADR-0070, ADR-0084]
 ---
 
-# Follow approved participation with Microsoft access and one Postmark invitation
+# Follow each domain approval with Microsoft access and its own Postmark invitation
 
 ## Context and Problem Statement
 
@@ -29,10 +29,12 @@ and the earlier working-group interest verification template. The verification e
 the earlier pre-review flow; it is not an approval invitation. The Finance template contains
 Finance-specific Microsoft links, so sending it unchanged to every group would be incorrect.
 
-On 8 September the operator explicitly requested that approved applicants receive the invitation
-and Microsoft access, confirmed that **Approved approves every working group currently selected
-on the contact**, and required SharePoint setup for every new approved company domain. The same
-operator requires website access and existing sessions to be withdrawn when approval is withdrawn.
+On 8 September the operator requested invitations and Microsoft access after a contact-wide
+approval of its selected groups, plus SharePoint setup for every new approved company domain.
+That version 1 policy was implemented and verified; its dated evidence remains below.
+On 9 September the operator **replaced blanket group approval with independent approval for
+each domain**, requiring one domain-customised email based on the original invitation for each
+approved group. Selecting multiple groups is not approval for all of them.
 
 This extends the approval follow-up. It does not reinterpret public form submission, the frozen
 historical HubSpot import, a newsletter subscription or a CRM seat as Microsoft access authority.
@@ -40,9 +42,9 @@ It concerns participation administration, not SPDTF trust-framework or standards
 
 ## Decision Drivers
 
-- Let staff make one explicit participation decision in HubSpot.
-- Preserve the reviewed group selection and the distinction between requested and effective access.
-- Reuse Postmark's established invitation branding and suppression handling.
+- Let staff approve or withdraw each person's domains independently in HubSpot.
+- Preserve reviewed scope and distinguish requested interests from effective access.
+- Reuse the original invitation's layout and detailed guidance, with domain-specific content.
 - Provision new organisation areas safely instead of depending on a hand-built folder list.
 - Keep website access independent of Microsoft provisioning delays or email delivery.
 - Use a small, durable follow-up suitable for fewer than 1,000 participants, not a new CRM.
@@ -56,44 +58,71 @@ It concerns participation administration, not SPDTF trust-framework or standards
   provide the required unattended Microsoft provisioning; a marketing email is not authentication.
 - **Do every external action inside the approval webhook.** Couples immediate website access to
   slow Microsoft operations, retries and ambiguous email outcomes.
-- **Use one durable follow-up after the trusted approval (chosen).** Retain the narrow website
-  approval path; prepare Microsoft access and send one verified, recipient-specific invitation.
+- **Use one durable follow-up for each trusted domain approval (chosen).** Recompute website
+  eligibility separately; prepare that domain's Microsoft access and send its own invitation.
 
 ## Decision Outcome
 
-### 1. One human decision, distinct effects
+### 1. Independent human approval for each domain
 
-The staff operator reviews the contact, organisation and selected groups, then sets
-`opda_review_status` to `approved`. That manual action authorises ordinary participation in the
-selected groups and one associated onboarding invitation under this policy. It is the explicit
-send approval for this prospective flow; it does not authorise historical campaign resends.
+Staff review the person, organisation relationship and requested interest, then set that
+domain's review dropdown to **Approved**. This authorises only that domain and its invitation.
+For example, approval for Finance and Banking does not approve Conveyancing. Two independently
+approved groups produce two separate emails; pending or rejected groups receive neither grants
+nor an approval invitation. The action does not authorise historical campaign resends.
 
-The trusted decision records the HubSpot actor and timestamp, participant binding, immutable
-decision ID and canonical selected-group snapshot. Resolve the selection as it stood at the
-decision timestamp from property history; do not simply copy a later mutable CRM value.
-Missing, conflicting or unsupported selection history requires Microsoft-onboarding review.
-It must not invent an approved group or silently alter the website decision.
+The versioned schema and template contracts use these exact names:
 
-The six eligible selection IDs are:
+| Domain ID | Staff-owned HubSpot property | Version 2 Postmark alias | Template ID |
+|---|---|---|---|
+| `finance-and-banking` | `opda_review_finance_and_banking` | `finance-and-banking-approval-invitation-v2` | `46444294` |
+| `conveyancing` | `opda_review_conveyancing` | `conveyancing-approval-invitation-v2` | `46444295` |
+| `estate-agency` | `opda_review_estate_agency` | `estate-agency-approval-invitation-v2` | `46444297` |
+| `surveying-and-valuation` | `opda_review_surveying_and_valuation` | `surveying-and-valuation-approval-invitation-v2` | `46444274` |
+| `property-data-services` | `opda_review_property_data_services` | `property-data-services-approval-invitation-v2` | `46444261` |
+| `property-technology` | `opda_review_property_technology` | `property-technology-approval-invitation-v2` | `46444262` |
 
-- `finance-and-banking`;
-- `conveyancing`;
-- `estate-agency`;
-- `surveying-and-valuation`;
-- `property-data-services`; and
-- `property-technology`.
+Each dropdown has Pending (`received`), Under review, Approved, Rejected and Withdrawn.
+Clearing it also removes that domain's approval. `opda_requested_working_groups` remains
+interests only. Global `opda_review_status=approved` can clear an account review hold but
+does not approve any domain. Global Under review, Rejected or Withdrawn blocks account access;
+the integration's initial Received marker neither approves a domain nor places a review hold.
 
-Property Technology is never mapped to the cross-cutting Technology Working Group. Later edits
-to requested groups cannot expand an earlier approval; staff must make a new explicit review
-decision. An empty selection grants no group access and sends no working-group invitation.
+Record the HubSpot actor/time, immutable participant binding, decision ID, **domain version**
+and single-domain approved snapshot. Fetch current property history; approval requires a
+matching, attributable `CRM_UI` edit after `DOMAIN_REVIEW_CUTOVER`, with that domain requested
+at the decision time. Imports, forms, integrations and later interest edits cannot grant access.
+Missing, contradictory or unsupported evidence fails closed for that domain. Property Technology
+is never mapped to the separate cross-cutting Technology Working Group.
 
-The existing one-time import remains website-only. It is not a queue of 1,001 Microsoft
-invitations. A new activation checkpoint limits this follow-up to new trusted decisions after
-activation; any historical backfill needs a separately reviewed population and explicit authority.
+The 2026-09-09 read-only preflight reported eight remaining custom-property slots: overall
+limit 10/usage 2, contact-property limit 1,000/usage 11, with 403 active definitions. All six
+dropdowns were then created in OPDA participation and read back compatible, with no missing
+fields or blockers and two slots remaining. Definition counts are not quota usage. No field
+retirement, paid upgrade or runtime permission expansion was needed.
+
+The frozen import remains an explicit website-only entitlement, not 1,001 Microsoft invitations.
+Ordinary migration preserves only matching, explicitly approved pre-cutover frozen scopes
+after the bound version 1 operation is explicitly complete. Never infer domains from today's
+interests or replay old mail. Unresolved invitation effects must not delay access removal:
+
+- A global/account hold disables website access immediately and retains the version 1 path
+  for account-wide, receipt-owned cleanup. Preserve the original unresolved operation reference.
+- A partial withdrawal may seed **denial-only** version 2 state from a valid matching frozen
+  prior approved scope. Withdraw only the named domain, preserve other prior approvals, and
+  invalidate further execution of the old combined job. Create no new grants or invitations.
+- If that prior scope is missing or invalid, fail closed into the legacy account hold and
+  owned-grant cleanup; never reconstruct approved scope from requested interests.
+
+Keep `domainMigrationPending` until the original participant-bound outcome is explicitly
+settled as complete. Missing, pending, cancelled, attention or unknown-send outcomes are not
+completion. Further denials continue during this hold; new grants remain blocked. Settlement
+must reconcile evidence, never resend ambiguous mail merely to complete the ledger. Global
+holds revoke preserved website-only eligibility too.
 
 ### 2. Durable follow-up without delaying website access
 
-Persist the reviewed snapshot and a follow-up record atomically with the effective approval.
+Persist each domain's reviewed snapshot and follow-up atomically with the effective approval.
 The reference-only work item contains an opaque operation ID, not contact details or invitation
 URLs. A separate bounded worker performs external effects; the approval webhook does not wait.
 
@@ -102,14 +131,17 @@ onboarding worker with narrow access to the required Microsoft and Postmark cred
 than a general integration platform. Reconciliation repairs a committed operation whose queue
 notification was interrupted. Do not replay the public-submission queue or historical wave files.
 
-Before every grant or send, recheck the current AWS decision, identity binding and active state.
-An operation for an older decision may not grant access or send an invitation. Store per-step
-receipts so an interrupted run resumes from verified state, not from optimistic completion.
-Partial completion is visible as pending or requiring attention; it is never reported as ready.
+Before every grant or send, recheck that domain's current AWS decision, identity binding and
+account eligibility. Bind version 2 operations to participant, domain, immutable decision ID
+and domain version, not another domain's changing state or a contact-wide invitation key.
+Refreshing an unchanged approval does not resend. A later approval for a different domain
+does not supersede this domain's pending invitation. Hold one participant-wide lease while
+updating shared identity/ownership receipts; preserve independent per-domain operation snapshots.
+Interrupted work resumes from verified receipts. Pending or review-required is never called ready.
 
-Website eligibility can become effective immediately through ADR-0084. Microsoft access and
-email follow asynchronously. A Microsoft or Postmark outage must not undo an otherwise valid
-website approval or grant access that has been withdrawn.
+One approved domain can enable website eligibility under ADR-0084, subject to enrolment and
+account holds. Microsoft and email follow asynchronously. Their outages must not undo valid
+website eligibility or grant withdrawn access. Other domain approvals remain independent.
 
 ### 3. Prepare Microsoft resources before declaring access ready
 
@@ -170,25 +202,33 @@ Rotate the certificate before its expiry; preserve the separate encryption key w
 receipts require recovery. Encrypt the private receipt payload with authenticated encryption
 bound to its participant, so redemption URLs are not plaintext in DynamoDB or its S3 exports.
 
-### 4. One combined Postmark invitation
+### 4. One original-style Postmark invitation per approved domain
 
-Use a new versioned template alias, `working-group-approval-invitation`, with subject
-**Your OPDA working-group access is ready**. Preserve the reviewed Finance invitation's visual
-shell, CID logo and equivalent HTML/plain-text content. Do not overwrite either existing live
-template or replace historical campaign content with a different workflow.
+Use six separate version 2 aliases from section 1, with subjects **Your invitation to the
+[Domain] Working Group**. Compile them from one shared original-invitation HTML/plain-text
+layout and a reviewed six-domain content registry. Retain the original 680-pixel table shell,
+CID logo, colours, typography, illustrated section headings and full detailed contribution,
+source-material, thread-first discussion and privacy guidance. Customise the domain explanation,
+relevant evidence examples and discussion topics; do not reduce them to generic group cards.
 
-The combined email contains:
+Preserve original Finance template `45998430` and historical combined version 1 template
+`46437816` unchanged. The combined alias `working-group-approval-invitation` and its content
+pin remain for historical evidence and reconciliation, not new version 2 invitations.
 
-- the approved participant's name and the frozen group list;
+Each domain email contains:
+
+- the participant's name, the one approved domain and its relevant contribution guidance;
 - one recipient-specific Microsoft redemption link only when redemption is needed;
-- verified Team links and the corresponding private source-folder links, or clear Teams-only
+- that domain's verified Team link and private source-folder link, or clear Teams-only
   guidance for a generic-provider account;
 - a separate fixed first-party website sign-in link explaining the email-code login;
 - the existing guidance about contributions, thread-first discussion and authorised material; and
 - the support address and Postmark unsubscribe control.
 
-Send only after every required Microsoft postcondition is verified or has a deliberate
-Teams-only outcome. Do not send a success invitation while a company folder is pending.
+Send only after that domain's required Microsoft postconditions are verified or have a deliberate
+Teams-only outcome; another domain can remain pending. Do not promise a pending company folder.
+The original Finance channel links are retained; the other domains use their registered Team
+links and explicitly labelled discussion topics, not invented channel names or unverified URLs.
 Keep redemption URLs out of HubSpot, logs, queue messages, public documents and reusable template
 source. Validate destinations against the fixed Microsoft tenant and workspace registry; names
 and text are escaped, not accepted as arbitrary HTML.
@@ -204,8 +244,9 @@ Keep the same templates, stream and suppressions rather than migrating recipient
 server. [Postmark per-message tracking](https://postmarkapp.com/developer/user-guide/tracking-opens/tracking-opens-per-email),
 [Postmark templates API](https://postmarkapp.com/developer/api/templates-api)
 
-Deduplicate by participant, immutable approval decision and group-set digest; pin the template
-version in the operation. A template edit does not trigger another invitation. Record attempted,
+Deduplicate by participant, domain, immutable approval decision and domain version; pin the exact
+template ID, alias, subject and HTML/text fingerprint. Require exactly one matching domain in
+the payload and reconciliation metadata. A template edit does not resend. Record attempted,
 provider-accepted, failed or unknown delivery outcomes. If a send times out ambiguously, reconcile
 provider activity before retrying; do not claim exactly-once delivery from a local flag.
 Provider acceptance and an open event are not proof of inbox placement or Microsoft redemption.
@@ -215,9 +256,12 @@ must not falsely claim an AI agent wrote or reviewed the invitation.
 
 ### 5. Withdrawal, reapproval and communication preferences
 
-ADR-0084 immediately removes website eligibility, invalidates existing session versions and
-disables Cognito access. Its open-tab check updates the visible sign-in state; it is not the
-security boundary. Previously delivered information cannot be recalled.
+Withdrawing a domain removes only that person's approval, owned Microsoft grants and unsent
+mail for that domain. Other approved domains retain access and pending invitations. Website
+eligibility and its session version remain unchanged while another approved domain or an
+explicit preserved legacy website entitlement remains. Loss of the last eligible basis, or a
+global hold, removes website eligibility, invalidates sessions and disables/signs out Cognito.
+The open-tab check updates the UI, not the security boundary; delivered data cannot be recalled.
 
 Withdrawal also cancels unsent onboarding messages and queues removal of grants recorded as
 owned by this approval workflow. Remove membership references only, never the Entra user,
@@ -227,21 +271,23 @@ for explicit review rather than claiming access has gone. Microsoft propagation 
 
 The withdrawal path is:
 
-1. Staff change the HubSpot review status from **Approved** to **Withdrawn**. Other loss of
-   eligibility, including rejection, suspension or contact removal, follows the same deny path.
-2. AWS records the new decision and access version first. Protected requests reject the former
-   session immediately; Cognito is disabled and globally signed out through the existing worker.
-3. The same committed decision creates an opaque withdrawal operation. Cancel unsent invitation
-   work before attempting Microsoft cleanup. An email already dispatched cannot be recalled.
+1. Staff change the relevant domain's review from **Approved** to **Withdrawn**. Pending,
+   Under review, Rejected or clearing the domain field also removes that domain's approval.
+2. AWS records its decision/domain version first and recomputes website eligibility. Only loss
+   of website eligibility increments the session access version and disables/signs out Cognito.
+   Global review holds, contact removal, erasure, expiry and independent security holds deny all.
+3. The committed domain decision creates an opaque withdrawal operation. Cancel only that
+   domain's unsent invitations before cleanup; dispatched email cannot be recalled.
 4. Read the participant-bound ownership receipts. Remove owned SharePoint contributor and index
    memberships first, then owned Microsoft 365 group membership references. Never delete an
    identity, company folder, source document or another participant's access.
 5. Read back removal. Keep Microsoft propagation pending and retry through the existing
    15-minute outbox relay; do not exhaust short queue retries while waiting for normal Teams
    synchronisation. Ambiguous writes, manual grants and policy drift require explicit review.
-6. A later, fresh human approval may restore the newly selected access. Older grant and withdrawal
-   jobs cannot override it. Reuse verified identities and folders; independently re-added manual
-   memberships remain manual rather than becoming workflow-owned.
+6. A fresh human approval for that domain after its latest withdrawal/hold may restore it and
+   send its own invitation. Clearing a global hold alone restores no domains. Repeated holds
+   must retain a fresh denial boundary, never let an older approval reactivate access. Stale jobs
+   cannot override current decisions. Reuse verified identities/folders and retain manual grants.
 
 Cleanup uses immutable identity and permission references, not a fresh lookup by mutable email.
 Retained ownership evidence allows cleanup after the public profile is erased. Authenticated
@@ -253,7 +299,7 @@ remain distinct purposes with their own recipients and controls.
 
 ### Consequences
 
-- Good, because the staff decision and its selected groups are preserved once and drive follow-up.
+- Good, because each domain decision is attributable and drives only its own access and invitation.
 - Good, because new company folders and permissions are verified before an invitation promises them.
 - Good, because current Postmark assets and Microsoft boundaries are reused without a new CRM.
 - Bad, because external provisioning can be partially complete and needs durable retries and review.
@@ -262,9 +308,33 @@ remain distinct purposes with their own recipients and controls.
 
 ### Confirmation
 
-The operator's policy decisions are accepted. **The Microsoft/email follow-up is live as of
-2026-09-09**, alongside website approval and revocation under ADR-0084. The dated preparation
-and controlled-test evidence below records the rollout rather than a historical backfill.
+**Version 2 is accepted and implemented locally, but is not live at this amendment.**
+`DOMAIN_REVIEW_CUTOVER` remains unset, the six new webhook subscriptions are not enabled,
+and the domain-review policy is not deployed. All six properties were created through the
+existing OPDA Chrome profile and independently read back compatible by API. All remain blank;
+no participant approval was edited. The old global field description is intentionally unchanged
+until cutover, so it continues to describe live version 1 behaviour.
+
+On 2026-09-09, all six version 2 templates passed Postmark parsing/rendering validation and
+were created on server `20188829`. Readback verified byte-exact HTML/text against the compiled
+content pins; their IDs are listed in section 1 and pinned in `settings.mjs`. No email was
+sent by this preparation, and neither original Finance nor combined version 1 content changed.
+Template provisioning alone does not activate domain approval or prove end-to-end delivery.
+
+Activation requires deploying the version 2 policy, enabling the six signed webhook subscriptions
+and setting a prospective UTC `DOMAIN_REVIEW_CUTOVER`, with fresh schema and template-pin checks.
+Before enabling it, reconcile historical operations; verify completed frozen-scope migration
+and denial-only migration during unresolved effects, preserving explicit website entitlements
+without new grants or historical resends. Unresolved legacy mail cannot postpone revocation.
+Then prove separate approval, two-domain delivery, partial withdrawal, last-domain denial,
+global holds and stale/replayed events. Record version 2 deployment/readback independently;
+none of the historical evidence below establishes version 2 production readiness.
+
+#### Historical version 1 rollout and live evidence, 2026-09-09
+
+The contact-wide Microsoft/email follow-up became live on 2026-09-09, alongside website
+approval and revocation under ADR-0084. The following dated evidence describes that earlier
+combined-invitation policy, not the newly accepted individual-domain policy or a backfill.
 During initial workspace provisioning on 2026-09-09, the five
 missing domain Teams and separate intake sites passed configuration and ACL readback under
 ADR-0070. That preparation added no applicants or company folders and sent no invitations.
@@ -355,7 +425,7 @@ they are not represented as additional live recipient tests. Delivery evidence i
 inbox placement, readership or acceptance of a previously unredeemed Microsoft invitation.
 
 Keep dated runtime evidence and opaque receipts in the private operational register. Amend this
-confirmation after deployment and readback; accepted policy is not proof of a live integration.
+confirmation after version 2 deployment and readback; accepted policy is not proof it is live.
 
 ## More Information
 
@@ -366,6 +436,9 @@ confirmation after deployment and readback; accepted policy is not proof of a li
 - [ADR-0072 — bounded inbox operations](./ADR-0072-scheduled-working-group-inbox-agent.md)
 - [ADR-0084 — HubSpot signup and Cognito](./ADR-0084-integrate-hubspot-with-signup-and-cognito.md)
 - [Historical Postmark invitation rollout](https://github.com/sparkling/opda/blob/main/docs/plan/2026-08-postmark-working-group-invitation-rollout.md)
-- [Combined approval invitation, HTML source](https://github.com/sparkling/opda/blob/main/docs/templates/working-group-approval-invitation-email.html)
-- [Combined approval invitation, plain-text source](https://github.com/sparkling/opda/blob/main/docs/templates/working-group-approval-invitation-email.txt)
-- Pure invitation model and payload boundary: `src/approval-onboarding/invitation.mjs`.
+- [Historical combined v1 invitation, HTML](https://github.com/sparkling/opda/blob/main/docs/templates/working-group-approval-invitation-email.html)
+- [Historical combined v1 invitation, plain text](https://github.com/sparkling/opda/blob/main/docs/templates/working-group-approval-invitation-email.txt)
+- [Shared original-style v2 invitation, HTML](https://github.com/sparkling/opda/blob/main/docs/templates/domain-working-group-approval-invitation-email.html)
+- [Shared original-style v2 invitation, plain text](https://github.com/sparkling/opda/blob/main/docs/templates/domain-working-group-approval-invitation-email.txt)
+- Six-domain content/compiler: `src/approval-onboarding/domain-templates.mjs`; payload boundary: `invitation.mjs`.
+- Property contract: `config/aws/hubspot-participation/properties.mjs` (`DOMAIN_REVIEW_PROPERTIES`); policy/outbox: `config/aws/hubspot-approval/domain-onboarding.mjs`.

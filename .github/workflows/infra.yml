@@ -153,6 +153,7 @@ jobs:
             --parameter-overrides \
               CertificateArn="$OPDA_CERTIFICATE_ARN" \
               OnboardingCutover="${{ vars.OPDA_ONBOARDING_CUTOVER || '' }}" \
+              DomainReviewCutover="${{ vars.OPDA_DOMAIN_REVIEW_CUTOVER || '' }}" \
               OnboardingEnabled="${{ vars.OPDA_ONBOARDING_ENABLED || 'false' }}" \
               OnboardingCanaryEmailHash="${{ vars.OPDA_ONBOARDING_CANARY_EMAIL_HASH || '' }}"
 

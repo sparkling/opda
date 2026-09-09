@@ -1,5 +1,6 @@
 import { APP_SCOPES, verifyPrivateApp } from '../hubspot-participation/admin.mjs';
 import { CONTACT_PROPERTIES } from '../hubspot-participation/import.mjs';
+import { DOMAIN_REVIEW_PROPERTIES } from '../hubspot-participation/properties.mjs';
 import { RetryLater, retryAfter } from '../hubspot-sync/errors.mjs';
 
 const PORTAL_ID = 144765514;
@@ -17,7 +18,8 @@ function validateContact(contact, expectedId) {
   if (!object(contact) || typeof contact.id !== 'string' || !CONTACT_ID.test(contact.id)
     || (expectedId !== undefined && contact.id !== expectedId) || !object(contact.properties)) fail();
   if (contact.propertiesWithHistory !== undefined && !object(contact.propertiesWithHistory)) fail();
-  // Group history is reviewed independently: malformed interests must not hide a withdrawal.
+  // Domain and interest history is reviewed independently: a malformed domain
+  // must not hide another domain's withdrawal or an account-wide hold.
   for (const name of ['opda_review_status', 'email']) {
     const history = contact.propertiesWithHistory?.[name];
     if (history !== undefined && !Array.isArray(history)) fail();
@@ -27,7 +29,8 @@ function validateContact(contact, expectedId) {
 
 function readQuery() {
   return new URLSearchParams({ properties: CONTACT_PROPERTIES.join(','),
-    propertiesWithHistory: 'opda_review_status,email,opda_requested_working_groups', archived: 'false' });
+    propertiesWithHistory: ['opda_review_status', 'email', 'opda_requested_working_groups',
+      ...Object.values(DOMAIN_REVIEW_PROPERTIES)].join(','), archived: 'false' });
 }
 
 async function readSecret(secretArn) {

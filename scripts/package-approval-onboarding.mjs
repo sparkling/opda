@@ -5,7 +5,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 export const BUNDLE_FILES = Object.freeze([
   ...['index', 'worker', 'store', 'settings', 'graph', 'sharepoint', 'microsoft-auth',
-    'postmark', 'receipt-protection', 'invitation'].map(name => [
+    'postmark', 'receipt-protection', 'invitation', 'domain-templates'].map(name => [
     `src/approval-onboarding/${name}.mjs`, `src/approval-onboarding/${name}.mjs`,
   ]),
   ['src/agents/working-group-inbox/domain.mjs', 'src/agents/working-group-inbox/domain.mjs'],

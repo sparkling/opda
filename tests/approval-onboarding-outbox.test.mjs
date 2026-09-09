@@ -276,7 +276,10 @@ test('reconciliation repairs notification without a new CRM decision or website 
   const f = fixture(); const w = worker(f); await w.instance.processContact('123');
   const before = f.transactions.length; w.hints.length = 0;
   await w.instance.reconcile();
-  assert.equal(f.transactions.length, before); assert.equal(w.hints.length, 1);
+  const changes = f.transactions.slice(before);
+  assert.equal(changes.length, 1);
+  assert.equal(changes[0].TransactItems[0].Put.Item.pk.S, 'CRM#ONBOARDING_RELAY#cursor');
+  assert.equal(w.hints.length, 1);
 });
 
 test('CRM outage does not prevent relay of an already committed withdrawal', async () => {

@@ -9,7 +9,7 @@ const emailHash = value => createHash('sha256').update(String(value).trim().toLo
 
 /** Deterministic effects; provider receipts are private, reference-only jobs are not authority. */
 export function createOnboardingWorker({ store, graph, sharepoint, postmark, workspaces, invitationRegistry,
-  templatePin, logoBase64, enabled = false, canaryEmailHash = '', now = Date.now }) {
+  templatePin, templatePins = {}, logoBase64, enabled = false, canaryEmailHash = '', now = Date.now }) {
   if (typeof canaryEmailHash !== 'string' || canaryEmailHash !== '' && !EMAIL_HASH.test(canaryEmailHash)) {
     throw new TypeError('Invalid onboarding canary configuration');
   }
@@ -46,11 +46,17 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
       if (!await guard(false)) return await finish('cancelled', 'superseded');
       const snapshot = context.audit.onboarding;
       const provisioning = context.operation.action === 'provision';
+      const domainId = context.operation.schemaVersion === 2 ? context.operation.domainId : undefined;
+      const pin = domainId ? templatePins[domainId] : templatePin;
       if (provisioning && !enabled && (!canaryEmailHash || emailHash(context.account?.email) !== canaryEmailHash)) {
         return await finish('pending', 'awaiting-activation');
       }
+      if (provisioning && domainId && (!pin || !Number.isSafeInteger(pin.templateId))) {
+        return await finish('pending', 'awaiting-domain-template');
+      }
       if (provisioning && (!await guard(true) || snapshot.snapshotStatus !== 'approved'
-        || snapshot.templateVersion !== templatePin.version || !Array.isArray(snapshot.groups)
+        || snapshot.templateVersion !== pin.version || !Array.isArray(snapshot.groups)
+        || domainId && (snapshot.groups.length !== 1 || snapshot.groups[0] !== domainId)
         || !snapshot.groups.length || snapshot.groups.some(id => !APPROVAL_GROUP_IDS.includes(id)))) {
         return await finish('cancelled', 'eligibility-unavailable');
       }
@@ -58,12 +64,14 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
       let pending = false, attention = false;
       if (!provisioning) await save(next => {
         for (const mail of Object.values(next.mail)) {
+          if (domainId && mail.domainId !== domainId) continue;
           if (['prepared', 'pending'].includes(mail.status)) mail.status = 'cancelled';
           if (['attempting', 'unknown'].includes(mail.status)) mail.cancellationRequestedAt = now();
         }
       });
       // Close private source access first. No shared folder, content, group or user is deleted.
       for (const [id, receipt] of Object.entries(context.receipts.sharepoint)) {
+        if (domainId && id !== domainId) continue;
         if (desired.has(id)) continue;
         if (!APPROVAL_GROUP_IDS.includes(id)) { attention = true; continue; }
         const result = await sourceEffect('revoke', { groupId: id, receipt, guard: () => guard(provisioning), persistReceipt: saveSharepoint(id) });
@@ -71,6 +79,7 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
         attention ||= !['ready', 'revoked', 'pending'].includes(result.status);
       }
       for (const id of APPROVAL_GROUP_IDS) {
+        if (domainId && id !== domainId) continue;
         if (desired.has(id) || !context.receipts.graph.memberships?.[workspaces[id].teamId]) continue;
         const result = await graph.revokeMembership({ groupId: id, userId: context.receipts.graph.identity?.userId,
           receipt: context.receipts.graph, guard: () => guard(provisioning), persistReceipt: saveGraph });
@@ -110,9 +119,9 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
       if (pending) return await finish('pending', 'microsoft-propagating');
       const previousMail = context.receipts.mail[operationId];
       if (previousMail?.status === 'accepted') return await finish('complete', 'invitation-accepted');
-      if (previousMail && previousMail.fingerprint !== templatePin.fingerprint) return await finish('attention', 'historical-template-review');
+      if (previousMail && previousMail.fingerprint !== pin.fingerprint) return await finish('attention', 'historical-template-review');
       if (['attempting', 'unknown'].includes(previousMail?.status)) {
-        const result = await postmark.reconcile({ operationKey: operationId });
+        const result = await postmark.reconcile({ operationKey: operationId, ...(domainId ? { groupId: domainId } : {}) });
         await save(next => { next.mail[operationId] = { ...previousMail, ...result, checkedAt: now() }; });
         if (!await guard(true)) return await finish('cancelled', 'superseded');
         return await finish(result.status === 'accepted' ? 'complete' : 'attention', result.status === 'accepted' ? 'invitation-accepted' : 'invitation-outcome-unknown');
@@ -122,10 +131,11 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
         microsoft: { redemptionRequired: identity.redemptionRequired,
           ...(identity.redemptionRequired ? { redemptionUrl: identity.redemptionUrl } : {}) }, groups },
         registry: invitationRegistry, logoBase64, operationKey: operationId,
+        ...(domainId ? { groupId: domainId } : {}),
         beforeSend: async () => {
           if (!await guard(true)) return false;
           await save(next => { next.mail[operationId] = { status: 'attempting', startedAt: now(),
-            templateVersion: templatePin.version, fingerprint: templatePin.fingerprint }; }, { requireEligible: true });
+            ...(domainId ? { domainId } : {}), templateVersion: pin.version, fingerprint: pin.fingerprint }; }, { requireEligible: true });
           return guard(true);
         },
       });

@@ -5,6 +5,19 @@ export const OPTION_SET_VERSION = 1;
 export const PARTICIPATION_GROUP = Object.freeze({
   name: 'opda_participation', label: 'OPDA participation', displayOrder: -1,
 });
+export const DOMAIN_REVIEW_PROPERTIES = Object.freeze({
+  'finance-and-banking': 'opda_review_finance_and_banking',
+  conveyancing: 'opda_review_conveyancing',
+  'estate-agency': 'opda_review_estate_agency',
+  'surveying-and-valuation': 'opda_review_surveying_and_valuation',
+  'property-data-services': 'opda_review_property_data_services',
+  'property-technology': 'opda_review_property_technology',
+});
+const GROUP_CHOICES = [
+  ['finance-and-banking', 'Finance and Banking'], ['conveyancing', 'Conveyancing'],
+  ['estate-agency', 'Estate Agency'], ['surveying-and-valuation', 'Surveying and Valuation'],
+  ['property-data-services', 'Property Data Services'], ['property-technology', 'Property Technology'],
+];
 
 const choices = (entries) => entries.map(([value, label], displayOrder) => ({
   value, label, displayOrder, hidden: false,
@@ -26,11 +39,7 @@ export const PARTICIPATION_PROPERTIES = freeze([
   {
     name: 'opda_requested_working_groups', label: 'Requested working groups', type: 'enumeration', fieldType: 'checkbox',
     description: 'Requested interests, not approved membership or Microsoft Teams access.',
-    options: choices([
-      ['finance-and-banking', 'Finance and Banking'], ['conveyancing', 'Conveyancing'],
-      ['estate-agency', 'Estate Agency'], ['surveying-and-valuation', 'Surveying and Valuation'],
-      ['property-data-services', 'Property Data Services'], ['property-technology', 'Property Technology'],
-    ]),
+    options: choices(GROUP_CHOICES),
   },
   {
     name: 'opda_contribution_preferences', label: 'Contribution preferences', type: 'enumeration', fieldType: 'checkbox',
@@ -50,7 +59,7 @@ export const PARTICIPATION_PROPERTIES = freeze([
   },
   {
     name: 'opda_review_status', label: 'Application review status', type: 'enumeration', fieldType: 'select',
-    description: 'Staff review decision. Set Approved in HubSpot to enable ordinary website sign-in; Under review, Rejected or Withdrawn removes access. Email verification is still required. No administrator or Microsoft access is granted.',
+    description: 'Account-wide review or access hold. Approved clears this review hold; it no longer approves all selected groups. Review each domain separately. Under review, Rejected or Withdrawn blocks account access. This field never grants administrator access.',
     options: choices([
       ['received', 'Received'], ['under_review', 'Under review'], ['approved', 'Approved'],
       ['rejected', 'Rejected'], ['withdrawn', 'Withdrawn'],
@@ -68,6 +77,15 @@ export const PARTICIPATION_PROPERTIES = freeze([
     description: 'AWS-owned enabled-state snapshot, initially false. Not sufficient for login or a command to grant access.',
     options: choices([['true', 'Yes'], ['false', 'No']]),
   },
+  ...GROUP_CHOICES.map(([domainId, label]) => ({
+    name: DOMAIN_REVIEW_PROPERTIES[domainId], label: `${label} review`,
+    type: 'enumeration', fieldType: 'select',
+    description: `Staff approval for ${label} only, after reviewing this person's requested interest. Approved grants only this domain and sends its invitation. Pending, Under review, Rejected, Withdrawn or clearing the field removes this domain's access; other approved domains are unchanged.`,
+    options: choices([
+      ['received', 'Pending'], ['under_review', 'Under review'], ['approved', 'Approved'],
+      ['rejected', 'Rejected'], ['withdrawn', 'Withdrawn'],
+    ]),
+  })),
 ].map((property) => ({ ...property, groupName: PARTICIPATION_GROUP.name })));
 
 const STANDARD_PROPERTIES = [

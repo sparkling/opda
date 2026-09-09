@@ -4,6 +4,8 @@ import { setTimeout as delay } from 'node:timers/promises';
 import test from 'node:test';
 import { createPostmarkInvitationAdapter, fingerprintTemplate } from '../src/approval-onboarding/postmark.mjs';
 import { INVITATION_SUBJECT, INVITATION_TEMPLATE_ALIAS, OPDA_TENANT_ID, WEBSITE_LOGIN_URL } from '../src/approval-onboarding/invitation.mjs';
+import { DOMAIN_TEMPLATE_CONTRACTS, compileDomainInvitationTemplate } from '../src/approval-onboarding/domain-templates.mjs';
+import { INVITATION_REGISTRY } from '../src/approval-onboarding/settings.mjs';
 
 const operationKey = 'a'.repeat(64);
 const messageId = '22222222-2222-4222-8222-222222222222';
@@ -251,4 +253,92 @@ test('configuration and input boundaries reject arbitrary endpoints, keys and pa
   }
   assert.equal(calls.length, 0);
   assert.equal((await adapter.reconcile({ operationKey: 'bad' })).reason, 'invalid-input');
+});
+
+function domainFixture(groupId, overrides = {}) {
+  const contract = DOMAIN_TEMPLATE_CONTRACTS[groupId];
+  const compiled = compileDomainInvitationTemplate(groupId, {
+    HtmlBody: readFileSync(new URL('../docs/templates/domain-working-group-approval-invitation-email.html', import.meta.url), 'utf8'),
+    TextBody: readFileSync(new URL('../docs/templates/domain-working-group-approval-invitation-email.txt', import.meta.url), 'utf8'),
+  });
+  const domainTemplate = { ...template, ...compiled, TemplateId: 98765440 + Object.keys(DOMAIN_TEMPLATE_CONTRACTS).indexOf(groupId) };
+  const f = fixture({ [`/templates/${contract.alias}`]: () => json(domainTemplate), ...overrides });
+  const config = { ...f.config, expectedGroupId: groupId, expectedTemplateAlias: contract.alias,
+    expectedSubject: contract.subject, expectedTemplateId: domainTemplate.TemplateId,
+    expectedTemplateFingerprint: fingerprintTemplate(domainTemplate, { groupId }) };
+  const request = { ...f.request, registry: INVITATION_REGISTRY,
+    input: { ...f.request.input, groups: [{ ...f.request.input.groups[0], groupId }] } };
+  return { ...f, request, config, domainTemplate, adapter: createPostmarkInvitationAdapter(config) };
+}
+
+test('v2 sends one original-design invitation per independently approved domain, pinned by ID and metadata', async () => {
+  const ids = new Set();
+  for (const groupId of Object.keys(DOMAIN_TEMPLATE_CONTRACTS)) {
+    const { adapter, request, calls, sequence, domainTemplate, config } = domainFixture(groupId);
+    assert.equal((await adapter.send(request)).status, 'accepted');
+    assert.ok(sequence.includes(`/templates/${DOMAIN_TEMPLATE_CONTRACTS[groupId].alias}`));
+    assert.deepEqual(sequence.slice(-3), ['/message-streams/broadcast/suppressions/dump', 'approval-guard', '/email/withTemplate']);
+    const sent = calls.filter(call => call.method === 'POST');
+    assert.equal(sent.length, 1);
+    const payload = JSON.parse(sent[0].body);
+    assert.equal(payload.TemplateId, domainTemplate.TemplateId);
+    ids.add(payload.TemplateId);
+    assert.equal(payload.TemplateModel.group_id, groupId);
+    assert.deepEqual(payload.TemplateModel.groups.map(g => g.group_id), [groupId]);
+    assert.deepEqual(payload.Metadata, { opda_onboarding_key: operationKey,
+      opda_template_sha256: config.expectedTemplateFingerprint, opda_domain_id: groupId });
+    assert.equal(payload.TrackOpens, false); assert.equal(payload.TrackLinks, 'None');
+    assert.equal((await adapter.send(request)).attempted, false);
+    assert.equal(calls.filter(call => call.method === 'POST').length, 1);
+  }
+  assert.equal(ids.size, 6);
+});
+
+test('v2 rejects mismatched domains, mixed groups and wrong alias/subject before any provider call', async () => {
+  const { adapter, request, config, calls } = domainFixture('conveyancing');
+  for (const groups of [
+    [{ ...request.input.groups[0], groupId: 'estate-agency' }],
+    [...request.input.groups, { ...request.input.groups[0], groupId: 'estate-agency' }],
+  ]) assert.deepEqual(await adapter.send({ ...request, input: { ...request.input, groups } }),
+    { status: 'failed', attempted: false, reason: 'invalid-input' });
+  assert.equal(calls.length, 0);
+  for (const change of [
+    { expectedGroupId: 'technology' }, { expectedGroupId: null },
+    { expectedTemplateAlias: INVITATION_TEMPLATE_ALIAS }, { expectedSubject: INVITATION_SUBJECT },
+    { expectedGroupId: 'estate-agency' }, { expectedTemplateId: null },
+  ]) assert.throws(() => createPostmarkInvitationAdapter({ ...config, ...change }));
+});
+
+test('v2 retains suppression, final withdrawal and unknown-send no-resend safeguards', async () => {
+  for (const groupId of Object.keys(DOMAIN_TEMPLATE_CONTRACTS)) {
+    const suppressed = domainFixture(groupId, { '/message-streams/broadcast/suppressions/dump': () => json({ Suppressions: [{ EmailAddress: 'synthetic@example.invalid' }] }) });
+    assert.equal((await suppressed.adapter.send(suppressed.request)).reason, 'suppressed');
+    assert.equal(suppressed.calls.some(call => call.method === 'POST'), false);
+    const withdrawn = domainFixture(groupId);
+    assert.equal((await withdrawn.adapter.send({ ...withdrawn.request, beforeSend: async () => false })).reason, 'stale-or-cancelled');
+    assert.equal(withdrawn.calls.some(call => call.method === 'POST'), false);
+    const unknown = domainFixture(groupId, { '/email/withTemplate': () => { throw new Error('timeout'); } });
+    assert.equal((await unknown.adapter.send(unknown.request)).status, 'unknown');
+    assert.equal((await unknown.adapter.send(unknown.request)).attempted, false);
+    assert.equal(unknown.calls.filter(call => call.method === 'POST').length, 1);
+  }
+});
+
+test('v2 reconciliation requires the exact domain, subject and content pin; a different group cannot complete its ledger', async () => {
+  for (const groupId of Object.keys(DOMAIN_TEMPLATE_CONTRACTS)) {
+    const contract = DOMAIN_TEMPLATE_CONTRACTS[groupId];
+    const { config } = domainFixture(groupId);
+    const expected = activity({ Subject: contract.subject,
+      Metadata: { opda_onboarding_key: operationKey, opda_template_sha256: config.expectedTemplateFingerprint, opda_domain_id: groupId } });
+    for (const change of [undefined, { Subject: INVITATION_SUBJECT },
+      { Metadata: { ...expected.Metadata, opda_domain_id: Object.keys(DOMAIN_TEMPLATE_CONTRACTS).find(id => id !== groupId) } },
+      { Metadata: { ...expected.Metadata, opda_domain_id: undefined } },
+    ]) {
+      const f = domainFixture(groupId, { '/messages/outbound': () => json({ TotalCount: 1, Messages: [{ ...expected, ...change }] }) });
+      const outcome = await f.adapter.reconcile({ operationKey });
+      assert.equal(outcome.status, change ? 'unknown' : 'accepted');
+      assert.equal(f.calls.some(call => call.method === 'POST'), false);
+      assert.equal((await f.adapter.send(f.request)).attempted, false);
+    }
+  }
 });

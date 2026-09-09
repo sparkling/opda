@@ -3,6 +3,7 @@ import test from 'node:test';
 import { approvedGroupSnapshot, digest, reviewDecision } from '../config/aws/hubspot-approval/domain.mjs';
 import { createHubSpotClient } from '../config/aws/hubspot-approval/client.mjs';
 import { APP_SCOPES } from '../config/aws/hubspot-participation/admin.mjs';
+import { DOMAIN_REVIEW_PROPERTIES } from '../config/aws/hubspot-participation/properties.mjs';
 
 const now = Date.parse('2026-09-09T12:00:00Z');
 const entry = (value, at = now - 2000, extra = {}) => ({ value,
@@ -93,5 +94,5 @@ test('CRM reader requests group history while malformed groups do not hide a wit
   const result = await client.getContact('123');
   assert.equal(decision(result).status, 'withdrawn');
   assert.deepEqual(requests[1].searchParams.get('propertiesWithHistory').split(','),
-    ['opda_review_status', 'email', 'opda_requested_working_groups']);
+    ['opda_review_status', 'email', 'opda_requested_working_groups', ...Object.values(DOMAIN_REVIEW_PROPERTIES)]);
 });

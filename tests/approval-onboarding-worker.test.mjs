@@ -9,10 +9,11 @@ const USER = '00000000-0000-4000-8000-000000000123';
 const CANARY = '388c735eec8225c4ad7a507944dd0a975296baea383198aa87177f29af2c6f69';
 const copy = value => structuredClone(value);
 
-function harness({ action = 'provision', enabled = true, canaryEmailHash = '', groups = APPROVAL_GROUP_IDS, email = 'test@example.org' } = {}) {
-  const context = { operation: { operationId: ID, action }, account: { email, name: 'Test Participant' },
+function harness({ action = 'provision', enabled = true, canaryEmailHash = '', groups = APPROVAL_GROUP_IDS,
+  email = 'test@example.org', domainId } = {}) {
+  const context = { operation: { operationId: ID, action, ...(domainId ? { schemaVersion: 2, domainId } : {}) }, account: { email, name: 'Test Participant' },
     audit: { onboarding: { snapshotStatus: action === 'provision' ? 'approved' : 'denied',
-      groups: action === 'provision' ? [...groups] : [], templateVersion: 1 } },
+      groups: action === 'provision' ? [...groups] : [], templateVersion: domainId ? 2 : 1 } },
     receipts: { graph: {}, sharepoint: {}, mail: {} } };
   const state = { current: true, eligible: true, terminal: false, finishAccepted: true,
     context, calls: [], finishes: [], sends: 0, released: 0, saved: [] };
@@ -67,7 +68,8 @@ function harness({ action = 'provision', enabled = true, canaryEmailHash = '', g
     async reconcile() { state.calls.push('reconcile'); return { status: 'unknown', attempted: false }; },
   };
   const worker = createOnboardingWorker({ store, graph, sharepoint, postmark, enabled, canaryEmailHash, now: () => 1000,
-    workspaces: WORKSPACES, invitationRegistry: INVITATION_REGISTRY, templatePin: TEMPLATE_PIN, logoBase64: 'test' });
+    workspaces: WORKSPACES, invitationRegistry: INVITATION_REGISTRY, templatePin: TEMPLATE_PIN,
+    templatePins: domainId ? { [domainId]: { ...TEMPLATE_PIN, version: 2 } } : {}, logoBase64: 'test' });
   return { state, context, store, graph, sharepoint, postmark, worker };
 }
 
@@ -87,6 +89,34 @@ test('all frozen selected groups become verified access before one guarded invit
   assert.deepEqual(h.state.sentInput.groups.map(group => group.groupId), APPROVAL_GROUP_IDS);
   assert.ok(h.state.sentInput.groups.every(group => group.teamMembershipVerified && group.sourceAccess.permissionsVerified));
   assert.deepEqual(await h.worker.process(ID), { status: 'skipped' }); assert.equal(h.state.sends, 1);
+});
+
+test('individual approval provisions and emails only its domain without removing another domain', async () => {
+  const h = harness({ domainId: 'conveyancing', groups: ['conveyancing'] });
+  ownedAccess(h, ['finance-and-banking']);
+  const retained = copy(h.context.receipts.graph.memberships[WORKSPACES['finance-and-banking'].teamId]);
+  assert.deepEqual(await h.worker.process(ID), { status: 'complete', stage: 'invitation-accepted' });
+  assert.deepEqual(h.state.sentInput.groups.map(group => group.groupId), ['conveyancing']);
+  assert.equal(h.context.receipts.mail[ID].domainId, 'conveyancing');
+  assert.deepEqual(h.context.receipts.graph.memberships[WORKSPACES['finance-and-banking'].teamId], retained);
+  assert.equal(h.state.calls.some(call => call.startsWith('remove-')), false);
+});
+test('individual withdrawal only cancels that domain mail and removes its own Microsoft grants', async () => {
+  const h = harness({ domainId: 'conveyancing', action: 'revoke' });
+  ownedAccess(h, ['finance-and-banking', 'conveyancing']);
+  h.context.receipts.mail[OTHER] = { domainId: 'finance-and-banking', status: 'pending' };
+  h.context.receipts.mail[ID] = { domainId: 'conveyancing', status: 'pending' };
+  assert.deepEqual(await h.worker.process(ID), { status: 'complete', stage: 'withdrawn' });
+  assert.deepEqual(h.state.calls, ['remove-source:conveyancing', 'remove-team:conveyancing']);
+  assert.equal(h.context.receipts.mail[OTHER].status, 'pending');
+  assert.equal(h.context.receipts.mail[ID].status, 'cancelled'); assert.equal(h.state.sends, 0);
+});
+test('a domain job can never dispatch a combined or different-domain invitation', async () => {
+  for (const groups of [['finance-and-banking'], ['conveyancing', 'finance-and-banking']]) {
+    const h = harness({ domainId: 'conveyancing', groups });
+    assert.equal((await h.worker.process(ID)).stage, 'eligibility-unavailable');
+    assert.equal(h.state.sends, 0); assert.deepEqual(h.state.calls, []);
+  }
 });
 
 test('activation gate leaves new provisioning pending without any provider effect', async () => {

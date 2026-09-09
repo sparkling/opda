@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { DOMAIN_REVIEW_PROPERTIES } from './properties.mjs';
 
 export const APPROVAL = Object.freeze({
   id: 'hubspot-existing-contacts-2026-09-08',
@@ -11,6 +12,7 @@ export const CONTACT_PROPERTIES = Object.freeze([
   'opda_full_name', 'opda_role_or_expertise', 'opda_requested_working_groups',
   'opda_contribution_preferences', 'opda_relevant_perspective',
   'opda_review_status', 'opda_enrolment_status', 'opda_active',
+  ...Object.values(DOMAIN_REVIEW_PROPERTIES),
 ]);
 export const emailKey = email => `EMAIL#${createHash('sha256').update(email.trim().toLowerCase()).digest('hex')}`;
 export const snapshotDigest = snapshot => createHash('sha256').update(JSON.stringify(snapshot)).digest('hex');

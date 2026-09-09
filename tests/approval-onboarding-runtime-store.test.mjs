@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
 import test from 'node:test';
 import { createOnboardingStore } from '../src/approval-onboarding/store.mjs';
+import { planDomainApprovals } from '../config/aws/hubspot-approval/domain-onboarding.mjs';
 
 const digest = value => createHash('sha256').update(value).digest('hex');
 const instant = Date.parse('2026-09-09T12:00:00Z');
@@ -107,6 +108,48 @@ function fixture(options = {}) {
       const next = records(version, action); Object.values(next).filter(row => row?.pk).forEach(seed); return next;
     } };
 }
+
+function domainFixture() {
+  const f = fixture();
+  const map = { ...f.binding }, row = { ...f.account, active: false, suspended: false, reviewStatus: 'received' };
+  delete map.onboarding; delete row.onboarding;
+  const decisions = ['conveyancing', 'finance-and-banking'].map(domainId => ({ domainId, id: digest(domainId),
+    trusted: true, status: 'approved', actor: '42', at: instant - 1000, reason: 'individual-domain-approved',
+    groupSnapshot: { snapshotStatus: 'approved', groups: [domainId], groupDigest: digest(JSON.stringify([domainId])), groupsAt: instant - 2000 } }));
+  const plan = planDomainApprovals({ map, row, decisions, now: instant, cutover: instant - 10000 });
+  f.seed({ ...map, ...plan.mapFields }); f.seed({ ...row, ...plan.fields });
+  plan.operations.forEach(f.seed); plan.audits.forEach(f.seed);
+  return { ...f, plan, operation: plan.operations.find(op => op.domainId === 'conveyancing') };
+}
+
+test('domain claims bind one immutable scope while sharing the participant receipt lease', async () => {
+  const f = domainFixture(), context = await f.store.claim(f.operation.operationId);
+  assert.equal(context.operation.schemaVersion, 2); assert.equal(await f.store.guard(context, { requireEligible: true }), true);
+  const other = f.plan.operations.find(op => op.domainId === 'finance-and-banking');
+  assert.equal(await f.another().claim(other.operationId), null);
+  assert.equal(await f.store.saveReceipts(context, { graph: {}, sharepoint: {}, mail: {} }, { requireEligible: true }), true);
+  assert.equal(await f.store.release(context), true);
+  assert.ok(await f.another().claim(other.operationId));
+});
+test('another domain changing does not invalidate the current domain approval guard or mail transaction', async () => {
+  const f = domainFixture(), context = await f.store.claim(f.operation.operationId);
+  for (const pk of [f.operation.accountKey, f.operation.bindingKey]) {
+    const row = f.read(pk);
+    row.domainApprovals['finance-and-banking'].status = 'withdrawn';
+    row.domainApprovals['finance-and-banking'].onboarding = null;
+    row.revision = (row.revision ?? 0) + 1; row.accessVersion = (row.accessVersion ?? 0) + 1;
+    f.seed(row);
+  }
+  assert.equal(await f.store.guard(context, { requireEligible: true }), true);
+  assert.equal(await f.store.saveReceipts(context, { graph: {}, sharepoint: {}, mail: {} }, { requireEligible: true }), true);
+});
+test('withdrawal of the claimed domain and cross-domain operation tampering both fail closed', async () => {
+  const f = domainFixture(), context = await f.store.claim(f.operation.operationId);
+  const row = f.read(f.operation.accountKey); row.domainApprovals.conveyancing.status = 'withdrawn'; f.seed(row);
+  assert.equal(await f.store.guard(context, { requireEligible: true }), false);
+  const other = domainFixture(); other.seed({ ...other.operation, domainId: 'finance-and-banking' });
+  await assert.rejects(other.store.claim(other.operation.operationId), /Invalid onboarding/);
+});
 
 test('claim strongly resolves immutable references and holds one participant lease for 900 seconds', async () => {
   const f = fixture(), context = await f.store.claim(f.operation.operationId);

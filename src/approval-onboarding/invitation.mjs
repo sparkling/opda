@@ -5,6 +5,8 @@
  * and claim a durable per-review send ledger before dispatching the returned payload.
  * Verification booleans are caller attestations, not authorization or a live check.
  */
+import { domainTemplateContract } from './domain-templates.mjs';
+
 export const OPDA_TENANT_ID = '143540d4-4fbc-4005-882a-29656cd01a36';
 export const WEBSITE_LOGIN_URL = 'https://opda.org.uk/_auth/login';
 export const INVITATION_SUBJECT = 'Your OPDA working-group access is ready';
@@ -161,17 +163,23 @@ function microsoftAccess(value) {
  *     sourceAccess: { status: 'ready'|'teams_only', permissionsVerified: true, folderUrl? } }] }
  * registry: { tenantId, websiteLoginUrl, groups: { [id]:
  *   { teamId, teamUrl, sourceIntakeSiteUrl?, status?: 'implemented'|'provisioned' } } }
- * All selected groups must be supplied together. A generic email domain may have
- * verified Teams-only access; a pending company folder is NOT Teams-only success.
+ * v1 (history): all groups in the historical review are supplied together.
+ * v2: options.groupId requires exactly one independently approved domain. It is
+ * never a filter that silently discards other groups supplied by a caller.
+ * A generic email domain may have verified Teams-only access; a pending company
+ * folder is NOT Teams-only success.
  */
-export function buildInvitationModel(input, registry) {
+export function buildInvitationModel(input, registry, options = {}) {
   object(input, ['displayName', 'email', 'microsoft', 'groups'], 'input');
+  object(options, ['groupId'], 'model options');
+  const contract = options.groupId === undefined ? undefined : domainTemplateContract(options.groupId);
   object(registry, ['tenantId', 'websiteLoginUrl', 'groups'], 'registry');
   requireValue(registry.tenantId === OPDA_TENANT_ID && registry.websiteLoginUrl === WEBSITE_LOGIN_URL, 'registry tenant or website login mismatch');
   object(registry.groups, Object.keys(registry.groups ?? {}), 'registry groups');
   const name = displayName(input.displayName);
   recipient(input.email);
   requireValue(Array.isArray(input.groups) && input.groups.length >= 1 && input.groups.length <= APPROVAL_GROUP_IDS.length, 'select one to six groups');
+  requireValue(!contract || input.groups.length === 1 && input.groups[0]?.groupId === contract.groupId, 'domain invitation requires exactly its independently approved group');
   const selected = new Map();
   const teamIds = new Set();
   const sites = new Set();
@@ -204,13 +212,14 @@ export function buildInvitationModel(input, registry) {
     ...microsoftAccess(input.microsoft),
     has_source_folders: [...selected.values()].some((group) => group.source_folder_ready),
     groups: APPROVAL_GROUP_IDS.filter((id) => selected.has(id)).map((id) => selected.get(id)),
+    ...(contract ? selected.get(contract.groupId) : {}),
   };
 }
 
 /** Returns a Postmark template payload, not permission to send it. Never log it. */
 export function buildInvitationPayload(input, registry, options) {
-  const model = buildInvitationModel(input, registry);
-  object(options, ['logoBase64'], 'options');
+  object(options, ['logoBase64', 'groupId'], 'options');
+  const model = buildInvitationModel(input, registry, { groupId: options.groupId });
   requireValue(typeof options.logoBase64 === 'string' && options.logoBase64.length <= 350_000
     && /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/u.test(options.logoBase64), 'logo must be bounded base64 PNG content');
   const image = Buffer.from(options.logoBase64, 'base64');
@@ -219,7 +228,7 @@ export function buildInvitationPayload(input, registry, options) {
     From: 'Smart Property Data Trust Framework <smartdata@openpropdata.org.uk>',
     To: recipient(input.email),
     ReplyTo: 'smartdata@openpropdata.org.uk',
-    TemplateAlias: INVITATION_TEMPLATE_ALIAS,
+    TemplateAlias: options.groupId === undefined ? INVITATION_TEMPLATE_ALIAS : domainTemplateContract(options.groupId).alias,
     TemplateModel: model,
     InlineCss: true,
     MessageStream: 'broadcast',

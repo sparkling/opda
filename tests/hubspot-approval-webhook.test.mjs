@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash, createHmac } from 'node:crypto';
 import test from 'node:test';
 import { createWebhookHandler } from '../config/aws/hubspot-approval/webhook.mjs';
+import { DOMAIN_REVIEW_PROPERTIES } from '../config/aws/hubspot-participation/properties.mjs';
 
 const now = Date.parse('2026-09-08T20:00:00Z');
 const clientSecret = 'synthetic-signing-fixture-not-a-real-credential';
@@ -58,6 +59,22 @@ test('authenticates v1 raw bytes and queues exactly one reference-only receipt',
   assert.deepEqual(f.sent[0], { QueueUrl: config.queueUrl, MessageBody: JSON.stringify({
     schemaVersion: 1, contactIds: ['123'], receivedAt: now, receiptId: hash(event.body),
   }) });
+});
+
+test('every individual domain review produces an authenticated contact hint, never approval authority', async () => {
+  const f = setup();
+  const events = Object.values(DOMAIN_REVIEW_PROPERTIES).map((propertyName, index) =>
+    hint({ propertyName, propertyValue: index % 2 ? 'withdrawn' : 'approved' }));
+  const event = v3Request(events);
+  assert.equal((await f.handler(event)).statusCode, 202);
+  assert.deepEqual(JSON.parse(f.sent[0].MessageBody), {
+    schemaVersion: 1, contactIds: ['123'], receivedAt: now, receiptId: hash(event.body),
+  });
+  assert.doesNotMatch(f.sent[0].MessageBody, /approved|withdrawn|propertyName|opda_review_/);
+  const unsigned = request(events);
+  delete unsigned.headers['x-hubspot-signature'];
+  assert.equal((await f.handler(unsigned)).statusCode, 401);
+  assert.equal(f.sent.length, 1);
 });
 
 test('missing, invalid, truncated, forged, duplicate and mutated signatures never enqueue', async () => {
@@ -345,6 +362,7 @@ test('rejects unsupported subscriptions and properties for the whole batch', asy
     { subscriptionType: 'contact.creation' }, { subscriptionType: 'company.propertyChange' },
     { subscriptionType: 'contact.associationChange' }, { subscriptionType: null },
     { propertyName: 'opda_active' }, { propertyName: 'opda_enrolment_status' }, { propertyName: null },
+    { propertyName: 'opda_review_unknown_domain' }, { propertyName: 'opda_requested_working_groups' },
   ]) {
     const f = setup();
     assert.equal((await f.handler(request([hint(), hint(patch)]))).statusCode, 400);
