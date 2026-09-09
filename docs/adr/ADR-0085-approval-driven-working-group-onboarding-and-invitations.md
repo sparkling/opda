@@ -302,6 +302,17 @@ deployed from commit `17d385f145ae1426fefd45910eb0d2c58e13e888` through infrastr
 `34297885445`; AWS readback confirmed an active, successfully updated worker with general
 onboarding disabled. Deployment is not proof of completed end-to-end onboarding.
 
+The controlled recipient test then created two organisation areas inside the existing intake
+sites, preserving ADR-0070's workspace and permission pattern. A repeated readback exposed a
+verifier defect: SharePoint had added built-in Limited Access beside the parent's existing
+administrator and processor roles. The verifier now accepts that navigation-only role at the
+organisation index while still requiring the exact effective role, rejecting duplicates and
+additional effective grants, and leaving company-folder ACL checks unchanged. No existing site
+or permission was replaced to make the check pass. This follows Microsoft's documented
+[automatic Limited Access behaviour](https://learn.microsoft.com/en-us/sharepoint/understanding-permission-levels).
+The regression was reproduced before the fix; all 34 focused SharePoint tests then passed.
+The invitation and general activation remain pending completion of the live test.
+
 Before activating automatic follow-up, verify:
 
 - all six domain workspaces and each role-limited service credential;

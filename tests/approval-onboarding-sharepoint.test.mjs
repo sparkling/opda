@@ -133,6 +133,10 @@ test('verified existing structures are reused and existing membership is not own
 
 test('successful receipt resumes without duplicate membership writes', async () => {
   const f = fixture(); const first = await f.adapter.ensure(f.input);
+  // SharePoint adds navigation plumbing to the parent when child grants appear.
+  for (const id of [11, 12]) f.state.index.RoleAssignments.find(a => a.Member.Id === id)
+    .RoleDefinitionBindings.push({ Id: 1073741825 });
+  f.state.index.RoleAssignments.push(grant(20, 1073741825));
   const writes = f.calls.filter((x) => x.method === 'POST').length;
   const second = await f.adapter.ensure({ ...f.input, receipt: first.receipt });
   assert.equal(second.status, 'ready');
@@ -357,6 +361,21 @@ test('a persisted removal intent with no acknowledgement stays attention even wh
 
 test('limited access cannot substitute for a required index permission', async () => {
   const f = fixture(); f.state.index.RoleAssignments.find(a => a.Member.Id === 10).RoleDefinitionBindings[0].Id = 1073741825;
+  await assert.rejects(f.adapter.ensure(f.input), /sharepoint-unexpected-acl/);
+  assert.equal(f.calls.some(x => x.method === 'POST'), false);
+});
+
+test('limited access cannot mask extra, duplicate or foreign effective permissions', async () => {
+  for (const [principal, roles] of [[11, [full, edit]], [11, [full, full]],
+    [11, [full, 1073741825, 1073741825]], [999, [edit, 1073741825]]]) {
+    const f = fixture();
+    f.state.index.RoleAssignments = f.state.index.RoleAssignments.filter(a => a.Member.Id !== principal);
+    f.state.index.RoleAssignments.push({ Member: { Id: principal }, RoleDefinitionBindings: roles.map(Id => ({ Id })) });
+    await assert.rejects(f.adapter.ensure(f.input), /sharepoint-unexpected-acl/);
+    assert.equal(f.calls.some(x => x.method === 'POST'), false);
+  }
+  const f = fixture({ companyGroup: true, folder: true });
+  f.state.folder.RoleAssignments.find(a => a.Member.Id === 20).RoleDefinitionBindings.push({ Id: 1073741825 });
   await assert.rejects(f.adapter.ensure(f.input), /sharepoint-unexpected-acl/);
   assert.equal(f.calls.some(x => x.method === 'POST'), false);
 });

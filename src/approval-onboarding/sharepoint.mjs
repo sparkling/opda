@@ -177,10 +177,17 @@ export function createSharePointAdapter({ request, workspaces } = {}) {
     const seen = new Set();
     for (const assignment of item.RoleAssignments) {
       const id = assignment?.Member?.Id, roles = assignment?.RoleDefinitionBindings;
-      requireValue(positive(id) && !seen.has(id) && Array.isArray(roles) && roles.length === 1 && positive(roles[0]?.Id), 'unexpected-acl');
+      requireValue(positive(id) && !seen.has(id) && Array.isArray(roles) && roles.length > 0
+        && roles.length <= (index ? 2 : 1) && roles.every(role => positive(role?.Id)), 'unexpected-acl');
+      const roleIds = roles.map(role => role.Id);
+      requireValue(new Set(roleIds).size === roleIds.length, 'unexpected-acl');
       seen.add(id);
-      if (index && !expected.has(id) && roles[0].Id === LIMITED) continue; // Propagated plumbing, never a substitute for required roles.
-      requireValue(roles[0].Id === (expected.get(id) ?? (admins.has(id) ? FULL : undefined)), 'unexpected-acl');
+      // Child grants add Limited Access to the parent, including its existing admins.
+      // It is navigation plumbing, never a substitute for any required effective role.
+      if (index && !expected.has(id) && roleIds.length === 1 && roleIds[0] === LIMITED) continue;
+      const effectiveRoles = index ? roleIds.filter(role => role !== LIMITED) : roleIds;
+      requireValue(effectiveRoles.length === 1
+        && effectiveRoles[0] === (expected.get(id) ?? (admins.has(id) ? FULL : undefined)), 'unexpected-acl');
     }
     if (!missing) requireValue([...expected.keys()].every(id => seen.has(id)), 'unexpected-acl');
     return seen;
