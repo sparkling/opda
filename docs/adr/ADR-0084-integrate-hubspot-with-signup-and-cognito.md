@@ -454,15 +454,15 @@ CRM projections may lag; approval, trusted access, HubSpot capacity and Microsof
 
 ### Confirmation
 
-**S3 backup retirement, 2026-09-09:** the repository removes the dedicated backup runtime and
-nested stack, including its schedules and alarms. DynamoDB PITR, the retained evidence bucket
-and one-off import contracts remain unchanged. Deployment is required to remove the live
-scheduled resources; this code change alone does not establish their removal in AWS.
+**S3 backup retirement, 2026-09-09:** infrastructure run `34385492669` deployed removal of the
+dedicated backup runtime and nested stack, including its schedules and alarms. AWS readback
+confirmed `opda-participant-backup` no longer exists. DynamoDB PITR, the retained evidence
+bucket and one-off import contracts remain unchanged; historical evidence was not deleted.
 
 **Version 2 runtime readback, 2026-09-09:** the active approval Lambda uses
 `DOMAIN_REVIEW_CUTOVER=2026-09-09T14:35:15Z`. Six domain properties and pinned invitation
-templates exist. The subsequent strict last-group rule and withdrawal notices require their
-own deployment and timed live verification; template creation alone does not prove delivery.
+templates exist. Commits `558d0280` and `a089d7fe` deployed the strict last-group rule, withdrawal
+notices and bounded retries. ADR-0085 records the timed live test and its browser-session limitation.
 
 **Historical v1 verification, 2026-09-08:** signup sync, contact-wide review webhooks and
 Cognito endpoints were live; CI deployed `803c5d33`, with both approval Lambdas matching it.
@@ -480,7 +480,7 @@ Cognito endpoints were live; CI deployed `803c5d33`, with both approval Lambdas 
 - Historical S3 recovery point from the now-retired feature, 2026-09-08 19:56:51 UTC: 3,023 register items covering 1,007 accounts,
   empty intake, 1,001 CRM profiles and 16 definitions. Counts/digests passed; no sessions or credentials.
 
-Outstanding: timed withdrawal-notice verification, privileged access/MFA procedures, retention sweeps and authenticated comment writes. Comments remain public read-only.
+Outstanding: current-version browser-session logout verification, privileged access/MFA procedures, retention sweeps and authenticated comment writes. Comments remain public read-only.
 
 ## More Information
 

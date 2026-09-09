@@ -339,8 +339,8 @@ remain distinct purposes with their own recipients and controls.
 
 **Version 2 readback, 2026-09-09:** the active approval Lambda reports
 `DOMAIN_REVIEW_CUTOVER=2026-09-09T14:35:15Z`. All six domain properties exist and the independent
-domain policy is deployed. This supersedes the earlier preparation-only status; it does not
-establish that the later withdrawal-notice amendment has been deployed or tested live.
+domain policy is deployed. The following dated test also establishes deployment of the
+withdrawal-notice amendment; the earlier version 1 evidence remains historical.
 
 On 2026-09-09, all six version 2 templates passed Postmark parsing/rendering validation and
 were created on server `20188829`. Readback verified byte-exact HTML/text against the compiled
@@ -354,11 +354,35 @@ Provisioning sent no mail. Live readback also confirmed six private Teams and si
 non-group-connected source-intake sites, with the expected organisation isolation. Team-connected
 collaboration files are a separate access path inherited from Microsoft 365 group membership.
 
-The notice amendment still requires exact-source deployment and a timed recipient test covering
-partial removal, last-domain denial and sign-out, each notice, signup deduplication and reapproval.
-Keep Microsoft propagation, provider acceptance and delivery timings distinct. Synthetic tests
-cover replay, denied-status churn, reapproval races, provider disablement and uncertain sends;
-none substitutes for the requested live recipient test or authorises historical bulk notifications.
+**Withdrawal and restoration test, 2026-09-09:** commits `558d0280` and `a089d7fe` reached live
+infrastructure and website deployments. Readback matched all 29 runtime files to committed bytes.
+Both queues were empty at final verification. Real HubSpot interface decisions exercised two groups
+for one authorised existing participant; no historical contact sweep or bulk notification was triggered.
+
+- Removing the first group preserved website eligibility and the other group's access.
+  Its withdrawal email was delivered 71.630 seconds after the persisted review.
+- Removing the last group disabled Cognito after 2.443 seconds; the independent website-disabled
+  email was delivered after 5.171 seconds. A fresh real sign-in rejected a valid email challenge
+  because the user was disabled. The account's provider-version marker matched the denial version.
+- Microsoft API readback confirmed removal from both private Teams and both separate source-intake
+  contributor/index groups. Unrelated, manually granted membership and source material were preserved.
+- The second withdrawal email took 19 minutes 33.171 seconds: its earlier pending operation awaited
+  relay recovery and was eventually re-notified by a later review. This is not evidence of fast recovery.
+  Section 2's fix was then verified live: a 15-second queue retry completed propagation;
+  worker executions took 13.582 and 5.684 seconds.
+- Reapproval restored Cognito and both groups' Microsoft access. Separate invitations were delivered
+  46.277 and 34.480 seconds after their respective reviews; both were also observed in the inbox.
+  All five integration emails had provider delivery events, with no duplicate sends observed.
+- A repeat real signup was quarantined for manual review after 9.578 seconds; it did not create
+  a duplicate contact, erase the withdrawals or restore access. The participant finished approved
+  for both test groups, active and unsuspended, with Cognito enabled and managed permissions restored.
+
+**Remaining verification boundary:** Chrome reported `ERR_BLOCKED_BY_CLIENT` for the OPDA callback
+and session-status routes, preventing establishment of a baseline website session for this test.
+Logout of an already-open website session remains unverified live for this version. AWS recorded
+global sign-out by the approval role at denial, but redacts the username; this is corroboration, not browser proof.
+Synthetic tests cover session invalidation, replay, denied-status churn, reapproval races and uncertain sends. Validation
+passed 792 tests with one deliberate skip, the 19-case IA audit and the 2,737-page static build.
 
 #### Historical version 1 rollout and live evidence, 2026-09-09
 
@@ -454,8 +478,7 @@ redemption, suppression failures, ambiguous sends and race cases have synthetic/
 they are not represented as additional live recipient tests. Delivery evidence is not proof of
 inbox placement, readership or acceptance of a previously unredeemed Microsoft invitation.
 
-Keep dated runtime evidence and opaque receipts in the private operational register. Amend this
-confirmation after withdrawal-notice deployment and readback; accepted policy is not proof it is live.
+Keep dated evidence and opaque receipts private. Future amendments need their own deployment and readback.
 
 ## More Information
 
