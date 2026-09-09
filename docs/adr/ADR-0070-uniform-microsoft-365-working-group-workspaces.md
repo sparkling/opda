@@ -85,11 +85,11 @@ ADR-0063 or activate the proposed ratification process in ADR-0068.
 | Group | Role | Microsoft workspace status |
 |---|---|---|
 | **Finance and Banking** | Property bounded context | Implemented |
-| **Conveyancing** | Property bounded context | Provisioned; automatic onboarding pending |
-| **Estate Agency** | Property bounded context | Provisioned; automatic onboarding pending |
-| **Surveying and Valuation** | Property bounded context | Provisioned; automatic onboarding pending |
-| **Property Data Services** | Property bounded context | Provisioned; automatic onboarding pending |
-| **Property Technology** | Property bounded context | Provisioned; automatic onboarding pending |
+| **Conveyancing** | Property bounded context | Provisioned; approval onboarding live |
+| **Estate Agency** | Property bounded context | Provisioned; approval onboarding live |
+| **Surveying and Valuation** | Property bounded context | Provisioned; approval onboarding live |
+| **Property Data Services** | Property bounded context | Provisioned; approval onboarding live |
+| **Property Technology** | Property bounded context | Provisioned; approval onboarding live |
 | **DBT Smart Data** | Cross-sector scheme semantics; not a property bounded context | Planned |
 | **Interoperability Working Group** | Common boundary, context map, mappings and shared conventions | Planned |
 | **Technology Working Group** | Cross-cutting implementation evidence and technical assurance | Implemented |
@@ -261,8 +261,9 @@ No applicants, company folders, invitations or emails were added by this provisi
 
 The exact Team, site and group metadata is maintained in
 `src/agents/working-group-inbox/domain.mjs`. These five entries are **provisioned**, not
-**implemented** for the scheduled inbox agent. Unattended credentials, participant-level
-readback and the new invitation workflow remain activation prerequisites under ADR-0085.
+**implemented** for the scheduled inbox agent. The separate approval-driven onboarding service
+is now live under ADR-0085, with unattended credentials, participant-level readback and a verified
+invitation flow. That does not activate the scheduled inbox agent on these workspaces.
 DBT Smart Data and Interoperability remain planned.
 
 ### 8. Scheduled inbox operations
@@ -297,9 +298,12 @@ treated as untrusted evidence and cannot alter workspace configuration or tool p
 ### Confirmation
 
 This ADR is accepted. Finance and Banking and Technology implement the pattern. The other five
-property-domain Teams and intake sites are provisioned and configuration-verified; this is not
-proof of participant onboarding, external folder access or an invitation send. The two remaining
-cross-cutting workspaces are planned.
+property-domain Teams and intake sites are provisioned and configuration-verified. ADR-0085
+records the subsequent live approval-driven service, including a controlled two-group test of
+company-area isolation, invitation delivery, withdrawal and reapproval using these existing
+workspaces. That API/readback evidence is not a claim that an external guest's document-upload
+journey or every group has received a live recipient test. The two remaining cross-cutting
+workspaces are planned.
 
 For each implementation, confirmation requires:
 

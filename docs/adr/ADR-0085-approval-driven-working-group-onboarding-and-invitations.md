@@ -262,18 +262,21 @@ remain distinct purposes with their own recipients and controls.
 
 ### Confirmation
 
-The operator's policy decisions are accepted. **The new Microsoft/email follow-up is not yet
-live.** Website approval and revocation are already live under ADR-0084. On 2026-09-09 the five
+The operator's policy decisions are accepted. **The Microsoft/email follow-up is live as of
+2026-09-09**, alongside website approval and revocation under ADR-0084. The dated preparation
+and controlled-test evidence below records the rollout rather than a historical backfill.
+During initial workspace provisioning on 2026-09-09, the five
 missing domain Teams and separate intake sites passed configuration and ACL readback under
-ADR-0070. No applicants or company folders were added and no invitations were sent.
+ADR-0070. That preparation added no applicants or company folders and sent no invitations.
 
-The combined HTML/plain-text templates and pure payload builder are implemented locally, with
+The combined HTML/plain-text templates and pure payload builder are deployed, with
 11 tests covering all six configured workspaces, conditional redemption, URL validation and
 tracking settings. Postmark's validation API accepted subject, HTML and text in six synthetic
 rendering cases: mixed, all-folder and Teams-only access, each with and without redemption.
 On 2026-09-09 the new live Postmark template was created and read back as template `46437816`
 on server `20188829`. Its HTML/plain-text fingerprint is pinned by the service; neither earlier
-template was changed and no message was sent. This is not an end-to-end onboarding test.
+template was changed and no message was sent by template creation. The live recipient test is
+recorded separately below.
 
 The dedicated Microsoft service application and certificate are provisioned. App-only reads
 succeeded on all six configured sites and private Teams; the unselected cross-cutting
@@ -284,7 +287,7 @@ after the Secrets Manager copy was verified. No delegated refresh session was tr
 
 Approval-time group snapshots, atomic reference-only outbox records, cancellation/withdrawal
 work, a certificate-authenticated API boundary, encrypted receipt storage and the Microsoft,
-SharePoint and Postmark adapters are implemented and tested locally. The consumer now covers
+SharePoint and Postmark adapters are deployed and tested. The consumer covers
 guarded provisioning, withdrawal, reapproval, erased-profile cleanup, stale jobs and ambiguous
 email outcomes. Its dedicated queue and narrowly scoped role are defined in CloudFormation;
 the deployment package copies only the runtime dependencies and CID logo.
@@ -324,16 +327,32 @@ Microsoft memberships; reapproval restored them and reused the existing company 
 Finance membership and source material were preserved. One combined invitation was delivered,
 but Postmark reported open tracking enabled despite the per-message false value. The documented
 server override exposed a missing server-settings preflight, now covered by a reproduced regression
-test. General activation remains disabled pending a clean untracked invitation readback.
+test. The server's forced open-tracking default was then disabled; all other server settings,
+all three templates and the suppression list were unchanged. Historical wave payloads still
+explicitly enable open tracking.
 
-Before activating automatic follow-up, verify:
+The tracking safeguard was deployed from `304322810fff1f0329edd2fd2222634c7cadc763` through
+successful infrastructure run `34346862468` and site run `34346862604`. A fresh, trusted
+reapproval restored the same two Teams and isolated organisation folders. Postmark reported
+one invitation for that decision, with `TrackOpens: false`, `TrackLinks: None`, both selected
+groups in HTML and plain text, and a delivered-to-recipient-server event. Provider activity
+reconciliation accepted that exact message. No historical campaign was resent.
 
-- all six domain workspaces and each role-limited service credential;
-- snapshot reconstruction, activation cutoff, outbox atomicity and historical-import exclusion;
-- duplicate/reordered events, withdrawal races and non-revival after reapproval;
-- a new approved company-domain folder's isolation and a generic-provider Teams-only case;
-- the two rendered email formats, suppression handling and ambiguous-send recovery; and
-- a controlled, explicitly authorised end-to-end recipient test without broadcasting to old contacts.
+General activation completed through successful infrastructure run `34347405213`. AWS readback
+confirmed an active, successfully updated worker, `ONBOARDING_ENABLED=true`, an empty canary
+restriction, and deployed Postmark/SharePoint source bytes matching the tested commit. The
+approval cutoff remains `2026-09-09T01:07:12Z`; the frozen historical import is excluded. The
+onboarding queue and dead-letter queue were empty at verification. The test participant finishes
+approved and active, with Cognito enabled and the requested Microsoft access restored.
+
+Validation passed 672 of 673 Node tests, with one deliberate skip, the 19-case IA audit and a
+2,737-page static build. Live verification covered all six service/workspace boundaries and the
+authorised two-group company-domain signup, approval, login, withdrawal and reapproval case.
+Teams propagation was observed before re-notifying the same durable operation during the test;
+normal pending work uses the scheduled relay. Generic-provider Teams-only handling, new-guest
+redemption, suppression failures, ambiguous sends and race cases have synthetic/contract coverage;
+they are not represented as additional live recipient tests. Delivery evidence is not proof of
+inbox placement, readership or acceptance of a previously unredeemed Microsoft invitation.
 
 Keep dated runtime evidence and opaque receipts in the private operational register. Amend this
 confirmation after deployment and readback; accepted policy is not proof of a live integration.
