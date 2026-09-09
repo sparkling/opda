@@ -58,6 +58,72 @@ test('reference-only SQS hints reach the worker; pending, skipped and terminal o
   assert.deepEqual(result, { batchItemFailures: [] }); assert.deepEqual(ids, Array(4).fill(operationId));
 });
 
+test('propagation gets three bounded queue retries, then keeps durable outbox recovery', async () => {
+  const calls = [], logs = [];
+  const handler = createHandler({ queueArn, log: entry => logs.push(entry),
+    changeVisibility: async input => { calls.push(input); },
+    worker: { process: async () => ({ status: 'pending', stage: 'withdrawal-propagating' }) } });
+  for (const count of [1, 2, 3, 4, 5, 100]) {
+    const result = await handler(invocation(message(`attempt-${count}`, {
+      receiptHandle: 'opaque-receipt', attributes: { ApproximateReceiveCount: String(count) },
+    })));
+    assert.deepEqual(result.batchItemFailures, count <= 3 ? [{ itemIdentifier: `attempt-${count}` }] : []);
+  }
+  assert.deepEqual(calls.map(call => call.VisibilityTimeout), [15, 45, 120]);
+  assert.ok(calls.every(call => call.QueueUrl === 'https://sqs.eu-west-2.amazonaws.com/355653384628/opda-participation-onboarding'
+    && call.ReceiptHandle === 'opaque-receipt'));
+  assert.deepEqual(logs, Array.from({ length: 3 }, () => ({ event: 'onboarding_propagation_retry', count: 1 })));
+});
+
+test('fast retries are restricted to known transient stages and never replay uncertain sends or configuration waits', async () => {
+  const allowed = ['withdrawal-propagating', 'previous-grants-propagating', 'microsoft-propagating',
+    'microsoft-identity-review', 'awaiting-provider-disable', 'notice-preflight-pending', 'invitation-preflight-pending'];
+  for (const stage of [...allowed, 'awaiting-activation', 'awaiting-domain-template', 'awaiting-notice-template', 'retry-required', 'unknown']) {
+    let calls = 0;
+    const handler = createHandler({ queueArn, log: () => {}, changeVisibility: async () => { calls++; },
+      worker: { process: async () => ({ status: 'pending', stage }) } });
+    await handler(invocation(message('pending', { receiptHandle: 'opaque', attributes: { ApproximateReceiveCount: '1' } })));
+    assert.equal(calls, allowed.includes(stage) ? 1 : 0, stage);
+  }
+  for (const status of ['complete', 'cancelled', 'attention', 'skipped']) {
+    const handler = createHandler({ queueArn, log: () => {}, changeVisibility: async () => assert.fail('No terminal retry'),
+      worker: { process: async () => ({ status, stage: 'notice-outcome-unknown' }) } });
+    assert.deepEqual(await handler(invocation(message())), { batchItemFailures: [] });
+  }
+});
+
+test('malformed retry metadata and visibility outages retain the message without logging private handles', async () => {
+  for (const patch of [{}, { receiptHandle: '', attributes: { ApproximateReceiveCount: '1' } },
+    { receiptHandle: 'private-handle', attributes: { ApproximateReceiveCount: '-1' } },
+    { receiptHandle: 'private-handle', attributes: { ApproximateReceiveCount: '01' } },
+    { receiptHandle: 'private-handle', attributes: { ApproximateReceiveCount: '1' } }]) {
+    const logs = [];
+    const handler = createHandler({ queueArn, log: entry => logs.push(entry),
+      changeVisibility: async () => { throw new Error('private-handle'); },
+      worker: { process: async () => ({ status: 'pending', stage: 'withdrawal-propagating' }) } });
+    assert.deepEqual(await handler(invocation(message('retry', patch))), { batchItemFailures: [{ itemIdentifier: 'retry' }] });
+    assert.doesNotMatch(JSON.stringify(logs), /private-handle|receiptHandle/);
+  }
+});
+
+test('production propagation retry uses only the validated queue with a bounded native SQS call', async () => {
+  const captured = {};
+  const handler = createHandler({ queueArn, log: () => {},
+    worker: { process: async () => ({ status: 'pending', stage: 'microsoft-propagating' }) },
+    loadSqs: async () => ({
+      SQSClient: class {
+        constructor(options) { captured.client = options; }
+        async send(command, options) { captured.input = command.input; captured.options = options; }
+      },
+      ChangeMessageVisibilityCommand: class { constructor(input) { this.input = input; } },
+    }) });
+  assert.deepEqual(await handler(invocation(message('retry', { receiptHandle: 'opaque', attributes: { ApproximateReceiveCount: '2' } }))),
+    { batchItemFailures: [{ itemIdentifier: 'retry' }] });
+  assert.deepEqual(captured.client, { region: 'eu-west-2', maxAttempts: 2 });
+  assert.equal(captured.input.VisibilityTimeout, 45); assert.equal(captured.input.ReceiptHandle, 'opaque');
+  assert.ok(captured.options.abortSignal instanceof AbortSignal);
+});
+
 test('one failure retries only its record and logs aggregate static signals without provider details', async () => {
   const logs = [];
   let count = 0;

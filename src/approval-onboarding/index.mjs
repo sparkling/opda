@@ -15,6 +15,9 @@ const EMAIL_HASH = /^[a-f0-9]{64}$/;
 const SECRET_NAMES = { microsoft: 'opda/microsoft/participation-onboarding', postmark: 'opda/postmark/participation-onboarding' };
 const MESSAGE_ID = /^[A-Za-z0-9][A-Za-z0-9-]{0,127}$/;
 const OUTCOMES = ['pending', 'complete', 'cancelled', 'attention', 'skipped'];
+const PROPAGATION_STAGES = new Set(['withdrawal-propagating', 'previous-grants-propagating', 'microsoft-propagating',
+  'microsoft-identity-review', 'awaiting-provider-disable', 'notice-preflight-pending', 'invitation-preflight-pending']);
+const PROPAGATION_DELAYS = [15, 45, 120];
 const plain = value => value && typeof value === 'object' && !Array.isArray(value)
   && [Object.prototype, null].includes(Object.getPrototypeOf(value));
 const invalidConfig = () => new TypeError('Invalid onboarding configuration');
@@ -170,9 +173,15 @@ function operationReference(record, queueArn) {
 }
 
 /** Partial-batch retries contain only SQS message IDs. No provider details are logged. */
-export function createHandler({ worker, queueArn, env = process.env,
+export function createHandler({ worker, queueArn, env = process.env, changeVisibility,
+  loadSqs = () => import('@aws-sdk/client-sqs'),
   log = entry => console.error(JSON.stringify(entry)), ...dependencies } = {}) {
-  let runtime;
+  let runtime, sqs;
+  const defer = changeVisibility ?? (async input => {
+    sqs ??= loadSqs().then(aws => ({ aws, client: new aws.SQSClient({ region: REGION, maxAttempts: 2 }) }));
+    const { aws, client } = await sqs;
+    await client.send(new aws.ChangeMessageVisibilityCommand(input), { abortSignal: AbortSignal.timeout(5000) });
+  });
   const active = async () => {
     if (worker) return worker;
     runtime ??= createProductionWorker(fromEnvironment(env), dependencies).catch(error => { runtime = undefined; throw error; });
@@ -185,7 +194,7 @@ export function createHandler({ worker, queueArn, env = process.env,
       || new Set(event.Records.map(record => record.messageId)).size !== event.Records.length) {
       throw new TypeError('Invalid onboarding invocation');
     }
-    const failures = [];
+    const failures = [], propagation = [];
     let attention = 0;
     for (const record of event.Records) {
       try {
@@ -193,12 +202,34 @@ export function createHandler({ worker, queueArn, env = process.env,
         const result = await (await active()).process(operationId);
         if (!plain(result) || !OUTCOMES.includes(result.status)) throw Error();
         if (result.status === 'attention') attention++;
+        if (result.status === 'pending' && PROPAGATION_STAGES.has(result.stage)) {
+          const count = record.attributes?.ApproximateReceiveCount;
+          if (typeof count !== 'string' || !/^[1-9][0-9]{0,4}$/.test(count)) throw Error();
+          const seconds = PROPAGATION_DELAYS[Number(count) - 1];
+          if (seconds !== undefined) {
+            if (typeof record.receiptHandle !== 'string' || !record.receiptHandle.length || record.receiptHandle.length > 4096) throw Error();
+            propagation.push({ record, seconds });
+          }
+          // After three short retries acknowledge this hint. Durable pending
+          // state remains available to the normal outbox repair, not the DLQ.
+        }
       } catch { failures.push({ itemIdentifier: record.messageId }); }
     }
+    const retries = [];
+    // Set visibility only after effects and leases have settled for the batch.
+    // SQS waits; Lambda returns immediately and never sleeps for propagation.
+    await Promise.all(propagation.map(async ({ record, seconds }) => {
+      try {
+        await defer({ QueueUrl: `https://sqs.${REGION}.amazonaws.com/${ACCOUNT}/${expectedQueue.split(':').at(-1)}`,
+          ReceiptHandle: record.receiptHandle, VisibilityTimeout: seconds });
+        retries.push({ itemIdentifier: record.messageId });
+      } catch { failures.push({ itemIdentifier: record.messageId }); }
+    }));
     for (const [event, count] of [['onboarding_attention', attention], ['onboarding_batch_retry', failures.length]]) {
       if (count) { try { log({ event, count }); } catch {} }
     }
-    return { batchItemFailures: failures };
+    if (retries.length) { try { log({ event: 'onboarding_propagation_retry', count: retries.length }); } catch {} }
+    return { batchItemFailures: [...failures, ...retries] };
   };
 }
 

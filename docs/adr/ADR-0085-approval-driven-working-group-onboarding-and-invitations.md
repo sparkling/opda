@@ -140,6 +140,14 @@ does not supersede this domain's pending invitation. Hold one participant-wide l
 updating shared identity/ownership receipts; preserve independent per-domain operation snapshots.
 Interrupted work resumes from verified receipts. Pending or review-required is never called ready.
 
+For recognised Microsoft propagation and safe pre-send availability waits, retain the existing
+SQS message for at most three short retries, after 15, 45 and 120 seconds. Change its visibility
+using the existing queue-scoped permission and return a partial batch failure; Lambda does not
+sleep. Exhausted retries leave the durable operation for scheduled recovery. Configuration waits,
+manual review and ambiguous sends do not enter this fast path. Do not scan the CRM to retry one
+operation. This follows AWS [partial batch responses](https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html)
+and [message visibility](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_ChangeMessageVisibility.html).
+
 One approved domain can enable website eligibility under ADR-0084, subject to enrolment and
 account holds. Microsoft and email follow asynchronously. Their outages must not undo valid
 website eligibility or grant withdrawn access. Other domain approvals remain independent.
@@ -440,8 +448,8 @@ approved and active, with Cognito enabled and the requested Microsoft access res
 Validation passed 672 of 673 Node tests, with one deliberate skip, the 19-case IA audit and a
 2,737-page static build. Live verification covered all six service/workspace boundaries and the
 authorised two-group company-domain signup, approval, login, withdrawal and reapproval case.
-Teams propagation was observed before re-notifying the same durable operation during the test;
-normal pending work uses the scheduled relay. Generic-provider Teams-only handling, new-guest
+Teams propagation was observed before re-notifying the same durable operation during that historical test;
+the later bounded queue retry amends its relay-only recovery. Generic-provider Teams-only handling, new-guest
 redemption, suppression failures, ambiguous sends and race cases have synthetic/contract coverage;
 they are not represented as additional live recipient tests. Delivery evidence is not proof of
 inbox placement, readership or acceptance of a previously unredeemed Microsoft invitation.
