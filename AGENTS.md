@@ -45,8 +45,12 @@ project folder and organise it. Maintain a project README.
   overlapping edits. Independent reviews should be read-only.
 - Consolidate existing branch work into `main` without reverting newer accepted
   changes or absorbing unrelated uncommitted work.
-- Commit coherent, verified changes incrementally. Push and publish only when
-  explicitly requested by the user.
+- Commit coherent, verified changes incrementally, then push, deploy and activate
+  them through the established CI/CD process. This is the user's standing instruction
+  from 2026-09-09; do not ask for another deployment or activation prompt.
+- A task-specific local-only or do-not-deploy instruction overrides that default.
+  Preserve unrelated changes, retain validation and verify actual live behaviour;
+  do not leave an integration disabled and describe it as complete.
 
 ## Browser Automation Hard Rule
 
