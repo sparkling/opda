@@ -290,8 +290,17 @@ template matched its pin. No participant record, membership or invitation was ch
 
 Automatic grants default to disabled. CI requires both `OPDA_ONBOARDING_ENABLED=true` and a
 prospective UTC `OPDA_ONBOARDING_CUTOVER` in `YYYY-MM-DDTHH:mm:ssZ` form to begin new onboarding.
-Managed withdrawal remains enabled when prospective onboarding is paused. The current source
-and infrastructure changes are not deployed; these preparation steps do not make follow-up live.
+For controlled verification before general activation, `OPDA_ONBOARDING_CANARY_EMAIL_HASH`
+may identify one explicitly authorised recipient by the lowercase SHA-256 of their normalised
+email. It is empty by default and cannot bypass approval, snapshot or current-eligibility checks.
+Malformed configuration fails closed. Managed withdrawal remains enabled independently of both
+activation switches.
+
+The dedicated worker and infrastructure were deployed on 2026-09-09 through successful CI runs
+`34296804034` and `34296804326`. The recipient-limited verification switch was subsequently
+deployed from commit `17d385f145ae1426fefd45910eb0d2c58e13e888` through infrastructure run
+`34297885445`; AWS readback confirmed an active, successfully updated worker with general
+onboarding disabled. Deployment is not proof of completed end-to-end onboarding.
 
 Before activating automatic follow-up, verify:
 
