@@ -7,6 +7,8 @@ const PORTAL_ID = 144765514;
 const APP_ID = 52397854;
 const CONTACT_ID = /^[1-9][0-9]{0,19}$/;
 const ENROLMENTS = new Set(['not_invited', 'invited', 'complete', 'expired']);
+// HubSpot caps object reads that include property history at 50, not 100.
+const HISTORY_PAGE_SIZE = 50, MAX_CONTACTS = 5000;
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const fail = () => { throw new Error('Invalid or incomplete HubSpot approval response'); };
 
@@ -100,13 +102,13 @@ export function createHubSpotClient(overrides = {}) {
       const contacts = [], ids = new Set(), cursors = new Set();
       let after, pages = 0;
       do {
-        if (++pages > 50) fail();
+        if (++pages > MAX_CONTACTS / HISTORY_PAGE_SIZE) fail();
         const query = readQuery();
-        query.set('limit', '100');
+        query.set('limit', String(HISTORY_PAGE_SIZE));
         if (after !== undefined) query.set('after', after);
         const page = await request(await verifiedCredential(), `/crm/v3/objects/contacts?${query}`);
-        if (!object(page) || !Array.isArray(page.results) || page.results.length > 100
-          || contacts.length + page.results.length > 5000) fail();
+        if (!object(page) || !Array.isArray(page.results) || page.results.length > HISTORY_PAGE_SIZE
+          || contacts.length + page.results.length > MAX_CONTACTS) fail();
         for (const result of page.results) {
           const contact = validateContact(result);
           if (ids.has(contact.id)) fail();

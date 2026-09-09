@@ -98,6 +98,7 @@ test('approval CRM inventory consumes bounded pages, preserves histories and ign
     if (url.includes('/oauth/')) return json(INFO);
     const query = new URL(url).searchParams;
     requests.push(new URL(url));
+    if (Number(query.get('limit')) > 50) return json({ message: 'History reads support at most 50 objects' }, 400);
     return query.has('after') ? json({ results: [contact('456')] })
       : json({ results: [contact()], paging: { next: { after: 'cursor-2', link: 'https://untrusted.example/' } } });
   } });
@@ -105,7 +106,7 @@ test('approval CRM inventory consumes bounded pages, preserves histories and ign
   assert.equal(requests.length, 2);
   for (const url of requests) {
     assert.equal(url.origin, 'https://api.hubapi.com');
-    assert.equal(url.searchParams.get('limit'), '100');
+    assert.equal(url.searchParams.get('limit'), '50');
     assert.equal(url.searchParams.get('archived'), 'false');
     assert.deepEqual(url.searchParams.get('properties').split(','), CONTACT_PROPERTIES);
     assert.deepEqual(url.searchParams.get('propertiesWithHistory').split(','),
@@ -144,14 +145,14 @@ test('approval CRM inventory refuses inventories over 5000 and oversized pages',
   let page = 0;
   const f = crm({ fetch: async url => {
     if (url.includes('/oauth/')) return json(INFO);
-    const start = page++ * 100 + 1;
-    return json({ results: Array.from({ length: 100 }, (_, n) => contact(String(start + n))),
+    const start = page++ * 50 + 1;
+    return json({ results: Array.from({ length: 50 }, (_, n) => contact(String(start + n))),
       paging: { next: { after: String(page) } } });
   } });
   await assert.rejects(f.client.listContacts());
-  assert.ok(page <= 51);
+  assert.equal(page, 100);
   const oversized = crm({ fetch: async url => url.includes('/oauth/') ? json(INFO)
-    : json({ results: Array.from({ length: 101 }, (_, n) => contact(String(n + 1))) }) });
+    : json({ results: Array.from({ length: 51 }, (_, n) => contact(String(n + 1))) }) });
   await assert.rejects(oversized.client.listContacts());
 });
 
