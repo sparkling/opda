@@ -81,7 +81,10 @@ function identity(contact, binding, now) {
 }
 
 function payload(receipt) {
-  return Object.fromEntries(RECEIPT_KEYS.filter(key => key !== 'receiptDigest').map(key => [key, receipt[key]]));
+  // DynamoDB maps do not preserve insertion order, including nested maps.
+  return Object.fromEntries(RECEIPT_KEYS.filter(key => key !== 'receiptDigest').map(key => [key,
+    key === 'microsoft' && receipt.microsoft ? { userId: receipt.microsoft.userId,
+      state: receipt.microsoft.state, observedAt: receipt.microsoft.observedAt } : receipt[key]]));
 }
 
 function decisionIds(receipt) {

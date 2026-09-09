@@ -132,6 +132,22 @@ test('capture canonicalizes safe HubSpot metadata and freezes a current selectio
   assert.ok(receipt.domainDecisionAt > receipt.domainReviewedAt);
 });
 
+test('stored receipts survive DynamoDB map-key reordering without accepting changed values', async () => {
+  const reorder = value => Array.isArray(value) ? value.map(reorder) : value && typeof value === 'object'
+    ? Object.fromEntries(Object.entries(value).reverse().map(([key, item]) => [key, reorder(item)])) : value;
+  const f = fixture();
+  f.binding().financeRosterImport = reorder(f.receipt);
+  const decisions = financeImportDecisions(f.crm, f.binding(), { now: NOW + 1 });
+  assert.equal(decisions.globalDecision?.id, f.receipt.globalDecisionId);
+  assert.equal(decisions.domainDecision?.id, f.receipt.domainDecisionId);
+  await f.worker.processContact('123');
+  assert.equal(f.operations.size, 0); assert.equal(f.notifications.length, 0);
+  assert.ok(!f.calls.includes('disable'));
+  f.binding().financeRosterImport.microsoft.state = 'PendingAcceptance';
+  assert.deepEqual(financeImportDecisions(f.crm, f.binding(), { now: NOW + 1 }),
+    { globalDecision: null, domainDecision: null });
+});
+
 test('capture rejects ambiguity, missing authority, mutable identity and unsafe Microsoft data', () => {
   const mutations = [
     crm => { crm.properties.opda_review_status = 'received'; },
