@@ -8,7 +8,9 @@ const queueArn = 'arn:aws:sqs:eu-west-2:355653384628:opda-participation-onboardi
 const microsoftSecretArn = 'arn:aws:secretsmanager:eu-west-2:355653384628:secret:opda/microsoft/participation-onboarding-Ab1234';
 const postmarkSecretArn = 'arn:aws:secretsmanager:eu-west-2:355653384628:secret:opda/postmark/participation-onboarding-Cd5678';
 const instant = Date.parse('2026-09-09T12:00:00Z');
-const config = { participantsTableName: 'opda-participants', queueArn, microsoftSecretArn, postmarkSecretArn, enabled: false };
+const canaryEmailHash = '388c735eec8225c4ad7a507944dd0a975296baea383198aa87177f29af2c6f69';
+const config = { participantsTableName: 'opda-participants', queueArn, microsoftSecretArn, postmarkSecretArn,
+  enabled: false, canaryEmailHash: '' };
 const operationId = 'a'.repeat(64);
 const message = (id = 'message-1', patch = {}) => ({ messageId: id, eventSource: 'aws:sqs', eventSourceARN: queueArn,
   awsRegion: 'eu-west-2', body: JSON.stringify({ schemaVersion: 1, operationId }), ...patch });
@@ -112,7 +114,8 @@ test('queue identity is pinned to the OPDA account and region, not inferred from
 
 test('production assembly is disabled by default, resolves packaged assets and always encrypts receipts', async () => {
   const f = runtimeFixture(); await createProductionWorker(config, f.deps);
-  assert.equal(f.captured.worker.enabled, false); assert.equal(f.captured.worker.logoBase64, png.toString('base64'));
+  assert.equal(f.captured.worker.enabled, false); assert.equal(f.captured.worker.canaryEmailHash, '');
+  assert.equal(f.captured.worker.logoBase64, png.toString('base64'));
   assert.equal(f.captured.logoUrl.pathname.endsWith('/src/approval-onboarding/opda-email-logo.png'), true);
   assert.equal(f.captured.microsoft.siteUrls.length, 6); assert.equal(Object.keys(f.captured.graph.workspaces).length, 6);
   assert.equal(f.captured.worker.store.mock, 'store'); assert.equal(f.reads.length, 0);
@@ -202,12 +205,17 @@ test('runtime uses explicit true only and does not fetch secrets for rejected qu
     const handler = createHandler({ env: env(enabled === undefined ? {} : { ONBOARDING_ENABLED: enabled }), ...f.deps, log: value => logs.push(value) });
     await handler(invocation(message())); assert.equal(f.captured.worker.enabled, enabled === 'true'); assert.equal(f.reads.length, 0);
   }
+  const canary = runtimeFixture();
+  const canaryHandler = createHandler({ env: env({ ONBOARDING_ENABLED: 'false', ONBOARDING_CANARY_EMAIL_HASH: canaryEmailHash }),
+    ...canary.deps, log: () => {} });
+  await canaryHandler(invocation(message())); assert.equal(canary.captured.worker.canaryEmailHash, canaryEmailHash);
   const f = runtimeFixture(), handler = createHandler({ env: env(), ...f.deps, log: () => {} });
   await handler(invocation(message('invalid', { body: '{}' }))); assert.equal(f.captured.worker, undefined); assert.equal(f.reads.length, 0);
 });
 
 test('misconfigured activation, secret scope and missing logo become retries without exposing configuration', async () => {
   for (const patch of [{ ONBOARDING_ENABLED: 'yes' }, { ONBOARDING_ENABLED: 'TRUE' },
+    { ONBOARDING_CANARY_EMAIL_HASH: 'A'.repeat(64) }, { ONBOARDING_CANARY_EMAIL_HASH: 'a'.repeat(63) },
     { MICROSOFT_SECRET_ARN: microsoftSecretArn.replace('opda/microsoft', 'opda/other') },
     { POSTMARK_SECRET_ARN: postmarkSecretArn.replace('355653384628', '111111111111') }]) {
     const f = runtimeFixture(), handler = createHandler({ env: env(patch), ...f.deps, log: () => {} });

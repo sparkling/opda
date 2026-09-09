@@ -11,6 +11,7 @@ import { WORKSPACES, INVITATION_REGISTRY, TEMPLATE_PIN } from './settings.mjs';
 
 const REGION = 'eu-west-2', ACCOUNT = '355653384628', CACHE_MS = 300000;
 const QUEUE = new RegExp(`^arn:aws:sqs:${REGION}:${ACCOUNT}:[A-Za-z0-9_-]{1,80}$`);
+const EMAIL_HASH = /^[a-f0-9]{64}$/;
 const SECRET_NAMES = { microsoft: 'opda/microsoft/participation-onboarding', postmark: 'opda/postmark/participation-onboarding' };
 const MESSAGE_ID = /^[A-Za-z0-9][A-Za-z0-9-]{0,127}$/;
 const OUTCOMES = ['pending', 'complete', 'cancelled', 'attention', 'skipped'];
@@ -27,7 +28,9 @@ function queueReference(value) {
 }
 function validateConfig(config) {
   requireConfig(plain(config) && typeof config.participantsTableName === 'string'
-    && /^[A-Za-z0-9_.-]{3,255}$/.test(config.participantsTableName) && typeof config.enabled === 'boolean');
+    && /^[A-Za-z0-9_.-]{3,255}$/.test(config.participantsTableName) && typeof config.enabled === 'boolean'
+    && (config.canaryEmailHash === undefined || typeof config.canaryEmailHash === 'string'
+      && (config.canaryEmailHash === '' || EMAIL_HASH.test(config.canaryEmailHash))));
   queueReference(config.queueArn);
   for (const [kind, name] of Object.entries(SECRET_NAMES)) {
     requireConfig(typeof config[`${kind}SecretArn`] === 'string'
@@ -36,10 +39,12 @@ function validateConfig(config) {
 }
 function fromEnvironment(env) {
   requireConfig(env.ONBOARDING_ENABLED === undefined || ['false', 'true'].includes(env.ONBOARDING_ENABLED));
+  requireConfig(env.ONBOARDING_CANARY_EMAIL_HASH === undefined || env.ONBOARDING_CANARY_EMAIL_HASH === ''
+    || typeof env.ONBOARDING_CANARY_EMAIL_HASH === 'string' && EMAIL_HASH.test(env.ONBOARDING_CANARY_EMAIL_HASH));
   requireConfig(env.AWS_REGION === undefined || env.AWS_REGION === REGION);
   return { participantsTableName: env.PARTICIPANTS_TABLE_NAME, queueArn: env.ONBOARDING_QUEUE_ARN,
     microsoftSecretArn: env.MICROSOFT_SECRET_ARN, postmarkSecretArn: env.POSTMARK_SECRET_ARN,
-    enabled: env.ONBOARDING_ENABLED === 'true' };
+    enabled: env.ONBOARDING_ENABLED === 'true', canaryEmailHash: env.ONBOARDING_CANARY_EMAIL_HASH ?? '' };
 }
 
 function secretShape(kind, value, time) {
@@ -138,7 +143,7 @@ export async function createProductionWorker(config, { now = Date.now, getSecret
     sharepoint: factories.createSharePointAdapter({ request: microsoft.sharepoint, workspaces: WORKSPACES }),
     postmark: { send: async input => (await postmark()).send(input), reconcile: async input => (await postmark()).reconcile(input) },
     workspaces: WORKSPACES, invitationRegistry: INVITATION_REGISTRY, templatePin: TEMPLATE_PIN,
-    logoBase64: logo.toString('base64'), enabled: config.enabled, now });
+    logoBase64: logo.toString('base64'), enabled: config.enabled, canaryEmailHash: config.canaryEmailHash ?? '', now });
 }
 
 function operationReference(record, queueArn) {

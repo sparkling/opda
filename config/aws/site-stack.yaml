@@ -26,6 +26,7 @@ Parameters:
     Description: ARN only, never the token; runtime reads the existing private app credential.
   OnboardingCutover: { Type: String, Default: '' }
   OnboardingEnabled: { Type: String, Default: 'false', AllowedValues: ['false', 'true'] }
+  OnboardingCanaryEmailHash: { Type: String, Default: '', AllowedPattern: '^$|^[a-f0-9]{64}$' }
 
 Resources:
   AuthSessionApplication:
@@ -97,6 +98,7 @@ Resources:
       Parameters:
         OnboardingCutover: !Ref OnboardingCutover
         OnboardingEnabled: !Ref OnboardingEnabled
+        OnboardingCanaryEmailHash: !Ref OnboardingCanaryEmailHash
         RegistrationsTableName: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName
         RegistrationsTableArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableArn
         ParticipantsTableName:

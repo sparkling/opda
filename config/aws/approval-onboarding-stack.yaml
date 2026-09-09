@@ -11,6 +11,10 @@ Parameters:
     Type: String
     Default: 'false'
     AllowedValues: ['false', 'true']
+  OnboardingCanaryEmailHash:
+    Type: String
+    Default: ''
+    AllowedPattern: '^$|^[a-f0-9]{64}$'
   AlarmTopicArn:
     Type: String
     Default: ''
@@ -134,6 +138,7 @@ Resources:
           PARTICIPANTS_TABLE_NAME: !Ref ParticipantsTableName
           ONBOARDING_QUEUE_ARN: !GetAtt Queue.Arn
           ONBOARDING_ENABLED: !Ref OnboardingEnabled
+          ONBOARDING_CANARY_EMAIL_HASH: !Ref OnboardingCanaryEmailHash
           MICROSOFT_SECRET_ARN: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/microsoft/participation-onboarding-nmTdmF'
           POSTMARK_SECRET_ARN: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/postmark/participation-onboarding-U02V9v'
 

@@ -1,12 +1,18 @@
+import { createHash } from 'node:crypto';
 import { classifyEmailDomain } from '../agents/working-group-inbox/domain.mjs';
 import { APPROVAL_GROUP_IDS } from './invitation.mjs';
 
 const OPERATION_ID = /^[a-f0-9]{64}$/;
+const EMAIL_HASH = /^[a-f0-9]{64}$/;
 const copy = value => structuredClone(value);
+const emailHash = value => createHash('sha256').update(String(value).trim().toLowerCase()).digest('hex');
 
 /** Deterministic effects; provider receipts are private, reference-only jobs are not authority. */
 export function createOnboardingWorker({ store, graph, sharepoint, postmark, workspaces, invitationRegistry,
-  templatePin, logoBase64, enabled = false, now = Date.now }) {
+  templatePin, logoBase64, enabled = false, canaryEmailHash = '', now = Date.now }) {
+  if (typeof canaryEmailHash !== 'string' || canaryEmailHash !== '' && !EMAIL_HASH.test(canaryEmailHash)) {
+    throw new TypeError('Invalid onboarding canary configuration');
+  }
   async function process(operationId) {
     if (!OPERATION_ID.test(operationId ?? '')) throw new TypeError('Invalid onboarding operation reference');
     const context = await store.claim(operationId);
@@ -40,7 +46,9 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
       if (!await guard(false)) return await finish('cancelled', 'superseded');
       const snapshot = context.audit.onboarding;
       const provisioning = context.operation.action === 'provision';
-      if (provisioning && !enabled) return await finish('pending', 'awaiting-activation');
+      if (provisioning && !enabled && (!canaryEmailHash || emailHash(context.account?.email) !== canaryEmailHash)) {
+        return await finish('pending', 'awaiting-activation');
+      }
       if (provisioning && (!await guard(true) || snapshot.snapshotStatus !== 'approved'
         || snapshot.templateVersion !== templatePin.version || !Array.isArray(snapshot.groups)
         || !snapshot.groups.length || snapshot.groups.some(id => !APPROVAL_GROUP_IDS.includes(id)))) {

@@ -6,9 +6,10 @@ import { WORKSPACES, INVITATION_REGISTRY, TEMPLATE_PIN } from '../src/approval-o
 
 const ID = 'a'.repeat(64), OTHER = 'b'.repeat(64);
 const USER = '00000000-0000-4000-8000-000000000123';
+const CANARY = '388c735eec8225c4ad7a507944dd0a975296baea383198aa87177f29af2c6f69';
 const copy = value => structuredClone(value);
 
-function harness({ action = 'provision', enabled = true, groups = APPROVAL_GROUP_IDS, email = 'test@example.org' } = {}) {
+function harness({ action = 'provision', enabled = true, canaryEmailHash = '', groups = APPROVAL_GROUP_IDS, email = 'test@example.org' } = {}) {
   const context = { operation: { operationId: ID, action }, account: { email, name: 'Test Participant' },
     audit: { onboarding: { snapshotStatus: action === 'provision' ? 'approved' : 'denied',
       groups: action === 'provision' ? [...groups] : [], templateVersion: 1 } },
@@ -65,7 +66,7 @@ function harness({ action = 'provision', enabled = true, groups = APPROVAL_GROUP
     },
     async reconcile() { state.calls.push('reconcile'); return { status: 'unknown', attempted: false }; },
   };
-  const worker = createOnboardingWorker({ store, graph, sharepoint, postmark, enabled, now: () => 1000,
+  const worker = createOnboardingWorker({ store, graph, sharepoint, postmark, enabled, canaryEmailHash, now: () => 1000,
     workspaces: WORKSPACES, invitationRegistry: INVITATION_REGISTRY, templatePin: TEMPLATE_PIN, logoBase64: 'test' });
   return { state, context, store, graph, sharepoint, postmark, worker };
 }
@@ -94,8 +95,37 @@ test('activation gate leaves new provisioning pending without any provider effec
   assert.deepEqual(h.state.calls, []); assert.equal(h.state.sends, 0);
 });
 
-test('withdrawal runs while activation is disabled and retains source material', async () => {
-  const h = harness({ action: 'revoke', enabled: false }); ownedAccess(h);
+test('matching recipient canary provisions while global activation remains disabled', async () => {
+  const h = harness({ enabled: false, canaryEmailHash: CANARY, email: ' Test@Example.ORG ' });
+  assert.deepEqual(await h.worker.process(ID), { status: 'complete', stage: 'invitation-accepted' });
+  assert.equal(h.state.sends, 1); assert.ok(h.state.calls.includes('identity'));
+});
+
+test('missing or non-matching recipient canary causes zero provider effects while disabled', async () => {
+  for (const canaryEmailHash of ['', 'f'.repeat(64)]) {
+    const h = harness({ enabled: false, canaryEmailHash });
+    assert.deepEqual(await h.worker.process(ID), { status: 'pending', stage: 'awaiting-activation' });
+    assert.deepEqual(h.state.calls, []); assert.equal(h.state.sends, 0);
+  }
+});
+
+test('matching recipient canary cannot bypass stale or ineligible approval guards', async () => {
+  for (const state of ['stale', 'ineligible']) {
+    const h = harness({ enabled: false, canaryEmailHash: CANARY });
+    h.state[state === 'stale' ? 'current' : 'eligible'] = false;
+    assert.deepEqual(await h.worker.process(ID), { status: 'cancelled', stage: state === 'stale' ? 'superseded' : 'eligibility-unavailable' });
+    assert.deepEqual(h.state.calls, []); assert.equal(h.state.sends, 0);
+  }
+});
+
+test('malformed recipient canary configuration fails closed', () => {
+  for (const canaryEmailHash of ['A'.repeat(64), 'a'.repeat(63), 'test@example.org']) {
+    assert.throws(() => harness({ enabled: false, canaryEmailHash }), /canary/i);
+  }
+});
+
+test('withdrawal runs while activation and a different recipient canary are disabled and retains source material', async () => {
+  const h = harness({ action: 'revoke', enabled: false, canaryEmailHash: 'f'.repeat(64) }); ownedAccess(h);
   h.context.account = null;
   h.context.receipts.mail[OTHER] = { status: 'pending' };
   h.context.receipts.mail[ID] = { status: 'unknown' };

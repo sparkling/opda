@@ -35,6 +35,10 @@ Parameters:
     Type: String
     Default: 'false'
     AllowedValues: ['false', 'true']
+  OnboardingCanaryEmailHash:
+    Type: String
+    Default: ''
+    AllowedPattern: '^$|^[a-f0-9]{64}$'
 
 Conditions:
   HasAlarmTopic: !Not [!Equals [!Ref AlarmTopicArn, '']]
@@ -51,6 +55,7 @@ Resources:
         ParticipantsTableName: !Ref ParticipantsTableName
         ParticipantsTableArn: !Ref ParticipantsTableArn
         OnboardingEnabled: !Ref OnboardingEnabled
+        OnboardingCanaryEmailHash: !Ref OnboardingCanaryEmailHash
         AlarmTopicArn: !Ref AlarmTopicArn
 
   FailureQueue:

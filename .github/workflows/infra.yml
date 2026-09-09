@@ -153,7 +153,8 @@ jobs:
             --parameter-overrides \
               CertificateArn="$OPDA_CERTIFICATE_ARN" \
               OnboardingCutover="${{ vars.OPDA_ONBOARDING_CUTOVER || '' }}" \
-              OnboardingEnabled="${{ vars.OPDA_ONBOARDING_ENABLED || 'false' }}"
+              OnboardingEnabled="${{ vars.OPDA_ONBOARDING_ENABLED || 'false' }}" \
+              OnboardingCanaryEmailHash="${{ vars.OPDA_ONBOARDING_CANARY_EMAIL_HASH || '' }}"
 
       # Reconcile the old edge stack only after CloudFront has deployed the site
       # update without viewer-request Lambda associations. On the first retirement

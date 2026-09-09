@@ -56,13 +56,16 @@ test('existing approval relay notifies the separate consumer without historical 
   const template = await read('config/aws/hubspot-approval-stack.yaml');
   assert.match(block(template, 'OnboardingCutover'), /Default: ''/);
   assert.match(block(template, 'OnboardingEnabled'), /Default: 'false'/);
+  assert.match(block(template, 'OnboardingCanaryEmailHash'), /Default: ''[\s\S]*AllowedPattern: '\^\$\|\^\[a-f0-9\]\{64\}\$'/);
   assert.match(block(template, 'OnboardingApplication'), /TemplateURL: approval-onboarding-stack\.yaml/);
+  assert.match(block(template, 'OnboardingApplication'), /OnboardingCanaryEmailHash: !Ref OnboardingCanaryEmailHash/);
   assert.match(block(template, 'Worker'), /ONBOARDING_QUEUE_URL: !GetAtt OnboardingApplication\.Outputs\.QueueUrl/);
   assert.match(block(template, 'Worker'), /ONBOARDING_CUTOVER: !Ref OnboardingCutover/);
   assert.match(block(template, 'WorkerRole'), /Sid: NotifyOnboardingOnly[\s\S]*Resource: !GetAtt OnboardingApplication\.Outputs\.QueueArn/);
   assert.match(block(template, 'RecoverySchedule'), /rate\(15 minutes\)/);
   const site = await read('config/aws/site-stack.yaml');
   assert.match(block(site, 'HubSpotApprovalApplication'), /OnboardingCutover: !Ref OnboardingCutover/);
+  assert.match(block(site, 'HubSpotApprovalApplication'), /OnboardingCanaryEmailHash: !Ref OnboardingCanaryEmailHash/);
   assert.ok(site.trimEnd().split('\n').length < 500);
 });
 
@@ -77,4 +80,5 @@ test('CI packages only after focused tests and before uploading deployment artif
   }
   assert.ok(workflow.includes("vars.OPDA_ONBOARDING_ENABLED || 'false'"));
   assert.ok(workflow.includes("vars.OPDA_ONBOARDING_CUTOVER || ''"));
+  assert.ok(workflow.includes("vars.OPDA_ONBOARDING_CANARY_EMAIL_HASH || ''"));
 });
