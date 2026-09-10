@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { visit, watchRuntime } from './support.mjs';
+import { emailPreviewPath, visit, watchRuntime } from './support.mjs';
 import { PRIVACY_NOTICE_VERSION } from '../../config/aws/working-group-interest/domain.mjs';
 
 async function exposeCompactHeaderControls(page) {
@@ -11,6 +11,28 @@ async function exposeCompactHeaderControls(page) {
 }
 
 test.describe('runtime continuity boundaries', () => {
+  test('marketing rich previews remain bounded and plain-text copy is disclosed first', async ({ page }) => {
+    const clean = watchRuntime(page, { verifyEmailSandboxDiagnostics: true });
+    await visit(page, '/marketing/packs/general');
+    const origin = new URL(page.url()).origin;
+    const frames = page.locator('iframe[data-email-preview]');
+    expect(await frames.count()).toBeGreaterThan(0);
+    for (const source of await frames.evaluateAll((nodes) => nodes.map((node) => node.src))) {
+      expect(emailPreviewPath(source, origin), source).not.toBeNull();
+    }
+
+    const material = page.locator('[data-marketing-material]').filter({
+      has: page.locator('iframe[src="/marketing/general/email/member.html"]'),
+    });
+    const disclosure = material.locator('details.marketing-plain-text');
+    await expect(disclosure.locator('textarea')).toBeHidden();
+    await disclosure.locator('summary').click();
+    await expect(disclosure.locator('textarea')).toBeVisible();
+    await disclosure.getByRole('button', { name: /Copy .*member email preview/iu }).click();
+    await expect(disclosure.locator('[data-copy-status]')).toHaveText(/Copied|Text selected/iu);
+    await clean();
+  });
+
   test('signed-out auth preserves the return target and stays same-origin', async ({ page }) => {
     const clean = watchRuntime(page);
     const loginRequests = [];
