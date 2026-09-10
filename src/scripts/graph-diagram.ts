@@ -10,6 +10,7 @@
  * view-transition SPA navigation (opda-view-transition-render-patterns).
  */
 import { createMermaidView } from './graph-diagram-mermaid';
+import { createDiagramLifecycle } from './graph-diagram-lifecycle.mjs';
 import { graphDiagramShellHtml } from '../lib/graph-diagram-shell';
 import {
   DEFAULT_MERMAID_PROPERTY_LAYERS,
@@ -18,6 +19,16 @@ import {
 } from '../lib/mermaid-property-layers.mjs';
 
 let graphDiagramFrameId = 0;
+const mountedWrappers = new Map<HTMLElement, () => void>();
+
+export function disposeGraphDiagrams() {
+  for (const dispose of mountedWrappers.values()) dispose();
+  mountedWrappers.clear();
+}
+
+document.addEventListener('astro:before-swap', disposeGraphDiagrams);
+window.addEventListener('pagehide', disposeGraphDiagrams);
+window.addEventListener('pageshow', (event) => { if (event.persisted) adoptBareMermaid(); });
 
 function ensureAccessibleFrame(wrapper: HTMLElement): string {
   let caption = wrapper.querySelector('.gd-caption') as HTMLElement | null;
@@ -51,10 +62,13 @@ function ensureAccessibleFrame(wrapper: HTMLElement): string {
 }
 
 export function mountGraphDiagrams() {
+  for (const [wrapper, dispose] of mountedWrappers) {
+    if (!wrapper.isConnected) { dispose(); mountedWrappers.delete(wrapper); }
+  }
   document.querySelectorAll('.graph-diagram-wrapper').forEach((w) => {
     if ((w as any)._gdMounted) return;
-    (w as any)._gdMounted = true;
-    setupWrapper(w as HTMLElement);
+    const dispose = setupWrapper(w as HTMLElement);
+    if (dispose) { (w as any)._gdMounted = true; mountedWrappers.set(w as HTMLElement, dispose); }
   });
 }
 
@@ -109,18 +123,32 @@ function setupWrapper(wrapper: HTMLElement) {
   const canvas = wrapper.querySelector('.diagram-canvas') as HTMLElement | null;
   const pre = wrapper.querySelector('.gd-mermaid') as HTMLElement | null;
   if (!viewport || !canvas || !pre) return;
+  const life = createDiagramLifecycle(wrapper);
   const captionId = ensureAccessibleFrame(wrapper);
   const interactiveNodes = wrapper.dataset.nodeInteraction === 'interactive';
   wrapper.setAttribute('aria-busy', 'true');
 
   // Source: the `source` prop (config.source), else the inline slot the
   // component rendered into the <pre> (reconstructed preserving <br/>).
-  const lightSource: string = (config.source && String(config.source).trim()) || readMermaidSource(pre);
+  const lightSource: string = (wrapper as any)._gdLightSource ??=
+    (config.source && String(config.source).trim()) || readMermaidSource(pre);
   const layerCapabilities = mermaidPropertyLayerCapabilities(lightSource);
   const layerState = { ...DEFAULT_MERMAID_PROPERTY_LAYERS };
   let mermaidView: any = null;
   let fullscreenReturnFocus: HTMLElement | null = null;
   let previousBodyOverflow = '';
+  let fullscreenBody: HTMLElement | null = null;
+  life.onDispose(() => {
+    mermaidView?.dispose();
+    if (fullscreenBody) fullscreenBody.style.overflow = previousBodyOverflow;
+    fullscreenBody = null;
+    fullscreenReturnFocus = null;
+    wrapper.classList.remove('diagram-fullscreen');
+    wrapper.setAttribute('role', 'figure');
+    wrapper.removeAttribute('aria-modal');
+    setFullscreenControlState(false);
+    (wrapper as any)._gdMounted = false;
+  });
 
   const layerGroup = wrapper.querySelector<HTMLElement>('.gd-property-layers');
   if (layerGroup && layerCapabilities.enabled) {
@@ -133,7 +161,7 @@ function setupWrapper(wrapper: HTMLElement) {
       button.setAttribute('aria-label', available
         ? `${button.textContent?.trim()}. Activate to ${layerState[layer] ? 'hide' : 'show'} this layer.`
         : `${button.textContent?.trim()} layer is not present in this diagram.`);
-      button.addEventListener('click', () => {
+      life.listen(button, 'click', () => {
         if (!available) return;
         layerState[layer] = !layerState[layer];
         button.setAttribute('aria-pressed', String(layerState[layer]));
@@ -161,25 +189,27 @@ function setupWrapper(wrapper: HTMLElement) {
     const full = !wrapper.classList.contains('diagram-fullscreen');
     if (full) {
       fullscreenReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      previousBodyOverflow = document.body.style.overflow;
+      fullscreenBody = document.body;
+      previousBodyOverflow = fullscreenBody.style.overflow;
       wrapper.classList.add('diagram-fullscreen');
       wrapper.setAttribute('role', 'dialog');
       wrapper.setAttribute('aria-modal', 'true');
       wrapper.setAttribute('aria-labelledby', captionId);
-      document.body.style.overflow = 'hidden';
+      fullscreenBody.style.overflow = 'hidden';
       setFullscreenControlState(true);
-      requestAnimationFrame(() => fullscreenButtons()[0]?.focus());
+      life.frame(() => fullscreenButtons()[0]?.focus());
       return;
     }
 
     wrapper.classList.remove('diagram-fullscreen');
     wrapper.setAttribute('role', 'figure');
     wrapper.removeAttribute('aria-modal');
-    document.body.style.overflow = previousBodyOverflow;
+    if (fullscreenBody) fullscreenBody.style.overflow = previousBodyOverflow;
+    fullscreenBody = null;
     setFullscreenControlState(false);
     const returnFocus = fullscreenReturnFocus;
     fullscreenReturnFocus = null;
-    requestAnimationFrame(() => returnFocus?.isConnected && returnFocus.focus());
+    life.frame(() => returnFocus?.isConnected && returnFocus.focus());
   }
 
   function handleFullscreenKeydown(event: KeyboardEvent) {
@@ -208,16 +238,16 @@ function setupWrapper(wrapper: HTMLElement) {
       wrapper, viewport, canvas, pre, captionId, interactiveNodes,
       getLightSource: () => filterMermaidPropertyLayers(lightSource, layerState),
     });
-    wrapper.querySelectorAll('[data-diagram-action="fullscreen"]').forEach((b) => b.addEventListener('click', toggleFullscreen));
+    wrapper.querySelectorAll('[data-diagram-action="fullscreen"]').forEach((b) => life.listen(b, 'click', toggleFullscreen));
     setFullscreenControlState(false);
-    document.addEventListener('keydown', handleFullscreenKeydown);
+    life.listen(document, 'keydown', handleFullscreenKeydown);
     mermaidView.initControls();
     // Mermaid measures label geometry while it builds the SVG. Rendering before
     // the self-hosted fonts settle produces a fallback-font graph whose height
     // can change between otherwise identical loads. Wait on FontFaceSet so the
     // diagram and the surrounding page have one deterministic layout.
     if (lightSource) {
-      const render = () => mermaidView.render();
+      const render = life.guard(() => mermaidView.render());
       const fontsReady = document.fonts?.ready;
       if (fontsReady) fontsReady.then(render, render);
       else render();
@@ -237,16 +267,19 @@ function setupWrapper(wrapper: HTMLElement) {
   let booted = false;
   const inView = () => { const r = wrapper.getBoundingClientRect(); return r.top < window.innerHeight + 300 && r.bottom > -300 && r.width > 0; };
   function tryBoot() {
-    if (booted || !inView()) return;
+    if (!life.active || booted || !inView()) return;
     booted = true;
     io.disconnect();
-    window.removeEventListener('scroll', tryBoot);
-    window.removeEventListener('resize', tryBoot);
+    stopScroll();
+    stopResize();
     try { boot(); } catch (err) { console.error('[graph-diagram] boot failed', err); }
   }
-  const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) tryBoot(); }, { rootMargin: '300px' });
+  const io = life.observe(new IntersectionObserver(life.guard((entries) => {
+    if (entries.some((e) => e.isIntersecting)) tryBoot();
+  }), { rootMargin: '300px' }));
   io.observe(wrapper);
-  window.addEventListener('scroll', tryBoot, { passive: true });
-  window.addEventListener('resize', tryBoot, { passive: true });
+  const stopScroll = life.listen(window, 'scroll', tryBoot, { passive: true });
+  const stopResize = life.listen(window, 'resize', tryBoot, { passive: true });
   tryBoot();
+  return () => life.dispose();
 }

@@ -1,19 +1,14 @@
 // @ts-nocheck
 /**
  * GraphDiagram core renderer — ported from hm/semantic-app (upstream ADR-0190), adapted
- * for OPDA: the semantic status and categorical diagram palette is injected
- * rather than embedded per page, navigation
- * uses `click NODE "url"` directives the page emits, and re-render on theme
- * toggle is driven by a MutationObserver on `data-theme` (opda has no
- * `hm:theme-change` event).
+ * for OPDA's shared semantic palette, node navigation and `data-theme` changes.
  *
- * mermaid + @mermaid-js/layout-elk are dynamic-import()ed (Astro island); they
- * are pre-bundled via vite.optimizeDeps (astro.config.mjs) so Astro 7 / Vite 8
- * never races the on-demand re-optimisation.
+ * Mermaid/ELK are dynamically imported and pre-bundled by astro.config.mjs.
  */
 import {
   CLASSDEFS_LIGHT, CLASSDEFS_DARK, THEMEVARS_LIGHT, THEMEVARS_DARK,
 } from '../lib/diagram-palette';
+import { createDiagramLifecycle } from './graph-diagram-lifecycle.mjs';
 
 export interface MermaidViewOpts {
   wrapper: HTMLElement;
@@ -23,10 +18,12 @@ export interface MermaidViewOpts {
   captionId?: string;
   interactiveNodes?: boolean;
   getLightSource: () => string;
+  loadMermaid?: () => Promise<any>;
 }
 export interface MermaidView {
   render: () => void;
   initControls: () => void;
+  dispose: () => void;
   readonly rendered: boolean;
 }
 
@@ -107,7 +104,9 @@ function injectClassDefs(src: string, dark: boolean): string {
 
 export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   const { wrapper, viewport, canvas, pre, captionId, interactiveNodes = false } = opts;
-
+  const life = createDiagramLifecycle(wrapper);
+  let svgLife = createDiagramLifecycle(wrapper);
+  let controlsReady = false;
   let scale = 1, panX = 0, panY = 0;
   const MIN = 0.1, MAX = 5, ZOOM_BTN = 1.2;
   let dragging = false, didDrag = false, dsx = 0, dsy = 0, psx = 0, psy = 0;
@@ -115,13 +114,22 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   let lockedNode: string | null = null;
   let didRender = false;
   let renderSeq = 0;   // latest-wins guard: a newer render() supersedes older ones
-
+  life.onDispose(() => {
+    renderSeq++;
+    svgLife.dispose();
+    dragging = false;
+    viewport.style.cursor = 'grab';
+    wrapper.classList.remove('zoom-active', 'zoom-nudge');
+    delete (wrapper as any)._gdUpdateNodeAccessibility;
+  });
   function finishDiagram(state: 'rendered' | 'empty' | 'error') {
     wrapper.setAttribute('aria-busy', 'false');
     wrapper.dataset.diagramState = state;
   }
 
   function showFallback() {
+    svgLife.dispose();
+    delete (wrapper as any)._gdUpdateNodeAccessibility;
     pre.innerHTML = '';
     pre.classList.remove('gd-rendered');
     pre.setAttribute('aria-hidden', 'true');
@@ -189,16 +197,17 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     svg.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight ArrowUp ArrowDown + - 0');
     const describedBy = [description?.id, captionId].filter(Boolean).join(' ');
     if (describedBy) svg.setAttribute('aria-describedby', describedBy);
-    svg.addEventListener('keydown', handleSvgKeydown);
+    svgLife.listen(svg, 'keydown', handleSvgKeydown);
   }
 
   function render() {
+    if (!life.active) return;
     const lightSource = opts.getLightSource();
     if (!lightSource) return;
     const seq = ++renderSeq;   // this render's ticket; a later render() bumps it
     if (interactiveNodes) loadDiagramLinks();
-    loadMermaid().then((mermaid) => {
-      if (seq !== renderSeq) return;                 // superseded before we started
+    (opts.loadMermaid ?? loadMermaid)().then((mermaid) => {
+      if (!life.active || seq !== renderSeq) return;
       const dark = isDark();
       const src = injectClassDefs(lightSource, dark);
       mermaid.initialize({
@@ -208,15 +217,12 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
         themeVariables: dark ? THEMEVARS_DARK : THEMEVARS_LIGHT,
         flowchart: { htmlLabels: true },
       });
-      // Use the string-render API (NOT mermaid.run on the <pre>) with a fresh
-      // unique id each time. Re-running the same node on theme toggle left stale
-      // processed-state/ids and raced concurrent toggles → a stale dark render
-      // could land last (dark diagram in light mode) or the diagram went blank on
-      // the 2nd light→dark→light cycle. render() + seq guard makes the LATEST
-      // theme win and never overlaps.
+      // Fresh IDs and the latest-wins ticket reject superseded theme renders.
       return mermaid.render('gd-render-' + (++mermaidRenderId), src).then(({ svg }: { svg: string }) => {
-        if (seq !== renderSeq) return;               // superseded mid-render — drop this SVG
+        if (!life.active || seq !== renderSeq) return;
         canvas.querySelector('.diagram-fallback')?.remove();
+        svgLife.dispose();
+        svgLife = createDiagramLifecycle(wrapper);
         pre.innerHTML = svg;
         pre.classList.add('gd-rendered');
         pre.removeAttribute('aria-hidden');
@@ -229,8 +235,9 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
         initHoverHighlight();
       });
     }).catch((e: any) => {
+      if (!life.active || seq !== renderSeq) return;
       console.error('[graph-diagram] mermaid render', e);
-      if (seq === renderSeq) showFallback();
+      showFallback();
     });
   }
 
@@ -327,7 +334,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       });
     }
 
-    svg.addEventListener('click', (evt) => {
+    svgLife.listen(svg, 'click', (evt) => {
       if (didDrag) { didDrag = false; return; }
       const nodeEl = (evt.target as Element).closest('.node, g[id*="entity-"]');
       if (mode === 'navigate') {
@@ -347,7 +354,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
 
     nodes.forEach((node) => {
       const n = nameOf(node);
-      node.addEventListener('keydown', (event) => {
+      svgLife.listen(node, 'keydown', (event) => {
         const key = (event as KeyboardEvent).key;
         if (key !== 'Enter' && key !== ' ') return;
         if (mode === 'navigate' && !navTarget(node)) return;
@@ -356,17 +363,20 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
         activateNode(node);
       });
       if (isER) return; // hover-highlight is edge-based (flowchart); skip for ER
-      node.addEventListener('mouseenter', () => { if (dragging || lockedNode) return; applyHighlight(n); });
-      node.addEventListener('mouseleave', () => { if (lockedNode) return; clearHighlight(); });
+      svgLife.listen(node, 'mouseenter', () => { if (dragging || lockedNode) return; applyHighlight(n); });
+      svgLife.listen(node, 'mouseleave', () => { if (lockedNode) return; clearHighlight(); });
     });
     updateNodeAccessibility();
     (wrapper as any)._gdUpdateNodeAccessibility = updateNodeAccessibility;
   }
 
   function initControls() {
+    if (!life.active || controlsReady) return;
+    controlsReady = true;
+    resetView();
     if (!interactiveNodes) wrapper.querySelector('[data-diagram-action="toggle-mode"]')?.remove();
     wrapper.querySelectorAll('[data-diagram-action]').forEach((btn) => {
-      btn.addEventListener('click', () => {
+      life.listen(btn, 'click', () => {
         const a = btn.getAttribute('data-diagram-action');
         if (a === 'zoom-in') zoom(ZOOM_BTN);
         else if (a === 'zoom-out') zoom(1 / ZOOM_BTN);
@@ -425,12 +435,12 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
         ? 'Zoom mode enabled — scroll over the diagram to zoom'
         : 'Enable zoom mode, or hold Ctrl (⌘) and scroll to zoom';
     }
-    zoomControl?.addEventListener('click', () => { zoomMode = !zoomMode; updateZoomState(); });
+    if (zoomControl) life.listen(zoomControl, 'click', () => { zoomMode = !zoomMode; updateZoomState(); });
     updateZoomState();
 
-    let nudgeTimer: any = null;
-    function nudge() { wrapper.classList.add('zoom-nudge'); if (nudgeTimer) clearTimeout(nudgeTimer); nudgeTimer = setTimeout(() => wrapper.classList.remove('zoom-nudge'), 900); }
-    viewport.addEventListener('wheel', (e) => {
+    let cancelNudge = () => {};
+    function nudge() { wrapper.classList.add('zoom-nudge'); cancelNudge(); cancelNudge = life.timeout(() => wrapper.classList.remove('zoom-nudge'), 900); }
+    life.listen(viewport, 'wheel', (e) => {
       if (!(zoomMode || e.ctrlKey || e.metaKey)) { nudge(); return; }
       e.preventDefault();
       const rect = viewport.getBoundingClientRect();
@@ -438,26 +448,26 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       zoom(factor, e.clientX - rect.left, e.clientY - rect.top);
     }, { passive: false });
 
-    viewport.addEventListener('mousedown', (e) => {
+    life.listen(viewport, 'mousedown', (e) => {
       if (e.button !== 0) return;
       if ((e.target as Element).closest('.node') && mode === 'navigate') return;
       dragging = true; didDrag = false; dsx = e.clientX; dsy = e.clientY; psx = panX; psy = panY;
       viewport.style.cursor = 'grabbing'; e.preventDefault();
     });
-    window.addEventListener('mousemove', (e) => {
+    life.listen(window, 'mousemove', (e) => {
       if (!dragging) return;
       const dx = e.clientX - dsx, dy = e.clientY - dsy;
       if (Math.abs(dx) > 3 || Math.abs(dy) > 3) didDrag = true;
       panX = psx + dx; panY = psy + dy; applyTransform();
     });
-    window.addEventListener('mouseup', () => { if (dragging) { dragging = false; viewport.style.cursor = 'grab'; } });
+    life.listen(window, 'mouseup', () => { if (dragging) { dragging = false; viewport.style.cursor = 'grab'; } });
 
     let lastTouches: TouchList | null = null;
-    viewport.addEventListener('touchstart', (e) => {
+    life.listen(viewport, 'touchstart', (e) => {
       if (e.touches.length === 1) { dragging = true; dsx = e.touches[0].clientX; dsy = e.touches[0].clientY; psx = panX; psy = panY; }
       lastTouches = e.touches;
     }, { passive: true });
-    viewport.addEventListener('touchmove', (e) => {
+    life.listen(viewport, 'touchmove', (e) => {
       if (e.touches.length === 1 && dragging) {
         panX = psx + (e.touches[0].clientX - dsx); panY = psy + (e.touches[0].clientY - dsy); applyTransform(); e.preventDefault();
       } else if (e.touches.length === 2 && lastTouches && lastTouches.length === 2) {
@@ -469,20 +479,20 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
         if (od > 0) zoom(nd / od, cx, cy); lastTouches = e.touches; e.preventDefault();
       }
     }, { passive: false });
-    viewport.addEventListener('touchend', () => { dragging = false; lastTouches = null; });
+    life.listen(viewport, 'touchend', () => { dragging = false; lastTouches = null; });
 
     const setZoomModifier = (e: KeyboardEvent) => { modifierZoom = e.ctrlKey || e.metaKey; updateZoomState(); };
-    window.addEventListener('keydown', setZoomModifier);
-    window.addEventListener('keyup', setZoomModifier);
-    window.addEventListener('blur', () => { modifierZoom = false; updateZoomState(); });
+    life.listen(window, 'keydown', setZoomModifier);
+    life.listen(window, 'keyup', setZoomModifier);
+    life.listen(window, 'blur', () => { modifierZoom = false; updateZoomState(); });
 
     // Re-render on theme toggle (opda flips <html data-theme>; no custom event).
     let lastTheme = document.documentElement.getAttribute('data-theme');
-    new MutationObserver(() => {
+    life.observe(new MutationObserver(life.guard(() => {
       const t = document.documentElement.getAttribute('data-theme');
       if (t !== lastTheme) { lastTheme = t; if (didRender) render(); }
-    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    }))).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   }
 
-  return { render, initControls, get rendered() { return didRender; } };
+  return { render, initControls, dispose: () => life.dispose(), get rendered() { return didRender; } };
 }
