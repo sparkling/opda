@@ -33,6 +33,7 @@ const {
   decoding="async"
   width={width}
   height={height}
+  style={width && height ? `aspect-ratio: ${width} / ${height}` : undefined}
 />
 
 {darkSrc && <>
@@ -50,7 +51,8 @@ const {
   <noscript>
     <style is:inline>img[data-campaign-image-dark] { display: none; }</style>
     <img class={className} src={lightSrc} alt={alt} loading={loading} fetchpriority={fetchpriority}
-      decoding="async" width={width} height={height} />
+      decoding="async" width={width} height={height}
+      style={width && height ? `aspect-ratio: ${width} / ${height}` : undefined} />
   </noscript>
 </>}
 
