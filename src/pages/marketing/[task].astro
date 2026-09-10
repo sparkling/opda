@@ -69,11 +69,8 @@ const pack = getMarketingPack('general');
 
   {task.id === 'presentations' && <>
     <section aria-labelledby="presentation-intro">
-      <CampaignSectionHeading eyebrow="At a meeting, event or briefing" title="Explain the opportunity in five minutes." id="presentation-intro" size="compact" align="start">
-        <Fragment slot="aside">
-          <CampaignThemeImage className="marketing-pack-hero" lightSrc={task.image.source} darkSrc={task.image.darkSource} alt={task.image.alt} width={task.image.width} height={task.image.height} />
-        </Fragment>
-      </CampaignSectionHeading>
+      <CampaignSectionHeading eyebrow="At a meeting, event or briefing" title="Explain the opportunity in five minutes." id="presentation-intro" size="compact" />
+      <CampaignThemeImage className="marketing-pack-hero" lightSrc={task.image.source} darkSrc={task.image.darkSource} alt={task.image.alt} width={task.image.width} height={task.image.height} />
       <p>Introduce the problem, the work in development and the experience participants can bring. The six-slide presentation includes speaker notes and a relevant example. Follow it with a conversation about what matters to your audience.</p>
       <h3>A short deck and a useful leave-behind</h3>
       <p>The deck is a self-contained HTML file that opens in a browser and works offline. Choose <strong>Edit text</strong> to adapt it, then <strong>Download edited HTML</strong> to keep your version. It is not a PowerPoint file. The one-page HTML overview is designed for printing or saving as PDF.</p>

@@ -221,3 +221,16 @@ test('Marketing uses shared buttons, cards and editorial flow, not a parallel de
   assert.match(button, /btn--compact/);
   assert.doesNotMatch(button, /<style/);
 });
+
+test('editorial illustrations start on the content edge rather than floating in heading asides', () => {
+  const taskPage = read('src/pages/marketing/[task].astro');
+  const presentation = taskPage.slice(
+    taskPage.indexOf("{task.id === 'presentations'"),
+    taskPage.indexOf("{task.id === 'employer-support'"),
+  );
+  assert.doesNotMatch(presentation, /slot="aside"/u);
+  assert.match(presentation, /<CampaignSectionHeading[^>]+\/>\s*<CampaignThemeImage/u);
+
+  const editorial = read('src/styles/editorial-content.css');
+  assert.match(editorial, /\.editorial-content:is\(\.prose, main\)[^\{]*> :is\(figure, picture, img\)[^\{]*\{[^}]*margin-inline:\s*0 auto;/su);
+});
