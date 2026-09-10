@@ -101,9 +101,11 @@ export function watchRuntime(page, { verifyEmailSandboxDiagnostics = false } = {
     if (message.text().startsWith('Failed to load resource:')) return;
     const source = message.location().url;
     const sandbox = /^Blocked script execution in '([^']+)' because the document's frame is sandboxed and the 'allow-scripts' permission is not set\.$/u.exec(message.text());
-    if (verifyEmailSandboxDiagnostics && sandbox?.[1] === source
-      && emailPreviewPath(source, new URL(page.url()).origin)) {
-      sandboxDiagnostics.push({ source, text: message.text() });
+    // Frame-locator instrumentation can emit this diagnostic with no console
+    // location. Its quoted URL must still resolve to an exact verified response.
+    if (verifyEmailSandboxDiagnostics && sandbox && (source === '' || source === sandbox[1])
+      && emailPreviewPath(sandbox[1], new URL(page.url()).origin)) {
+      sandboxDiagnostics.push({ source: sandbox[1], text: message.text() });
       return;
     }
     errors.push(`console: ${message.text()}${source ? ` (${source})` : ''}`);

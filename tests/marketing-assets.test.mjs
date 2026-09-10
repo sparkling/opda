@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { EventEmitter } from 'node:events';
 import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -17,7 +18,7 @@ import { sha256 } from '../scripts/marketing/lib.mjs';
 import { renderCampaignInfographic } from '../scripts/marketing/rich-materials.mjs';
 import * as richMaterials from '../scripts/marketing/rich-materials.mjs';
 import { renderEmailPlain } from '../scripts/marketing/renderers.mjs';
-import { emailPreviewPath, isScriptFreeEmailPreview, matchesScriptFreeEmailPreview } from './e2e/support.mjs';
+import { emailPreviewPath, isScriptFreeEmailPreview, matchesScriptFreeEmailPreview, watchRuntime } from './e2e/support.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const OUTPUT = path.join(ROOT, 'public', 'marketing');
@@ -231,6 +232,41 @@ test('sandbox diagnostics can only recognise known script-free email documents',
   assert.equal(matchesScriptFreeEmailPreview(Buffer.from('<p>Different response</p>'), expected), false);
   const active = Buffer.from('<script>alert(1)</script>');
   assert.equal(matchesScriptFreeEmailPreview(active, active), false);
+});
+
+test('empty-location sandbox diagnostics still require exact verified preview responses', async () => {
+  const origin = 'https://opda.org.uk';
+  const preview = '/marketing/general/linkedin/opda-01-invitation.html';
+  const url = `${origin}${preview}`;
+  const expected = await readFile(path.join(ROOT, `public${preview}`));
+  const diagnostic = `Blocked script execution in '${url}' because the document's frame is sandboxed and the 'allow-scripts' permission is not set.`;
+  const record = ({ body = expected, location = '', response = true, message = diagnostic,
+    enabled = true, status = 200, contentType = 'text/html; charset=utf-8', consoleFirst = false } = {}) => {
+    const page = new EventEmitter();
+    page.url = () => `${origin}/marketing/packs/general`;
+    const clean = watchRuntime(page, { verifyEmailSandboxDiagnostics: enabled });
+    const emitResponse = () => page.emit('response', {
+      request: () => ({ resourceType: () => 'document', frame: () => ({ parentFrame: () => ({}) }) }),
+      url: () => url, status: () => status,
+      headers: () => ({ 'content-type': contentType }),
+      body: async () => body,
+    });
+    if (response && !consoleFirst) emitResponse();
+    page.emit('console', { type: () => 'error', location: () => ({ url: location }), text: () => message });
+    if (response && consoleFirst) emitResponse();
+    return clean;
+  };
+  await assert.doesNotReject(record());
+  await assert.doesNotReject(record({ consoleFirst: true }));
+  await assert.doesNotReject(record({ location: url }));
+  assert.throws(record({ enabled: false }), /Blocked script execution/u);
+  await assert.rejects(record({ status: 403 }), /403/u);
+  await assert.rejects(record({ contentType: 'application/json' }), /non-HTML marketing preview/u);
+  await assert.rejects(record({ response: false }), /Blocked script execution/u);
+  await assert.rejects(record({ body: Buffer.from('<p>Changed response</p>') }), /unverified marketing preview/u);
+  await assert.rejects(record({ body: Buffer.from('<script>alert(1)</script>') }), /unverified marketing preview/u);
+  await assert.rejects(record({ location: `${origin}/another-page` }), /Blocked script execution/u);
+  await assert.rejects(record({ message: 'Unexpected runtime error' }), /Unexpected runtime error/u);
 });
 
 test('newsletter and employer invitations have rich HTML and multipart embedded-image editions', async () => {
