@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
+import { createServer } from 'node:http';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 await import('../scripts/package-edge-gate.mjs');
 const { createHandler, CONFIG } = await import('../_build/edge-gate/index.mjs');
 const { sessionKey } = await import('../_build/edge-gate/store.mjs');
@@ -45,6 +48,35 @@ test('anonymous root shows only the original holding page and its one illustrati
   assert.equal((await s.handler(event('/coming-soon.jpg'))).uri, '/coming-soon.jpg');
   assert.equal((await s.handler(event('/coming-soon.jpg', { method: 'POST' }))).status, '401');
   assert.equal(s.calls.length, 0);
+});
+
+test('packaged gate authorises through the real bundled SDK transport', async () => {
+  const s = setup(), requests = [];
+  const encode = row => Object.fromEntries(Object.entries(row).map(([key, value]) => [key,
+    typeof value === 'string' ? { S: value } : typeof value === 'number' ? { N: String(value) }
+      : typeof value === 'boolean' ? { BOOL: value } : Array.isArray(value)
+        ? { L: value.map(item => ({ S: item })) } : { M: encode(value) }]));
+  const server = createServer(async (req, res) => {
+    let body = ''; for await (const chunk of req) body += chunk;
+    const input = JSON.parse(body); requests.push(input);
+    const row = input.TableName === CONFIG.sessionsTableName ? s.saved : s.row;
+    res.writeHead(200, { 'content-type': 'application/x-amz-json-1.0' });
+    res.end(JSON.stringify({ Item: encode(row) }));
+  });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  try {
+    const script = `import { createHandler } from './_build/edge-gate/index.mjs';
+      const response = await createHandler({ now: () => ${NOW * 1000} })(${JSON.stringify(event('/programme', { cookie: '__Host-opda_session=' + TOKEN }))});
+      console.log(JSON.stringify(response));`;
+    const { stdout } = await promisify(execFile)(process.execPath, ['--input-type=module', '-e', script], {
+      cwd: new URL('../', import.meta.url), timeout: 10000,
+      env: { ...process.env, AWS_ACCESS_KEY_ID: 'test', AWS_SECRET_ACCESS_KEY: 'test',
+        AWS_SESSION_TOKEN: '', AWS_ENDPOINT_URL_DYNAMODB: `http://127.0.0.1:${server.address().port}` },
+    });
+    assert.equal(JSON.parse(stdout).uri, '/programme/index.html', stdout);
+    assert.equal(requests.length, 2);
+    assert.ok(requests.every(request => request.ConsistentRead === true));
+  } finally { await new Promise(resolve => server.close(resolve)); }
 });
 
 test('all content, downloads, scripts, search data and API routes are gated, not just HTML', async () => {

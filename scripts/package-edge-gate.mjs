@@ -23,6 +23,8 @@ await build({
   outfile: fileURLToPath(bundled),
   bundle: true,
   format: 'esm',
+  // SDK CommonJS dependencies still require Node built-ins inside the ESM bundle.
+  banner: { js: "import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);" },
   platform: 'node',
   target: 'node22',
   minify: true,
