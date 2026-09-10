@@ -1,6 +1,9 @@
 import { copyFile, mkdir, readFile, rename, unlink } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
-import { build } from 'esbuild';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+
+const esbuildPath = process.env.EDGE_ESBUILD_PATH
+  ?? fileURLToPath(new URL('../node_modules/esbuild/lib/main.js', import.meta.url));
+const { build } = await import(pathToFileURL(esbuildPath));
 
 // Bundle the narrow DynamoDB client with the authorization implementation. Relying
 // on the runtime SDK made its first dynamic import consume the viewer-request

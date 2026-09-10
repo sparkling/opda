@@ -53,16 +53,17 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      EDGE_ESBUILD_PATH: /tmp/opda-edge-build/node_modules/esbuild/lib/main.js
     steps:
       - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-          cache: npm
 
       - name: Install pinned packaging dependencies
-        run: npm ci
+        run: npm install --prefix /tmp/opda-edge-build --no-package-lock --no-save esbuild@0.28.2
 
       - name: Test participant approval boundary
         run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs tests/comments-*.test.mjs tests/auth-workspace*.test.mjs
