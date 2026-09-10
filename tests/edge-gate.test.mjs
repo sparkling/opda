@@ -86,6 +86,22 @@ test('workspace entry exposes only its exact self-authenticated methods', async 
   assert.equal(s.calls.length, 0);
 });
 
+test('resource bucket roots never reach S3, including authenticated listing requests', async () => {
+  const s = setup();
+  for (const uri of ['/resources', '/resources/']) {
+    for (const cookie of [undefined, '__Host-opda_session=' + TOKEN]) {
+      for (const method of ['GET', 'HEAD', 'POST']) {
+        const result = await s.handler(event(uri, { cookie, method, querystring: 'list-type=2&prefix=' }));
+        assert.equal(result.status, '404');
+        assert.equal(result.uri, undefined, 'never forward an empty object key to S3');
+      }
+    }
+  }
+  assert.equal(s.calls.length, 0, 'reject bucket roots without a session lookup');
+  const root = await s.handler(event('/', { cookie: '__Host-opda_session=' + TOKEN, querystring: 'list-type=2' }));
+  assert.equal(root.uri, '/index.html', 'the site bucket root always resolves to an object');
+});
+
 test('alternate distribution hosts and encoded/dot paths cannot bypass the gate', async () => {
   const s = setup();
   assert.equal((await s.handler(event('/', { host: 'example.cloudfront.net' }))).status, '403');

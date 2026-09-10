@@ -39,6 +39,9 @@ export function createHandler(overrides = {}) {
     // Exact exceptions only. Encoded separators and dot paths never become public.
     if (typeof uri !== 'string' || !uri.startsWith('/') || uri.length > 4096
       || /[\\\u0000-\u001f\u007f]|\/\/|(?:^|\/)\.{1,2}(?:\/|$)|%(?:2f|5c|2e|00)/iu.test(uri)) return respond(400, 'Invalid path.');
+    // S3 distinguishes missing objects using OAC ListBucket permission. Never
+    // forward a resources request with an empty key, even for approved viewers.
+    if (uri === '/resources' || uri === '/resources/') return respond(404, 'Resource not found.');
     const read = method === 'GET' || method === 'HEAD';
     if (AUTH_PATHS.has(uri) || WORKSPACE_GET_PATHS.has(uri)) {
       return method === 'GET' ? request : respond(405, 'Use GET.');

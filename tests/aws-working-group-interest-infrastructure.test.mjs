@@ -63,6 +63,21 @@ test('private responses use CloudFront security-header fields, not forbidden cus
   assert.doesNotMatch(policy, /Header: (?:Referrer-Policy|X-Content-Type-Options)/u);
 });
 
+test('API authorization denials retain their status while S3 missing objects use the static 404 page', async () => {
+  const site = await read('config/aws/site-stack.yaml');
+  assert.doesNotMatch(site, /ErrorCode: 403/u, 'distribution-wide 403 rewriting hides workspace denial messages');
+  assert.match(site, /ErrorCode: 404\n\s+ResponseCode: 404\n\s+ResponsePagePath: \/404\.html/u);
+  for (const bucket of ['SiteBucket', 'ResourcesBucket']) {
+    const policy = site.match(new RegExp(`  ${bucket}Policy:[\\s\\S]*?(?=\\n  (?:#|[A-Z]))`, 'u'))?.[0];
+    assert.ok(policy);
+    assert.match(policy, /Principal: \{ Service: cloudfront\.amazonaws\.com \}/u);
+    assert.match(policy, /Action: \[s3:GetObject, s3:ListBucket\]/u);
+    assert.ok(policy.includes(`- !GetAtt ${bucket}.Arn`));
+    assert.ok(policy.includes(`- !Sub '\${${bucket}.Arn}/*'`));
+    assert.match(policy, /Condition:\n\s+StringEquals:\n\s+AWS:SourceArn: !Sub 'arn:aws:cloudfront::\$\{AWS::AccountId\}:distribution\/\$\{Distribution\}'/u);
+  }
+});
+
 test('the auth service exposes session and workspace routes with bounded capacity', async () => {
   const stack = await read('config/aws/auth-session-stack.yaml');
   for (const route of ['login', 'callback', 'me', 'logout']) {

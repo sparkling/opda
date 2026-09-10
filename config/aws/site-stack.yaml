@@ -141,8 +141,12 @@ Resources:
           - Sid: CloudFrontOacRead
             Effect: Allow
             Principal: { Service: cloudfront.amazonaws.com }
-            Action: s3:GetObject
-            Resource: !Sub '${SiteBucket.Arn}/*'
+            # ListBucket lets S3 return 404 for missing objects. Only this
+            # distribution may use it; its gate never forwards a bucket root.
+            Action: [s3:GetObject, s3:ListBucket]
+            Resource:
+              - !GetAtt SiteBucket.Arn
+              - !Sub '${SiteBucket.Arn}/*'
             Condition:
               StringEquals:
                 AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
@@ -175,8 +179,10 @@ Resources:
           - Sid: CloudFrontOacRead
             Effect: Allow
             Principal: { Service: cloudfront.amazonaws.com }
-            Action: s3:GetObject
-            Resource: !Sub '${ResourcesBucket.Arn}/*'
+            Action: [s3:GetObject, s3:ListBucket]
+            Resource:
+              - !GetAtt ResourcesBucket.Arn
+              - !Sub '${ResourcesBucket.Arn}/*'
             Condition:
               StringEquals:
                 AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
@@ -403,10 +409,7 @@ Resources:
               - EventType: viewer-request
                 LambdaFunctionARN: !Ref GateFunctionVersionArn
         CustomErrorResponses:
-          # OAC without ListBucket → S3 answers missing keys with 403.
-          - ErrorCode: 403
-            ResponseCode: 404
-            ResponsePagePath: /404.html
+          # S3 now returns 404 for missing keys. Preserve API-origin 403 bodies.
           - ErrorCode: 404
             ResponseCode: 404
             ResponsePagePath: /404.html

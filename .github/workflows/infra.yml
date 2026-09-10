@@ -192,3 +192,22 @@ jobs:
             --payload '{"schemaVersion":1,"sessionToken":"","groupId":"finance-and-banking","phase":"open"}' \
             /tmp/opda-workspace-denied.json
           node --input-type=module -e "import {readFileSync} from 'node:fs'; import assert from 'node:assert/strict'; assert.deepEqual(JSON.parse(readFileSync('/tmp/opda-workspace-denied.json','utf8')), {status:'denied'}); console.log('Deployed workspace boundary rejects an invalid session; no participant effects.');"
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const origin = 'https://opda.org.uk';
+          const cases = [
+            ['missing origin', '/_auth/workspace', 'POST', {}, 403],
+            ['foreign origin', '/_auth/workspace', 'POST', {origin:'https://example.invalid','sec-fetch-site':'cross-site'}, 403],
+            ['missing session', '/_auth/workspace', 'POST', {origin,'sec-fetch-site':'same-origin'}, 403],
+            ['resource listing', '/resources/?list-type=2', 'GET', {}, 404],
+          ];
+          await Promise.all(cases.map(async ([name,path,method,headers,status]) => {
+            const response = await fetch(origin+path, {method,redirect:'manual',signal:AbortSignal.timeout(10000),
+              headers:{'content-type':'application/x-www-form-urlencoded',...headers},
+              ...(method==='POST' ? {body:'group=finance-and-banking&phase=open'} : {})});
+            assert.equal(response.status,status,name);
+            if(method==='POST') assert.equal(typeof (await response.json()).error,'string',name);
+            else assert.equal(await response.text(),'Resource not found.',name);
+            console.log('Live workspace check passed: '+name);
+          }));
+          NODE
