@@ -27,6 +27,7 @@ await build({
   target: 'node22',
   minify: true,
   legalComments: 'none',
+  nodePaths: process.env.EDGE_NODE_PATH ? [process.env.EDGE_NODE_PATH] : [],
 });
 await rename(bundled, new URL('index.mjs', output));
 await unlink(entry);

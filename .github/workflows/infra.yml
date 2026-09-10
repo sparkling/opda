@@ -55,6 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       EDGE_ESBUILD_PATH: /tmp/opda-edge-build/node_modules/esbuild/lib/main.js
+      EDGE_NODE_PATH: /tmp/opda-edge-build/node_modules
     steps:
       - uses: actions/checkout@v6
 
@@ -63,7 +64,9 @@ jobs:
           node-version: 22
 
       - name: Install pinned packaging dependencies
-        run: npm install --prefix /tmp/opda-edge-build --no-package-lock --no-save esbuild@0.28.2
+        run: >-
+          npm install --prefix /tmp/opda-edge-build --no-package-lock --no-save
+          esbuild@0.28.2 @aws-sdk/client-dynamodb@3.1127.0
 
       - name: Test participant approval boundary
         run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs tests/comments-*.test.mjs tests/auth-workspace*.test.mjs
