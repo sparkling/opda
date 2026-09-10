@@ -1,0 +1,3 @@
+# Portable MIME drafts require exact CRLF and embedded attachment bytes.
+# Do not normalise them as source text or render base64 bodies as code diffs.
+public/marketing/**/*.eml -text -diff
