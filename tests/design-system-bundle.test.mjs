@@ -307,10 +307,11 @@ test('Source Sans 3 retains all original script subsets as local variable WOFF2 
 test('shared early font hints preload only core Latin faces with reusable CORS requests', async () => {
   const hints = await readFile(new URL('../src/components/FontPreloads.astro', import.meta.url), 'utf8');
   assert.match(hints, /SourceSans3-Variable-latin\.woff2/u);
+  assert.match(hints, /AtkinsonHyperlegibleNext-Variable-latin\.woff2/u);
   assert.match(hints, /display &&/u);
   assert.doesNotMatch(hints, /latin-ext|Mono|https:\/\//u);
-  assert.equal((hints.match(/rel="preload"/gu) ?? []).length, 2);
-  assert.equal((hints.match(/as="font" type="font\/woff2" crossorigin="anonymous"/gu) ?? []).length, 2);
+  assert.equal((hints.match(/rel="preload"/gu) ?? []).length, 3);
+  assert.equal((hints.match(/as="font" type="font\/woff2" crossorigin="anonymous"/gu) ?? []).length, 3);
   for (const file of ['src/layouts/Layout.astro', 'src/layouts/StandalonePublicLayout.astro', 'src/pages/index.astro']) {
     const source = await readFile(new URL(`../${file}`, import.meta.url), 'utf8');
     assert.match(source, /<FontPreloads/u, file);

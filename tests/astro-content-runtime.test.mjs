@@ -24,7 +24,8 @@ test('only small emitted page styles trade an asset request for protected HTML b
   const { inlineSmallPageStyles } = await import('../src/integrations/asset-inlining.mjs');
   const bytes = (length) => Buffer.alloc(length);
   assert.equal(inlineSmallPageStyles('_astro/Layout.hash.css', bytes(8191)), true);
-  assert.equal(inlineSmallPageStyles('_astro/Layout.hash.css', bytes(8192)), false);
+  assert.equal(inlineSmallPageStyles('_astro/Layout.hash.css', bytes(16383)), true);
+  assert.equal(inlineSmallPageStyles('_astro/Layout.hash.css', bytes(16384)), false);
   assert.equal(inlineSmallPageStyles('_astro/kickoff.hash.css', bytes(52_283)), false);
   for (const name of ['_astro/page.js', '_astro/font.woff2', '_astro/image.webp', '/source.css']) {
     assert.equal(inlineSmallPageStyles(name, bytes(6000)), undefined, name);

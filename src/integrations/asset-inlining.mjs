@@ -9,7 +9,7 @@
  */
 export function inlineSmallPageStyles(filePath, content) {
   if (filePath.startsWith('_astro/') && filePath.endsWith('.css')) {
-    return content.length < 8 * 1024;
+    return content.length < 16 * 1024;
   }
   return undefined;
 }
