@@ -58,11 +58,38 @@ test('shares the worker state schema with encrypted data and preserves other rec
   assert.equal(await f.store.saveGraph(context, { identity: { redemptionUrl: 'private-synthetic-url' } }), true);
   await f.store.release(context);
   const row = f.items.get(f.stateKey);
-  assert.equal(row.leaseUntil, 0); assert.equal(row.leaseId, '');
+  assert.equal(row.leaseUntil, 0); assert.equal(row.leaseId, null);
   const decoded = f.encryption.unprotectReceipts(row.receipts, f.p.participantId);
   assert.deepEqual(decoded.sharepoint, { retained: 'source-evidence' });
   assert.deepEqual(decoded.mail, { decision: 'sent' });
   assert.equal((await f.claim()).receipts.graph.identity.redemptionUrl, 'private-synthetic-url');
+});
+test('released worker receipts with a null lease support read-only entry and later repair', async () => {
+  const f = fixture(), initial = await f.claim();
+  const identity = { state: 'bound', emailDigest: digest(f.p.email), userId: '01234567-0123-4123-8123-012345678901' };
+  await f.store.saveGraph(initial, { schemaVersion: 1, identity, memberships: {} });
+  const state = f.items.get(f.stateKey);
+  f.items.set(f.stateKey, { ...state, revision: state.revision + 1, leaseId: null, leaseUntil: 0 });
+  const writes = f.calls.filter(c => c.command === 'PutItemCommand').length;
+  const loaded = await f.store.load({ participant: f.p, groupId: GROUP });
+  assert.equal(loaded.status, 'ready');
+  assert.equal(await f.store.guard(loaded.context, f.p), true);
+  await f.store.release(loaded.context);
+  assert.equal(f.calls.filter(c => c.command === 'PutItemCommand').length, writes);
+  const repair = await f.claim(); assert.ok(repair);
+  assert.equal(await f.store.guard(repair, f.p), true);
+  await f.store.release(repair);
+  assert.equal(f.items.get(f.stateKey).leaseId, null);
+});
+test('imported email ownership remains usable without replacing its historical import key', async () => {
+  const f = fixture(); delete f.owner.approvalKey;
+  f.owner.importKey = 'IMPORT#hubspot-existing-contacts-2026-09-08#123';
+  const before = structuredClone(f.owner), context = await f.claim();
+  assert.ok(context); assert.equal(await f.store.guard(context, f.p), true);
+  assert.deepEqual(f.owner, before);
+  f.owner.approvalKey = 'CRM#CONTACT#999';
+  assert.equal(await f.store.guard(context, f.p), false);
+  assert.equal((await f.store.load({ participant: f.p, groupId: GROUP })).status, 'denied');
 });
 test('a live worker or other tab lease is never stolen', async () => {
   const f = fixture(); await f.claim();

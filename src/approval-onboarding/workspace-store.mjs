@@ -66,7 +66,8 @@ export function createWorkspaceStore({ tableName, now = Date.now, send: injected
     if (!binding || binding.contactId !== p.hubspotContactId || binding.participantId !== p.participantId
       || binding.cognitoSub !== p.cognitoSub || binding.email !== p.email
       || !isDeepStrictEqual(binding.domainApprovals?.[groupId], p.domainApprovals[groupId])
-      || owner?.participantId !== p.participantId || owner.approvalKey !== binding.pk || suppressed) return null;
+      || owner?.participantId !== p.participantId
+      || owner.approvalKey !== undefined && owner.approvalKey !== binding.pk || suppressed) return null;
     if (binding.registrationId && (!ID.test(binding.registrationId)
       || await get(`SYNC#SUPPRESS#REGISTRATION#${binding.registrationId}`))) return null;
     return binding;
@@ -81,7 +82,7 @@ export function createWorkspaceStore({ tableName, now = Date.now, send: injected
     requireValue(state.pk === pk && state.schemaVersion === 1 && state.participantId === p.participantId
       && state.cognitoSub === p.cognitoSub && state.contactId === p.hubspotContactId
       && Number.isSafeInteger(state.revision) && state.revision >= 1 && Number.isSafeInteger(state.leaseUntil)
-      && typeof state.leaseId === 'string');
+      && (typeof state.leaseId === 'string' || state.leaseId === null && state.leaseUntil === 0));
   }
   function importedIdentity(binding, p) {
     const imported = binding.financeRosterImport;
@@ -191,7 +192,8 @@ export function createWorkspaceStore({ tableName, now = Date.now, send: injected
   async function release(ctx) {
     const ref = reference(ctx);
     if (ref.readOnly) { contexts.delete(ctx); return true; }
-    await put({ ...ref.row, revision: ref.row.revision + 1, leaseId: '', leaseOperationId: '', leaseUntil: 0 }, ref.row);
+    // Match the existing onboarding worker's released-lease representation.
+    await put({ ...ref.row, revision: ref.row.revision + 1, leaseId: null, leaseUntil: 0 }, ref.row);
     contexts.delete(ctx);
   }
   return Object.freeze({ load, claim, guard, saveGraph, release });
