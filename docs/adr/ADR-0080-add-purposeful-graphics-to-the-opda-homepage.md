@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-30
-updated: 2026-09-09
+updated: 2026-09-10
 tags: [website, homepage, design-system, brand, accessibility, avif, infographic, ai, presentation]
 supersedes: []
 amends: [ADR-0073, ADR-0074]
@@ -102,6 +102,9 @@ The 9 September regeneration replaces the earlier Gemini composition through nat
 OpenAI image generation. Its exact backend model version is not exposed by the tool
 and is not asserted. The manifest records the prompts, native source dimensions,
 checksums and proportional export geometry, including any upscaling or paper padding.
+This purpose-specific method asset remains assigned only to this figure. Its dated
+watercolour treatment is provenance, not a medium default or an asset available for
+reuse in another page, card or section under the 10 September illustration rule.
 Equivalent semantic HTML describes the complete process and becomes the visible
 treatment at narrow widths, in forced-colour mode and in print. The visible guardrail
 states that AI may extract, compare and draft while people decide what is true, resolve

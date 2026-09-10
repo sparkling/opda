@@ -30,7 +30,7 @@ The earlier, narrower proposal is `/private/tmp/opda-learning-enrichment.2IM5TG/
 - Do not caricature every other ontology method as top-down. Examples must preserve distinctions without inventing adopted facts, professional rules, endorsement or product capabilities.
 - Rich content should include worked examples, hard cases, comparisons, objections, practice with visible reasoned answers, and transfer across professions.
 - Prior preferences: authored text measure 1024px and left-aligned blocks; paragraphs justified; diagrams/tables can use more width. No hidden core content in accordions, duplicate bottom navigation or decorative card walls.
-- Use the governed colourful ink/watercolour illustration language, with light/dark counterparts. Exact semantic relationships belong in accessible labelled diagrams with useful text equivalents and mobile/print treatment.
+- Use the current subject-led illustration family with a purpose-specific technique and unique composition for every placement; never reuse an image. Keep the shared OPDA palette and paired light/dark treatment. Exact semantic relationships belong in accessible labelled diagrams with useful text equivalents and mobile/print treatment.
 
 ## Questions to resolve
 

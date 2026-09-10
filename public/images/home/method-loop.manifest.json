@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "provider": "OpenAI built-in image generation",
   "generated": "2026-09-09",
+  "policyStatus": "Purpose-specific homepage asset. Prompts below are production history, not a current watercolour default; never reuse this illustration in another page, card or section.",
   "modelVersionEvidence": "The built-in tool exposes neither a model selector nor a returned model-version identifier; no specific model version is asserted.",
   "purpose": "Active homepage method flow: authorised evidence enters once; preparation, candidate publication and working-group review form the revision cycle; consensus exits to a draft that is not yet ratified or adopted.",
   "owner": "src/components/home/MethodFlowFigure.astro",

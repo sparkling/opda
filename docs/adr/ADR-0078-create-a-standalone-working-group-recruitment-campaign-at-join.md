@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-27
-updated: 2026-09-07
+updated: 2026-09-10
 tags: [working-groups, recruitment, campaign, signup, design-system, accessibility, routing]
 supersedes: []
 depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073, ADR-0079]
@@ -125,7 +125,7 @@ six working-group card images. Astra Max directed the built-in image tool to
 recompose the existing subjects horizontally, retain the Set 3 ink/watercolour
 palette and complete hands/heads, then recolour each approved light composition
 for dark mode without changing its geometry. Exports are 1536×512 WebP (203–225KB),
-proportionally resized from 2172×724 generated originals; all older assets remain.
+proportionally resized from 2172×724 generated originals; all older assets remain. This is dated generation provenance, not a current watercolour default: the 10 September subject-led rule requires a unique concept and composition for each future placement, with no reuse of these card or section images elsewhere.
 
 Amended on 6 September 2026: every recruitment section and inset panel follows
 the selected light or dark mode, including policy, cross-cutting experience,

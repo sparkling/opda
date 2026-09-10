@@ -36,6 +36,30 @@ project folder and organise it. Maintain a project README.
   Use MCP, Microsoft Graph, or another API/CLI. If those routes are unavailable or
   blocked, report the exact blocker and stop instead of switching to the web UI.
 
+## Illustration governance
+
+- Choose the technique for the exact section purpose and subject. Deliberately vary
+  suitable forms across the site: editorial watercolour or gouache for humane
+  situations, architectural cutaway or ink-and-coloured-pencil for physical
+  distinctions, short sequential ink narratives for change over time, restrained
+  risograph or screenprint for declarative openers, and paper craft for material
+  metaphors. Watercolour is one option, never the automatic default.
+- Every illustration brief must name the section's learning or promotion purpose and
+  describe one concrete subject and action. Do not request a generic property workshop,
+  random decorative collage or a composition copied from another placement.
+- Create a unique concept and composition for every page, card or section placement.
+  Never reuse an illustration across placements. A matched light/dark pair and its
+  resolution renditions are one asset family, not reuse.
+- Keep the shared OPDA palette, editorial quality and accessibility contract across
+  techniques. Preserve paired geometry, historical prompts, superseded assets,
+  manifests and established export dimensions; replacements use new filenames.
+
+## Marketing deliverables
+
+- Invitations and primary marketing deliverables must use the governed rich-HTML
+  treatment. Plain text may accompany them as an optional accessible or transport
+  fallback, but never replaces the primary rich-HTML version.
+
 ## Main-only repository workflow
 
 - Work directly on `main` in this existing checkout.

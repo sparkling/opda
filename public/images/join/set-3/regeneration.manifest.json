@@ -3,6 +3,7 @@
   "provider": "OpenAI built-in image generation",
   "toolModelVersion": "Not exposed by the built-in tool; no version override requested",
   "generated": "2026-09-09",
+  "policyStatus": "Each asset remains assigned to its recorded placement. Prompts below are production history, not a current watercolour default; never reuse an illustration in another page, card or section.",
   "style": "OPDA editorial watercolour, ADR-0073 and /design-system",
   "purpose": "Decorative human-facing editorial illustration; not technical notation or evidence.",
   "export": "Preserve every existing active asset dimension. Card export removes only deliberately composed blank padding using recorded exportBounds, then resizes proportionally. Landscape export contains the whole source proportionally with theme-colour padding only for native ratio rounding. No stretching or subject cropping.",

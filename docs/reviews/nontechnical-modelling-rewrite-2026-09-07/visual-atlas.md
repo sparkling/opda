@@ -2,6 +2,11 @@
 
 Design briefs for the proposed [curriculum](curriculum.md). No images, diagrams or website components were generated in this rerun. The purpose is to specify what each future visual should explain, how it will be read and what would make it misleading.
 
+> **Current production note, 10 September 2026:** this dated proposal now follows
+> the subject-led illustration rule in `DESIGN.md`. Watercolour is not the default;
+> every placement needs a unique concept and composition, and no existing or new
+> image may be reused on another page, card or section.
+
 ## Editorial direction
 
 An illustrated working field guide: recognisable property work, readable specimens of the agreement being built, then precise diagrams and worked questions. It should be warmer and more explanatory than the ontology reference without implying that domain judgement is simplistic.
@@ -62,9 +67,9 @@ Preserve six different professional tasks. They may be six dispersed illustratio
 | Property data services | Distinct source documents and versions under a comparison lens, with a clear trace back to passages | Which source version supports this statement? E5/C6. |
 | Property technology | Two different readable representations of the same situation, with relationship tokens preserved between them | Does the changed representation preserve meaning? U1/C7. |
 
-Use the governed **OPDA editorial watercolour** language from [DESIGN.md](../../../DESIGN.md): expressive deep-ink linework, substantial watercolour/gouache fields, gold, petrol, violet, rose and coral pigment. Light uses paper `#F9F9F9`; dark uses deep-purple paper and pale linework. Approve the light composition, then edit that exact image into dark mode without changing geometry. Never invert it with CSS.
+Choose the technique for each lesson: editorial watercolour/gouache for a humane situation, architectural cutaway or ink-and-coloured-pencil for a physical distinction, short sequential ink narrative for change over time, risograph/screenprint for a declarative opener, or paper craft for a material metaphor. Keep the governed OPDA gold, petrol, violet, rose and coral palette across forms. Light uses paper `#F9F9F9`; dark uses deep-purple paper and pale linework. Approve the light composition, then edit that exact image into dark mode without changing geometry. Never invert it with CSS or mix forms as a random decorative collage.
 
-Campaign art has an existing 4:1, 1200×300 WebP contract below 150KB. Use that for narrow professional strips. A wider narrative composition may use the established learning-illustration proportions, but record its own intentional geometry and preserve it responsively; do not force campaign-card dimensions or an arbitrary fixed height on every image. Existing approved assets are candidates for reuse only where their subject serves the new lesson.
+Campaign art has an existing 4:1, 1200×300 WebP contract below 150KB. Use that for narrow professional strips. A wider narrative composition may use the established learning-illustration proportions, but record its own intentional geometry and preserve it responsively; do not force campaign-card dimensions or an arbitrary fixed height on every image. Commission a unique concept and composition for every placement; existing assets may inform palette and quality but must never be reused, traced or recombined.
 
 No embedded labels, ontology arrows, approval stamps, brand imitations or invented evidence. Exact relationships belong in authored diagrams and HTML. Keep alt text focused on a useful contribution; decorative art should not repeat the entire adjacent explanation. Record the prompt, model/provider, source asset, edit lineage, rights/standing, dimensions and alt/decorative decision when assets are later made.
 

@@ -23,18 +23,19 @@ const editorialIllustrations = [
   ['property-technology', 'Property Technology'],
 ] as const;
 const editorialIllustrationPrompt = `Use case: illustration-story.
-Asset type: OPDA editorial watercolour illustration for a website card.
-Subject: [describe one concrete property-industry situation and only the objects needed to explain it].
-Composition: a distinct, shallow arrangement in an ultra-wide 4:1 panorama; complete subjects, recognisable silhouettes and purposeful negative space; crisp at small card size.
-Style: expressive organic pen-and-ink contours, rich translucent watercolour and softly opaque gouache; visible pigment variation and clean paper highlights; confident, warm, colourful, refined and professional.
-Light palette: cool off-white #F9F9F9 paper, deep purple #231F2F ink, generous OPDA yellow/gold #FEC92B, petrol/teal #0E8478 and blue-violet #6C5BD4, with supporting rose and coral. Colour substantial object surfaces; no beige or sepia cast.
-Constraints: no logo, wordmark, embedded text, labels, watermark, personal information or unnecessary objects; no photography, 3D, glossy rendering, gradient, neon, glow or generic clipart. Do not repeat another subject's composition.`;
+Placement and purpose: [name the exact page/card/section and what the image helps its audience learn or do].
+Concrete subject and action: [describe one particular property situation, who or what acts, and only the objects needed to communicate it].
+Technique: [choose and justify one subject-fitting form: editorial watercolour/gouache; architectural cutaway or ink-and-coloured-pencil; short sequential ink narrative; risograph/screenprint; paper craft; or another deliberate technique].
+Composition: [state the established export dimensions and devise a unique viewpoint, arrangement and visual idea for this placement]. Complete subjects, recognisable silhouettes and purposeful negative space must remain crisp at intended display size.
+Shared OPDA palette: cool off-white #F9F9F9 paper, deep purple #231F2F ink, OPDA yellow/gold #FEC92B, petrol/teal #0E8478 and blue-violet #6C5BD4, with supporting rose and coral. Adapt materials naturally without losing editorial quality.
+Uniqueness: create new artwork for this placement. Do not reuse, trace or recombine any image or composition from another page, card or section. A style reference may guide palette and quality only.
+Constraints: no random decorative collage, generic property workshop, logo, wordmark, embedded text, labels, watermark, personal information or unnecessary objects; no glossy rendering, gradient, neon, glow or generic clipart. Keep exact relationships and explanatory wording in accessible HTML or diagrams.`;
 const editorialIllustrationDarkPrompt = `Use case: style-transfer.
-Asset type: dark-mode counterpart of an approved OPDA editorial watercolour illustration.
+Asset type: dark-mode counterpart of one approved OPDA subject-led illustration.
 Input image: the approved light-mode illustration is the EDIT TARGET, not merely inspiration.
-Primary request: change only paper, ink values and pigment treatment; preserve the exact subjects, object count, arrangement, relative sizes, proportions, perspective, crop and negative-space balance.
-Dark palette: flat deep purple #231F2F paper to every edge; preserve rich gold/yellow, petrol/teal, blue-violet, rose and coral gouache. Change dark linework to pale lavender, warm white or coloured ink where needed for legibility. Leave dark paper visible between strokes and washes.
-Constraints: identical 4:1 geometry; no redesign, additions, removals, night scenery, stars, negative-image filter, fluorescent outline, neon, embedded text, logo, watermark, photography or 3D. Pigments should feel luminous on dark paper, never like a glow effect.`;
+Primary request: change only paper, ink values and the chosen material treatment; preserve the exact subjects, action, object count, arrangement, relative sizes, proportions, perspective, crop and negative-space balance.
+Dark palette: flat deep purple #231F2F paper to every edge; preserve rich gold/yellow, petrol/teal, blue-violet, rose and coral. Change dark linework to pale lavender, warm white or coloured ink where needed for legibility while preserving the light artwork's technique.
+Constraints: identical geometry and dimensions; no redesign, additions, removals, night scenery, stars, negative-image filter, fluorescent outline, neon, embedded text, logo or watermark. This light/dark pair is one asset family and must not be used in another placement.`;
 const tokenSample = `:root {
   --brand-deep: #131224;
   --brand-yellow: #fec92b;
@@ -116,40 +117,39 @@ const tokenSample = `:root {
     <p>The compact identity variant keeps the complete organisation name visible at supporting scale, including in the shared footer.</p>
   </div>
 
-  <h2 id="editorial-illustration">Editorial illustration</h2>
+  <h2 id="editorial-illustration">Subject-led illustration</h2>
   <p>
-    <strong>OPDA editorial watercolour</strong> is the familiar default for approachable,
-    human-facing property and participation content. Expressive ink, watercolour and
-    gouache make each subject recognisable and distinct without turning illustration
-    into evidence, technical notation or identity. It never replaces official logos,
-    documentary photography or a diagram that must state exact relationships.
+    OPDA uses a <strong>deliberately varied illustration family</strong>. Shared palette,
+    craft and editorial quality provide continuity; watercolour is one technique, not
+    the default. Every brief starts with the exact section's learning or promotion
+    purpose and a concrete subject and action. Illustration never replaces official
+    logos, documentary photography or a diagram that must state exact relationships.
   </p>
   <p>
-    Choose the medium to suit the lesson. Use <strong>architectural cutaways</strong>
-    in hand-drafted ink and coloured pencil when a physical distinction needs
-    explaining. Use <strong>sequential ink narratives</strong>, with crisp linework
-    and flat pastel gouache, when a short human story makes the lesson clearer.
-    A restrained <strong>risograph editorial</strong> can give a manifesto or section
-    opener its own identity. These are deliberate alternatives, not a requirement
-    to mix every style on every page.
+    Use editorial <strong>watercolour or gouache</strong> for a humane situation,
+    <strong>architectural cutaway or ink-and-coloured-pencil</strong> for a physical
+    distinction, <strong>short sequential ink narrative</strong> for change over time,
+    <strong>risograph or screenprint</strong> for a declarative opener, and
+    <strong>paper craft</strong> for a material metaphor. Choose one coherent approach
+    for its subject; do not make a random collage of techniques.
   </p>
-  <div class="editorial-illustration-grid" aria-label="Approved editorial illustration subjects in light and dark modes">
+  <div class="editorial-illustration-grid" aria-label="Historical approved set-3 illustration subjects in light and dark modes">
     {editorialIllustrations.map(([id, label]) => (
       <figure>
         <div>
           <img src={`/images/join/set-3/${id}-light.webp`} alt={`${label} editorial illustration on light paper`} width="1200" height="300" loading="lazy" />
           <img src={`/images/join/set-3/${id}-dark.webp`} alt={`${label} editorial illustration on dark paper`} width="1200" height="300" loading="lazy" />
         </div>
-        <figcaption>{label} · matched light and dark composition</figcaption>
+        <figcaption>{label} · historical set 3 · matched light and dark composition</figcaption>
       </figure>
     ))}
   </div>
   <div class="callout callout--key">
     <h3 class="callout__label"><span aria-hidden="true">◇</span> Illustration rule</h3>
-    <p>Give every subject its own concrete visual idea and choose its medium deliberately. Generate the light composition first, approve it, then edit that exact image into its dark counterpart. Preserve geometry across modes; never invert it with CSS. Keep all explanatory text in HTML. Save replacements under new filenames and retain the earlier illustration files.</p>
+    <p>Create a unique concept and composition for every page, card or section placement; never reuse an image elsewhere. A light/dark pair and resolution renditions are one asset family. Generate the light composition first, then edit that exact image into its dark counterpart while preserving its technique and geometry; never invert it with CSS. Keep explanatory text in HTML, use new filenames for replacements and retain historical files.</p>
   </div>
-  <h3>Canonical light-mode prompt</h3>
-  <p>Replace the bracketed subject. Use an approved set-3 image only as a style reference, not as a composition to copy.</p>
+  <h3>Canonical subject-led brief</h3>
+  <p>Replace every bracketed field. Existing images may guide palette and finish only; they are never content, composition or layout references.</p>
   <pre><code set:text={editorialIllustrationPrompt} /></pre>
   <h3>Canonical dark-mode counterpart prompt</h3>
   <p>Use the approved light image as the edit target. Generate one asset per call and review the pair together at its intended size.</p>
@@ -158,14 +158,14 @@ const tokenSample = `:root {
     Export campaign-card illustrations as 1200×300 WebP, below 150&nbsp;KB each.
     Store paired files as <code>{'{subject}-light.webp'}</code> and
     <code>{'{subject}-dark.webp'}</code> in a versioned set. Set 3 was generated with
-    the built-in image tool and approved on 6 September 2026; rejected variants are
-    not part of the system.
+    the built-in image tool and approved on 6 September 2026; it records its assigned
+    placements and historical watercolour direction, not a reusable asset library.
   </p>
   <p>
     Section introductions use separately composed 3:1 panoramas, exported at
-    1536×512 WebP below 225&nbsp;KB and displayed uncropped. Use the same drawing
-    and paired-mode prompts, changing the composition ratio to 3:1; never stretch
-    a card image or change its 4:1 layout. ADR-0078 records the Astra-directed
+    1536×512 WebP below 225&nbsp;KB and displayed uncropped. Commission a new concept
+    and composition for each introduction, then make its paired dark edit; never stretch
+    or repurpose a card image. ADR-0078 records the dated Astra-directed
     motivation and influence landscape variants; earlier assets remain available.
   </p>
   <p>

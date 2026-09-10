@@ -1,6 +1,6 @@
 # Modern web design prompt dictionary
 
-Updated: 27 August 2026
+Updated: 10 September 2026
 
 This reference provides a practical vocabulary for directing the design and implementation of a state-of-the-art website. It separates visual art direction from layout, typography, motion, three-dimensional rendering and implementation techniques.
 
@@ -288,6 +288,18 @@ Use this sequence:
 > Technical approach: [Three.js, React Three Fiber, GSAP or another approach].  
 > Constraints: [performance, accessibility, mobile and fallback requirements].  
 > Avoid: [generic patterns and unwanted effects].
+
+For an OPDA illustration brief, put communication before style: name the exact
+page/card/section, its learning or promotion purpose, and one concrete subject and
+action. Then choose a fitting technique—editorial watercolour/gouache, architectural
+cutaway or ink-and-coloured-pencil, short sequential ink narrative,
+risograph/screenprint, paper craft, or another justified form—and explain why it
+serves that subject. Preserve the shared OPDA palette and editorial quality without
+making watercolour automatic or combining techniques into a random decorative
+collage. Require a unique concept and composition for the placement: never reuse,
+trace or recombine another illustration. A paired light/dark edit and its resolution
+renditions are one asset family. State dimensions, accessibility role, provenance and
+the boundary between illustrative atmosphere and exact accessible explanation.
 
 ## Example prompt
 
