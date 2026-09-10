@@ -86,18 +86,18 @@ test('workspace entry exposes only its exact self-authenticated methods', async 
   assert.equal(s.calls.length, 0);
 });
 
-test('resource bucket roots never reach S3, including authenticated listing requests', async () => {
+test('the Resources landing stays gated and resolves through the site while deep archive paths retain their rewrite', async () => {
   const s = setup();
   for (const uri of ['/resources', '/resources/']) {
-    for (const cookie of [undefined, '__Host-opda_session=' + TOKEN]) {
-      for (const method of ['GET', 'HEAD', 'POST']) {
-        const result = await s.handler(event(uri, { cookie, method, querystring: 'list-type=2&prefix=' }));
-        assert.equal(result.status, '404');
-        assert.equal(result.uri, undefined, 'never forward an empty object key to S3');
-      }
-    }
+    const denied = await s.handler(event(uri));
+    assert.equal(denied.status, '302');
+    assert.equal(denied.uri, undefined);
+    const approved = await s.handler(event(uri, { cookie: '__Host-opda_session=' + TOKEN }));
+    assert.equal(approved.uri, '/resources/index.html');
   }
-  assert.equal(s.calls.length, 0, 'reject bucket roots without a session lookup');
+  const archive = await s.handler(event('/resources/schema/model.ttl', { cookie: '__Host-opda_session=' + TOKEN }));
+  assert.equal(archive.uri, '/schema/model.ttl');
+  assert.equal(s.calls.length, 6, 'approved landing and archive requests retain current authorization checks');
   const root = await s.handler(event('/', { cookie: '__Host-opda_session=' + TOKEN, querystring: 'list-type=2' }));
   assert.equal(root.uri, '/index.html', 'the site bucket root always resolves to an object');
 });

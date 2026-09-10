@@ -561,7 +561,8 @@ test('approved comment reads include same-origin credentials and render remote t
   const malicious = '<img src=x onerror=alert(1)>';
   const context = {
     URL, URLSearchParams, AbortController, HTMLButtonElement: Element,
-    window: { location: { pathname: '/new-location', origin: SITE }, localStorage: { removeItem: key => removed.push(key) } },
+    window: { location: { pathname: '/new-location', origin: SITE }, localStorage: { removeItem: key => removed.push(key) },
+      setTimeout, clearTimeout, addEventListener() {}, removeEventListener() {} },
     document: { readyState: 'complete', getElementById: id => ids.get(id), querySelector: () => section,
       createElement: () => new Element(), addEventListener() {} },
     fetch: async (url, options) => {
@@ -572,7 +573,7 @@ test('approved comment reads include same-origin credentials and render remote t
     },
   };
   vm.runInNewContext(script, context);
-  await new Promise(resolve => setImmediate(resolve));
+  await new Promise(resolve => setTimeout(resolve, 0));
   assert.deepEqual(removed, ['ArtalkUser']);
   assert.equal(requests.length, 1);
   assert.equal(requests[0].options.method, 'GET');

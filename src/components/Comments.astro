@@ -30,12 +30,31 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
   let controller;
   let observedContainer;
   let observer;
+  let pendingArm;
+  let waitingForWindowLoad = false;
+
+  function cancelPendingArm() {
+    if (pendingArm !== undefined) {
+      window.clearTimeout(pendingArm);
+      pendingArm = undefined;
+    }
+    if (waitingForWindowLoad) {
+      window.removeEventListener('load', afterWindowLoad);
+      waitingForWindowLoad = false;
+    }
+  }
+
+  function afterWindowLoad() {
+    waitingForWindowLoad = false;
+    scheduleArm();
+  }
 
   function clearLegacyCommentSession() {
     try { window.localStorage.removeItem('ArtalkUser'); } catch { /* Reading never uses storage. */ }
   }
 
   function stop() {
+    cancelPendingArm();
     controller?.abort();
     observer?.disconnect();
     controller = undefined;
@@ -232,9 +251,23 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
     }
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arm);
-  else arm();
-  document.addEventListener('astro:page-load', arm);
+  function scheduleArm() {
+    if (document.readyState !== 'complete') {
+      if (!waitingForWindowLoad) {
+        waitingForWindowLoad = true;
+        window.addEventListener('load', afterWindowLoad, { once: true });
+      }
+      return;
+    }
+    if (pendingArm !== undefined) return;
+    pendingArm = window.setTimeout(() => {
+      pendingArm = undefined;
+      arm();
+    }, 0);
+  }
+
+  scheduleArm();
+  document.addEventListener('astro:page-load', scheduleArm);
   document.addEventListener('astro:before-swap', stop);
 </script>
 

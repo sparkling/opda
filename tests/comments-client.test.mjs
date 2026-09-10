@@ -5,10 +5,10 @@ import test from 'node:test';
 
 const source = await readFile(new URL('../src/components/Comments.astro', import.meta.url), 'utf8');
 const script = source.match(/<script>([\s\S]*?)<\/script>/u)[1];
-const tick = () => new Promise(resolve => setImmediate(resolve));
+const tick = () => new Promise(resolve => setTimeout(resolve, 0));
 const comment = { id: 1, nick: 'Another member', content: 'A useful question', date: '2026-09-09', rid: 0 };
 
-function setup({ postStatus = 200, readStatus = 200 } = {}) {
+function setup({ postStatus = 200, readStatus = 200, readyState = 'complete', withIntersectionObserver = false } = {}) {
   class Element {
     children = []; dataset = {}; hidden = false; disabled = false; textContent = ''; value = ''; events = {};
     append(...children) { this.children.push(...children); }
@@ -24,12 +24,29 @@ function setup({ postStatus = 200, readStatus = 200 } = {}) {
   const ids = new Map(['', '-list', '-status', '-more', '-form', '-content', '-submit', '-author', '-reply', '-cancel', '-sign-in']
     .map(suffix => ['opda-comments' + suffix, new Element()]));
   const section = new Element(); section.dataset.commentPageKey = '/retained-thread';
-  const events = {}, requests = [], state = { postStatus, readStatus, heldPost: undefined };
+  const events = {}, windowEvents = {}, requests = [], observers = [];
+  const state = { postStatus, readStatus, heldPost: undefined };
+  const document = { readyState, getElementById: id => ids.get(id), querySelector: () => section,
+    createElement: () => new Element(), addEventListener: (name, callback) => { events[name] = callback; } };
+  class IntersectionObserver {
+    constructor(callback) { this.callback = callback; observers.push(this); }
+    observe(element) { this.element = element; }
+    disconnect() { this.disconnected = true; }
+    fire(isIntersecting = true) {
+      if (!this.disconnected) this.callback([{ isIntersecting, target: this.element }]);
+    }
+  }
   const context = {
     URL, URLSearchParams, AbortController,
-    window: { location: { pathname: '/new-route', origin: 'https://opda.org.uk' }, localStorage: { removeItem() {} } },
-    document: { readyState: 'complete', getElementById: id => ids.get(id), querySelector: () => section,
-      createElement: () => new Element(), addEventListener: (name, callback) => { events[name] = callback; } },
+    window: {
+      location: { pathname: '/new-route', origin: 'https://opda.org.uk' }, localStorage: { removeItem() {} },
+      setTimeout, clearTimeout,
+      addEventListener: (name, callback, options) => { windowEvents[name] = { callback, options }; },
+      removeEventListener: (name, callback) => {
+        if (windowEvents[name]?.callback === callback) delete windowEvents[name];
+      },
+    },
+    document,
     fetch: async (url, options) => {
       requests.push({ url, options });
       if (options.method === 'POST' && state.heldPost) await state.heldPost;
@@ -38,10 +55,79 @@ function setup({ postStatus = 200, readStatus = 200 } = {}) {
         ? { data: { ...comment, id: 2 } }
         : { data: { viewer: { name: 'Signed-in Member' }, count: 1, comments: [comment] } } };
     },
+    ...(withIntersectionObserver ? { IntersectionObserver } : {}),
   };
   vm.runInNewContext(script, context);
-  return { state, requests, events, element: suffix => ids.get('opda-comments' + suffix) };
+  return {
+    state, requests, events, observers, element: suffix => ids.get('opda-comments' + suffix),
+    fireWindow(name) {
+      const event = windowEvents[name];
+      if (name === 'load') document.readyState = 'complete';
+      if (!event) return;
+      if (event.options?.once) delete windowEvents[name];
+      event.callback();
+    },
+  };
 }
+
+test('loading and interactive documents wait for window load and a later task', async () => {
+  for (const readyState of ['loading', 'interactive']) {
+    const s = setup({ readyState });
+    assert.equal(s.requests.length, 0);
+    s.events['astro:page-load']();
+    assert.equal(s.requests.length, 0);
+    s.fireWindow('load');
+    assert.equal(s.requests.length, 0, 'window load does not synchronously request comments');
+    await tick();
+    assert.equal(s.requests.length, 1);
+  }
+});
+
+test('viewport proximity is a second gate after load and duplicate lifecycle events do not fetch twice', async () => {
+  const s = setup({ readyState: 'loading', withIntersectionObserver: true });
+  s.events['astro:page-load']();
+  assert.equal(s.observers.length, 0);
+  assert.equal(s.requests.length, 0);
+  s.fireWindow('load');
+  s.events['astro:page-load']();
+  await tick();
+  assert.equal(s.observers.length, 1);
+  assert.equal(s.requests.length, 0);
+  s.observers[0].fire();
+  await tick();
+  assert.equal(s.requests.length, 1);
+  s.observers[0].fire();
+  await tick();
+  assert.equal(s.requests.length, 1);
+});
+
+test('a transition cancels deferred old-page work and re-entry starts one fresh load', async () => {
+  const s = setup();
+  s.events['astro:before-swap']();
+  await tick();
+  assert.equal(s.requests.length, 0);
+  s.events['astro:page-load']();
+  s.events['astro:page-load']();
+  await tick();
+  assert.equal(s.requests.length, 1);
+  assert.equal(s.requests[0].options.signal.aborted, false);
+  s.events['astro:before-swap']();
+  assert.equal(s.requests[0].options.signal.aborted, true);
+  s.events['astro:page-load']();
+  await tick();
+  assert.equal(s.requests.length, 2);
+});
+
+test('a transition before window load removes the old listener and re-entry remains available', async () => {
+  const s = setup({ readyState: 'loading' });
+  s.events['astro:before-swap']();
+  s.fireWindow('load');
+  await tick();
+  assert.equal(s.requests.length, 0);
+  s.events['astro:page-load']();
+  await tick();
+  assert.equal(s.requests.length, 1);
+});
 
 test('posting is deliberate, cookie-bound and sends no client-supplied author or bearer token', async () => {
   const s = setup(); await tick();

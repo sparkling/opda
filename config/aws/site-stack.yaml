@@ -360,6 +360,14 @@ Resources:
             LambdaFunctionAssociations:
               - EventType: viewer-request
                 LambdaFunctionARN: !Ref GateFunctionVersionArn
+          - PathPattern: '/resources/'
+            TargetOriginId: site-s3
+            ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
+            ViewerProtocolPolicy: redirect-to-https
+            Compress: true
+            CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+            LambdaFunctionAssociations:
+              - { EventType: viewer-request, LambdaFunctionARN: !Ref GateFunctionVersionArn }
           # Protected static assets. Long-TTL at the CDN via the
           # same managed CachingOptimized policy the default behavior uses.
           # Ordered ahead of the default behavior.
