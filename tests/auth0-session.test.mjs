@@ -16,6 +16,11 @@ const encode = v => v === null ? { NULL: true } : Array.isArray(v) ? { L: v.map(
     : typeof v === 'boolean' ? { BOOL: v } : typeof v === 'number' ? { N: String(v) } : { S: v };
 const decode = item => Object.fromEntries(Object.entries(item).map(([k, v]) => [k, v.S ?? (v.N ? Number(v.N) : v.BOOL)]));
 const cookie = (response, name) => response.cookies.find(v => v.startsWith(name + '='))?.split(';')[0].slice(name.length + 1);
+const oauthTransaction = response => {
+  const state = new URL(response.headers.location).searchParams.get('state');
+  const value = cookie(response, '__Host-opda_oauth_' + state);
+  return { state, data: JSON.parse(Buffer.from(value, 'base64url').toString()) };
+};
 const request = (path, query = {}, cookies = []) => ({ rawPath: path, queryStringParameters: query,
   cookies, requestContext: { http: { method: 'GET' } } });
 
@@ -71,11 +76,11 @@ function setup(options = {}) {
     } });
   async function login() {
     const result = await handler(request('/_auth/login', { return: '/programme' }));
-    nonce = cookie(result, '__Host-opda_nonce'); return result;
+    nonce = oauthTransaction(result).data.nonce; return result;
   }
   async function callback() {
     const started = await login();
-    return handler(request('/_auth/callback', { state: cookie(started, '__Host-opda_oauth_state'), code: 'one-use-provider-code' }, started.cookies));
+    return handler(request('/_auth/callback', { state: oauthTransaction(started).state, code: 'one-use-provider-code' }, started.cookies));
   }
   return { row, rows, emailKey, sourceKey, commands, fetches, handler, login, callback };
 }
@@ -86,8 +91,9 @@ test('Auth0 uses the existing public PKCE client and all enabled Universal Login
   assert.equal(url.searchParams.get('connection'), null, 'do not force email-only or one social provider');
   assert.equal(url.searchParams.get('code_challenge_method'), 'S256');
   assert.equal(url.searchParams.get('scope'), 'openid email profile');
-  assert.equal(url.searchParams.get('state'), cookie(result, '__Host-opda_oauth_state'));
-  assert.equal(url.searchParams.get('nonce'), cookie(result, '__Host-opda_nonce'));
+  const transaction = oauthTransaction(result);
+  assert.equal(url.searchParams.get('state'), transaction.state);
+  assert.equal(url.searchParams.get('nonce'), transaction.data.nonce);
   assert.equal(s.commands.length, 0);
 });
 

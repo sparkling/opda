@@ -16,14 +16,36 @@ test('only runtime dependencies and the CID logo enter the private Lambda bundle
   t.after(() => rm(output, { recursive: true, force: true }));
   const files = await packageOnboarding({ output });
   assert.deepEqual(files, BUNDLE_FILES.map(([, target]) => target).sort());
-  for (const name of ['index', 'worker', 'store', 'settings', 'postmark', 'domain-templates']) {
+  for (const name of ['index', 'worker', 'store', 'settings', 'postmark', 'domain-templates',
+    'workspace-entry', 'workspace-store', 'workspace-flow']) {
     assert.ok(files.includes(`src/approval-onboarding/${name}.mjs`));
   }
-  assert.ok(files.every(path => path.startsWith('src/')));
+  assert.ok(files.every(path => path.startsWith('src/') || /^config\/aws\/auth-session\/(?:identity|session|store)\.mjs$/u.test(path)));
   assert.ok(files.every(path => !/gallery|design-explorations|\.env|secret|certificate|private.key/i.test(path)));
   for (const [source, target] of BUNDLE_FILES) assert.deepEqual(await readFile(resolve(output, target)), await readFile(new URL(`../${source}`, import.meta.url)));
   await writeFile(resolve(output, 'unexpected.txt'), 'do not silently include this');
   await assert.rejects(packageOnboarding({ output }), /Unexpected file/);
+});
+
+test('workspace entry is private, bounded and cannot perform onboarding effects', async () => {
+  const template = await read('config/aws/approval-onboarding-stack.yaml');
+  const role = block(template, 'WorkspaceRole'), functionBlock = block(template, 'WorkspaceEntry');
+  assert.match(functionBlock, /FunctionName: opda-workspace-entry/u);
+  assert.match(functionBlock, /Handler: src\/approval-onboarding\/workspace-entry\.handler/u);
+  assert.match(functionBlock, /Runtime: nodejs22\.x/u);
+  assert.match(functionBlock, /Architectures: \[arm64\]/u);
+  assert.match(functionBlock, /MemorySize: 256/u);
+  assert.match(functionBlock, /Timeout: 10/u);
+  assert.match(functionBlock, /ReservedConcurrentExecutions: 2/u);
+  assert.match(functionBlock, /MICROSOFT_SECRET_ARN/u);
+  assert.doesNotMatch(functionBlock, /POSTMARK|ONBOARDING_QUEUE|FunctionUrlConfig|AWS::ApiGateway/iu);
+  assert.match(role, /Action: dynamodb:GetItem/u);
+  assert.match(role, /Action: dynamodb:PutItem/u);
+  assert.doesNotMatch(role, /dynamodb:(?:Scan|Query|UpdateItem|DeleteItem)|sqs:|postmark|cognito-idp:/iu);
+  assert.match(role, /USER#\*.*IDENTITY#\*.*EMAIL#\*.*SYNC#SUPPRESS#\*.*CRM#CONTACT#\*.*CRM#ONBOARDING_STATE#\*/u);
+  assert.match(role, /CRM#ONBOARDING_STATE#\*/u);
+  assert.match(role, /opda\/microsoft\/participation-onboarding-nmTdmF/u);
+  assert.doesNotMatch(role, /postmark\/participation-onboarding|Resource: ['"]?\*['"]?\s*\n/u);
 });
 
 test('effects worker has bounded serial execution with a private recoverable queue', async () => {

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { APPROVAL_GROUP_IDS, OPDA_TENANT_ID } from './invitation.mjs';
+import { APPROVAL_GROUP_IDS, MICROSOFT_INVITATION_RETURN_URL, OPDA_TENANT_ID } from './invitation.mjs';
 
 const GUID = /^(?!00000000-0000-0000-0000-000000000000$)[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
 const DIGEST = /^[a-f0-9]{64}$/;
@@ -32,23 +32,31 @@ function invitationAddress(email) {
   requireValue([...local].every(char => !forbidden.includes(char)) && !/^[.-]|[.-]$/u.test(local), 'invitation-address-unsupported');
 }
 
+function redemptionParameters(url, allowed = ['rd', 'tenant', 'ticket', 'user', 'ver']) {
+  const keys = [...url.searchParams.keys()];
+  requireValue(keys.every((key) => allowed.includes(key))
+    && new Set(keys).size === keys.length, 'invalid-redemption-link');
+  if (url.searchParams.has('user')) {
+    const userId = url.searchParams.get('user');
+    requireValue(GUID.test(userId ?? ''), 'invalid-redemption-link');
+  }
+}
+
 function redemptionLink(value) {
   requireValue(typeof value === 'string' && value.length <= 8192 && !UNSAFE.test(value)
     && !/[\s\\{}"]/u.test(value) && /^https:\/\/login\.microsoftonline\.com\/redeem\/?\?/u.test(value), 'invalid-redemption-link');
   let url;
   try { url = new URL(value); } catch { stop('invalid-redemption-link'); }
   requireValue(!url.hash && !url.username && !url.password && !url.port, 'invalid-redemption-link');
-  requireValue([...url.searchParams.keys()].every((key) => ['rd', 'tenant', 'ticket', 'ver'].includes(key))
-    && new Set(url.searchParams.keys()).size === [...url.searchParams.keys()].length, 'invalid-redemption-link');
+  redemptionParameters(url);
   if (url.searchParams.has('tenant')) requireValue(url.searchParams.get('tenant')?.toLowerCase() === OPDA_TENANT_ID, 'invalid-redemption-link');
   let target = url;
   if (url.searchParams.has('rd')) {
     const nested = url.searchParams.get('rd');
     requireValue(/^https:\/\/invitations\.microsoft\.com\/redeem\/?\?/u.test(nested) && !/[\s\\{}"]/.test(nested) && !UNSAFE.test(nested), 'invalid-redemption-link');
     try { target = new URL(nested); } catch { stop('invalid-redemption-link'); }
-    requireValue(!target.hash && !target.username && !target.password && !target.port
-      && [...target.searchParams.keys()].every((key) => ['tenant', 'ticket', 'ver'].includes(key))
-      && new Set(target.searchParams.keys()).size === [...target.searchParams.keys()].length, 'invalid-redemption-link');
+    requireValue(!target.hash && !target.username && !target.password && !target.port, 'invalid-redemption-link');
+    redemptionParameters(target, ['tenant', 'ticket', 'user', 'ver']);
   }
   requireValue(target.searchParams.get('tenant')?.toLowerCase() === OPDA_TENANT_ID
     && Boolean(target.searchParams.get('ticket')) && !UNSAFE.test(target.searchParams.get('ticket')), 'invalid-redemption-link');
@@ -58,6 +66,15 @@ function redemptionLink(value) {
 function collection(data, maximum) {
   requireValue(data && Array.isArray(data.value) && data.value.length <= maximum && !data['@odata.nextLink'], 'ambiguous-provider-collection');
   return data.value;
+}
+
+function invitationReturn(value) {
+  requireValue(typeof value === 'string' && value.length <= 2048 && !UNSAFE.test(value)
+    && !/[\s\\{}<>"]/u.test(value), 'invalid-invitation-return');
+  let url;
+  try { url = new URL(value); } catch { stop('invalid-invitation-return'); }
+  requireValue(url.protocol === 'https:' && !url.username && !url.password && !url.port && !url.hash,
+    'invalid-invitation-return');
 }
 
 /**
@@ -94,12 +111,13 @@ export function createGraphAdapter({ request, workspaces } = {}) {
     requireValue(value.schemaVersion === 1, 'invalid-receipt');
     object(value.memberships, Object.values(teams));
     if (value.identity !== null) {
-      object(value.identity, ['state', 'emailDigest', 'userId', 'userType', 'loginName', 'redemptionUrl']);
+      object(value.identity, ['state', 'emailDigest', 'userId', 'userType', 'loginName', 'redemptionUrl', 'inviteRedirectUrl']);
       const identity = value.identity;
       requireValue(['bound', 'invite-intent', 'invited'].includes(identity.state) && DIGEST.test(identity.emailDigest ?? ''), 'invalid-receipt');
       if (identity.userId !== undefined) requireValue(typeof identity.userId === 'string' && GUID.test(identity.userId), 'invalid-receipt');
       if (identity.state !== 'invite-intent') requireValue(typeof identity.userId === 'string' && GUID.test(identity.userId), 'invalid-receipt');
       if (identity.redemptionUrl !== undefined) redemptionLink(identity.redemptionUrl);
+      if (identity.inviteRedirectUrl !== undefined) invitationReturn(identity.inviteRedirectUrl);
       if (identity.loginName !== undefined) requireValue(typeof identity.loginName === 'string' && identity.loginName.length <= 360 && !UNSAFE.test(identity.loginName), 'invalid-receipt');
       if (identity.userType !== undefined) requireValue(['Guest', 'Member'].includes(identity.userType), 'invalid-receipt');
     }
@@ -115,8 +133,9 @@ export function createGraphAdapter({ request, workspaces } = {}) {
   async function run(args, kind, operation) {
     let receipt = emptyReceipt();
     try {
-      object(args, kind === 'identity' ? ['email', 'displayName', 'receipt', 'guard', 'persistReceipt'] : ['groupId', 'userId', 'receipt', 'guard', 'persistReceipt']);
-      requireValue(typeof args.guard === 'function' && typeof args.persistReceipt === 'function');
+      object(args, kind === 'identity' ? ['email', 'displayName', 'receipt', 'guard', 'persistReceipt', 'existingOnly']
+        : kind === 'access' ? ['email', 'groupId', 'receipt', 'guard'] : ['groupId', 'userId', 'receipt', 'guard', 'persistReceipt']);
+      requireValue(typeof args.guard === 'function' && (kind === 'access' || typeof args.persistReceipt === 'function'));
       receipt = receiptFor(args.receipt);
       const check = async () => {
         let current;
@@ -124,6 +143,7 @@ export function createGraphAdapter({ request, workspaces } = {}) {
         if (current !== true) stop('stale-operation', 'pending');
       };
       const persist = async (acknowledgedEffect = false) => {
+        requireValue(kind !== 'access', 'read-only-operation');
         if (!acknowledgedEffect) await check();
         let persisted;
         try { persisted = await args.persistReceipt(structuredClone(receipt)); } catch { stop('receipt-persistence-failed'); }
@@ -139,6 +159,7 @@ export function createGraphAdapter({ request, workspaces } = {}) {
         return result;
       };
       const write = async (route, options, acknowledge) => {
+        requireValue(kind !== 'access', 'read-only-operation');
         await check();
         let result;
         try { result = await request(route, options); }
@@ -166,32 +187,48 @@ export function createGraphAdapter({ request, workspaces } = {}) {
     return row;
   }
 
+  async function existingIdentity({ receipt, read }, email, emailDigest) {
+    requireValue(!receipt.identity || receipt.identity.emailDigest === emailDigest, 'identity-binding-mismatch');
+    if (receipt.identity?.state === 'invite-intent') stop('invitation-intent-needs-review');
+    if (receipt.identity?.userId) {
+      const observed = await read(`/users/${receipt.identity.userId}?$select=${USER_FIELDS}`, { allowNotFound: true });
+      if (observed === null && receipt.identity.state === 'invited') stop('identity-propagating', 'pending');
+      return verifyUser(observed, emailDigest, receipt.identity.userId, receipt.identity.userType);
+    }
+    const literal = email.replace(/'/gu, "''");
+    const query = new URLSearchParams({ '$filter': `mail eq '${literal}' or userPrincipalName eq '${literal}' or otherMails/any(m:m eq '${literal}')`, '$select': USER_FIELDS, '$top': '2' });
+    const matches = collection(await read(`/users?${query}`), 2);
+    requireValue(matches.length <= 1, 'ambiguous-identity');
+    if (!matches.length) return null;
+    const candidate = verifyUser(matches[0], emailDigest);
+    return verifyUser(await read(`/users/${candidate.id}?$select=${USER_FIELDS}`, { allowNotFound: true }), emailDigest, candidate.id, candidate.userType);
+  }
+
+  function boundIdentity(row, emailDigest, prior) {
+    const pending = row.userType === 'Guest' && row.externalUserState === 'PendingAcceptance';
+    return { state: 'bound', emailDigest, userId: row.id, userType: row.userType,
+      loginName: `i:0#.f|membership|${row.userPrincipalName}`,
+      ...(pending && prior?.redemptionUrl ? { redemptionUrl: prior.redemptionUrl } : {}),
+      ...(pending && prior?.inviteRedirectUrl ? { inviteRedirectUrl: prior.inviteRedirectUrl } : {}) };
+  }
+
+  function pendingInvitation(row, receipt) {
+    if (row?.userType === 'Guest' && row.externalUserState === 'PendingAcceptance'
+      && receipt.identity?.state === 'invited' && !receipt.identity.redemptionUrl) stop('invitation-in-progress', 'pending');
+  }
+
   async function resolveIdentity(args) {
     return run(args, 'identity', async (ctx) => {
       const { receipt, read, persist, write } = ctx;
       const email = normalizedEmail(args.email), emailDigest = hash(email);
       requireValue(typeof args.displayName === 'string' && args.displayName.trim().length > 0 && args.displayName.length <= 256
         && !UNSAFE.test(args.displayName) && !/[{}]/u.test(args.displayName));
-      requireValue(!receipt.identity || receipt.identity.emailDigest === emailDigest, 'identity-binding-mismatch');
-      if (receipt.identity?.state === 'invite-intent') stop('invitation-intent-needs-review');
-      let row;
-      if (receipt.identity?.userId) {
-        const observed = await read(`/users/${receipt.identity.userId}?$select=${USER_FIELDS}`, { allowNotFound: true });
-        if (observed === null && receipt.identity.state === 'invited') stop('identity-propagating', 'pending');
-        row = verifyUser(observed, emailDigest, receipt.identity.userId, receipt.identity.userType);
-      } else {
-        const literal = email.replace(/'/gu, "''");
-        const query = new URLSearchParams({ '$filter': `mail eq '${literal}' or userPrincipalName eq '${literal}' or otherMails/any(m:m eq '${literal}')`, '$select': USER_FIELDS, '$top': '2' });
-        const matches = collection(await read(`/users?${query}`), 2);
-        requireValue(matches.length <= 1, 'ambiguous-identity');
-        if (matches.length) {
-          const candidate = verifyUser(matches[0], emailDigest);
-          row = verifyUser(await read(`/users/${candidate.id}?$select=${USER_FIELDS}`, { allowNotFound: true }), emailDigest, candidate.id, candidate.userType);
-        }
-      }
-      if (row?.userType === 'Guest' && row.externalUserState === 'PendingAcceptance'
-        && receipt.identity?.state === 'invited' && !receipt.identity.redemptionUrl) stop('invitation-in-progress', 'pending');
-      const needsInvitation = !row || (row.userType === 'Guest' && row.externalUserState === 'PendingAcceptance' && !receipt.identity?.redemptionUrl);
+      requireValue(args.existingOnly === undefined || typeof args.existingOnly === 'boolean');
+      let row = await existingIdentity(ctx, email, emailDigest);
+      if (!row && args.existingOnly) stop('microsoft-identity-missing', 'pending');
+      pendingInvitation(row, receipt);
+      const needsInvitation = !row || (row.userType === 'Guest' && row.externalUserState === 'PendingAcceptance'
+        && (!receipt.identity?.redemptionUrl || receipt.identity.inviteRedirectUrl !== MICROSOFT_INVITATION_RETURN_URL));
       if (needsInvitation) {
         invitationAddress(email);
         const expectedId = row?.id;
@@ -200,15 +237,18 @@ export function createGraphAdapter({ request, workspaces } = {}) {
         await persist();
         await write('/invitations', { method: 'POST', body: {
           invitedUserEmailAddress: email, invitedUserDisplayName: args.displayName.trim(), invitedUserType: 'Guest',
-          inviteRedirectUrl: `https://teams.microsoft.com/?tenantId=${OPDA_TENANT_ID}`, sendInvitationMessage: false, resetRedemption: false,
+          inviteRedirectUrl: MICROSOFT_INVITATION_RETURN_URL, sendInvitationMessage: false, resetRedemption: false,
         } }, (invitation) => {
           requireValue(invitation && GUID.test(invitation.invitedUser?.id ?? '') && (!expectedId || invitation.invitedUser.id === expectedId)
             && invitation.invitedUserEmailAddress?.toLowerCase() === email && invitation.invitedUserType === 'Guest'
+            && invitation.inviteRedirectUrl === MICROSOFT_INVITATION_RETURN_URL
             && [undefined, null, false].includes(invitation.sendInvitationMessage) && [undefined, null, false].includes(invitation.resetRedemption)
             && ['PendingAcceptance', 'Completed', 'InProgress'].includes(invitation.status), 'invitation-response-mismatch');
           inProgress = invitation.status === 'InProgress';
-          const link = inProgress && invitation.inviteRedeemUrl == null ? undefined : redemptionLink(invitation.inviteRedeemUrl);
-          receipt.identity = { state: 'invited', emailDigest, userId: invitation.invitedUser.id, userType: 'Guest', ...(link ? { redemptionUrl: link } : {}) };
+          const link = inProgress && invitation.inviteRedeemUrl == null ? undefined
+            : redemptionLink(invitation.inviteRedeemUrl);
+          receipt.identity = { state: 'invited', emailDigest, userId: invitation.invitedUser.id, userType: 'Guest',
+            inviteRedirectUrl: invitation.inviteRedirectUrl, ...(link ? { redemptionUrl: link } : {}) };
         });
         if (inProgress) stop('invitation-in-progress', 'pending');
         const observed = await read(`/users/${receipt.identity.userId}?$select=${USER_FIELDS}`, { allowNotFound: true });
@@ -216,11 +256,29 @@ export function createGraphAdapter({ request, workspaces } = {}) {
         row = verifyUser(observed, emailDigest, receipt.identity.userId, 'Guest');
       }
       const redemptionRequired = row.userType === 'Guest' && row.externalUserState === 'PendingAcceptance';
-      const identity = { state: 'bound', emailDigest, userId: row.id, userType: row.userType,
-        loginName: `i:0#.f|membership|${row.userPrincipalName}`, ...(redemptionRequired ? { redemptionUrl: redemptionLink(receipt.identity?.redemptionUrl) } : {}) };
+      if (redemptionRequired) redemptionLink(receipt.identity?.redemptionUrl);
+      const identity = boundIdentity(row, emailDigest, receipt.identity);
       if (JSON.stringify(receipt.identity) !== JSON.stringify(identity)) { receipt.identity = identity; await persist(); }
-      return { status: 'ready', userId: row.id, loginName: identity.loginName, redemptionRequired,
+      return { status: 'ready', userId: row.id, userType: row.userType, loginName: identity.loginName, redemptionRequired,
         ...(redemptionRequired ? { redemptionUrl: identity.redemptionUrl } : {}) };
+    });
+  }
+
+  // A current access check is not a grant: it never changes membership ownership,
+  // persists a receipt, creates a guest or refreshes an invitation. The entry
+  // caller must acquire the shared participant lease before resolveIdentity.
+  async function readAccess(args) {
+    return run(args, 'access', async (ctx) => {
+      requireValue(APPROVAL_GROUP_IDS.includes(args.groupId));
+      const email = normalizedEmail(args.email), emailDigest = hash(email);
+      const row = await existingIdentity(ctx, email, emailDigest);
+      if (!row) stop('microsoft-identity-missing', 'pending');
+      pendingInvitation(row, ctx.receipt);
+      const view = await membershipView(ctx, teams[args.groupId], row.id, true);
+      if (!view.group || !view.team) stop('teams-sync-pending', 'pending');
+      ctx.receipt.identity = boundIdentity(row, emailDigest, ctx.receipt.identity);
+      return { status: 'ready', userId: row.id, userType: row.userType,
+        redemptionRequired: row.userType === 'Guest' && row.externalUserState === 'PendingAcceptance' };
     });
   }
 
@@ -231,12 +289,12 @@ export function createGraphAdapter({ request, workspaces } = {}) {
     return { teamId: teams[args.groupId], userId: args.userId, prior: receipt.memberships[teams[args.groupId]] };
   }
 
-  async function membershipView(ctx, teamId, userId) {
+  async function membershipView(ctx, teamId, userId, allowOwners = false) {
     const team = await ctx.read(`/teams/${teamId}?$select=id,visibility,isArchived`);
     requireValue(team?.id === teamId && team.visibility === 'private' && team.isArchived === false, 'workspace-not-private-ready');
     const owners = collection(await ctx.read(`/groups/${teamId}/owners`), 100);
     requireValue(owners.length > 0 && owners.every((owner) => GUID.test(owner?.id ?? '')), 'owner-baseline-unverified');
-    if (owners.some((owner) => owner.id === userId)) stop('owner-membership-retained');
+    if (!allowOwners && owners.some((owner) => owner.id === userId)) stop('owner-membership-retained');
     // Typed single-member GET is supported by the current Graph SDK contract.
     const group = await ctx.read(`/groups/${teamId}/members/${userId}/graph.user?$select=id`, { allowNotFound: true });
     requireValue(group === null || group?.id === userId, 'group-membership-mismatch');
@@ -244,7 +302,7 @@ export function createGraphAdapter({ request, workspaces } = {}) {
     const members = collection(await ctx.read(`/teams/${teamId}/members?${query}`), 2);
     requireValue(members.length <= 1 && members.every((member) => member.userId === userId && typeof member.id === 'string' && member.id.length > 0
       && Array.isArray(member.roles) && member.roles.every((role) => ['guest', 'owner'].includes(role))), 'team-membership-mismatch');
-    if (members.some((member) => member.roles.includes('owner'))) stop('owner-membership-retained');
+    if (!allowOwners && members.some((member) => member.roles.includes('owner'))) stop('owner-membership-retained');
     return { group: group !== null, team: members.length === 1 };
   }
 
@@ -297,7 +355,7 @@ export function createGraphAdapter({ request, workspaces } = {}) {
     });
   }
 
-  return Object.freeze({ resolveIdentity, ensureMembership, revokeMembership });
+  return Object.freeze({ resolveIdentity, readAccess, ensureMembership, revokeMembership });
 }
 
 export const CreateGraphAdapter = createGraphAdapter;

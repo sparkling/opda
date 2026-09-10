@@ -8,6 +8,12 @@ export const BUNDLE_FILES = Object.freeze([
     'postmark', 'receipt-protection', 'invitation', 'domain-templates', 'withdrawal-notice', 'notice-worker'].map(name => [
     `src/approval-onboarding/${name}.mjs`, `src/approval-onboarding/${name}.mjs`,
   ]),
+  ...['workspace-entry', 'workspace-store', 'workspace-flow'].map(name => [
+    `src/approval-onboarding/${name}.mjs`, `src/approval-onboarding/${name}.mjs`,
+  ]),
+  ...['identity', 'session', 'store'].map(name => [
+    `config/aws/auth-session/${name}.mjs`, `config/aws/auth-session/${name}.mjs`,
+  ]),
   ['src/agents/working-group-inbox/domain.mjs', 'src/agents/working-group-inbox/domain.mjs'],
   ['docs/templates/assets/opda-email-logo.png', 'src/approval-onboarding/opda-email-logo.png'],
 ]);

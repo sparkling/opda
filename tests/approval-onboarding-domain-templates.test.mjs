@@ -47,6 +47,8 @@ test('six separately pinned invitations share the original shell but have distin
     const fingerprint = fingerprintTemplate(template, { groupId });
     aliases.add(template.Alias); subjects.add(template.Subject); hashes.add(fingerprint);
     assert.equal(template.Alias, contract.alias);
+    assert.match(template.Alias, /-approval-invitation-v3$/);
+    assert.match(template.Name, /Approval Invitation v3$/);
     assert.equal(template.Subject, contract.subject);
     assert.equal(pin.version, 2);
     assert.equal(pin.groupId, groupId);
@@ -105,28 +107,40 @@ test('v2 requires exactly the independently approved group, with no cross-domain
   }
 });
 
-test('rendered domain invitations distinguish personal acceptance, website sign-in and verified source access', () => {
-  for (const groupId of APPROVAL_GROUP_IDS) for (const ready of [false, true]) for (const redemptionRequired of [false, true]) {
-    const input = inputFor(groupId, ready);
-    input.microsoft = redemptionRequired
-      ? { redemptionRequired, redemptionUrl: 'https://login.microsoftonline.com/redeem?ticket=synthetic-only' }
-      : { redemptionRequired };
-    const model = buildInvitationModel(input, INVITATION_REGISTRY, { groupId });
-    const template = compileDomainInvitationTemplate(groupId, shells);
-    for (const body of [template.HtmlBody, template.TextBody]) {
-      const output = render(body, model);
-      assert.doesNotMatch(output, /{{|href=""|\[\[/);
-      assert.ok(output.includes(INVITATION_REGISTRY.groups[groupId].teamId));
-      assert.match(output, /https:\/\/opda.org.uk\/_auth\/login/);
-      assert.equal(output.includes('I Accept'), redemptionRequired);
-      assert.equal(output.includes('Your Microsoft invitation has already been accepted'), !redemptionRequired);
-      assert.equal(output.includes('Your private company folder is ready'), ready);
-      assert.equal(output.includes('Teams-only access'), !ready);
-      assert.equal(output.includes('Keep a README at the top level'), ready);
-      assert.equal(output.includes('/By%20Organisation/example.invalid'), ready);
-      assert.match(output, /Ordinary Teams files/);
+test('pending and accepted participants receive identical group entry actions without redemption details', () => {
+  const entries = new Set();
+  for (const groupId of APPROVAL_GROUP_IDS) for (const ready of [false, true]) {
+    const outputs = [];
+    const entry = `https://opda.org.uk/_auth/workspace?group=${groupId}`;
+    entries.add(entry);
+    for (const redemptionRequired of [false, true]) {
+      const input = inputFor(groupId, ready);
+      input.microsoft = redemptionRequired
+        ? { redemptionRequired, redemptionUrl: 'https://login.microsoftonline.com/redeem?ticket=synthetic-only' }
+        : { redemptionRequired };
+      const model = buildInvitationModel(input, INVITATION_REGISTRY, { groupId });
+      assert.equal(model.group_entry_url, entry);
+      assert.equal(model.groups[0].group_entry_url, entry);
+      assert.doesNotMatch(JSON.stringify(model), /microsoft_redemption|login.microsoftonline|ticket=|synthetic-only/);
+      const template = compileDomainInvitationTemplate(groupId, shells);
+      const rendered = [template.HtmlBody, template.TextBody].map(body => render(body, model));
+      outputs.push(rendered);
+      for (const output of rendered) {
+        assert.doesNotMatch(output, /{{|href=""|\[\[/);
+        assert.equal(output.split(entry).length - 1, 1);
+        assert.ok(output.includes(`Open the ${DOMAIN_TEMPLATE_CONTRACTS[groupId].groupName}`));
+        assert.match(output, /https:\/\/opda.org.uk\/_auth\/login/);
+        assert.doesNotMatch(output, /I Accept|already been accepted|Microsoft invitation|one-time code|login.microsoftonline|ticket=/);
+        assert.equal(output.includes('Your private company folder is ready'), ready);
+        assert.equal(output.includes('Teams-only access'), !ready);
+        assert.equal(output.includes('Keep a README at the top level'), ready);
+        assert.equal(output.includes('/By%20Organisation/example.invalid'), ready);
+        assert.match(output, /Ordinary Teams files/);
+      }
     }
+    assert.deepEqual(outputs[0], outputs[1]);
   }
+  assert.equal(entries.size, 6);
 });
 
 test('historical Finance and v1 combined template pins remain unchanged', () => {
@@ -141,5 +155,7 @@ test('historical Finance and v1 combined template pins remain unchanged', () => 
 test('compiler rejects unknown groups, incomplete shells and unsupported fields', () => {
   for (const groupId of ['technology', 'no-such-domain', null]) assert.throws(() => compileDomainInvitationTemplate(groupId, shells));
   for (const changed of [{ ...shells, HtmlBody: '' }, { ...shells, TextBody: '' }, { ...shells, Subject: 'override' },
+    { ...shells, HtmlBody: shells.HtmlBody.replace('{{group_entry_url}}', '{{team_url}}') },
+    { ...shells, TextBody: `${shells.TextBody}{{microsoft_redemption_url}}` },
     { ...shells, HtmlBody: `${shells.HtmlBody}[[UNREVIEWED_SLOT]]` }]) assert.throws(() => compileDomainInvitationTemplate('conveyancing', changed));
 });

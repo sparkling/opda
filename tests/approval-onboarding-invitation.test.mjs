@@ -45,6 +45,9 @@ function fixture(ids = ['finance-and-banking', 'property-technology']) {
 function redemptionUrl() {
   return `https://login.microsoftonline.com/redeem?rd=${encodeURIComponent(`https://invitations.microsoft.com/redeem/?tenant=${OPDA_TENANT_ID}&ticket=synthetic-only`)}`;
 }
+function redemptionUrlWithUser(user = '22222222-2222-4222-8222-222222222222') {
+  return `https://login.microsoftonline.com/redeem?rd=${encodeURIComponent(`https://invitations.microsoft.com/redeem/?tenant=${OPDA_TENANT_ID}&user=${user}&ticket=synthetic-only&ver=1`)}`;
+}
 
 // Fixture-only rendering of the Mustachio subset used by these templates.
 function render(template, model, escape = true) {
@@ -123,6 +126,39 @@ test('Microsoft redemption is conditional and preserves the exact per-recipient 
   assert.equal(model.microsoft_redemption_required, true);
   for (const microsoft of [null, {}, { redemptionRequired: 'true' }, { redemptionRequired: true }, { redemptionRequired: false, redemptionUrl: redemptionUrl() }]) {
     assert.throws(() => buildInvitationModel({ ...input, microsoft }, registry));
+  }
+});
+
+test('Microsoft redemption accepts the observed optional UUID user parameter in direct and nested forms', () => {
+  const { input, registry } = fixture();
+  for (const redemptionUrl of [redemptionUrlWithUser(),
+    `https://login.microsoftonline.com/redeem?tenant=${OPDA_TENANT_ID}&user=22222222-2222-4222-8222-222222222222&ticket=synthetic-only&ver=1`]) {
+    input.microsoft = { redemptionRequired: true, redemptionUrl };
+    assert.equal(buildInvitationModel(input, registry).microsoft_redemption_url, redemptionUrl);
+  }
+  for (const redemptionUrl of [redemptionUrlWithUser('not-a-uuid'),
+    `https://login.microsoftonline.com/redeem?rd=${encodeURIComponent(`https://invitations.microsoft.com/redeem/?tenant=${OPDA_TENANT_ID}&user=22222222-2222-4222-8222-222222222222&user=33333333-3333-4333-8333-333333333333&ticket=synthetic-only`)}`,
+    `https://login.microsoftonline.com/redeem?rd=${encodeURIComponent(`https://invitations.microsoft.com/redeem/?tenant=${OPDA_TENANT_ID}&ticket=synthetic-only&rd=unexpected`)}`,
+    redemptionUrlWithUser() + '&rd=https%3A%2F%2Fevil.example',
+    redemptionUrlWithUser() + '&user=22222222-2222-4222-8222-222222222222&user=33333333-3333-4333-8333-333333333333']) {
+    assert.throws(() => buildInvitationModel({ ...input, microsoft: { redemptionRequired: true, redemptionUrl } }, registry));
+  }
+});
+
+test('independent-domain models use stable group entry URLs and omit send-time Microsoft state', () => {
+  for (const groupId of APPROVAL_GROUP_IDS) {
+    const { input, registry } = fixture([groupId]);
+    const accepted = buildInvitationModel(input, registry, { groupId });
+    input.microsoft = { redemptionRequired: true, redemptionUrl: redemptionUrl() };
+    const pending = buildInvitationModel(input, registry, { groupId });
+    assert.deepEqual(pending, accepted);
+    const expected = `https://opda.org.uk/_auth/workspace?group=${groupId}`;
+    assert.equal(pending.group_entry_url, expected);
+    assert.equal(pending.groups[0].group_entry_url, expected);
+    assert.equal(new URL(pending.group_entry_url).searchParams.size, 1);
+    assert.doesNotMatch(JSON.stringify(pending), /microsoft_redemption|ticket=|synthetic-only|alex@example.org/i);
+    assert.throws(() => buildInvitationModel({ ...input,
+      microsoft: { redemptionRequired: true, redemptionUrl: 'https://evil.example/redirect' } }, registry, { groupId }));
   }
 });
 
@@ -217,6 +253,7 @@ test('Microsoft URLs cannot be repurposed as arbitrary redirects or tracking lin
     'https://user@login.microsoftonline.com/redeem', 'https://login.microsoftonline.com/redeem?rd=https%3A%2F%2Fevil.example',
     'https://login.microsoftonline.com/redeem?rd=https%3A%2F%2Finvitations.microsoft.com%2Fother',
     'https://login.microsoftonline.com/redeem?redirect_uri=https%3A%2F%2Fevil.example',
+    'https://login.microsoftonline.com/redeem?tenant=' + OPDA_TENANT_ID + '&user=not-a-uuid&ticket=synthetic-only',
   ]) assert.throws(() => buildInvitationModel({ ...input, microsoft: { redemptionRequired: true, redemptionUrl } }, registry));
 });
 

@@ -3,7 +3,8 @@
   Subject: [[SUBJECT]]
   Alias: [[ALIAS]]
   Compiled from this shared original-invitation layout by domain-templates.mjs.
-  Version 2: one recipient, one independently approved domain, one durable send claim.
+  Content version 3: one stable group-entry action, no emailed redemption details.
+  Approval policy version 2: one recipient, one independently approved domain, one durable send claim.
   Inline image: opda-logo -> assets/opda-email-logo.png
   Broadcast; TrackLinks=None; TrackOpens=false. Provider unsubscribe is the only raw interpolation.
 -->
@@ -37,18 +38,8 @@
           <p style="margin:0 0 14px;font-size:17px;line-height:27px;color:#3d3d3a;">Rather than forcing the whole property lifecycle into one universal model, <strong>OPDA is creating a governed family of connected domain models</strong>, each shaped by the people who understand that part of the market. [[DOMAIN_NAME]] is one part of that wider standard. The models will preserve precise local meaning while allowing information to cross boundaries, and will support familiar outputs such as business glossaries, data dictionaries, schemas, APIs, forms and readable documentation.</p>
           <p style="margin:0 0 14px;font-size:17px;line-height:27px;color:#3d3d3a;">[[GROUP_FOCUS]]</p>
           <p style="margin:0 0 22px;font-size:17px;line-height:27px;color:#3d3d3a;"><strong>You are not being asked to understand ontologies, adopt AI, or have technical knowledge.</strong> We ask you to share the material your organisation already uses, contribute your domain knowledge in Teams and challenge successive model drafts. OPDA will use an AI-assisted, human-governed process to turn that evidence and feedback into reviewable candidates, publishing and revising them with the group until the [[DOMAIN_NAME]] model is ready to become its first official working-group draft.</p>
-          {{#microsoft_redemption_url}}
           <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 16px;">
-            <tr><td style="border-radius:8px;background:#a9583e;"><a href="{{.}}" style="display:inline-block;padding:14px 22px;color:#ffffff;text-decoration:none;font-size:16px;line-height:20px;font-weight:700;">I Accept</a></td></tr>
-          </table>
-          <p style="margin:0 0 16px;font-size:15px;line-height:24px;">Accept your Microsoft invitation once, then open the working group in Teams using the link below.</p>
-          {{/microsoft_redemption_url}}
-          {{^microsoft_redemption_required}}
-          <p style="margin:0 0 16px;font-size:15px;line-height:24px;">Your Microsoft invitation has already been accepted. Your membership of this working group is ready.</p>
-          {{/microsoft_redemption_required}}
-          <p style="margin:0 0 16px;font-size:15px;line-height:24px;"><a href="{{team_url}}" style="color:#a9583e;text-decoration:underline;font-weight:700;">Open the [[GROUP_NAME]] in Teams</a></p>
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0;background:#fff4cf;border-left:4px solid #e5b632;border-radius:8px;">
-            <tr><td style="padding:14px 16px;font-size:14px;line-height:22px;color:#3d3d3a;"><strong>Sign in using the email account that received this invitation.</strong> Access is personal to you. Do not forward this email or share a Microsoft invitation link.</td></tr>
+            <tr><td style="border-radius:8px;background:#a9583e;"><a href="{{group_entry_url}}" style="display:inline-block;padding:14px 22px;color:#ffffff;text-decoration:none;font-size:16px;line-height:20px;font-weight:700;">Open the [[GROUP_NAME]]</a></td></tr>
           </table>
         </td></tr>
         <tr><td style="padding:28px 32px 30px;border-top:1px solid #e6dfd0;">
@@ -137,7 +128,7 @@
         </td></tr>
         <tr><td style="padding:28px 32px;border-top:1px solid #e6dfd0;">
           <h2 style="margin:0 0 12px;font-size:20px;line-height:28px;color:#141413;">🌐 Your OPDA website access</h2>
-          <p style="margin:0;font-size:15px;line-height:24px;color:#3d3d3a;"><a href="{{website_login_url}}" style="color:#a9583e;text-decoration:underline;">Sign in to the OPDA website</a> with your registered email address and the one-time code sent to it. Website sign-in is separate from Microsoft Teams and SharePoint. Accepting a Microsoft invitation does not sign you in to the website.</p>
+          <p style="margin:0;font-size:15px;line-height:24px;color:#3d3d3a;">Visit the <a href="{{website_login_url}}" style="color:#a9583e;text-decoration:underline;">OPDA website</a> for modelling guidance and programme documentation.</p>
         </td></tr>
         <tr><td style="padding:22px 32px;background:#211f1c;color:#b8b1a3;font-size:12px;line-height:19px;">
           Open Property Data Association · [[GROUP_NAME]]<br>

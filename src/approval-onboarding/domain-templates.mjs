@@ -1,5 +1,5 @@
 /**
- * Reviewed v2 invitations: one original-layout email per independently approved domain.
+ * Content v3 invitations: one original-layout email per independently approved domain.
  * This module is pure. Provisioning supplies the shared HTML/text shells; runtime uses
  * only the finite contracts and content pins. It neither reads files nor calls Postmark.
  */
@@ -69,10 +69,12 @@ const DOMAINS = Object.freeze({
 });
 
 export const DOMAIN_TEMPLATE_CONTRACTS = Object.freeze(Object.fromEntries(Object.entries(DOMAINS).map(([groupId, domain]) => [groupId, Object.freeze({
+  // Policy version 2 identifies independent-domain approval/outbox semantics.
+  // Content revision 3 gets a new immutable alias, not a new approval policy.
   version: 2,
   groupId,
   groupName: `${domain.name} Working Group`,
-  alias: `${groupId}-approval-invitation-v2`,
+  alias: `${groupId}-approval-invitation-v3`,
   subject: `Your invitation to the ${domain.name} Working Group`,
 })])));
 
@@ -133,7 +135,8 @@ export function compileDomainInvitationTemplate(groupId, shells) {
     if (typeof body !== 'string' || body.length === 0 || body.length > 500_000
       || !body.includes('pm:unsubscribe') || !body.includes('[[GROUP_NAME]]')
       || !body.includes('[[DISCUSSION_ROWS]]') || !body.includes('[[GROUP_FOCUS]]')
-      || !body.includes('[[SOURCE_EXAMPLES]]') || html && !body.includes('cid:opda-logo')) {
+      || !body.includes('[[SOURCE_EXAMPLES]]') || !body.includes('{{group_entry_url}}')
+      || /microsoft_redemption/u.test(body) || html && !body.includes('cid:opda-logo')) {
       throw new TypeError('Invalid invitation: incomplete original-layout shell');
     }
     return body.replace(/\[\[([A-Z_]+)\]\]/g, (_, key) => {
@@ -143,7 +146,7 @@ export function compileDomainInvitationTemplate(groupId, shells) {
     });
   };
   return Object.freeze({
-    Name: `${contract.groupName} Approval Invitation v2`,
+    Name: `${contract.groupName} Approval Invitation v3`,
     Alias: contract.alias,
     Subject: contract.subject,
     HtmlBody: compile(shells.HtmlBody, true),

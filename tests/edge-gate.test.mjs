@@ -71,6 +71,21 @@ test('only exact GET auth routes pass through without an existing session', asyn
   assert.equal(s.calls.length, 0);
 });
 
+test('workspace entry exposes only its exact self-authenticated methods', async () => {
+  const s = setup();
+  assert.equal((await s.handler(event('/_auth/workspace'))).uri, '/_auth/workspace');
+  assert.equal((await s.handler(event('/_auth/workspace', { method: 'POST' }))).uri, '/_auth/workspace');
+  assert.equal((await s.handler(event('/_auth/workspace/continue'))).uri, '/_auth/workspace/continue');
+  for (const method of ['PUT', 'PATCH', 'DELETE', 'OPTIONS']) {
+    assert.equal((await s.handler(event('/_auth/workspace', { method }))).status, '405', method);
+    assert.equal((await s.handler(event('/_auth/workspace/continue', { method }))).status, '405', method);
+  }
+  for (const uri of ['/_auth/workspaces', '/_auth/workspace/', '/_auth/workspace/continue/']) {
+    assert.equal((await s.handler(event(uri))).status, '302', uri);
+  }
+  assert.equal(s.calls.length, 0);
+});
+
 test('alternate distribution hosts and encoded/dot paths cannot bypass the gate', async () => {
   const s = setup();
   assert.equal((await s.handler(event('/', { host: 'example.cloudfront.net' }))).status, '403');

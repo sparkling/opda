@@ -23,6 +23,7 @@ on:
       - '.github/workflows/infra.yml'
       - 'tests/hubspot-approval-*.test.mjs'
       - 'tests/auth-session.test.mjs'
+      - 'tests/auth-workspace*.test.mjs'
       - 'tests/auth0-session.test.mjs'
       - 'tests/edge-gate.test.mjs'
       - 'scripts/package-edge-gate.mjs'
@@ -60,7 +61,7 @@ jobs:
           node-version: 22
 
       - name: Test participant approval boundary
-        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs tests/comments-*.test.mjs
+        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs tests/comments-*.test.mjs tests/auth-workspace*.test.mjs
 
       - name: Package bounded onboarding runtime locally
         run: node scripts/package-approval-onboarding.mjs
@@ -180,3 +181,14 @@ jobs:
               DomainReviewCutover="${{ vars.OPDA_DOMAIN_REVIEW_CUTOVER || '' }}" \
               OnboardingEnabled="${{ vars.OPDA_ONBOARDING_ENABLED || 'false' }}" \
               OnboardingCanaryEmailHash="${{ vars.OPDA_ONBOARDING_CANARY_EMAIL_HASH || '' }}"
+
+      - name: Verify deployed workspace boundary without participant effects
+        run: |
+          aws lambda get-function-configuration --region eu-west-2 \
+            --function-name opda-workspace-entry \
+            --query '{State:State,Update:LastUpdateStatus,Handler:Handler,Timeout:Timeout,CodeSha256:CodeSha256}'
+          aws lambda invoke --region eu-west-2 --function-name opda-workspace-entry \
+            --cli-binary-format raw-in-base64-out \
+            --payload '{"schemaVersion":1,"sessionToken":"","groupId":"finance-and-banking","phase":"open"}' \
+            /tmp/opda-workspace-denied.json
+          node --input-type=module -e "import {readFileSync} from 'node:fs'; import assert from 'node:assert/strict'; assert.deepEqual(JSON.parse(readFileSync('/tmp/opda-workspace-denied.json','utf8')), {status:'denied'}); console.log('Deployed workspace boundary rejects an invalid session; no participant effects.');"

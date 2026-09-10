@@ -40,13 +40,15 @@ test('the same-origin auth surface forwards cookies and query strings without ca
   const behavior = site.match(/- PathPattern: '\/_auth\/\*'[\s\S]*?(?=\n\s*- PathPattern:|\n\s*CustomErrorResponses:)/u)?.[0];
   assert.ok(behavior, 'auth session cache behavior exists');
   assert.match(behavior, /TargetOriginId: auth-session-api/u);
-  assert.match(behavior, /AllowedMethods: \[GET, HEAD, OPTIONS\]/u);
+  // CloudFront's POST-capable method set is broad; the edge and HTTP API
+  // independently restrict it to the exact authenticated workspace POST.
+  assert.match(behavior, /AllowedMethods: \[GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE\]/u);
   assert.match(behavior, /4135ea2d-6df8-44a3-9df3-4b5a84be39ad/u);
   assert.match(behavior, /OriginRequestPolicyId: !Ref AuthSessionOriginRequestPolicy/u);
   assert.match(behavior, /LambdaFunctionAssociations/u);
 
   const policy = site.match(/AuthSessionOriginRequestPolicy:[\s\S]*?(?=\n\s{2}\w)/u)?.[0];
-  assert.match(policy ?? '', /HeaderBehavior: none/u);
+  assert.match(policy ?? '', /HeaderBehavior: whitelist, Headers: \[Content-Type, Origin, Sec-Fetch-Site\]/u);
   assert.match(policy ?? '', /CookieBehavior: all/u);
   assert.match(policy ?? '', /QueryStringBehavior: all/u);
 });
@@ -61,12 +63,15 @@ test('private responses use CloudFront security-header fields, not forbidden cus
   assert.doesNotMatch(policy, /Header: (?:Referrer-Policy|X-Content-Type-Options)/u);
 });
 
-test('the auth service exposes only the four GET session routes with bounded capacity', async () => {
+test('the auth service exposes session and workspace routes with bounded capacity', async () => {
   const stack = await read('config/aws/auth-session-stack.yaml');
   for (const route of ['login', 'callback', 'me', 'logout']) {
     assert.match(stack, new RegExp(`RouteKey: GET \/_auth\/${route}\\n`, 'u'));
   }
-  assert.equal((stack.match(/RouteKey:/gu) ?? []).length, 4);
+  assert.match(stack, /RouteKey: GET \/_auth\/workspace\n/u);
+  assert.match(stack, /RouteKey: POST \/_auth\/workspace\n/u);
+  assert.match(stack, /RouteKey: GET \/_auth\/workspace\/continue\n/u);
+  assert.equal((stack.match(/RouteKey:/gu) ?? []).length, 7);
   assert.match(stack, /CodeUri: auth-session\//u);
   assert.match(stack, /ReservedConcurrentExecutions: 5/u);
   assert.match(stack, /ThrottlingBurstLimit: 20/u);

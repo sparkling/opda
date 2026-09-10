@@ -214,7 +214,7 @@ Resources:
       OriginRequestPolicyConfig:
         Name: opda-auth-session-cookies-and-query
         Comment: Forward OAuth cookies and query strings only to /_auth/*
-        HeadersConfig: { HeaderBehavior: none }
+        HeadersConfig: { HeaderBehavior: whitelist, Headers: [Content-Type, Origin, Sec-Fetch-Site] }
         CookiesConfig: { CookieBehavior: all }
         QueryStringsConfig: { QueryStringBehavior: all }
 
@@ -345,7 +345,9 @@ Resources:
             TargetOriginId: auth-session-api
             ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
             ViewerProtocolPolicy: redirect-to-https
-            AllowedMethods: [GET, HEAD, OPTIONS]
+            # Workspace entry submits a short same-origin POST; forwarding is
+            # uncached and includes all OAuth/session cookies, query strings and body.
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             Compress: true
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref AuthSessionOriginRequestPolicy

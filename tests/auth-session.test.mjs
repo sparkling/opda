@@ -61,6 +61,12 @@ function cookieValue(cookies, name) {
   return cookies.find((value) => value.startsWith(name + '='))?.split(';', 1)[0].slice(name.length + 1);
 }
 
+function oauthTransaction(response) {
+  const state = new URL(response.headers.location).searchParams.get('state');
+  const value = cookieValue(response.cookies, '__Host-opda_oauth_' + state);
+  return { state, value, data: JSON.parse(Buffer.from(value, 'base64url').toString()) };
+}
+
 function handlerWith(options = {}) {
   const requests = [], operations = [], sessions = new Map();
   const state = { participant: options.participant === null ? null : participant(options.participant), nonce: null, now: NOW };
@@ -120,13 +126,14 @@ function handlerWith(options = {}) {
   });
   async function login(returnPath = '/programme?view=current') {
     const result = await handler(event('/_auth/login', { query: { return: returnPath } }));
-    state.nonce = cookieValue(result.cookies, '__Host-opda_nonce');
+    state.nonce = oauthTransaction(result).data.nonce;
     return result;
   }
   async function callback(returnPath) {
     const started = await login(returnPath);
+    const transaction = oauthTransaction(started);
     return handler(event('/_auth/callback', {
-      query: { code: 'authorization-code', state: cookieValue(started.cookies, '__Host-opda_oauth_state') },
+      query: { code: 'authorization-code', state: transaction.state },
       cookies: started.cookies,
     }));
   }
@@ -149,13 +156,48 @@ test('login starts Cognito public-client code + S256 PKCE bound to secure state 
     response_type: 'code', client_id: CLIENT, redirect_uri: SITE + '/_auth/callback',
     scope: 'openid email profile', code_challenge_method: 'S256',
   })) assert.equal(authorize.searchParams.get(key), value);
-  const verifier = cookieValue(response.cookies, '__Host-opda_verifier');
+  const transaction = oauthTransaction(response);
+  const { verifier, nonce, returnPath } = transaction.data;
   assert.equal(authorize.searchParams.get('code_challenge'), createHash('sha256').update(verifier).digest('base64url'));
-  assert.equal(authorize.searchParams.get('state'), cookieValue(response.cookies, '__Host-opda_oauth_state'));
-  assert.equal(authorize.searchParams.get('nonce'), cookieValue(response.cookies, '__Host-opda_nonce'));
-  assert.equal(Buffer.from(cookieValue(response.cookies, '__Host-opda_return'), 'base64url').toString(), '/programme?view=current');
+  assert.equal(authorize.searchParams.get('state'), transaction.state);
+  assert.equal(authorize.searchParams.get('nonce'), nonce);
+  assert.equal(returnPath, '/programme?view=current');
   assert.equal(response.headers['cache-control'], 'no-store');
-  for (const cookie of response.cookies) assert.match(cookie, /; Path=\/; Secure; HttpOnly; SameSite=Lax; Max-Age=300$/u);
+  assert.equal(response.cookies.length, 1);
+  assert.match(response.cookies[0], /; Path=\/; Secure; HttpOnly; SameSite=Lax; Max-Age=300$/u);
+});
+
+test('login caps simultaneous pending transactions without evicting existing state cookies', async () => {
+  const controls = handlerWith();
+  let cookies = [];
+  for (let index = 0; index < 6; index += 1) {
+    const response = await controls.handler(event('/_auth/login', { query: { return: `/flow-${index}` }, cookies }));
+    assert.equal(response.statusCode, 302);
+    cookies = [...cookies, ...response.cookies];
+  }
+  const rejected = await controls.handler(event('/_auth/login', { query: { return: '/too-many' }, cookies }));
+  assert.equal(rejected.statusCode, 429);
+  assert.equal(rejected.cookies.length, 0);
+  assert.equal(cookies.filter(cookie => cookie.includes('Max-Age=300')).length, 6);
+});
+
+test('login caps aggregate transient cookie bytes without clearing existing flows', async () => {
+  const controls = handlerWith();
+  const state = 'B'.repeat(43);
+  const oversized = `__Host-opda_oauth_${state}=${'x'.repeat(5900)}; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=300`;
+  const rejected = await controls.handler(event('/_auth/login', { query: { return: '/large' }, cookies: [oversized] }));
+  assert.equal(rejected.statusCode, 429);
+  assert.deepEqual(rejected.cookies, []);
+});
+
+test('callback rejects duplicate cookie values for the requested state without exchanging code', async () => {
+  const controls = handlerWith(), login = await controls.login(), transaction = oauthTransaction(login);
+  const response = await controls.handler(event('/_auth/callback', {
+    query: { code: 'code', state: transaction.state }, cookies: [login.cookies[0], login.cookies[0]],
+  }));
+  assert.equal(response.statusCode, 400);
+  assert.equal(controls.requests.length, 0);
+  assert.equal(controls.sessions.size, 0);
 });
 
 test('callback rejects a mismatched state before exchanging the code', async () => {
@@ -233,7 +275,7 @@ test('callback rejects bad signatures, algorithms and all required Cognito ID-to
     assert.equal(response.statusCode, 401);
     assert.equal(controls.sessions.size, 0);
     assert.equal(controls.operations.length, 0);
-    assert.equal(cookieValue(response.cookies, '__Host-opda_session'), '');
+      assert.equal(cookieValue(response.cookies, '__Host-opda_session'), undefined);
   });
 });
 
@@ -243,6 +285,57 @@ test('session expiry is capped by both provider token and participant expiry', a
   assert.equal(response.statusCode, 302);
   assert.equal([...controls.sessions.values()][0].expiresAt, NOW + 600);
   assert.match(response.cookies.find((cookie) => cookie.startsWith('__Host-opda_session=')), /Max-Age=600$/u);
+});
+
+test('simultaneous OAuth transactions keep independent state, nonce, return path and PKCE when callbacks complete out of order', async () => {
+  const controls = handlerWith();
+  const first = await controls.login('/working-groups/open/conveyancing');
+  const second = await controls.login('/working-groups/open/estate-agency');
+  const one = oauthTransaction(first), two = oauthTransaction(second);
+  assert.notEqual(one.state, two.state);
+  assert.notEqual(one.data.nonce, two.data.nonce);
+  assert.notEqual(one.data.verifier, two.data.verifier);
+  controls.state.nonce = two.data.nonce;
+  const secondResult = await controls.handler(event('/_auth/callback', {
+    query: { code: 'second-code', state: two.state }, cookies: second.cookies,
+  }));
+  assert.equal(secondResult.statusCode, 302);
+  assert.equal(secondResult.headers.location, SITE + '/working-groups/open/estate-agency');
+  assert.ok(secondResult.cookies.some(cookie => cookie.startsWith(`__Host-opda_oauth_${two.state}=`)));
+  controls.state.nonce = one.data.nonce;
+  const firstResult = await controls.handler(event('/_auth/callback', {
+    query: { code: 'first-code', state: one.state }, cookies: first.cookies,
+  }));
+  assert.equal(firstResult.statusCode, 302);
+  assert.equal(firstResult.headers.location, SITE + '/working-groups/open/conveyancing');
+  assert.ok(firstResult.cookies.some(cookie => cookie.startsWith(`__Host-opda_oauth_${one.state}=`)));
+  assert.equal(controls.sessions.size, 2);
+});
+
+test('invalid or expired callback clears only its own transaction and never the current opaque session or another flow', async () => {
+  const controls = handlerWith();
+  const first = await controls.login('/one'), second = await controls.login('/two');
+  const one = oauthTransaction(first), two = oauthTransaction(second);
+  const invalid = await controls.handler(event('/_auth/callback', {
+    query: { code: 'bad-code', state: 'A'.repeat(43) }, cookies: second.cookies,
+  }));
+  assert.equal(invalid.statusCode, 400);
+  assert.equal(invalid.cookies.length, 1);
+  assert.match(invalid.cookies[0], /^__Host-opda_oauth_A{43}=/u);
+  assert.ok(second.cookies.some(cookie => cookie.startsWith(`__Host-opda_oauth_${two.state}=`)));
+  controls.state.nonce = one.data.nonce;
+  const signedIn = await controls.handler(event('/_auth/callback', {
+    query: { code: 'first-code', state: one.state }, cookies: first.cookies,
+  }));
+  assert.equal(signedIn.statusCode, 302);
+  const currentSession = cookieValue(signedIn.cookies, '__Host-opda_session');
+  const expired = await controls.handler(event('/_auth/callback', {
+    query: { code: 'expired-code', state: two.state }, cookies: second.cookies,
+  }));
+  assert.equal(expired.statusCode, 401);
+  assert.equal(cookieValue(expired.cookies, '__Host-opda_session'), undefined);
+  assert.equal((await controls.handler(event('/_auth/me', { cookies: signedIn.cookies }))).statusCode, 200);
+  assert.match(currentSession, /^[A-Za-z0-9_-]{43}$/u);
 });
 
 test('an ID token that expires during the participant lookup never creates a session', async () => {
@@ -328,7 +421,7 @@ test('provider, key and persistence failures fail closed without issuing a cooki
       const controls = handlerWith(options), response = await controls.callback();
       assert.equal(response.statusCode, 503);
       assert.equal(controls.sessions.size, 0);
-      assert.equal(cookieValue(response.cookies, '__Host-opda_session'), '');
+    assert.equal(cookieValue(response.cookies, '__Host-opda_session'), undefined);
     });
   }
   const controls = handlerWith({ readFailure: true });
@@ -347,7 +440,7 @@ test('logout deletes the server session, clears old and new cookies and redirect
   assert.equal(logout.pathname, '/logout');
   assert.equal(logout.searchParams.get('client_id'), CLIENT);
   assert.equal(logout.searchParams.get('logout_uri'), SITE + '/');
-  assert.equal(response.cookies.length, 7);
+  assert.equal(response.cookies.length, 3);
   for (const cookie of response.cookies) assert.match(cookie, /Max-Age=0$/u);
   const failed = handlerWith({ deleteFailure: true });
   const rejected = await failed.handler(event('/_auth/logout', { cookies: signedIn.cookies }));

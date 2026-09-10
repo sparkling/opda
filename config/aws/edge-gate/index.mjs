@@ -6,6 +6,7 @@ import { readApprovedSession, SESSION_COOKIE, validSessionToken } from './sessio
 export const CONFIG = Object.freeze({ region: 'eu-west-2', siteOrigin: 'https://opda.org.uk',
   participantsTableName: 'opda-participants', sessionsTableName: 'opda-participant-sessions' });
 const AUTH_PATHS = new Set(['/_auth/login', '/_auth/callback', '/_auth/me', '/_auth/logout']);
+const WORKSPACE_GET_PATHS = new Set(['/_auth/workspace/continue']);
 const HOLDING_PATHS = new Set(['/under-development', '/under-development/', '/under-development/index.html']);
 const expire = `${SESSION_COOKIE}=; Path=/; Secure; HttpOnly; SameSite=Lax; Max-Age=0`;
 const headers = {
@@ -39,7 +40,10 @@ export function createHandler(overrides = {}) {
     if (typeof uri !== 'string' || !uri.startsWith('/') || uri.length > 4096
       || /[\\\u0000-\u001f\u007f]|\/\/|(?:^|\/)\.{1,2}(?:\/|$)|%(?:2f|5c|2e|00)/iu.test(uri)) return respond(400, 'Invalid path.');
     const read = method === 'GET' || method === 'HEAD';
-    if (AUTH_PATHS.has(uri)) return method === 'GET' ? request : respond(405, 'Use GET.');
+    if (AUTH_PATHS.has(uri) || WORKSPACE_GET_PATHS.has(uri)) {
+      return method === 'GET' ? request : respond(405, 'Use GET.');
+    }
+    if (uri === '/_auth/workspace') return method === 'GET' || method === 'POST' ? request : respond(405, 'Use GET or POST.');
     if (read && uri === '/coming-soon.jpg') return request;
     if (read && HOLDING_PATHS.has(uri)) { request.uri = '/under-development/index.html'; return request; }
     const token = sessionToken(request);

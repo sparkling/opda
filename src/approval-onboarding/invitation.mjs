@@ -9,6 +9,7 @@ import { domainTemplateContract } from './domain-templates.mjs';
 
 export const OPDA_TENANT_ID = '143540d4-4fbc-4005-882a-29656cd01a36';
 export const WEBSITE_LOGIN_URL = 'https://opda.org.uk/_auth/login';
+export const MICROSOFT_INVITATION_RETURN_URL = 'https://opda.org.uk/_auth/workspace/continue';
 export const INVITATION_SUBJECT = 'Your OPDA working-group access is ready';
 export const INVITATION_TEMPLATE_ALIAS = 'working-group-approval-invitation';
 
@@ -42,6 +43,7 @@ export const APPROVAL_GROUP_IDS = Object.freeze(Object.keys(GROUPS));
 const SHAREPOINT_HOST = 'openpropertydataassociation.sharepoint.com';
 const TECHNOLOGY_TEAM_ID = '286b29b1-163d-4cb5-aaec-39b1c5ceef4b';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const USER_UUID = /^(?!00000000-0000-0000-0000-000000000000$)[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const UNSAFE_TEXT = /[<>\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u206f\ufeff]/u;
 
 function requireValue(condition, message) {
@@ -144,13 +146,19 @@ function microsoftAccess(value) {
   }
   const url = httpsUrl(value.redemptionUrl, ['login.microsoftonline.com'], 'Microsoft redemption URL');
   requireValue(/^\/redeem\/?$/u.test(url.pathname), 'Microsoft URL is not a redemption endpoint');
-  requireValue([...url.searchParams.keys()].every((key) => ['rd', 'tenant', 'ticket', 'ver'].includes(key)), 'unsupported Microsoft redemption query');
+  const validateQuery = (target, label, allowed) => {
+    const keys = [...target.searchParams.keys()];
+    requireValue(keys.every((key) => allowed.includes(key))
+      && new Set(keys).size === keys.length, `unsupported ${label} query`);
+    if (target.searchParams.has('user')) requireValue(USER_UUID.test(target.searchParams.get('user') ?? ''), `${label} user mismatch`);
+  };
+  validateQuery(url, 'Microsoft redemption', ['rd', 'tenant', 'ticket', 'user', 'ver']);
   requireValue(url.searchParams.has('rd') || url.searchParams.has('ticket'), 'Microsoft redemption URL is missing its invitation');
   if (url.searchParams.has('rd')) {
     const inner = httpsUrl(url.searchParams.get('rd'), ['invitations.microsoft.com'], 'Microsoft invitation target');
     requireValue(/^\/redeem\/?$/u.test(inner.pathname), 'Microsoft invitation target is not a redemption endpoint');
-    requireValue([...inner.searchParams.keys()].every((key) => ['tenant', 'ticket', 'ver'].includes(key))
-      && Boolean(inner.searchParams.get('ticket')), 'unsupported Microsoft invitation target query');
+    validateQuery(inner, 'Microsoft invitation target', ['tenant', 'ticket', 'user', 'ver']);
+    requireValue(Boolean(inner.searchParams.get('ticket')), 'unsupported Microsoft invitation target query');
     if (inner.searchParams.has('tenant')) requireValue(inner.searchParams.get('tenant')?.toLowerCase() === OPDA_TENANT_ID, 'Microsoft invitation tenant mismatch');
   }
   if (url.searchParams.has('tenant')) requireValue(url.searchParams.get('tenant')?.toLowerCase() === OPDA_TENANT_ID, 'Microsoft redemption tenant mismatch');
@@ -178,6 +186,9 @@ export function buildInvitationModel(input, registry, options = {}) {
   object(registry.groups, Object.keys(registry.groups ?? {}), 'registry groups');
   const name = displayName(input.displayName);
   recipient(input.email);
+  // Validate the provider input but keep its personal redemption URL out of the
+  // independently approved domain email. Current state is resolved on entry.
+  const microsoft = microsoftAccess(input.microsoft);
   requireValue(Array.isArray(input.groups) && input.groups.length >= 1 && input.groups.length <= APPROVAL_GROUP_IDS.length, 'select one to six groups');
   requireValue(!contract || input.groups.length === 1 && input.groups[0]?.groupId === contract.groupId, 'domain invitation requires exactly its independently approved group');
   const selected = new Map();
@@ -200,6 +211,7 @@ export function buildInvitationModel(input, registry, options = {}) {
       group_id: group.groupId,
       group_name: registered.name,
       group_scope: registered.scope,
+      group_entry_url: `https://opda.org.uk/_auth/workspace?group=${encodeURIComponent(group.groupId)}`,
       team_url: registered.teamUrl,
       source_folder_ready: ready,
       teams_only: !ready,
@@ -209,7 +221,7 @@ export function buildInvitationModel(input, registry, options = {}) {
   return {
     display_name: name,
     website_login_url: WEBSITE_LOGIN_URL,
-    ...microsoftAccess(input.microsoft),
+    ...(!contract ? microsoft : {}),
     has_source_folders: [...selected.values()].some((group) => group.source_folder_ready),
     groups: APPROVAL_GROUP_IDS.filter((id) => selected.has(id)).map((id) => selected.get(id)),
     ...(contract ? selected.get(contract.groupId) : {}),

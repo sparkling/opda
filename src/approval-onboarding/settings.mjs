@@ -15,23 +15,23 @@ export const INVITATION_REGISTRY = Object.freeze({ tenantId: OPDA_TENANT_ID, web
 export const TEMPLATE_PIN = Object.freeze({ version: 1, serverId: 20188829, templateId: 46437816,
   fingerprint: '4e8fa616f54ccdf32d602aee80662e9f6ae7fbe28e8c4ac635ee99d40ab04d8e' });
 
-// Compiled from the shared original-layout shells. Created and byte-verified on
-// Postmark server 20188829 on 2026-09-09; this does not activate the approval policy.
+// Original-layout v3 content, created and byte-verified on Postmark server 20188829
+// on 2026-09-10 without sending mail. Domain approval policy remains version 2.
 const DOMAIN_TEMPLATE_IDS = Object.freeze({
-  'finance-and-banking': 46444294,
-  conveyancing: 46444295,
-  'estate-agency': 46444297,
-  'surveying-and-valuation': 46444274,
-  'property-data-services': 46444261,
-  'property-technology': 46444262,
+  'finance-and-banking': 46456605,
+  conveyancing: 46456619,
+  'estate-agency': 46456606,
+  'surveying-and-valuation': 46456640,
+  'property-data-services': 46456620,
+  'property-technology': 46456621,
 });
 const DOMAIN_TEMPLATE_FINGERPRINTS = Object.freeze({
-  'finance-and-banking': '328cdd8c971168afeb9b68beb435a0896dda66d107dc2ece63b82ee4b2ce9bca',
-  conveyancing: 'bce579ca22f53499985dd34216af85fddfae1caab92b780807513224c8b7609f',
-  'estate-agency': 'd52be4230b311e3c47b918aa8cac1f0d19063e4717631761ad1a3f83b2edda74',
-  'surveying-and-valuation': '42cadac1a286112a5c4d70f7fe02ed57d85ca1892c9497feb8f666096555f8e0',
-  'property-data-services': '7d02aba17bab5aad2db271edf09c539afe528356f3bdb0156da6ec98d3021be2',
-  'property-technology': 'a3a5b9ff621b1c6ab359a731d3583335304b4b5d5f09d5f0125df9920428b06d',
+  'finance-and-banking': 'dff7f8496766f2046616019721de4c8d0734a1a7ffeea783edfef0cd700cf9c6',
+  conveyancing: 'a64d6de79e011b25fcbe285f4f0283cbc7b67c9225c6b7637cd76e3ade3ff271',
+  'estate-agency': '12f5e322d324f3364f590a777b54f193919a876cdd187481b2717899605c9c34',
+  'surveying-and-valuation': '7fdb64f5f8cf1533d27ad2ebcd9c35aef93d6ac2853a227249bb00f2f77a516d',
+  'property-data-services': '672d03cc303c31d821d0f38b960fea8b88a0a4b35f9064cbcf5da6abf9a701fc',
+  'property-technology': '32dde45e30cc15846726259487f2d84baa97fb00c6f47c617e569f3b316f6902',
 });
 export const TEMPLATE_PINS = Object.freeze(Object.fromEntries(APPROVAL_GROUP_IDS.map(groupId => [groupId, Object.freeze({
   ...DOMAIN_TEMPLATE_CONTRACTS[groupId], serverId: 20188829, templateId: DOMAIN_TEMPLATE_IDS[groupId],

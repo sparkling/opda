@@ -2,14 +2,15 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import test from 'node:test';
 import { createGraphAdapter } from '../src/approval-onboarding/graph.mjs';
-import { APPROVAL_GROUP_IDS, OPDA_TENANT_ID } from '../src/approval-onboarding/invitation.mjs';
+import { APPROVAL_GROUP_IDS, MICROSOFT_INVITATION_RETURN_URL, OPDA_TENANT_ID } from '../src/approval-onboarding/invitation.mjs';
 
 const userId = '22222222-2222-4222-8222-222222222222';
 const otherId = '33333333-3333-4333-8333-333333333333';
+const redemptionUserId = '44444444-4444-4444-8444-444444444444';
 const email = 'synthetic@example.invalid';
 const displayName = 'Synthetic Participant';
 const user = { id: userId, userType: 'Guest', accountEnabled: true, externalUserState: 'Accepted', mail: email, otherMails: [], userPrincipalName: 'synthetic_example.invalid#EXT#@example.onmicrosoft.com' };
-const redemptionUrl = `https://login.microsoftonline.com/redeem?rd=${encodeURIComponent(`https://invitations.microsoft.com/redeem/?tenant=${OPDA_TENANT_ID}&ticket=SYNTHETIC-ONLY`)}`;
+const redemptionUrl = `https://login.microsoftonline.com/redeem?rd=${encodeURIComponent(`https://invitations.microsoft.com/redeem/?tenant=${OPDA_TENANT_ID}&user=${redemptionUserId}&ticket=SYNTHETIC-ONLY&ver=1`)}`;
 const digest = createHash('sha256').update(email).digest('hex');
 const identityReceipt = () => ({ schemaVersion: 1, identity: { state: 'bound', emailDigest: digest, userId, userType: 'Guest', loginName: `i:0#.f|membership|${user.userPrincipalName}` }, memberships: {} });
 
@@ -35,7 +36,7 @@ function fixture(options = {}) {
     if (route === `/groups/${teamId}/members/$ref` && requestOptions.method === 'POST') { state.group = true; if (state.syncGrant) state.team = true; return null; }
     if (route === '/invitations' && requestOptions.method === 'POST') {
       state.users = [{ ...user, externalUserState: 'PendingAcceptance' }];
-      return { invitedUser: { id: userId }, invitedUserEmailAddress: email, invitedUserType: 'Guest', sendInvitationMessage: false, resetRedemption: false, status: 'PendingAcceptance', inviteRedeemUrl: redemptionUrl };
+      return { invitedUser: { id: userId }, invitedUserEmailAddress: email, invitedUserType: 'Guest', sendInvitationMessage: false, resetRedemption: false, status: 'PendingAcceptance', inviteRedeemUrl: redemptionUrl, inviteRedirectUrl: MICROSOFT_INVITATION_RETURN_URL };
     }
     throw new Error('unexpected fixture request');
   };
@@ -72,7 +73,8 @@ test('new and pending guests get one durable silent non-reset invitation and ver
     assert.equal(result.redemptionRequired, true);
     assert.equal(result.redemptionUrl, redemptionUrl);
     const invite = f.calls.find((call) => call.route === '/invitations');
-    assert.deepEqual(invite.body, { invitedUserEmailAddress: email, invitedUserDisplayName: displayName, invitedUserType: 'Guest', inviteRedirectUrl: `https://teams.microsoft.com/?tenantId=${OPDA_TENANT_ID}`, sendInvitationMessage: false, resetRedemption: false });
+    assert.deepEqual(invite.body, { invitedUserEmailAddress: email, invitedUserDisplayName: displayName, invitedUserType: 'Guest', inviteRedirectUrl: MICROSOFT_INVITATION_RETURN_URL, sendInvitationMessage: false, resetRedemption: false });
+    assert.equal(result.receipt.identity.inviteRedirectUrl, MICROSOFT_INVITATION_RETURN_URL);
     assert.ok(f.events.indexOf('persist:invite-intent:none') < f.events.indexOf('POST /invitations'));
     assert.equal(f.checkpoints.find((receipt) => receipt.identity?.state === 'invited').identity.userId, userId);
     const again = await f.adapter.resolveIdentity({ ...f.identityArgs, receipt: result.receipt });
@@ -88,7 +90,7 @@ test('optional false invitation echoes may be omitted or null but never true or 
         if (route !== '/invitations') return undefined;
         state.users = [{ ...user, externalUserState: 'PendingAcceptance' }];
         const response = { invitedUser: { id: userId }, invitedUserEmailAddress: email, invitedUserType: 'Guest',
-          status: 'PendingAcceptance', inviteRedeemUrl: redemptionUrl, sendInvitationMessage: false, resetRedemption: false };
+          status: 'PendingAcceptance', inviteRedeemUrl: redemptionUrl, inviteRedirectUrl: MICROSOFT_INVITATION_RETURN_URL, sendInvitationMessage: false, resetRedemption: false };
         if (value === undefined) delete response[flag]; else response[flag] = value;
         return response;
       } });
@@ -105,7 +107,7 @@ test('InProgress acknowledgement persists the immutable identity and retries rea
   const f = fixture({ state: { users: [] }, request: async (route, options, state) => {
     if (route !== '/invitations') return undefined;
     return { invitedUser: { id: userId }, invitedUserEmailAddress: email, invitedUserType: 'Guest',
-      status: 'InProgress', inviteRedeemUrl: redemptionUrl, sendInvitationMessage: null };
+      status: 'InProgress', inviteRedeemUrl: redemptionUrl, inviteRedirectUrl: MICROSOFT_INVITATION_RETURN_URL, sendInvitationMessage: null };
   } });
   let result = await f.adapter.resolveIdentity(f.identityArgs);
   assert.equal(result.status, 'pending');
@@ -128,7 +130,7 @@ test('an InProgress invitation without its optional URL never triggers a second 
   const f = fixture({ state: { users: [] }, request: async (route, options, state) => {
     if (route !== '/invitations') return undefined;
     state.users = [{ ...user, externalUserState: 'PendingAcceptance' }];
-    return { invitedUser: { id: userId }, invitedUserEmailAddress: email, invitedUserType: 'Guest', status: 'InProgress' };
+    return { invitedUser: { id: userId }, invitedUserEmailAddress: email, invitedUserType: 'Guest', status: 'InProgress', inviteRedirectUrl: MICROSOFT_INVITATION_RETURN_URL };
   } });
   const first = await f.adapter.resolveIdentity(f.identityArgs);
   assert.equal(first.status, 'pending');
@@ -145,7 +147,7 @@ test('a withdrawal racing an acknowledged InProgress invitation still persists i
   const f = fixture({ state: { users: [] }, request: async (route, options, state) => {
     if (route !== '/invitations') return undefined;
     state.current = false;
-    return { invitedUser: { id: userId }, invitedUserEmailAddress: email, invitedUserType: 'Guest', status: 'InProgress', inviteRedeemUrl: redemptionUrl };
+    return { invitedUser: { id: userId }, invitedUserEmailAddress: email, invitedUserType: 'Guest', status: 'InProgress', inviteRedeemUrl: redemptionUrl, inviteRedirectUrl: MICROSOFT_INVITATION_RETURN_URL };
   } });
   const result = await f.adapter.resolveIdentity(f.identityArgs);
   assert.equal(result.reason, 'stale-operation');
@@ -178,7 +180,7 @@ test('documented dots, interior hyphens and underscores still permit a new invit
       if (route !== '/invitations') return undefined;
       state.users = [{ ...user, mail: address, externalUserState: 'PendingAcceptance' }];
       return { invitedUser: { id: userId }, invitedUserEmailAddress: address, invitedUserType: 'Guest',
-        status: 'PendingAcceptance', inviteRedeemUrl: redemptionUrl };
+        status: 'PendingAcceptance', inviteRedeemUrl: redemptionUrl, inviteRedirectUrl: MICROSOFT_INVITATION_RETURN_URL };
     } });
     assert.equal((await f.adapter.resolveIdentity({ ...f.identityArgs, email: address })).status, 'ready');
     assert.equal(f.calls.filter(call => call.route === '/invitations').length, 1);
@@ -207,8 +209,8 @@ test('invitation timeouts and intent-only crashes are never blindly retried or i
 });
 
 test('hostile redemption URLs and invitation ID changes stay manual-review without leaking URLs', async () => {
-  for (const change of [{ invitedUser: { id: otherId } }, { inviteRedeemUrl: 'https://evil.invalid/redeem' }, { inviteRedeemUrl: `${redemptionUrl}&tenant=${otherId}` }, { resetRedemption: true }]) {
-    const f = fixture({ state: { users: [{ ...user, externalUserState: 'PendingAcceptance' }] }, request: async (route) => route === '/invitations' ? { invitedUser: { id: userId }, invitedUserEmailAddress: email, invitedUserType: 'Guest', sendInvitationMessage: false, resetRedemption: false, status: 'PendingAcceptance', inviteRedeemUrl: redemptionUrl, ...change } : undefined });
+  for (const change of [{ invitedUser: { id: otherId } }, { inviteRedeemUrl: 'https://evil.invalid/redeem' }, { inviteRedeemUrl: `${redemptionUrl}&tenant=${otherId}` }, { inviteRedeemUrl: `${redemptionUrl}&user=${otherId}&user=${otherId}` }, { inviteRedeemUrl: `${redemptionUrl}&user=not-a-uuid` }, { inviteRedirectUrl: 'https://evil.invalid/continue' }, { inviteRedirectUrl: undefined }, { resetRedemption: true }]) {
+    const f = fixture({ state: { users: [{ ...user, externalUserState: 'PendingAcceptance' }] }, request: async (route) => route === '/invitations' ? { invitedUser: { id: userId }, invitedUserEmailAddress: email, invitedUserType: 'Guest', sendInvitationMessage: false, resetRedemption: false, status: 'PendingAcceptance', inviteRedeemUrl: redemptionUrl, inviteRedirectUrl: MICROSOFT_INVITATION_RETURN_URL, ...change } : undefined });
     const result = await f.adapter.resolveIdentity(f.identityArgs);
     assert.equal(result.status, 'manual-review');
     assert.doesNotMatch(result.reason, /https:|example.invalid|SYNTHETIC/);

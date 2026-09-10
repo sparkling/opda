@@ -72,7 +72,7 @@ function secretShape(kind, value, time) {
   return Math.min(time + CACHE_MS, Date.parse(value.expiresAt) - 60000);
 }
 
-function createSecrets(config, { now, getSecretValue, loadAws = () => import('@aws-sdk/client-secrets-manager') }) {
+export function createSecrets(config, { now, getSecretValue, loadAws = () => import('@aws-sdk/client-secrets-manager') }) {
   const cache = new Map(), inflight = new Map();
   let service;
   async function request(input) {

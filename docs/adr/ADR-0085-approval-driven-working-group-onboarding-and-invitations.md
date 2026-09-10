@@ -71,16 +71,17 @@ For example, approval for Finance and Banking does not approve Conveyancing. Two
 approved groups produce two separate emails; pending or rejected groups receive neither grants
 nor an approval invitation. The action does not authorise historical campaign resends.
 
-The versioned schema and template contracts use these exact names:
+The schema and current content-version-3 templates use these exact names. Content revision does
+not change independent-domain approval: `contract.version=2` and its outbox semantics remain unchanged.
 
-| Domain ID | Staff-owned HubSpot property | Version 2 Postmark alias | Template ID |
+| Domain ID | Staff-owned HubSpot property | Version 3 Postmark alias | Template ID |
 |---|---|---|---|
-| `finance-and-banking` | `opda_review_finance_and_banking` | `finance-and-banking-approval-invitation-v2` | `46444294` |
-| `conveyancing` | `opda_review_conveyancing` | `conveyancing-approval-invitation-v2` | `46444295` |
-| `estate-agency` | `opda_review_estate_agency` | `estate-agency-approval-invitation-v2` | `46444297` |
-| `surveying-and-valuation` | `opda_review_surveying_and_valuation` | `surveying-and-valuation-approval-invitation-v2` | `46444274` |
-| `property-data-services` | `opda_review_property_data_services` | `property-data-services-approval-invitation-v2` | `46444261` |
-| `property-technology` | `opda_review_property_technology` | `property-technology-approval-invitation-v2` | `46444262` |
+| `finance-and-banking` | `opda_review_finance_and_banking` | `finance-and-banking-approval-invitation-v3` | `46456605` |
+| `conveyancing` | `opda_review_conveyancing` | `conveyancing-approval-invitation-v3` | `46456619` |
+| `estate-agency` | `opda_review_estate_agency` | `estate-agency-approval-invitation-v3` | `46456606` |
+| `surveying-and-valuation` | `opda_review_surveying_and_valuation` | `surveying-and-valuation-approval-invitation-v3` | `46456640` |
+| `property-data-services` | `opda_review_property_data_services` | `property-data-services-approval-invitation-v3` | `46456620` |
+| `property-technology` | `opda_review_property_technology` | `property-technology-approval-invitation-v3` | `46456621` |
 
 Each dropdown has Pending (`received`), Under review, Approved, Rejected and Withdrawn.
 Clearing it also removes that domain's approval. `opda_requested_working_groups` remains
@@ -215,34 +216,53 @@ service, which the operator removed from scope on 2026-09-09.
 
 ### 4. One original-style Postmark invitation per approved domain
 
-Use six separate version 2 aliases from section 1, with subjects **Your invitation to the
+Use six separate content-version-3 aliases from section 1, with subjects **Your invitation to the
 [Domain] Working Group**. Compile them from one shared original-invitation HTML/plain-text
 layout and a reviewed six-domain content registry. Retain the original 680-pixel table shell,
 CID logo, colours, typography, illustrated section headings and full detailed contribution,
 source-material, thread-first discussion and privacy guidance. Customise the domain explanation,
 relevant evidence examples and discussion topics; do not reduce them to generic group cards.
 
-Preserve original Finance template `45998430` and historical combined version 1 template
-`46437816` unchanged. The combined alias `working-group-approval-invitation` and its content
-pin remain for historical evidence and reconciliation, not new version 2 invitations.
+Preserve original Finance template `45998430`, combined version 1 template `46437816` and
+all six `-v2` domain templates unchanged. Their historical content and delivery evidence remain;
+new content aliases do not authorise replay, resend or alteration of earlier mail/outbox outcomes.
 
 Each domain email contains:
 
 - the participant's name, the one approved domain and its relevant contribution guidance;
-- one recipient-specific Microsoft redemption link only when redemption is needed;
-- that domain's verified Team link and private source-folder link, or clear Teams-only
+- one primary **Open the [Domain] Working Group** action using the stable first-party URL
+  `https://opda.org.uk/_auth/workspace?group=<domain-id>`, with no personal identifier or ticket;
+- verified discussion/resource links and the private source-folder link, or clear Teams-only
   guidance for a generic-provider account;
-- a separate fixed first-party website sign-in link explaining the email-code login;
+- an ordinary website reference, without email-code or separate Microsoft setup instructions;
 - the existing guidance about contributions, thread-first discussion and authorised material; and
 - the support address and Postmark unsubscribe control.
 
 Send only after that domain's required Microsoft postconditions are verified or have a deliberate
 Teams-only outcome; another domain can remain pending. Do not promise a pending company folder.
-The original Finance channel links are retained; the other domains use their registered Team
-links and explicitly labelled discussion topics, not invented channel names or unverified URLs.
-Keep redemption URLs out of HubSpot, logs, queue messages, public documents and reusable template
-source. Validate destinations against the fixed Microsoft tenant and workspace registry; names
-and text are escaped, not accepted as arbitrary HTML.
+Finance's verified channel links remain ordinary references; other domains describe topics, not
+invented channels. Domain email models contain no redemption ticket or frozen Microsoft status.
+Keep tickets out of HubSpot, email content, logs, queue messages and public/template source.
+
+Entry-page GETs and the established-identity access path are read-only. Authenticate the website
+session, recheck current domain approval and immutable participant/Microsoft identity, then read
+actual group and Team membership in the registered private, active Team. Existing owners may enter;
+access checks never adopt manual grants or confer ownership. Missing access remains pending or denied.
+Only a same-origin, authenticated POST may repair a missing/legacy invitation hand-off under the
+participant-wide receipt lease. Recheck approval; silently reissue for the same pending guest with
+`sendInvitationMessage:false`, `resetRedemption:false`, and verify the returned immutable ID and
+fixed `inviteRedirectUrl=https://opda.org.uk/_auth/workspace/continue`. Never create a missing guest,
+reinvite an accepted identity, infer an uncertain POST result, or grant permissions from entry.
+Normal group entry reuses the resulting receipt; repair does not queue jobs or send any email.
+
+Each tab retains only its allowlisted group ID and short expiry in `sessionStorage`; a shared
+last-group cookie must not let concurrent emails overwrite destinations. OAuth sign-in transactions
+are independently bound. After Microsoft consent, recheck session, approval, identity and actual
+membership before opening that tab's group. Callback arrival is not proof of acceptance. Missing
+continuation state offers current approved groups; failures do not loop, poll the CRM or hold Lambda
+open. Keep Microsoft account selection/consent native, including invited-alias redemption. Validate
+all destinations against the fixed tenant/workspace registry, not a caller-supplied redirect.
+[Microsoft redemption rules](https://learn.microsoft.com/en-us/entra/external-id/redemption-experience).
 
 Use the existing Postmark `broadcast` stream. Check its suppressions immediately before sending;
 an unavailable check blocks the send. Do not remove a suppression or use a different stream to
@@ -337,6 +357,15 @@ remain distinct purposes with their own recipients and controls.
 
 ### Confirmation
 
+**Content version 3 preparation, 2026-09-10:** all six new templates were created on server
+`20188829`, passed 12 synthetic provider-render validations and byte-exact fingerprint readbacks.
+Their IDs are in section 1 and `settings.mjs`; no mail was sent or historical template changed.
+An isolated live Microsoft check reused the same pending guest, silently refreshed its fixed
+callback in 3.25 seconds and passed both production URL validators. Test guests were removed;
+no existing participant, membership or email delivery changed. This preparation does not itself
+establish deployment or interactive consent. The browser redemption journey remains unverified
+because this session's Chrome backend is unavailable; API checks are not a substitute for it.
+
 **Version 2 readback, 2026-09-09:** the active approval Lambda reports
 `DOMAIN_REVIEW_CUTOVER=2026-09-09T14:35:15Z`. All six domain properties exist and the independent
 domain policy is deployed. The following dated test also establishes deployment of the
@@ -344,8 +373,9 @@ withdrawal-notice amendment; the earlier version 1 evidence remains historical.
 
 On 2026-09-09, all six version 2 templates passed Postmark parsing/rendering validation and
 were created on server `20188829`. Readback verified byte-exact HTML/text against the compiled
-content pins; their IDs are listed in section 1 and pinned in `settings.mjs`. No email was
-sent by this preparation, and neither original Finance nor combined version 1 content changed.
+content pins. Historical `-v2` IDs, in section 1's domain order, are `46444294`, `46444295`,
+`46444297`, `46444274`, `46444261`, `46444262`; they are retained, not the new content pins.
+No email was sent by this preparation; original Finance and combined version 1 content stayed unchanged.
 Template provisioning alone does not activate domain approval or prove end-to-end delivery.
 
 On the same date, seven original-layout withdrawal templates passed provider validation and
@@ -386,74 +416,42 @@ passed 792 tests with one deliberate skip, the 19-case IA audit and the 2,737-pa
 
 #### Historical version 1 rollout and live evidence, 2026-09-09
 
-The contact-wide Microsoft/email follow-up became live on 2026-09-09, alongside website
-approval and revocation under ADR-0084. The following dated evidence describes that earlier
-combined-invitation policy, not the newly accepted individual-domain policy or a backfill.
-During initial workspace provisioning on 2026-09-09, the five
-missing domain Teams and separate intake sites passed configuration and ACL readback under
-ADR-0070. That preparation added no applicants or company folders and sent no invitations.
+The contact-wide Microsoft/email follow-up became live on 2026-09-09, alongside website approval and revocation under ADR-0084.
+The following dated evidence describes that earlier combined-invitation policy, not the newly accepted individual-domain policy or a backfill.
+During initial workspace provisioning on 2026-09-09, the five missing domain Teams and separate intake sites passed configuration and ACL readback under ADR-0070.
+That preparation added no applicants or company folders and sent no invitations.
 
-The combined HTML/plain-text templates and pure payload builder are deployed, with
-11 tests covering all six configured workspaces, conditional redemption, URL validation and
-tracking settings. Postmark's validation API accepted subject, HTML and text in six synthetic
-rendering cases: mixed, all-folder and Teams-only access, each with and without redemption.
-On 2026-09-09 the new live Postmark template was created and read back as template `46437816`
-on server `20188829`. Its HTML/plain-text fingerprint is pinned by the service; neither earlier
-template was changed and no message was sent by template creation. The live recipient test is
-recorded separately below.
+The combined HTML/plain-text templates and pure payload builder are deployed, with 11 tests covering all six configured workspaces, conditional redemption, URL validation and tracking settings.
+Postmark's validation API accepted subject, HTML and text in six synthetic rendering cases: mixed, all-folder and Teams-only access, each with and without redemption.
+On 2026-09-09 the new live Postmark template was created and read back as template `46437816` on server `20188829`.
+Its HTML/plain-text fingerprint is pinned by the service; neither earlier template was changed and no message was sent by template creation. The live recipient test is recorded separately below.
 
-The dedicated Microsoft service application and certificate are provisioned. App-only reads
-succeeded on all six configured sites and private Teams; the unselected cross-cutting
-Technology intake returned HTTP 403. Finance's member-sharing setting was aligned with the
-five new sites. No participant memberships, company folders or guest invitations were changed.
-The initial certificate expires on 2027-03-07. Its temporary local private-key copy was removed
-after the Secrets Manager copy was verified. No delegated refresh session was transferred.
+The dedicated Microsoft service application and certificate are provisioned. App-only reads succeeded on all six configured sites and private Teams; the unselected cross-cutting Technology intake returned HTTP 403.
+Finance's member-sharing setting was aligned with the five new sites. No participant memberships, company folders or guest invitations were changed.
+The initial certificate expires on 2027-03-07. Its temporary local private-key copy was removed after the Secrets Manager copy was verified. No delegated refresh session was transferred.
 
-Approval-time group snapshots, atomic reference-only outbox records, cancellation/withdrawal
-work, a certificate-authenticated API boundary, encrypted receipt storage and the Microsoft,
-SharePoint and Postmark adapters are deployed and tested. The consumer covers
-guarded provisioning, withdrawal, reapproval, erased-profile cleanup, stale jobs and ambiguous
-email outcomes. Its dedicated queue and narrowly scoped role are defined in CloudFormation;
-the deployment package copies only the runtime dependencies and CID logo.
-The packaged runtime also passed read-only assembly against the actual service secrets:
-participant-bound receipt encryption round-tripped, all six private Teams and typed membership
-reads succeeded, member sharing remained disabled on each intake site, and the live Postmark
-template matched its pin. No participant record, membership or invitation was changed by this check.
+Approval-time group snapshots, atomic reference-only outbox records, cancellation/withdrawal work, a certificate-authenticated API boundary, encrypted receipt storage and the Microsoft, SharePoint and Postmark adapters are deployed and tested.
+The consumer covers guarded provisioning, withdrawal, reapproval, erased-profile cleanup, stale jobs and ambiguous email outcomes.
+Its dedicated queue and narrowly scoped role are defined in CloudFormation; the deployment package copies only the runtime dependencies and CID logo.
+The packaged runtime also passed read-only assembly against the actual service secrets: participant-bound receipt encryption round-tripped, all six private Teams and typed membership reads succeeded, member sharing remained disabled on each intake site, and the live Postmark template matched its pin.
+No participant record, membership or invitation was changed by this check.
 
-Automatic grants default to disabled. CI requires both `OPDA_ONBOARDING_ENABLED=true` and a
-prospective UTC `OPDA_ONBOARDING_CUTOVER` in `YYYY-MM-DDTHH:mm:ssZ` form to begin new onboarding.
-For controlled verification before general activation, `OPDA_ONBOARDING_CANARY_EMAIL_HASH`
-may identify one explicitly authorised recipient by the lowercase SHA-256 of their normalised
-email. It is empty by default and cannot bypass approval, snapshot or current-eligibility checks.
-Malformed configuration fails closed. Managed withdrawal remains enabled independently of both
-activation switches.
+Automatic grants default to disabled. CI requires both `OPDA_ONBOARDING_ENABLED=true` and a prospective UTC `OPDA_ONBOARDING_CUTOVER` in `YYYY-MM-DDTHH:mm:ssZ` form to begin new onboarding.
+For controlled verification before general activation, `OPDA_ONBOARDING_CANARY_EMAIL_HASH` may identify one explicitly authorised recipient by the lowercase SHA-256 of their normalised email.
+It is empty by default and cannot bypass approval, snapshot or current-eligibility checks. Malformed configuration fails closed. Managed withdrawal remains enabled independently of both activation switches.
 
-The dedicated worker and infrastructure were deployed on 2026-09-09 through successful CI runs
-`34296804034` and `34296804326`. The recipient-limited verification switch was subsequently
-deployed from commit `17d385f145ae1426fefd45910eb0d2c58e13e888` through infrastructure run
-`34297885445`; AWS readback confirmed an active, successfully updated worker with general
-onboarding disabled. Deployment is not proof of completed end-to-end onboarding.
+The dedicated worker and infrastructure were deployed on 2026-09-09 through successful CI runs `34296804034` and `34296804326`.
+The recipient-limited verification switch was subsequently deployed from commit `17d385f145ae1426fefd45910eb0d2c58e13e888` through infrastructure run `34297885445`; AWS readback confirmed an active, successfully updated worker with general onboarding disabled.
+Deployment is not proof of completed end-to-end onboarding.
 
-The controlled recipient test then created two organisation areas inside the existing intake
-sites, preserving ADR-0070's workspace and permission pattern. A repeated readback exposed a
-verifier defect: SharePoint had added built-in Limited Access beside the parent's existing
-administrator and processor roles. The verifier now accepts that navigation-only role at the
-organisation index while still requiring the exact effective role, rejecting duplicates and
-additional effective grants, and leaving company-folder ACL checks unchanged. No existing site
-or permission was replaced to make the check pass. This follows Microsoft's documented
-[automatic Limited Access behaviour](https://learn.microsoft.com/en-us/sharepoint/understanding-permission-levels).
-The regression was reproduced before the fix; all 34 focused SharePoint tests then passed.
-The correction was deployed from `fe54166b873259c1bec409e42efcf8ab183deb04` through
-successful infrastructure run `34345211765`; the deployed verifier matched the committed bytes.
-The controlled recipient subsequently completed real website login, withdrawal and reapproval.
-Withdrawal invalidated the open website session, disabled Cognito and removed both workflow-owned
-Microsoft memberships; reapproval restored them and reused the existing company folders. Unrelated
-Finance membership and source material were preserved. One combined invitation was delivered,
-but Postmark reported open tracking enabled despite the per-message false value. The documented
-server override exposed a missing server-settings preflight, now covered by a reproduced regression
-test. The server's forced open-tracking default was then disabled; all other server settings,
-all three templates and the suppression list were unchanged. Historical wave payloads still
-explicitly enable open tracking.
+The controlled recipient test then created two organisation areas inside the existing intake sites, preserving ADR-0070's workspace and permission pattern.
+A repeated readback exposed a verifier defect: SharePoint had added built-in Limited Access beside the parent's existing administrator and processor roles.
+The verifier now accepts that navigation-only role at the organisation index while still requiring the exact effective role, rejecting duplicates and additional effective grants, and leaving company-folder ACL checks unchanged.
+No existing site or permission was replaced to make the check pass. This follows Microsoft's documented [automatic Limited Access behaviour](https://learn.microsoft.com/en-us/sharepoint/understanding-permission-levels).
+The regression was reproduced before the fix; all 34 focused SharePoint tests then passed. The correction was deployed from `fe54166b873259c1bec409e42efcf8ab183deb04` through successful infrastructure run `34345211765`; the deployed verifier matched the committed bytes.
+The controlled recipient subsequently completed real website login, withdrawal and reapproval. Withdrawal invalidated the open website session, disabled Cognito and removed both workflow-owned Microsoft memberships; reapproval restored them and reused the existing company folders.
+Unrelated Finance membership and source material were preserved. One combined invitation was delivered, but Postmark reported open tracking enabled despite the per-message false value.
+The documented server override exposed a missing server-settings preflight, now covered by a reproduced regression test. The server's forced open-tracking default was then disabled; all other server settings, all three templates and the suppression list were unchanged. Historical wave payloads still explicitly enable open tracking.
 
 The tracking safeguard was deployed from `304322810fff1f0329edd2fd2222634c7cadc763` through
 successful infrastructure run `34346862468` and site run `34346862604`. A fresh, trusted
@@ -491,8 +489,8 @@ Keep dated evidence and opaque receipts private. Future amendments need their ow
 - [Historical Postmark invitation rollout](https://github.com/sparkling/opda/blob/main/docs/plan/2026-08-postmark-working-group-invitation-rollout.md)
 - [Historical combined v1 invitation, HTML](https://github.com/sparkling/opda/blob/main/docs/templates/working-group-approval-invitation-email.html)
 - [Historical combined v1 invitation, plain text](https://github.com/sparkling/opda/blob/main/docs/templates/working-group-approval-invitation-email.txt)
-- [Shared original-style v2 invitation, HTML](https://github.com/sparkling/opda/blob/main/docs/templates/domain-working-group-approval-invitation-email.html)
-- [Shared original-style v2 invitation, plain text](https://github.com/sparkling/opda/blob/main/docs/templates/domain-working-group-approval-invitation-email.txt)
+- [Shared original-style v3 invitation, HTML](https://github.com/sparkling/opda/blob/main/docs/templates/domain-working-group-approval-invitation-email.html)
+- [Shared original-style v3 invitation, plain text](https://github.com/sparkling/opda/blob/main/docs/templates/domain-working-group-approval-invitation-email.txt)
 - Six-domain content/compiler: `src/approval-onboarding/domain-templates.mjs`; payload boundary: `invitation.mjs`.
 - Withdrawal shells: `docs/templates/participation-access-change-email.{html,txt}`; compiler: `withdrawal-notice.mjs`; delivery guard: `notice-worker.mjs`.
 - Property contract: `config/aws/hubspot-participation/properties.mjs` (`DOMAIN_REVIEW_PROPERTIES`); policy/outbox: `config/aws/hubspot-approval/domain-onboarding.mjs`.

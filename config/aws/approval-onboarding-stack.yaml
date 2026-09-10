@@ -7,6 +7,9 @@ Parameters:
     Type: String
   ParticipantsTableArn:
     Type: String
+  IdentityStackName:
+    Type: String
+    Default: opda-participant-identity
   OnboardingEnabled:
     Type: String
     Default: 'false'
@@ -74,6 +77,12 @@ Resources:
       LogGroupName: /aws/lambda/opda-participant-onboarding
       RetentionInDays: 14
 
+  WorkspaceLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/opda-workspace-entry
+      RetentionInDays: 14
+
   Role:
     Type: AWS::IAM::Role
     Properties:
@@ -119,6 +128,75 @@ Resources:
                 Resource:
                   - !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/microsoft/participation-onboarding-??????'
                   - !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/postmark/participation-onboarding-??????'
+
+  WorkspaceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-workspace-entry
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: workspace-entry-bounded-access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-workspace-entry:*'
+              - Sid: ParticipantLookupOnly
+                Effect: Allow
+                Action: dynamodb:GetItem
+                Resource: !Ref ParticipantsTableArn
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['USER#*', 'IDENTITY#*', 'EMAIL#*', 'SYNC#SUPPRESS#*', 'CRM#CONTACT#*', 'CRM#ONBOARDING_STATE#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              - Sid: SessionLookupOnly
+                Effect: Allow
+                Action: dynamodb:GetItem
+                Resource:
+                  Fn::ImportValue: !Sub '${IdentityStackName}-SessionsTableArn'
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['SESSION#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              - Sid: EncryptedReceiptLeaseOnly
+                Effect: Allow
+                Action: dynamodb:PutItem
+                Resource: !Ref ParticipantsTableArn
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['CRM#ONBOARDING_STATE#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              - Sid: MicrosoftSecretOnly
+                Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/microsoft/participation-onboarding-nmTdmF'
+
+  WorkspaceEntry:
+    Type: AWS::Serverless::Function
+    DependsOn: WorkspaceLogGroup
+    Properties:
+      FunctionName: opda-workspace-entry
+      CodeUri: ./onboarding-bundle/
+      Handler: src/approval-onboarding/workspace-entry.handler
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      MemorySize: 256
+      Timeout: 10
+      ReservedConcurrentExecutions: 2
+      Role: !GetAtt WorkspaceRole.Arn
+      Environment:
+        Variables:
+          PARTICIPANTS_TABLE_NAME: !Ref ParticipantsTableName
+          SESSIONS_TABLE_NAME:
+            Fn::ImportValue: !Sub '${IdentityStackName}-SessionsTableName'
+          MICROSOFT_SECRET_ARN: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/microsoft/participation-onboarding-nmTdmF'
 
   Worker:
     Type: AWS::Serverless::Function

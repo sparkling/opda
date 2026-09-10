@@ -34,24 +34,8 @@ evidence and feedback into reviewable candidates, publishing and revising them
 with the group until the [[DOMAIN_NAME]] model is ready to become its
 first official working-group draft.
 
-{{#microsoft_redemption_url}}
-I Accept
-{{.}}
-
-Accept your Microsoft invitation once, then open the working group in Teams
-using the link below.
-{{/microsoft_redemption_url}}
-{{^microsoft_redemption_required}}
-Your Microsoft invitation has already been accepted. Your membership of this
-working group is ready.
-{{/microsoft_redemption_required}}
-
-Open the [[GROUP_NAME]] in Teams:
-{{team_url}}
-
-IMPORTANT: Sign in using the email account that received this invitation.
-Access is personal to you. Do not forward this email or share a Microsoft
-invitation link.
+Open the [[GROUP_NAME]]:
+{{group_entry_url}}
 
 YOUR CONTRIBUTION
 
@@ -172,12 +156,8 @@ your workspace access.
 
 YOUR OPDA WEBSITE ACCESS
 
-Sign in to the OPDA website:
+Visit the OPDA website for modelling guidance and programme documentation:
 {{website_login_url}}
-
-Use your registered email address and the one-time code sent to it. Website
-sign-in is separate from Microsoft Teams and SharePoint. Accepting a Microsoft
-invitation does not sign you in to the website.
 
 Open Property Data Association · [[GROUP_NAME]]
 This email follows OPDA’s approval of your participation in this working group.
