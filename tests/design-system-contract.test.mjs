@@ -255,11 +255,12 @@ test('public asset versions are content-derived, not timestamp-derived', async (
 
 test('interactive shell dependencies are pinned and bundled locally', async () => {
   const layout = await readFile(file('src/layouts/Layout.astro'), 'utf8');
+  const features = await readFile(file('src/scripts/page-features.mjs'), 'utf8');
   const packageSource = JSON.parse(await readFile(file('package.json'), 'utf8'));
-  assert.match(layout, /import '@tailwindplus\/elements'/u);
+  assert.match(features, /import\('@tailwindplus\/elements'\)/u);
   assert.match(layout, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs'/u);
   assert.doesNotMatch(layout, /mtimeMs|statSync/u);
-  assert.doesNotMatch(layout, /cdn\.jsdelivr\.net|@tailwindplus\/elements@1/u);
+  assert.doesNotMatch(layout + features, /cdn\.jsdelivr\.net|@tailwindplus\/elements@1/u);
   assert.equal(packageSource.dependencies['@tailwindplus/elements'], '1.0.22');
 });
 

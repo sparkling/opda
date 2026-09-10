@@ -4,6 +4,7 @@ import {
   getRouteStatus,
 } from '@/lib/site-ia.mjs';
 import SiteFooter from '@/components/SiteFooter.astro';
+import FontPreloads from '@/components/FontPreloads.astro';
 import '@/styles/standalone-public.css';
 import '@/styles/editorial-content.css';
 
@@ -12,6 +13,7 @@ interface Props {
   description: string;
   bodyClass?: string;
   socialImage?: string;
+  displayFont?: boolean;
 }
 
 const {
@@ -19,6 +21,7 @@ const {
   description,
   bodyClass = '',
   socialImage,
+  displayFont = false,
 } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const socialImageUrl = socialImage ? new URL(socialImage, canonicalUrl).href : undefined;
@@ -44,6 +47,7 @@ const pageTitle = `${title} · Open Property Data Association`;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <FontPreloads display={displayFont} />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="opda:work-area" content={routeStatus.workArea} />

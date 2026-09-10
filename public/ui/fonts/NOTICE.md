@@ -1,11 +1,29 @@
 # Font licences and provenance
 
-The live OPDA design system self-hosts the two families named in the supplied
-Q3 2026 brand guide. Browser fallbacks are defined in `design-tokens.css`.
+The live OPDA design system self-hosts its typography. Browser fallbacks and
+current family roles are defined in `design-tokens.css`.
+
+## Source Sans 3
+
+- Use: interface text, controls and non-display headings, unchanged from the Google-hosted face.
+- Files: variable WOFF2, upright weights 400–700; all seven provider script subsets retained.
+- Source: Google Fonts `sourcesans3` v19, retrieved 2026-09-10 from the CSS2 API.
+- Request: `family=Source+Sans+3:wght@400..700&display=swap`.
+- Project: https://github.com/adobe-fonts/source-sans
+- Copyright 2010–2020 Adobe; Reserved Font Name “Source”.
+- Licence: SIL Open Font License 1.1; full notice in `SourceSans3-OFL.txt`.
+- No font outlines or metadata were modified. Only hosting moved to the site.
+- SHA-256 Latin: `ac057a5593cbe3df0d2585da5dd5f33b8efa84aa30550c710fe061b37fc5c54b`.
+- SHA-256 Latin Extended: `ed3571ea9ff752f1c846f1c9ad2b0006de42f478a2db9163a74db0729a4eb281`.
+- SHA-256 Cyrillic: `44aa5fb37c5aa2a2b44ceab9c077b42de47d50d47c0dcbefa2555082c38df8dd`.
+- SHA-256 Cyrillic Extended: `ce21e07f81120c29845d627644a977b85027fc564b68e23349ea599402e55e96`.
+- SHA-256 Greek: `5045881eda8b85134f65682ac27163c2b060d1aeed619e21498f98f5448239d1`.
+- SHA-256 Greek Extended: `cd19f948c227b68e6feb8af39da356315dd47f8bd1406cc8bab78baf2c6ea85e`.
+- SHA-256 Vietnamese: `7a9ba93945d3cd9e6c2ad459d242c2281b423dd305e3ccb9956279f12deddfd3`.
 
 ## DM Sans
 
-- Use: body, H2–H4, labels, captions and controls.
+- Use: retained legacy diagrams and explicit fallback references.
 - Files: variable Latin and Latin Extended WOFF2, weights 400–700.
 - Source: Google Fonts `dmsans` v17, retrieved 2026-08-16.
 - Project: https://github.com/googlefonts/dm-fonts
@@ -16,7 +34,7 @@ Q3 2026 brand guide. Browser fallbacks are defined in `design-tokens.css`.
 
 ## Roboto Slab
 
-- Use: titles and H1 only.
+- Use: display and campaign headings.
 - Files: variable Latin and Latin Extended WOFF2, weights 600–700.
 - Source: Google Fonts `robotoslab` v36, retrieved 2026-08-16.
 - Project: https://github.com/googlefonts/robotoslab

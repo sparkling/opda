@@ -14,6 +14,7 @@
  * page-to-page navigation (docs/adr/0003 idiomatic Astro refactor).
  */
 import { ClientRouter } from 'astro:transitions';
+import FontPreloads from '@/components/FontPreloads.astro';
 // Global GraphDiagram island styling — needed on every page because the
 // site-wide bare-.mermaid adoption (adoptBareMermaid) has no component to carry
 // scoped styles. Also serves the <GraphDiagram> component.
@@ -50,7 +51,7 @@ interface Props {
   proseClass?: string;
   /** Keep machine-generated reference content on its existing typography. */
   generatedContent?: boolean;
-  /** Include the TailwindPlus Elements ESM script. Default true. */
+  /** Allow TailwindPlus enhancement when its UI is present. Default true. */
   tailwindPlus?: boolean;
   /** Wrap the slot in `<article class={proseClass}>`. Default true. */
   wrapArticle?: boolean;
@@ -125,10 +126,12 @@ const searchMeta = searchMetaEntries(search);
   data-maturity={routeStatus.maturity}
   data-content-version={routeStatus.version}
   data-provenance={routeStatus.provenance}
+  data-page-elements={tailwindPlus ? 'auto' : 'disabled'}
 >
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <FontPreloads />
   <title>{fullTitle}</title>
   {description && <meta name="description" content={description} />}
   <meta name="opda:status-registry-version" content={IA_STATUS_REGISTRY_VERSION} />
@@ -182,12 +185,6 @@ const searchMeta = searchMetaEntries(search);
     })();
   </script>
 
-  {tailwindPlus && (
-    <script>
-      import '@tailwindplus/elements';
-    </script>
-  )}
-
   <ClientRouter />
   <slot name="head" />
 </head>
@@ -235,19 +232,11 @@ const searchMeta = searchMetaEntries(search);
 
   <script is:inline src={`/ui/client.js?v=${clientV}`}></script>
   <script>
-    // Site-wide mermaid: adopt every bare `.mermaid` div (remark fences,
-    // <Diagram>, inline schema pages) into the GraphDiagram pan/zoom island,
-    // so the whole site's diagrams share one engine. Idempotent; re-runs on
-    // ClientRouter view-transition navigation.
-    import { adoptBareMermaid } from '../scripts/graph-diagram';
-    adoptBareMermaid();
-    document.addEventListener('astro:page-load', adoptBareMermaid);
-    // Exposed so non-bundled plain scripts (e.g. the /development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/graph engine
-    // bake-off's public/ui/graph-engines/*.js modules, which can't use Vite
-    // imports) can adopt a dynamically-created bare .mermaid div into the
-    // same pan/zoom/fullscreen viewer the rest of the site uses.
-    window.OPDA = window.OPDA || {};
-    window.OPDA.adoptBareMermaid = adoptBareMermaid;
+    // Narrative pages need neither the custom-element package nor the diagram
+    // engine. Load each only for its actual DOM, including view transitions and
+    // dynamically inserted diagrams using the existing OPDA bridge.
+    import { initialisePageFeatures } from '../scripts/page-features.mjs';
+    initialisePageFeatures();
   </script>
   <slot name="scripts" />
 </body>

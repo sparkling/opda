@@ -12,6 +12,7 @@ import { assetVersion } from '@/lib/asset-version.mjs';
 import KickoffFeature from '@/components/home/KickoffFeature.astro';
 import MethodFlowFigure from '@/components/home/MethodFlowFigure.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
+import FontPreloads from '@/components/FontPreloads.astro';
 import {
   CAMPAIGN_HEADER_DEFAULTS,
   campaignPanelStyle,
@@ -43,6 +44,7 @@ const domains = [
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <FontPreloads display />
   <title>{title}</title>
   <meta name="description" content={description} />
   <meta name="opda:work-area" content={routeStatus.workArea} />

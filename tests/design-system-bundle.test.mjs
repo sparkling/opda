@@ -92,11 +92,45 @@ test('the real design facade collapses every declared local import', async () =>
   assert.equal(result.imports.length, 21);
   assert.equal(new Set(result.imports).size, result.imports.length);
   assert.doesNotMatch(result.output, /@import\s+url\(["']\.\//u);
-  assert.match(result.output, /@import url\('https:\/\/fonts\.googleapis\.com/u,
-    'the existing external font stylesheet remains at the top of the cascade');
+  assert.doesNotMatch(result.output, /@import\s|https:\/\/fonts\.(?:googleapis|gstatic)\.com/u,
+    'production typography must not introduce another render-blocking stylesheet or external font origin');
   assert.ok(result.output.indexOf(':root {') < result.output.indexOf('.skip-link'),
     'tokens must still precede base styles');
   assert.ok(result.output.indexOf('bundled from design/print.css')
     < result.output.indexOf('bundled from design/forced-colors.css'),
     'the terminal accessibility styles must retain their declared order');
+});
+
+test('Source Sans 3 retains all original script subsets as local variable WOFF2 faces', async () => {
+  const css = await readFile(new URL('../public/ui/fonts.css', import.meta.url), 'utf8');
+  const faces = [...css.matchAll(/@font-face\s*\{([^}]+)\}/gu)]
+    .map((match) => match[1]).filter((face) => face.includes("'Source Sans 3'"));
+  assert.equal(faces.length, 7);
+  const sources = new Set();
+  for (const face of faces) {
+    assert.match(face, /font-weight:\s*400 700/u);
+    assert.match(face, /font-display:\s*swap/u);
+    assert.match(face, /unicode-range:/u);
+    const source = face.match(/url\('\.\/fonts\/([^']+\.woff2)'\)/u)?.[1];
+    assert.ok(source);
+    const bytes = await readFile(new URL(`../public/ui/fonts/${source}`, import.meta.url));
+    assert.equal(bytes.subarray(0, 4).toString(), 'wOF2');
+    sources.add(source);
+  }
+  assert.equal(sources.size, 7);
+  const licence = await readFile(new URL('../public/ui/fonts/SourceSans3-OFL.txt', import.meta.url), 'utf8');
+  assert.match(licence, /Copyright 2010-2020 Adobe/u);
+});
+
+test('shared early font hints preload only core Latin faces with reusable CORS requests', async () => {
+  const hints = await readFile(new URL('../src/components/FontPreloads.astro', import.meta.url), 'utf8');
+  assert.match(hints, /SourceSans3-Variable-latin\.woff2/u);
+  assert.match(hints, /display &&/u);
+  assert.doesNotMatch(hints, /latin-ext|Mono|https:\/\//u);
+  assert.equal((hints.match(/rel="preload"/gu) ?? []).length, 2);
+  assert.equal((hints.match(/as="font" type="font\/woff2" crossorigin="anonymous"/gu) ?? []).length, 2);
+  for (const file of ['src/layouts/Layout.astro', 'src/layouts/StandalonePublicLayout.astro', 'src/pages/index.astro']) {
+    const source = await readFile(new URL(`../${file}`, import.meta.url), 'utf8');
+    assert.match(source, /<FontPreloads/u, file);
+  }
 });
