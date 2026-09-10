@@ -32,7 +32,14 @@
   padding: var(--campaign-section-space) max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2));
 }
 
-.wg-section-media { display: grid; gap: var(--space-5); min-width: 0; }
+.wg-section-media {
+  display: grid;
+  gap: var(--space-5);
+  min-width: 0;
+  max-inline-size: min(100%, var(--editorial-text-max, 64rem));
+  margin-block-start: var(--space-5);
+  margin-inline: 0 auto;
+}
 .wg-section-media__image { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; object-fit: contain; }
 
 .wg-campaign-hero {

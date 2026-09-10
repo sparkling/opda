@@ -224,13 +224,22 @@ test('Marketing uses shared buttons, cards and editorial flow, not a parallel de
 
 test('editorial illustrations start on the content edge rather than floating in heading asides', () => {
   const taskPage = read('src/pages/marketing/[task].astro');
+  const landingPage = read('src/pages/marketing/index.astro');
+  const joinPage = read('src/pages/join/index.astro');
   const presentation = taskPage.slice(
     taskPage.indexOf("{task.id === 'presentations'"),
     taskPage.indexOf("{task.id === 'employer-support'"),
   );
   assert.doesNotMatch(presentation, /slot="aside"/u);
   assert.match(presentation, /<CampaignSectionHeading[^>]+\/>\s*<CampaignThemeImage/u);
+  for (const page of [taskPage, landingPage, joinPage]) {
+    assert.doesNotMatch(page, /slot="aside"[^>]*>[\s\S]{0,500}?(?:CampaignThemeImage|<img|<picture|<figure)/u);
+  }
+  assert.match(landingPage, /<CampaignSectionHeading[^>]+\/>\s*<CampaignThemeImage className="marketing-pack-hero"/u);
+  assert.equal((joinPage.match(/<div class="wg-section-media">/gu) ?? []).length, 3);
 
   const editorial = read('src/styles/editorial-content.css');
   assert.match(editorial, /\.editorial-content:is\(\.prose, main\)[^\{]*> :is\(figure, picture, img\)[^\{]*\{[^}]*margin-inline:\s*0 auto;/su);
+  const joinCss = read('src/styles/working-group-campaign.css');
+  assert.match(joinCss, /\.wg-section-media\s*\{[^}]*max-inline-size:\s*min\(100%, var\(--editorial-text-max, 64rem\)\);[^}]*margin-inline:\s*0 auto;/su);
 });
