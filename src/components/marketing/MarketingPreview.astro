@@ -1,5 +1,7 @@
 ---
 import MarketingCopy from './MarketingCopy.astro';
+import Button from '@/components/Button.astro';
+import ActionGroup from '@/components/ActionGroup.astro';
 import { marketingPacks } from '@/data/marketing/packs.mjs';
 
 interface Props {
@@ -24,10 +26,10 @@ if (!permitted) {
   <div class="marketing-email-preview">
     <iframe src={preview} title={title} data-email-preview loading="lazy" sandbox="allow-same-origin allow-top-navigation-by-user-activation"></iframe>
   </div>
-  <div class="marketing-actions">
-    {emailDownload && <a class="btn" href={emailDownload} download>Download email with embedded images · EML</a>}
-    <a class="btn btn--ghost" href={preview} download>Download rich HTML</a>
-    <a class="btn btn--ghost" href={preview}>Open full preview</a>
-  </div>
+  <ActionGroup>
+    {emailDownload && <Button href={emailDownload} download>Download email with embedded images · EML</Button>}
+    <Button variant="ghost" href={preview} download>Download rich HTML</Button>
+    <Button variant="ghost" href={preview}>Open full preview</Button>
+  </ActionGroup>
   {plainText && <MarketingCopy id={id} title={title} text={text} download={textDownload} rows={rows} />}
 </div>

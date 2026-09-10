@@ -103,8 +103,10 @@ test('left navigation follows route ownership with one active link', async ({ pa
     ['/governance/decisions', 'governance', 'Decisions'],
     ['/engagement/meetings-decisions', 'governance', 'Programme decisions'],
     ['/engagement/transcripts', 'resources', 'Transcripts index'],
-    ['/marketing/packs', 'marketing', 'Campaign packs by audience'],
+    ['/marketing/packs', 'marketing', 'By audience'],
     ['/marketing/packs/general', 'marketing', 'All property professions'],
+    ['/marketing/broadcasters', 'marketing', 'By broadcaster'],
+    ['/marketing/broadcasters/opda', 'marketing', 'OPDA representatives'],
   ]) {
     await visit(page, route);
     const navigation = page.locator('#section-navigation');

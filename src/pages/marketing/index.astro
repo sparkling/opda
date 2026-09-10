@@ -3,52 +3,53 @@ import MarketingLayout from '@/layouts/MarketingLayout.astro';
 import CampaignSectionHeading from '@/components/campaign/CampaignSectionHeading.astro';
 import CampaignThemeImage from '@/components/campaign/CampaignThemeImage.astro';
 import MarketingPackGrid from '@/components/marketing/MarketingPackGrid.astro';
+import DestinationCards from '@/components/ia/DestinationCards.astro';
+import Button from '@/components/Button.astro';
+import ActionGroup from '@/components/ActionGroup.astro';
 import Callout from '@/components/Callout.astro';
 import { marketingTasks } from '@/data/marketing/tasks.mjs';
+import { marketingBroadcasters } from '@/data/marketing/broadcasters.mjs';
 ---
-<MarketingLayout title="Marketing" description="Ready-to-use emails, LinkedIn campaigns and presentations to help your network contribute to OPDA’s working groups." landing>
-  <div class="marketing-pack-heading">
+<MarketingLayout title="Marketing" description="Ready-to-use emails, LinkedIn campaigns and presentations to help your network contribute to OPDA’s working groups.">
     <h1>Marketing</h1>
     <p class="lead">Help the people in your network bring their experience to better property information. Find an invitation, presentation or campaign you can adapt and share.</p>
-  </div>
 
   <section aria-labelledby="member-sharing">
-    <CampaignSectionHeading eyebrow="For organisations, networks and communities" title="Bring your members’ experience into the work." id="member-sharing" size="panel" align="start">
+    <CampaignSectionHeading eyebrow="For organisations, networks and communities" title="Bring your members’ experience into the work." id="member-sharing" size="compact" align="start">
       <Fragment slot="aside">
         <CampaignThemeImage lightSrc="/images/marketing/2026-09/landing-network-light.webp" darkSrc="/images/marketing/2026-09/landing-network-dark.webp" alt="People across professional networks bring varied property evidence into one shared public-interest project." width={1536} height={512} loading="eager" />
       </Fragment>
     </CampaignSectionHeading>
     <p>Professional bodies, industry networks and community groups can reach people whose knowledge belongs in this work. Our packs give you a member-facing invitation, LinkedIn posts and a short presentation. Choose a relevant field, add your own introduction and share through your usual channels.</p>
-    <div class="marketing-actions">
-      <a class="btn" href="/marketing/share-with-members">Get a member-sharing pack</a>
-      <a class="btn btn--ghost" href="/marketing/invite-someone">Ask an organisation to share</a>
-    </div>
+    <ActionGroup>
+      <Button href="/marketing/share-with-members">Get a member-sharing pack</Button>
+      <Button variant="ghost" href="/marketing/invite-someone">Ask an organisation to share</Button>
+    </ActionGroup>
   </section>
 
   <section aria-labelledby="sharing-tasks">
-    <CampaignSectionHeading eyebrow="Start with what you want to do" title="The right material for the conversation." id="sharing-tasks" size="panel" />
-    <div class="marketing-task-grid">
-      {marketingTasks.map((task) => <a class="marketing-task-card" href={`/marketing/${task.id}`}>
-        <span class="marketing-eyebrow">{task.eyebrow}</span>
-        <h3>{task.title}</h3>
-        <p>{task.description}</p>
-        <span class="marketing-pack-card__action">{task.action} <span aria-hidden="true">↗</span></span>
-      </a>)}
-    </div>
+    <CampaignSectionHeading eyebrow="By task" title="The right material for the conversation." id="sharing-tasks" size="compact" />
+    <DestinationCards cards={marketingTasks.map((task) => ({ url: `/marketing/${task.id}`, title: task.title, audience: task.eyebrow, description: task.description, action: task.action }))} />
   </section>
 
   <section aria-labelledby="campaign-packs">
-    <CampaignSectionHeading eyebrow="Relevant to your audience" title="One complete pack for each part of the journey." id="campaign-packs" size="panel" />
+    <CampaignSectionHeading eyebrow="By audience" title="One complete pack for each part of the journey." id="campaign-packs" size="compact" />
     <p>Use the general pack for a mixed audience, or choose a pack with examples from a particular field. Each includes three email versions, an OPDA and an organisation LinkedIn sequence, artwork, a short slide deck and a one-page overview.</p>
     <MarketingPackGrid />
   </section>
 
+  <section aria-labelledby="campaign-broadcasters">
+    <CampaignSectionHeading eyebrow="By broadcaster" title="Choose the voice you are sharing in." id="campaign-broadcasters" size="compact" />
+    <p>Who is sending the invitation? Find materials for OPDA representatives, organisations sharing with their members, or individual supporters inviting colleagues.</p>
+    <DestinationCards cards={marketingBroadcasters.map(({ id, title, description }) => ({ url: `/marketing/broadcasters/${id}`, title, description, audience: 'Broadcaster', action: 'Find material for this role' }))} />
+  </section>
+
   <section aria-labelledby="simple-handoff">
-    <CampaignSectionHeading eyebrow="From a useful contact to a useful contribution" title="A simple handoff, through trusted relationships." id="simple-handoff" size="panel" />
-    <ol class="marketing-steps">
-      <li><h3>1. Choose and adapt</h3><p>Pick a pack for the audience. Use the version written for the person or organisation sending it.</p></li>
-      <li><h3>2. Share through your channels</h3><p>Send an email, include a newsletter item, post on LinkedIn or introduce the opportunity at a meeting.</p></li>
-      <li><h3>3. Let people decide</h3><p>Interested people explore the working groups and register directly with OPDA. Each expression of interest is reviewed.</p></li>
+    <CampaignSectionHeading eyebrow="From a useful contact to a useful contribution" title="A simple handoff, through trusted relationships." id="simple-handoff" size="compact" />
+    <ol>
+      <li><strong>Choose and adapt.</strong> Pick a pack for the audience. Use the version written for the person or organisation sending it.</li>
+      <li><strong>Share through your channels.</strong> Send an email, include a newsletter item, post on LinkedIn or introduce the opportunity at a meeting.</li>
+      <li><strong>Let people decide.</strong> Interested people explore the working groups and register directly with OPDA. Each expression of interest is reviewed.</li>
     </ol>
     <Callout title="Your relationship with your members stays yours" tone="method">
       <p>OPDA does not need your membership list. Share the opportunity yourself and let individuals choose whether to register. These tools prepare materials; they do not send emails or publish posts.</p>

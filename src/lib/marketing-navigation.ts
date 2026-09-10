@@ -1,6 +1,7 @@
 import type { Group } from './site.ts';
 import { marketingPacks } from '../data/marketing/packs.mjs';
 import { marketingTasks } from '../data/marketing/tasks.mjs';
+import { marketingBroadcasters } from '../data/marketing/broadcasters.mjs';
 
 const packItems = marketingPacks.map(({ id, label }) => ({
   url: `/marketing/packs/${id}`,
@@ -14,10 +15,11 @@ const taskItems = marketingTasks.map(({ id, title }) => ({
 
 const groups: Array<Group & { url: string }> = [
   { heading: 'By task', url: '/marketing', items: taskItems },
-  { heading: 'Campaign packs by audience', url: '/marketing/packs', items: packItems },
+  { heading: 'By audience', url: '/marketing/packs', items: packItems },
+  { heading: 'By broadcaster', url: '/marketing/broadcasters', items: marketingBroadcasters.map(({ id, title }) => ({ url: `/marketing/broadcasters/${id}`, title })) },
 ];
 
-/** Local navigation separates what someone wants to do from who they need to reach. */
+/** One registry separates what to do, who to reach and who is sharing. */
 export const MARKETING_NAVIGATION_SECTION = {
   key: 'marketing',
   title: 'Marketing',

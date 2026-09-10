@@ -1,6 +1,8 @@
 ---
 import MarketingPreview from './MarketingPreview.astro';
 import MarketingCopy from './MarketingCopy.astro';
+import Button from '@/components/Button.astro';
+import ActionGroup from '@/components/ActionGroup.astro';
 import { renderLinkedIn } from '../../../scripts/marketing/renderers.mjs';
 const { pack } = Astro.props;
 const base = `/marketing/${pack.id}`;
@@ -10,13 +12,13 @@ const voices = [
 ];
 ---
 <p>These are designed campaign previews, not a LinkedIn editor. Upload the JPEG illustration or PNG infographic, then use <strong>View plain text</strong> to copy a selected post. The HTML is for reviewing and sharing the campaign outside LinkedIn. Add your own perspective and an image description before publishing.</p>
-<div class="marketing-actions">
-  <a class="btn btn--ghost" href={`${base}/images/social-card.jpg`} download>Download LinkedIn image · JPEG</a>
-  <a class="btn" href={`${base}/images/contribution-infographic.png`} download>Download infographic · PNG</a>
-  <a class="btn btn--ghost" href={`${base}/images/contribution-infographic.svg`} download>Download editable infographic · SVG</a>
-</div>
-{voices.map((voice) => <div class="marketing-voice">
-  <h3>{voice.title}</h3><p>{voice.description}</p>
+<ActionGroup>
+  <Button variant="ghost" href={`${base}/images/social-card.jpg`} download>Download LinkedIn image · JPEG</Button>
+  <Button href={`${base}/images/contribution-infographic.png`} download>Download infographic · PNG</Button>
+  <Button variant="ghost" href={`${base}/images/contribution-infographic.svg`} download>Download editable infographic · SVG</Button>
+</ActionGroup>
+{voices.map((voice) => <section aria-labelledby={`${pack.id}-linkedin-${voice.key}`}>
+  <h3 id={`${pack.id}-linkedin-${voice.key}`}>{voice.title}</h3><p>{voice.description}</p>
   <MarketingPreview id={`${pack.id}-${voice.key}-sequence`} title={`${pack.label} · ${voice.title}`} preview={`${base}/linkedin/${voice.key}.html`} plainText={false} />
   {pack.linkedin[voice.key].posts.map((post, index) => <MarketingCopy id={`${pack.id}-${voice.key}-${post.id}`} title={`${index + 1}. ${post.title}`} text={renderLinkedIn(pack, voice.key, post)} download={`${base}/linkedin/${voice.key}-${String(index + 1).padStart(2, '0')}-${post.id}.txt`} rows={10} />)}
-</div>)}
+</section>)}

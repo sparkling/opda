@@ -1,14 +1,14 @@
 ---
 import { marketingPacks } from '@/data/marketing/packs.mjs';
+import DestinationCards from '@/components/ia/DestinationCards.astro';
 interface Props { anchor?: string; }
 const { anchor } = Astro.props;
 const fragment = anchor ? `#${encodeURIComponent(anchor)}` : '';
 ---
-<div class="marketing-pack-grid">
-  {marketingPacks.map((pack) => <a class="marketing-pack-card" href={`/marketing/packs/${pack.id}${fragment}`}>
-    <h3>{pack.label}</h3>
-    <span class="marketing-pack-card__status">{pack.campaignStatus === 'existing-group' ? 'Existing working group' : pack.campaignStatus === 'current-wave' ? 'Current recruitment wave' : 'For a mixed audience'}</span>
-    <p>{pack.scope}</p>
-    <span class="marketing-pack-card__action">Open campaign pack <span aria-hidden="true">↗</span></span>
-  </a>)}
-</div>
+<DestinationCards cards={marketingPacks.map((pack) => ({
+  url: `/marketing/packs/${pack.id}${fragment}`,
+  title: pack.label,
+  audience: pack.campaignStatus === 'existing-group' ? 'Existing working group' : pack.campaignStatus === 'current-wave' ? 'Current recruitment wave' : 'For a mixed audience',
+  description: pack.scope,
+  action: 'Open campaign pack',
+}))} />

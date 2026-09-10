@@ -1,17 +1,19 @@
 ---
 import { Copy } from '@lucide/astro';
+import Button from '@/components/Button.astro';
+import ActionGroup from '@/components/ActionGroup.astro';
 interface Props { id: string; title: string; text: string; rows?: number; download?: string; }
 const { id, title, text, rows = 10, download } = Astro.props;
 ---
 <details class="marketing-plain-text">
-  <summary class="btn btn--ghost btn--compact">View plain text<span class="sr-only">: {title}</span></summary>
+  <Button as="summary" variant="ghost" size="compact">View plain text<span class="sr-only">: {title}</span></Button>
   <div class="marketing-copy">
   <div class="marketing-copy__toolbar">
     <label for={id}>{title}</label>
-    <div class="marketing-actions">
-      {download && <a class="btn btn--ghost btn--compact" href={download} download>Download text</a>}
-      <button class="btn btn--ghost btn--compact" type="button" data-copy={id} aria-label={`Copy ${title.toLowerCase()}`} title={`Copy ${title.toLowerCase()}`}><Copy size={18} aria-hidden="true" /></button>
-    </div>
+    <ActionGroup compact>
+      {download && <Button variant="ghost" size="compact" href={download} download>Download text</Button>}
+      <Button variant="ghost" size="compact" data-copy={id} aria-label={`Copy ${title.toLowerCase()}`} title={`Copy ${title.toLowerCase()}`}><Copy size={18} aria-hidden="true" /></Button>
+    </ActionGroup>
   </div>
   <textarea id={id} readonly rows={rows} spellcheck="false">{text}</textarea>
   <p class="marketing-copy__status" data-copy-status role="status" aria-live="polite"></p>

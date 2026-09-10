@@ -9,6 +9,7 @@
 import { GLOBAL_DESTINATIONS, getActiveDestination, getRouteStatus } from './site-ia.mjs';
 import { marketingDomains } from '../data/marketing/domains.mjs';
 import { marketingTasks } from '../data/marketing/tasks.mjs';
+import { marketingBroadcasters } from '../data/marketing/broadcasters.mjs';
 import {
   COLLECTIONS, DOMAINS, FACETS, KINDS, PAGE_TYPES, RESULT_TYPES, STATUSES,
   SEARCH_INDEX_SCHEMA_VERSION, SEARCH_INDEX_URL,
@@ -124,6 +125,8 @@ export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Marketing', '/marketing', 'Share recruitment materials, email templates, LinkedIn campaigns and presentations', ['promotion', 'campaign toolkit']),
   ...marketingTasks.map(({ id, title, description }) => entry(title, `/marketing/${id}`, description, ['marketing', 'recruitment'])),
   entry('Campaign packs by audience', '/marketing/packs', 'Complete recruitment campaign materials for a mixed audience or a particular property field', ['marketing', 'audience', 'campaign toolkit']),
+  entry('Materials by broadcaster', '/marketing/broadcasters', 'Choose materials for the person or organisation sharing them', ['marketing', 'sender', 'persona', 'role']),
+  ...marketingBroadcasters.map(({ id, title, description }) => entry(title, `/marketing/broadcasters/${id}`, description, ['marketing', 'broadcaster', 'sender', 'persona'])),
   ...marketingDomains.map(({ id, label, scope }) => entry(`${label} campaign pack`, `/marketing/packs/${id}`, scope, ['marketing', 'email template', 'LinkedIn', 'presentation'])),
 ]);
 

@@ -6,6 +6,7 @@ interface Card {
   description: string;
   title: string;
   url: string;
+  action?: string;
 }
 
 interface Props {
@@ -21,6 +22,7 @@ const { cards = GLOBAL_DESTINATION_CARDS } = Astro.props;
       <span class="card__eyebrow">{card.audience}</span>
       <h3>{card.title}</h3>
       <p>{card.description}</p>
+      {card.action && <span class="card__action">{card.action}<span aria-hidden="true">→</span></span>}
     </a>
   ))}
 </div>
@@ -29,6 +31,7 @@ const { cards = GLOBAL_DESTINATION_CARDS } = Astro.props;
   .destination-card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .destination-card-grid .card__eyebrow { font-size: var(--text-sm); }
   .destination-card-grid .card p { font: var(--lead); }
+  .destination-card-grid .card__action { margin-block-start: auto; }
   .destination-card-grid a.card {
     transition: transform var(--duration-fast) var(--ease),
       box-shadow var(--duration-fast) var(--ease),

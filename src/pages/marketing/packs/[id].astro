@@ -6,6 +6,8 @@ import MarketingPreview from '@/components/marketing/MarketingPreview.astro';
 import MarketingSocial from '@/components/marketing/MarketingSocial.astro';
 import MarketingPackGrid from '@/components/marketing/MarketingPackGrid.astro';
 import Callout from '@/components/Callout.astro';
+import ActionGroup from '@/components/ActionGroup.astro';
+import Button from '@/components/Button.astro';
 import { marketingPacks } from '@/data/marketing/packs.mjs';
 import { renderEmailPlain } from '../../../../scripts/marketing/renderers.mjs';
 
@@ -16,16 +18,14 @@ const { pack } = Astro.props;
 const base = `/marketing/${pack.id}`;
 ---
 <MarketingLayout title={`${pack.label} campaign pack`} description={`Email, LinkedIn, presentation and newsletter materials for ${pack.label.toLowerCase()}.`}>
-  <div class="marketing-pack-heading">
-    <h1>{pack.label} campaign pack</h1>
-    <p class="lead">{pack.scope} Choose the material that fits your audience and the account you are sharing from.</p>
-    <CampaignThemeImage className="marketing-pack-hero" lightSrc={pack.hero.source} darkSrc={pack.hero.source.replace('-light.webp', '-dark.webp')} alt={pack.hero.alt} width={pack.hero.width} height={pack.hero.height} loading="eager" />
-    <div class="marketing-actions"><a class="btn" href={`${base}/${pack.id}-campaign-pack.zip`} download>Download the complete campaign pack · ZIP</a><a class="btn btn--ghost" href={pack.signupUrl}>See the participation page</a></div>
-    <dl class="marketing-meta"><div><dt>Version</dt><dd>{pack.version}</dd></div><div><dt>Published by</dt><dd>OPDA</dd></div><div><dt>Language</dt><dd>English (UK)</dd></div><div><dt>Audience</dt><dd>{pack.campaignStatus === 'existing-group' ? 'Existing working group' : pack.campaignStatus === 'current-wave' ? 'Current recruitment wave' : 'Mixed professions'}</dd></div></dl>
-  </div>
+  <h1>{pack.label} campaign pack</h1>
+  <p class="lead">{pack.scope} Choose the material that fits your audience and the account you are sharing from.</p>
+  <CampaignThemeImage className="marketing-pack-hero" lightSrc={pack.hero.source} darkSrc={pack.hero.source.replace('-light.webp', '-dark.webp')} alt={pack.hero.alt} width={pack.hero.width} height={pack.hero.height} loading="eager" />
+  <ActionGroup><Button href={`${base}/${pack.id}-campaign-pack.zip`} download>Download the complete campaign pack · ZIP</Button><Button href={pack.signupUrl} variant="ghost">See the participation page</Button></ActionGroup>
+  <dl class="status-definition-list"><div><dt>Version</dt><dd>{pack.version}</dd></div><div><dt>Published by</dt><dd>OPDA</dd></div><div><dt>Language</dt><dd>English (UK)</dd></div><div><dt>Audience</dt><dd>{pack.campaignStatus === 'existing-group' ? 'Existing working group' : pack.campaignStatus === 'current-wave' ? 'Current recruitment wave' : 'Mixed professions'}</dd></div></dl>
 
   <section aria-labelledby="member-email">
-    <CampaignSectionHeading eyebrow="Your organisation to its members" title="The member invitation." id="member-email" size="panel" />
+    <CampaignSectionHeading eyebrow="Your organisation to its members" title="The member invitation." id="member-email" size="compact" />
     <p>Send this through your own channels. Add an introduction and signature from your organisation, check that the examples fit your audience, and retain your usual communication preferences and footer. You are sharing an invitation from OPDA, not claiming a partnership or endorsement.</p>
     <p><strong>Subject:</strong> {pack.email.member.subject}</p>
     <MarketingPreview id="member-text" title={`${pack.label} member email preview`} preview={`${base}/email/member.html`} text={renderEmailPlain(pack, 'member')} textDownload={`${base}/email/member.txt`} emailDownload={`${base}/email/member.eml`} />
@@ -35,21 +35,21 @@ const base = `/marketing/${pack.id}`;
   </section>
 
   <section aria-labelledby="opda-request">
-    <CampaignSectionHeading eyebrow="Two different conversations" title="Ask an organisation, or invite a colleague." id="opda-request" size="panel" />
-    <div class="marketing-section"><h3>OPDA request to share</h3><p>For Maria and other authorised OPDA representatives. Introduce the opportunity to an organisation and offer this campaign pack for its members.</p><MarketingPreview id="opda-text" title="OPDA request to share" preview={`${base}/email/opda.html`} text={renderEmailPlain(pack, 'opda')} textDownload={`${base}/email/opda.txt`} emailDownload={`${base}/email/opda.eml`} /></div>
-    <div class="marketing-section"><h3>Personal invitation</h3><p>For a message from you to a colleague. Explain why you thought of them and sign with your own name.</p><MarketingPreview id="personal-text" title="Personal invitation" preview={`${base}/email/personal.html`} text={renderEmailPlain(pack, 'personal')} textDownload={`${base}/email/personal.txt`} emailDownload={`${base}/email/personal.eml`} /></div>
+    <CampaignSectionHeading eyebrow="Two different conversations" title="Ask an organisation, or invite a colleague." id="opda-request" size="compact" />
+    <section><h3>OPDA request to share</h3><p>For Maria and other authorised OPDA representatives. Introduce the opportunity to an organisation and offer this campaign pack for its members.</p><MarketingPreview id="opda-text" title="OPDA request to share" preview={`${base}/email/opda.html`} text={renderEmailPlain(pack, 'opda')} textDownload={`${base}/email/opda.txt`} emailDownload={`${base}/email/opda.eml`} /></section>
+    <section><h3>Personal invitation</h3><p>For a message from you to a colleague. Explain why you thought of them and sign with your own name.</p><MarketingPreview id="personal-text" title="Personal invitation" preview={`${base}/email/personal.html`} text={renderEmailPlain(pack, 'personal')} textDownload={`${base}/email/personal.txt`} emailDownload={`${base}/email/personal.eml`} /></section>
   </section>
 
   <section aria-labelledby="linkedin">
-    <CampaignSectionHeading eyebrow="LinkedIn campaign" title="Three posts, written for the right speaker." id="linkedin" size="panel" />
+    <CampaignSectionHeading eyebrow="LinkedIn campaign" title="Three posts, written for the right speaker." id="linkedin" size="compact" />
     <p>Introduce the opportunity, make it concrete with an example, then explain how to contribute. Use the sequence at a pace that suits your audience, or select individual posts. No posts are scheduled or published by this page.</p>
     <MarketingSocial pack={pack} />
   </section>
 
   <section aria-labelledby="presentations">
-    <CampaignSectionHeading eyebrow="Meetings, events and conversations" title="A short presentation and a one-page overview." id="presentations" size="panel" />
+    <CampaignSectionHeading eyebrow="Meetings, events and conversations" title="A short presentation and a one-page overview." id="presentations" size="compact" />
     <p>The six-slide HTML deck includes speaker notes, a practical example and an invitation to register interest. It works offline: choose <strong>Edit text</strong> to adapt it, then <strong>Download edited HTML</strong> to save your version. The one-page HTML overview can be printed or saved as PDF from a browser.</p>
-    <div class="marketing-actions"><a class="btn" href={`${base}/slides.html`}>Open the presentation</a><a class="btn btn--ghost" href={`${base}/slides.html`} download>Download HTML slides</a><a class="btn btn--ghost" href={`${base}/one-pager.html`}>Open the one-page overview</a><a class="btn btn--ghost" href={`${base}/one-pager.html`} download>Download HTML overview</a></div>
+    <ActionGroup><Button href={`${base}/slides.html`}>Open the presentation</Button><Button href={`${base}/slides.html`} variant="ghost" download>Download HTML slides</Button><Button href={`${base}/one-pager.html`} variant="ghost">Open the one-page overview</Button><Button href={`${base}/one-pager.html`} variant="ghost" download>Download HTML overview</Button></ActionGroup>
   </section>
 
   <section aria-labelledby="newsletter"><h2 id="newsletter">Newsletter editions</h2><p>Use a short notice when space is limited, or the longer introduction when readers need more context. Both are rich HTML with embedded images. Add your own introduction without changing the nature of the invitation.</p>

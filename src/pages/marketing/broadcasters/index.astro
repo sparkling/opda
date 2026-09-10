@@ -1,0 +1,13 @@
+---
+import MarketingLayout from '@/layouts/MarketingLayout.astro';
+import DestinationCards from '@/components/ia/DestinationCards.astro';
+import { marketingBroadcasters } from '@/data/marketing/broadcasters.mjs';
+---
+<MarketingLayout title="Materials by broadcaster" description="Find the right OPDA material for the person or organisation sharing it.">
+  <h1>Materials by broadcaster</h1>
+  <p class="lead">Choose who is sharing the invitation, then find the material written for that voice. The broadcaster is the sender; the audience is the people you want to reach.</p>
+  <h2 id="choose-broadcaster">Who are you sharing as?</h2>
+  <DestinationCards cards={marketingBroadcasters.map(({ id, title, description }) => ({ url: `/marketing/broadcasters/${id}`, title, description, audience: 'Broadcaster', action: 'Find material for this role' }))} />
+  <h2 id="choose-audience">Then make it relevant to your audience</h2>
+  <p>Each role uses the same maintained materials. Choose <a href="/marketing/packs">a campaign pack by audience</a> for examples from a particular property field, or <a href="/marketing">browse by task</a> if you already know what you want to do.</p>
+</MarketingLayout>

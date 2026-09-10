@@ -1,0 +1,21 @@
+---
+interface Props { compact?: boolean; label?: string; }
+const { compact = false, label } = Astro.props;
+---
+<div class:list={['button-actions', { 'button-actions--compact': compact }]} role={label ? 'group' : undefined} aria-label={label}>
+  <slot />
+</div>
+
+<style>
+  .button-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+    margin-block: var(--space-5);
+  }
+  .button-actions--compact { margin-block: 0; }
+  .button-actions :global(.btn) { max-inline-size: 100%; white-space: normal; }
+  @media print { .button-actions { display: none; } }
+</style>

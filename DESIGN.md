@@ -333,7 +333,7 @@ campaign never uses parallax, pinned scrolling, delayed reveals or interaction-g
 Every interactive component provides default, hover, active, focus and disabled states, plus loading/error/success where asynchronous work occurs and
 dark parity.
 
-- **Buttons:** primary yellow/black, outlined secondary, ghost, and danger red/white; standard minimum height 44px; pressed state translates inward by 1px. The shared narrow `.btn--compact` size uses 6px vertical and 8px horizontal padding with automatic height for space-constrained labelled actions; do not add local button-size overrides. The `btn--emphasis` primary modifier shares the outlined secondary's 700 weight and padding, retaining primary yellow/black colours and hover states.
+- **Buttons:** primary yellow/black, outlined secondary, ghost, and danger red/white; standard minimum height 44px; pressed state translates inward by 1px. The shared narrow `.btn--compact` size uses 6px vertical and 8px horizontal padding with automatic height for space-constrained labelled actions; do not add local button-size overrides. The `btn--emphasis` primary modifier shares the outlined secondary's 700 weight and padding, retaining primary yellow/black colours and hover states. `Button.astro` provides typed anchor, button and native summary markup over these same CSS variants; `ActionGroup.astro` owns wrapping and token-based spacing between related actions, without restyling buttons.
 - **Inputs/selects:** 2px radius, 1px strong-neutral border, explicit label and help; error adds danger border, icon and message.
 - **Tabs:** semantic tablist, arrow-key operation and yellow-underlined selection.
 - **Breadcrumbs:** ordered links to navigable ancestors only; the H1 names the current page. Use DM Sans 500 at the base 16px role with a 24px line-height, the shared 32px compact inline-navigation target, no additional block padding and link-coloured decorative chevrons aligned to the label baseline. When no ancestor exists, omit the breadcrumb region and retain a 16px title inset so the following content moves with the title. The compact target remains above the WCAG 2.2 minimum while keeping the hierarchy visually connected to the page title; button-sized 44px targets remain reserved for controls.
@@ -458,7 +458,7 @@ Every live route belongs to one explicit visual family:
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
 | Public service | `/join`, `/join/privacy`, `/accessibility`, `/subscribe/**` | minimal public layouts, shared `SiteFooter`, public statements and safely enhanced forms |
 | Groups | workspaces and member guidance | standard shared `Layout`, left section navigation and Knowledge Base footer |
-| Marketing | `/marketing/**` task and pack pages | shared marketing shell, seven-destination header and Marketing section navigation |
+| Marketing | `/marketing/**` task, audience and broadcaster pages | normal `Layout` content/contents rails and editorial flow; shared buttons, action groups, cards, headings and callouts; no Marketing-only page grid |
 | Presentation | working-group kickoff deck | isolated, self-contained full-screen presentation using its original local visual tokens; no site chrome |
 
 Release validation runs against the built artefact before any deployment: source contract tests, deterministic schema checks, a built-route asset and

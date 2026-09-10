@@ -2,6 +2,8 @@
 import Layout from '@/layouts/Layout.astro';
 import BrandHeading from '@/components/BrandHeading.astro';
 import CampaignSectionHeading from '@/components/campaign/CampaignSectionHeading.astro';
+import Button from '@/components/Button.astro';
+import ActionGroup from '@/components/ActionGroup.astro';
 
 const brandColours = [
   { name: 'Deep ink', value: '#131224', role: 'Header, hero, footer and code' },
@@ -235,17 +237,19 @@ const tokenSample = `:root {
   <div class="component-board">
     <article>
       <span>Primary action</span>
-      <a class="btn" href="#implementation">Use the contract</a>
+      <Button href="#implementation">Use the contract</Button>
     </article>
     <article>
       <span>Secondary action</span>
-      <a class="btn btn--ghost" href="#accessibility">Review the gates</a>
+      <Button variant="ghost" href="#accessibility">Review the gates</Button>
     </article>
     <article>
       <span>Disabled</span>
-      <button class="btn" type="button" disabled>Unavailable</button>
+      <Button disabled>Unavailable</Button>
     </article>
   </div>
+  <p><code>Button</code> preserves native link, button and disclosure semantics while using the common button CSS. <code>ActionGroup</code> supplies shared wrapping and spacing. Marketing uses these components with the normal page template, <code>DestinationCards</code>, compact <code>CampaignSectionHeading</code> and <code>Callout</code>; it has no separate typography or page grid.</p>
+  <ActionGroup><Button href="#implementation">Use the shared components</Button><Button variant="ghost" href="/marketing">See the Marketing toolkit</Button></ActionGroup>
   <div class="card-grid" aria-label="Linked card pattern">
     <a class="card" href="#data">
       <span class="card__eyebrow">Evidence and assurance</span>

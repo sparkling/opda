@@ -85,7 +85,7 @@ test('the left section navigation implements all seven destinations from one reg
     spdtf: 241,
     'working-groups': 39,
     resources: 12,
-    marketing: 15,
+    marketing: 19,
   });
   const decisionDetail = /^\/modelling\/(?:adr|odr)\/[^/]+$/u;
   for (const url of new Set(legacyUrls.filter((url) => !decisionDetail.test(url)))) {
@@ -113,6 +113,7 @@ test('the left section navigation implements all seven destinations from one reg
     '/marketing', '/marketing/invite-someone', '/marketing/share-with-members', '/marketing/packs',
     '/marketing/linkedin', '/marketing/presentations', '/marketing/employer-support',
     '/marketing/brand', '/marketing/packs/general',
+    '/marketing/broadcasters', '/marketing/broadcasters/opda', '/marketing/broadcasters/organisations', '/marketing/broadcasters/individuals',
   ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
   assert.equal(compositeUrls.filter((url) => url.startsWith('/development/working-groups')).length, 39);
 });
@@ -265,7 +266,8 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
     ['spdtf', 'Property Pack ontology', '/development/property-pack', '/development/property-pack/definition-and-scope'],
     ['working-groups', 'Member guide', '/development/working-groups/member-guide', '/development/working-groups/member-guide/getting-started'],
     ['working-groups', 'Group workspaces', '/development/working-groups', '/development/working-groups/finance-and-banking'],
-    ['marketing', 'Campaign packs by audience', '/marketing/packs', '/marketing/packs/general'],
+    ['marketing', 'By audience', '/marketing/packs', '/marketing/packs/general'],
+    ['marketing', 'By broadcaster', '/marketing/broadcasters', '/marketing/broadcasters/opda'],
     ['spdtf', 'Third-party inputs', PDTF1_ROUTES.inputRoot, PDTF1_ROUTES.root],
     ['governance', 'UK initiative context', '/governance/uk-initiative', '/governance/legislation'],
     ['resources', 'Library', '/library', '/library/library-overview'],

@@ -3,6 +3,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import test from 'node:test';
 import { marketingPacks, getMarketingPack, employerBrief } from '../src/data/marketing/packs.mjs';
 import { marketingTasks } from '../src/data/marketing/tasks.mjs';
+import { marketingBroadcasters } from '../src/data/marketing/broadcasters.mjs';
 import { workingGroupContexts } from '../src/data/working-group-campaign.ts';
 import { GLOBAL_DESTINATIONS, getActiveDestination, getRouteStatus } from '../src/lib/site-ia.mjs';
 import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
@@ -25,11 +26,12 @@ test('Marketing is a first-class destination with its own route and authority', 
   assert.equal(validateSectionNavigation(), true);
 });
 
-test('Marketing navigation separates canonical tasks from campaign packs by audience', () => {
+test('Marketing navigation separates task, audience and broadcaster without duplicating destinations', () => {
   const marketing = SECTION_NAVIGATION.marketing;
   assert.deepEqual(marketing.groups.map(({ heading, url }) => [heading, url]), [
     ['By task', '/marketing'],
-    ['Campaign packs by audience', '/marketing/packs'],
+    ['By audience', '/marketing/packs'],
+    ['By broadcaster', '/marketing/broadcasters'],
   ]);
   assert.deepEqual(marketing.groups[0].items, marketingTasks.map(({ id, title }) => ({
     url: `/marketing/${id}`,
@@ -39,11 +41,23 @@ test('Marketing navigation separates canonical tasks from campaign packs by audi
     url: `/marketing/packs/${id}`,
     title: label,
   })));
+  assert.deepEqual(marketing.groups[2].items, marketingBroadcasters.map(({ id, title }) => ({
+    url: `/marketing/broadcasters/${id}`,
+    title,
+  })));
+  for (const broadcaster of marketingBroadcasters) {
+    assert.ok(findNavigationPage(`/marketing/broadcasters/${broadcaster.id}`));
+    assert.ok(SITE_SEARCH_ENTRIES.some(({ url }) => url === `/marketing/broadcasters/${broadcaster.id}`));
+    for (const material of broadcaster.materials) {
+      assert.ok(findNavigationPage(material.url.split('#')[0]), material.url);
+    }
+  }
   assert.deepEqual(findNavigationPage('/marketing/packs/general')?.trail.map(({ url }) => url), [
     '/marketing/packs/general',
   ]);
   assert.equal(getNavigationPrevNext('/marketing/packs').next?.url, '/marketing/packs/general');
   assert.equal(getNavigationPrevNext('/marketing/packs/general').prev?.url, '/marketing/packs');
+  assert.equal(getNavigationPrevNext('/marketing/broadcasters').next?.url, '/marketing/broadcasters/opda');
 });
 
 test('campaign pack IDs agree with the signup choices without merging distinct technology groups', () => {
@@ -93,7 +107,8 @@ test('Marketing pages reuse the site shell and static content, with no campaign 
   }
   const layout = read('src/layouts/MarketingLayout.astro');
   assert.match(layout, /Layout\.astro/);
-  assert.doesNotMatch(layout, /hideSidebar/);
+  assert.doesNotMatch(layout, /hideSidebar|hideTableOfContents|hideBreadcrumbs|marketing-flow/);
+  assert.match(layout, /<slot \/>/);
   for (const path of ['src/pages/marketing/[task].astro', 'src/pages/marketing/packs/[id].astro']) {
     assert.match(read(path), /renderEmailPlain/);
     assert.doesNotMatch(read(path), /const messageText/);
@@ -137,7 +152,7 @@ test('rich previews are primary and plain-text copying is an optional disclosure
     assert.match(source, /\/email\/opda\.html/);
     assert.match(source, /\/email\/personal\.html/);
   }
-  assert.match(read('src/styles/marketing.css'), /\.marketing-flow \.marketing-actions/);
+  assert.match(preview, /<ActionGroup>/);
   const taskPage = read('src/pages/marketing/[task].astro');
   const packPage = read('src/pages/marketing/packs/[id].astro');
   assert.match(taskPage, /preview="\/marketing\/general\/email\/employer\.html"/u);
@@ -148,4 +163,27 @@ test('rich previews are primary and plain-text copying is an optional disclosure
   assert.match(social, /<MarketingPreview /u);
   assert.match(social, /contribution-infographic\.png/u);
   assert.match(social, /not a LinkedIn editor/u);
+});
+
+test('Marketing uses shared buttons, cards and editorial flow, not a parallel design system', () => {
+  const pages = ['index.astro', '[task].astro', 'packs/index.astro', 'packs/[id].astro', 'broadcasters/index.astro', 'broadcasters/[id].astro'];
+  for (const page of pages) {
+    const source = read(`src/pages/marketing/${page}`);
+    assert.doesNotMatch(source, /marketing-flow|marketing-pack-heading|marketing-actions|marketing-task-card|size="panel"/);
+    assert.doesNotMatch(source, /<(?:a|button|summary)\b[^>]*class="[^"]*\bbtn\b/);
+  }
+  for (const component of ['MarketingCopy', 'MarketingPreview', 'MarketingSocial']) {
+    const source = read(`src/components/marketing/${component}.astro`);
+    assert.match(source, /Button\.astro/);
+    assert.match(source, /ActionGroup\.astro/);
+    assert.doesNotMatch(source, /<(?:a|button|summary)\b[^>]*class="[^"]*\bbtn\b/);
+  }
+  assert.match(read('src/components/marketing/MarketingPackGrid.astro'), /DestinationCards/);
+  const css = read('src/styles/marketing.css');
+  assert.doesNotMatch(css, /\.marketing-(?:flow|task-card|pack-card|actions|eyebrow|steps)|\.btn\b|font:\s*var\(--h[123]/);
+  assert.match(read('src/scripts/marketing.ts'), /article\.marketing/);
+  const button = read('src/components/Button.astro');
+  assert.match(button, /class:list/);
+  assert.match(button, /btn--compact/);
+  assert.doesNotMatch(button, /<style/);
 });

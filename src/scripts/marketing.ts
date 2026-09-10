@@ -2,7 +2,7 @@ let teardown: (() => void) | undefined;
 
 export function initMarketing() {
   teardown?.();
-  const root = document.querySelector<HTMLElement>('[data-marketing-page]');
+  const root = document.querySelector<HTMLElement>('article.marketing');
   if (!root) return;
   const controller = new AbortController();
   let resizeTimer: ReturnType<typeof setTimeout> | undefined;

@@ -1,0 +1,22 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Appearance = {
+  variant?: 'primary' | 'ghost' | 'quiet' | 'danger' | 'success' | 'outline-dark';
+  size?: 'standard' | 'compact';
+  emphasis?: boolean;
+};
+type Props = Appearance & (
+  | (HTMLAttributes<'a'> & { href: string; as?: 'a' })
+  | (HTMLAttributes<'button'> & { href?: never; as?: 'button' })
+  | (HTMLAttributes<'summary'> & { href?: never; as: 'summary' })
+);
+
+// Markup only: all appearance and interaction states belong to the shared .btn CSS.
+const { as, variant = 'primary', size = 'standard', emphasis = false, class: className, ...attributes } = Astro.props;
+const Element = as ?? ('href' in attributes ? 'a' : 'button');
+const props = Element === 'button' ? { type: 'button', ...attributes } : attributes;
+---
+<Element {...props} class:list={['btn', { [`btn--${variant}`]: variant !== 'primary', 'btn--compact': size === 'compact', 'btn--emphasis': emphasis }, className]}>
+  <slot />
+</Element>

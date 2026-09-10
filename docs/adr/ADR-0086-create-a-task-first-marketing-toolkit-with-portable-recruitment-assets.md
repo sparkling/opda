@@ -67,8 +67,9 @@ global menu. The route and its children have explicit ownership, content status 
 search treatment in the shared information-architecture contracts. Marketing is not
 filed under Resources, made a child of `/join`, or used as a second signup journey.
 
-Use the existing site shell, global header and brand foundations with a focused
-toolkit composition. The six task destinations are:
+Use the existing documentation page template, global header, contents rail and
+brand foundations. `MarketingLayout` is a thin composition over `Layout`, not a
+second page grid or spacing system. The six task destinations are:
 
 | Task | Outcome |
 |---|---|
@@ -84,12 +85,26 @@ the relevant domain insert, then give the organisation a complete member-sharing
 pack. Show audience and speaker before the copy or download controls. Formats are
 choices within a task, not the page's primary information architecture.
 
-The 10 September adversarial navigation review separates two axes: **By task**
-contains the six actions, while **Campaign packs by audience** has its own
-searchable landing at `/marketing/packs`. Audience packs are not children of the
-member-email task. General pack cards open the pack overview; task-specific cards
-may explicitly link to a relevant section. One shared section-navigation registry
-owns breadcrumbs, current location and previous/next navigation.
+The 10 September navigation amendment separates three axes: **By task** contains
+the six actions; **By audience** has a searchable landing at `/marketing/packs`;
+and **By broadcaster** starts at `/marketing/broadcasters`. The latter distinguishes
+authorised OPDA representatives, organisations and interest groups, and individual
+supporters. Broadcaster pages curate links to the existing material in the right
+voice; they do not create duplicate assets or new permissions. Audience packs are
+not children of the member-email task. General pack cards open the pack overview;
+task-specific cards may explicitly link to a relevant section. One shared
+section-navigation registry owns breadcrumbs, current location and previous/next
+navigation; search uses the same broadcaster registry.
+
+The accompanying design-system review removes Marketing-only typography, cards,
+button overrides and article-flow rules. Page titles, reading measure and section
+spacing come from `Layout` and the editorial stylesheet. `DestinationCards`,
+`CampaignSectionHeading` in its compact document role, `Callout` and
+`CampaignThemeImage` supply existing presentation components. Shared `Button` and
+`ActionGroup` components own website action markup and wrapping/spacing; button
+appearance remains in the common `.btn` CSS. Copy controls and preview containment
+are the only toolkit-specific UI styling. Standalone email and campaign artefacts
+remain self-contained, with their email-compatible styling unchanged.
 
 ### 2. One canonical content registry
 
@@ -182,7 +197,7 @@ script-disabled, lazy-loaded preview and download actions. `MarketingCopy.astro`
 places optional copy controls behind a closed **View plain text** disclosure.
 The same treatment covers member, OPDA, personal, employer and newsletter messages.
 Only allowlisted, generated, script-free documents may be embedded. The marketing
-flow owns shared action-group spacing so buttons do not collide with nearby content.
+pages use the shared `ActionGroup` spacing so buttons do not collide with nearby content.
 
 The EML uses a MIME multipart structure with plain text and HTML alternatives and
 inline image parts referenced by `cid:`. Include the actual encoded image bytes,

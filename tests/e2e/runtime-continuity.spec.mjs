@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { emailPreviewPath, visit, watchRuntime } from './support.mjs';
+import { assertNoBodyOverflow, emailPreviewPath, visit, watchRuntime } from './support.mjs';
 import { PRIVACY_NOTICE_VERSION } from '../../config/aws/working-group-interest/domain.mjs';
 
 async function exposeCompactHeaderControls(page) {
@@ -30,6 +30,37 @@ test.describe('runtime continuity boundaries', () => {
     await expect(disclosure.locator('textarea')).toBeVisible();
     await disclosure.getByRole('button', { name: /Copy .*member email preview/iu }).click();
     await expect(disclosure.locator('[data-copy-status]')).toHaveText(/Copied|Text selected/iu);
+    await clean();
+  });
+
+  test('Marketing uses the normal content rail and shared responsive components', async ({ page }) => {
+    const clean = watchRuntime(page, { verifyEmailSandboxDiagnostics: true });
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await visit(page, '/resources');
+    await expect(page.locator('.app-body')).toHaveClass(/with-toc/u);
+    const reference = await page.locator('article.prose > h1').boundingBox();
+    for (const route of ['/marketing', '/marketing/share-with-members', '/marketing/packs/general', '/marketing/broadcasters/opda']) {
+      await visit(page, route);
+      await expect(page.locator('.app-body')).toHaveClass(/with-toc/u);
+      const heading = await page.locator('article.marketing > h1').boundingBox();
+      expect(Math.abs(heading.x - reference.x), route).toBeLessThanOrEqual(1);
+      await expect(page.locator('.marketing-flow')).toHaveCount(0);
+      await expect(page.locator('.marketing .destination-card-grid')).not.toHaveCount(0);
+      await assertNoBodyOverflow(page);
+    }
+    await visit(page, '/marketing');
+    for (const theme of ['light', 'dark']) {
+      await page.evaluate((theme) => document.documentElement.setAttribute('data-theme', theme), theme);
+      const primary = page.getByRole('link', { name: 'Get a member-sharing pack', exact: true });
+      await expect(primary).toHaveClass(/\bbtn\b/u);
+      await expect(primary.locator('..')).toHaveClass(/\bbutton-actions\b/u);
+      await primary.focus();
+      await expect(primary).toBeFocused();
+      for (const width of [768, 320]) {
+        await page.setViewportSize({ width, height: 900 });
+        await assertNoBodyOverflow(page);
+      }
+    }
     await clean();
   });
 

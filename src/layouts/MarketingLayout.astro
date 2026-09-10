@@ -1,11 +1,11 @@
 ---
 import Layout from './Layout.astro';
 import '../styles/marketing.css';
-interface Props { title: string; description: string; landing?: boolean; }
-const { title, description, landing = false } = Astro.props;
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
 ---
-<Layout title={title} description={description} hideTableOfContents hideBreadcrumbs={landing} proseClass="prose wide marketing">
-  <div data-marketing-page class="marketing-flow"><slot /></div>
+<Layout title={title} description={description} proseClass="prose wide marketing">
+  <slot />
 </Layout>
 <script>
   import { initMarketing } from '../scripts/marketing';

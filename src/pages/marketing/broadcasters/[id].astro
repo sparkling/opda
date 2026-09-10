@@ -1,0 +1,23 @@
+---
+import MarketingLayout from '@/layouts/MarketingLayout.astro';
+import DestinationCards from '@/components/ia/DestinationCards.astro';
+import MarketingPackGrid from '@/components/marketing/MarketingPackGrid.astro';
+import Callout from '@/components/Callout.astro';
+import { marketingBroadcasters } from '@/data/marketing/broadcasters.mjs';
+
+export function getStaticPaths() {
+  return marketingBroadcasters.map((broadcaster) => ({ params: { id: broadcaster.id }, props: { broadcaster } }));
+}
+const { broadcaster } = Astro.props;
+---
+<MarketingLayout title={broadcaster.title} description={broadcaster.description}>
+  <h1>{broadcaster.title}</h1>
+  <p class="lead">{broadcaster.description}</p>
+  <p>{broadcaster.guidance}</p>
+  <Callout title="Use the right voice" tone="method"><p>{broadcaster.boundary}</p></Callout>
+  <h2 id="materials">Materials for this broadcaster</h2>
+  <DestinationCards cards={broadcaster.materials} />
+  <h2 id="audience">Choose the audience you want to reach</h2>
+  <p>The complete packs bring email, newsletter, LinkedIn and presentation materials together with examples from each field.</p>
+  <MarketingPackGrid />
+</MarketingLayout>
