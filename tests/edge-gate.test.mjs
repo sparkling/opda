@@ -31,6 +31,9 @@ test('the edge package uses exactly the regional session and approval implementa
     assert.ok((await readFile(new URL('../_build/edge-gate/' + file, import.meta.url)))
       .equals(await readFile(new URL('../config/aws/auth-session/' + file, import.meta.url))));
   }
+  const bundledGate = await readFile(new URL('../_build/edge-gate/index.mjs', import.meta.url), 'utf8');
+  assert.doesNotMatch(bundledGate, /import\(["']@aws-sdk\/client-dynamodb["']\)/u,
+    'the first request must not dynamically load the runtime DynamoDB SDK');
   assert.equal(CONFIG.region, 'eu-west-2');
 });
 
