@@ -59,6 +59,10 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
+          cache: npm
+
+      - name: Install pinned packaging dependencies
+        run: npm ci
 
       - name: Test participant approval boundary
         run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs tests/comments-*.test.mjs tests/auth-workspace*.test.mjs
