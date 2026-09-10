@@ -6,6 +6,6 @@
     "test": "make rml-test"
   },
   "devDependencies": {
-    "@metaharness/darwin": "^0.8.0"
+    "@metaharness/darwin": "latest"
   }
 }
