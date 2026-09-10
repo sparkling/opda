@@ -1,0 +1,33 @@
+---
+import MarketingCopy from './MarketingCopy.astro';
+import { marketingPacks } from '@/data/marketing/packs.mjs';
+
+interface Props {
+  id: string;
+  title: string;
+  preview: string;
+  text?: string;
+  plainText?: boolean;
+  textDownload?: string;
+  emailDownload?: string;
+  rows?: number;
+}
+const { id, title, preview, text = '', plainText = true, textDownload, emailDownload, rows = 12 } = Astro.props;
+const match = /^\/marketing\/([^/]+)\/(email\/(?:member|opda|personal)|newsletter\/(?:short|long)|linkedin\/(?:opda|partner))\.html$/u.exec(preview);
+const permitted = preview === '/marketing/general/email/employer.html'
+  || Boolean(match && marketingPacks.some((pack) => pack.id === match[1]));
+if (!permitted) {
+  throw new Error('Marketing previews must be local generated HTML assets');
+}
+---
+<div class="marketing-material" data-marketing-material>
+  <div class="marketing-email-preview">
+    <iframe src={preview} title={title} data-email-preview loading="lazy" sandbox="allow-same-origin allow-top-navigation-by-user-activation"></iframe>
+  </div>
+  <div class="marketing-actions">
+    {emailDownload && <a class="btn" href={emailDownload} download>Download email with embedded images · EML</a>}
+    <a class="btn btn--ghost" href={preview} download>Download rich HTML</a>
+    <a class="btn btn--ghost" href={preview}>Open full preview</a>
+  </div>
+  {plainText && <MarketingCopy id={id} title={title} text={text} download={textDownload} rows={rows} />}
+</div>

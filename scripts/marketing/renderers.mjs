@@ -10,7 +10,7 @@ function paragraphsHtml(paragraphs, style = '', safeLinks = []) {
     let html = escapeHtml(paragraph);
     for (const url of safeLinks) {
       const escapedUrl = escapeHtml(url);
-      html = html.split(escapedUrl).join(`<a href="${escapedUrl}" style="color:${BRAND.violet};font-weight:bold;">${escapedUrl}</a>`);
+      html = html.split(escapedUrl).join(`<a href="${escapedUrl}" target="_top" style="color:${BRAND.violet};font-weight:bold;">${escapedUrl}</a>`);
     }
     return `<p style="${style}">${html}</p>`;
   }).join('\n');
@@ -49,7 +49,7 @@ function emailDocument(pack, voice, imageSources) {
           <h1 style="margin:0 0 22px;color:${BRAND.deep};font-family:Georgia,'Times New Roman',serif;font-size:34px;line-height:41px;">${escapeHtml(copy.headline)}</h1>
           ${paragraphsHtml(copy.paragraphs, `margin:0 0 16px;color:${BRAND.night};font-size:17px;line-height:27px;`, voice === 'opda' ? [packUrl] : [])}
           <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:26px 0 22px;"><tr><td style="background:${BRAND.yellow};">
-            <a href="${escapeHtml(pack.signupUrl)}" style="display:inline-block;padding:14px 22px;color:#000;text-decoration:none;font-size:16px;line-height:21px;font-weight:bold;">${escapeHtml(copy.ctaLabel)}</a>
+            <a href="${escapeHtml(pack.signupUrl)}" target="_top" style="display:inline-block;padding:14px 22px;color:#000;text-decoration:none;font-size:16px;line-height:21px;font-weight:bold;">${escapeHtml(copy.ctaLabel)}</a>
           </td></tr></table>
           <p style="margin:0;color:${BRAND.muted};font-size:13px;line-height:21px;">${escapeHtml(distributionNote(voice))}</p>
         </td></tr>

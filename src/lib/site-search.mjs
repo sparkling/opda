@@ -123,6 +123,7 @@ export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Resources', '/resources', 'Source registry, glossary and machine-readable manifests', ['PDTF', 'SPDTF']),
   entry('Marketing', '/marketing', 'Share recruitment materials, email templates, LinkedIn campaigns and presentations', ['promotion', 'campaign toolkit']),
   ...marketingTasks.map(({ id, title, description }) => entry(title, `/marketing/${id}`, description, ['marketing', 'recruitment'])),
+  entry('Campaign packs by audience', '/marketing/packs', 'Complete recruitment campaign materials for a mixed audience or a particular property field', ['marketing', 'audience', 'campaign toolkit']),
   ...marketingDomains.map(({ id, label, scope }) => entry(`${label} campaign pack`, `/marketing/packs/${id}`, scope, ['marketing', 'email template', 'LinkedIn', 'presentation'])),
 ]);
 

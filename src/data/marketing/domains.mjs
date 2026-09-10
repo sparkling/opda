@@ -7,7 +7,7 @@ export const marketingDomains = Object.freeze([
     problem: 'A property transaction brings together information from many organisations. Repeated questions and differences in meaning make that information harder to use.',
     contribution: 'Help explain what information means in your work, which exceptions matter and what other people need to understand when you share it.',
     example: 'An address can help locate a property, but it does not by itself explain whether a report describes a building, a dwelling or a title record.',
-    image: 'motivation-landscape',
+    image: { source: '/images/marketing/2026-09/packs/general-light.webp', alt: 'Different property professions add distinct evidence pieces to a shared layered model of one property.', width: 1536, height: 512 },
   },
   {
     id: 'finance-and-banking', label: 'Finance and Banking', campaignStatus: 'existing-group',
@@ -16,7 +16,7 @@ export const marketingDomains = Object.freeze([
     problem: 'Lending and mortgage advice rely on property evidence supplied by several organisations. Its meaning, currency and limitations need to remain clear when it changes hands.',
     contribution: 'Bring examples of the evidence lenders and advisers need, where information is repeated or unclear, and what helps people make informed decisions.',
     example: 'A valuation is easier to interpret when its purpose, date and assumptions accompany the figure.',
-    image: 'finance-and-banking',
+    image: { source: '/images/marketing/2026-09/packs/finance-and-banking-light.webp', alt: 'A property model passes between two hands with separate translucent layers for the evidence, context and limitations behind a lending decision.', width: 1200, height: 300 },
   },
   {
     id: 'conveyancing', label: 'Conveyancing', campaignStatus: 'current-wave',
@@ -25,7 +25,7 @@ export const marketingDomains = Object.freeze([
     problem: 'A conveyance draws on title records, searches and enquiries from different sources. Important qualifications can become difficult to follow as that information moves between people.',
     contribution: 'Explain the distinctions that matter in a real conveyance and help make definitions useful for exceptions as well as straightforward transactions.',
     example: 'A statement in an enquiry and evidence that supports it play different parts in understanding a property.',
-    image: 'conveyancing',
+    image: { source: '/images/marketing/2026-09/packs/conveyancing-light.webp', alt: 'An archival paper trail keeps title plans, searches, enquiries and supporting evidence distinct as a property changes hands.', width: 1200, height: 300 },
   },
   {
     id: 'estate-agency', label: 'Estate Agency', campaignStatus: 'current-wave',
@@ -34,7 +34,7 @@ export const marketingDomains = Object.freeze([
     problem: 'Property information develops from instruction through marketing and sales progression. Buyers, sellers and other professionals need to understand what has changed and what remains uncertain.',
     contribution: 'Share what people need to know at each stage and where clearer information could reduce repeated questions or misunderstandings.',
     example: 'A listing description and a later professional finding may describe different aspects of the same home.',
-    image: 'estate-agency',
+    image: { source: '/images/marketing/2026-09/packs/estate-agency-light.webp', alt: 'A screenprinted sequence follows one home from instruction and marketing through buyer discussion to later professional findings.', width: 1200, height: 300 },
   },
   {
     id: 'surveying-and-valuation', label: 'Surveying and Valuation', campaignStatus: 'current-wave',
@@ -43,7 +43,7 @@ export const marketingDomains = Object.freeze([
     problem: 'An inspection or valuation produces findings that others rely on. Observations, professional judgements and limitations need to remain distinguishable when those findings are shared.',
     contribution: 'Help explain how measurements and findings should carry their basis, qualifications and uncertainty beyond the original report.',
     example: 'Two floor-area figures can differ because they include different spaces, even when both measurements are accurate.',
-    image: 'surveying-and-valuation',
+    image: { source: '/images/marketing/2026-09/packs/surveying-and-valuation-light.webp', alt: 'A field-notebook spread separates property observations, measurements, professional judgement and inspection limits.', width: 1200, height: 300 },
   },
   {
     id: 'property-data-services', label: 'Property Data Services', campaignStatus: 'current-wave',
@@ -52,7 +52,7 @@ export const marketingDomains = Object.freeze([
     problem: 'Property records come from sources with different coverage and update cycles. People need to understand what a record describes, where it came from and how it can be used.',
     contribution: 'Bring examples that make provenance, quality and limitations easier for other organisations to understand.',
     example: 'Matching two records to an address does not automatically establish that they describe the same thing.',
-    image: 'property-data-services',
+    image: { source: '/images/marketing/2026-09/packs/property-data-services-light.webp', alt: 'Translucent records from different sources surround one property while their provenance trails and an uncertain near-match remain visible.', width: 1200, height: 300 },
   },
   {
     id: 'property-technology', label: 'Property Technology', campaignStatus: 'current-wave',
@@ -61,6 +61,6 @@ export const marketingDomains = Object.freeze([
     problem: 'Products exchange information across systems that often use different labels and assumptions. An apparently simple field can conceal a difference in meaning.',
     contribution: 'Explain where clearer definitions would help services work together and which requirements need to reflect existing products and users.',
     example: 'Two systems can both contain a field called property while one means a building and the other means a legal interest.',
-    image: 'property-technology',
+    image: { source: '/images/marketing/2026-09/packs/property-technology-light.webp', alt: 'Distinct models of a building, a dwelling and a property boundary are aligned before their systems are connected.', width: 1200, height: 300 },
   },
 ]);

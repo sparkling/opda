@@ -47,6 +47,7 @@ test('aria-current follows canonical route ownership', async ({ page }) => {
     ['/development/working-groups/estate-agency', 'Groups'],
     ['/resources', 'Resources'],
     ['/marketing', 'Marketing'],
+    ['/marketing/packs', 'Marketing'],
     ['/marketing/packs/general', 'Marketing'],
     ['/search', 'Search'],
     ['/strategy/strategy-overview', 'Programme'],
@@ -73,7 +74,7 @@ test('left section navigation covers every canonical destination', async ({ page
     ['/development', 'spdtf', 'Overview', 'nav-group-link'],
     ['/development/working-groups', 'working-groups', 'Group workspaces', 'nav-group-link'],
     ['/resources', 'resources', 'Overview', 'nav-group-leaf'],
-    ['/marketing', 'marketing', 'Overview', 'nav-group-leaf'],
+    ['/marketing', 'marketing', 'By task', 'nav-group-link'],
   ]) {
     await visit(page, route);
     const sidebar = page.locator('#app-sidebar');
@@ -102,6 +103,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
     ['/governance/decisions', 'governance', 'Decisions'],
     ['/engagement/meetings-decisions', 'governance', 'Programme decisions'],
     ['/engagement/transcripts', 'resources', 'Transcripts index'],
+    ['/marketing/packs', 'marketing', 'Campaign packs by audience'],
     ['/marketing/packs/general', 'marketing', 'All property professions'],
   ]) {
     await visit(page, route);

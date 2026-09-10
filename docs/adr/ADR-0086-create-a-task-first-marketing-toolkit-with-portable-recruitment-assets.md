@@ -84,6 +84,13 @@ the relevant domain insert, then give the organisation a complete member-sharing
 pack. Show audience and speaker before the copy or download controls. Formats are
 choices within a task, not the page's primary information architecture.
 
+The 10 September adversarial navigation review separates two axes: **By task**
+contains the six actions, while **Campaign packs by audience** has its own
+searchable landing at `/marketing/packs`. Audience packs are not children of the
+member-email task. General pack cards open the pack overview; task-specific cards
+may explicitly link to a relevant section. One shared section-navigation registry
+owns breadcrumbs, current location and previous/next navigation.
+
 ### 2. One canonical content registry
 
 `src/data/marketing/packs.mjs` is the selected canonical registry and exports seven
@@ -107,8 +114,11 @@ rewriting them. The selected output contract is:
 
 - `email/member.{html,txt,eml}` and `email/opda.{html,txt,eml}`;
 - `email/personal.{html,txt,eml}` for a separately voiced personal invitation;
-- `linkedin/opda.txt` and `linkedin/partner.txt`;
-- three numbered posts per LinkedIn voice and `newsletter/{short,long}.txt`;
+- `linkedin/{opda,partner}.{html,txt}` with all three posts in each rich preview;
+- three numbered text alternatives per LinkedIn voice;
+- `newsletter/{short,long}.{html,txt,eml}`;
+- `email/employer.{html,txt,eml}` in the general pack;
+- audience-specific `images/contribution-infographic.{svg,png}`;
 - `one-pager.html` and `slides.html`;
 - local `images/` and `manifest.json`; and
 - `<pack-id>-campaign-pack.zip`, containing the portable sharing material.
@@ -119,7 +129,7 @@ claim that the sharing organisation has an OPDA partnership.
 The site build runs `marketing:check`: it verifies registry and source-image
 digests, committed output bytes and the focused Marketing contracts using Node
 only. `make marketing-build` regenerates changed image derivatives and packs with
-local ffmpeg; CI does not install another image-generation service. Plain-text
+local ffmpeg and the pinned Sharp rasterizer; CI does not call an image-generation service. Plain-text
 copy controls, TXT downloads and MIME text parts call the same pure renderer.
 
 Use the six stable group IDs already accepted by the signup service:
@@ -166,6 +176,14 @@ and an unsent `.eml` draft for each email variant. The visible preview represent
 same content and imagery as the downloadable draft; a screenshot alone is not a
 template. The member email includes purposeful campaign imagery within its body.
 
+Rich previews are the primary content on the actual toolkit pages, not merely
+links beside visible text-only substitutes. `MarketingPreview.astro` owns the
+script-disabled, lazy-loaded preview and download actions. `MarketingCopy.astro`
+places optional copy controls behind a closed **View plain text** disclosure.
+The same treatment covers member, OPDA, personal, employer and newsletter messages.
+Only allowlisted, generated, script-free documents may be embedded. The marketing
+flow owns shared action-group spacing so buttons do not collide with nearby content.
+
 The EML uses a MIME multipart structure with plain text and HTML alternatives and
 inline image parts referenced by `cid:`. Include the actual encoded image bytes,
 correct media types, unique content IDs and inline dispositions. Every referenced
@@ -204,10 +222,23 @@ honestly and generated from the canonical registry. A later native presentation
 format may be added when the supported authoring runtime and verification are
 available; do not substitute a renamed file or an unverified conversion.
 
-Reuse authorised marks and existing campaign imagery with recorded provenance.
+Reuse authorised marks, but give each illustration placement its own concept and
+composition under the 10 September amendment to ADR-0073. Record exact purpose,
+technique, prompts, dimensions, theme pairing and source provenance; retain older
+artwork as archives. Previews and downloads of the same campaign faithfully show
+that campaign's artwork; this is not permission to reuse it as decoration elsewhere.
 An organisation may identify itself in its own message but the toolkit does not
 invent co-branding rights, display unapproved logos or imply endorsement. All
 essential explanations remain text, not rasterised words alone.
+
+LinkedIn receives distinct OPDA and organisation-voice campaign previews with
+all three posts, illustration and an audience-specific contribution infographic.
+HTML is the portable review document, not a format pasted into a LinkedIn feed.
+Provide JPEG and PNG assets suitable for upload and editable SVG alongside optional
+per-post text. The infographic shows authorised practitioner evidence informing
+working-group review and the draft specification, not automatic adoption or approval.
+The portable email/graphic typography deliberately uses the existing invitation's
+Georgia/Arial fallback stacks; it does not claim exact web-font rendering in clients.
 
 The toolkit uses static compositions and deliberate interaction. No autoplay,
 decorative continuous rendering, new tracking service or campaign-management

@@ -2,20 +2,48 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import test from 'node:test';
 import { marketingPacks, getMarketingPack, employerBrief } from '../src/data/marketing/packs.mjs';
+import { marketingTasks } from '../src/data/marketing/tasks.mjs';
 import { workingGroupContexts } from '../src/data/working-group-campaign.ts';
 import { GLOBAL_DESTINATIONS, getActiveDestination, getRouteStatus } from '../src/lib/site-ia.mjs';
-import { validateSectionNavigation, findNavigationPage } from '../src/lib/site-navigation.ts';
+import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
+import {
+  SECTION_NAVIGATION,
+  findNavigationPage,
+  getNavigationPrevNext,
+  validateSectionNavigation,
+} from '../src/lib/site-navigation.ts';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
 test('Marketing is a first-class destination with its own route and authority', () => {
   assert.deepEqual(GLOBAL_DESTINATIONS.find(({ key }) => key === 'marketing'), { key: 'marketing', title: 'Marketing', url: '/marketing' });
-  for (const path of ['/marketing', '/marketing/share-with-members', '/marketing/packs/general']) {
+  for (const path of ['/marketing', '/marketing/share-with-members', '/marketing/packs', '/marketing/packs/general']) {
     assert.equal(getActiveDestination(path), 'marketing');
     assert.match(getRouteStatus(path).authority, /recruitment|communication/i);
     assert.ok(findNavigationPage(path));
   }
   assert.equal(validateSectionNavigation(), true);
+});
+
+test('Marketing navigation separates canonical tasks from campaign packs by audience', () => {
+  const marketing = SECTION_NAVIGATION.marketing;
+  assert.deepEqual(marketing.groups.map(({ heading, url }) => [heading, url]), [
+    ['By task', '/marketing'],
+    ['Campaign packs by audience', '/marketing/packs'],
+  ]);
+  assert.deepEqual(marketing.groups[0].items, marketingTasks.map(({ id, title }) => ({
+    url: `/marketing/${id}`,
+    title,
+  })));
+  assert.deepEqual(marketing.groups[1].items, marketingPacks.map(({ id, label }) => ({
+    url: `/marketing/packs/${id}`,
+    title: label,
+  })));
+  assert.deepEqual(findNavigationPage('/marketing/packs/general')?.trail.map(({ url }) => url), [
+    '/marketing/packs/general',
+  ]);
+  assert.equal(getNavigationPrevNext('/marketing/packs').next?.url, '/marketing/packs/general');
+  assert.equal(getNavigationPrevNext('/marketing/packs/general').prev?.url, '/marketing/packs');
 });
 
 test('campaign pack IDs agree with the signup choices without merging distinct technology groups', () => {
@@ -60,7 +88,7 @@ test('OPDA and organisations have independent complete LinkedIn sequences', () =
 });
 
 test('Marketing pages reuse the site shell and static content, with no campaign sending integration', () => {
-  for (const path of ['src/pages/marketing/index.astro', 'src/pages/marketing/[task].astro', 'src/pages/marketing/packs/[id].astro']) {
+  for (const path of ['src/pages/marketing/index.astro', 'src/pages/marketing/[task].astro', 'src/pages/marketing/packs/index.astro', 'src/pages/marketing/packs/[id].astro']) {
     assert.ok(existsSync(new URL(`../${path}`, import.meta.url)), path);
   }
   const layout = read('src/layouts/MarketingLayout.astro');
@@ -70,11 +98,54 @@ test('Marketing pages reuse the site shell and static content, with no campaign 
     assert.match(read(path), /renderEmailPlain/);
     assert.doesNotMatch(read(path), /const messageText/);
   }
-  assert.match(read('src/pages/marketing/packs/[id].astro'), /sandbox="allow-same-origin"/);
-  assert.doesNotMatch(read('src/pages/marketing/packs/[id].astro'), /allow-scripts/);
+  assert.match(read('src/components/marketing/MarketingPreview.astro'), /sandbox="allow-same-origin allow-top-navigation-by-user-activation"/);
+  assert.doesNotMatch(read('src/components/marketing/MarketingPreview.astro'), /allow-scripts/);
   const script = read('src/scripts/marketing.ts');
   assert.doesNotMatch(script, /postmark|hubspot|fetch\(|requestAnimationFrame|setInterval/i);
   assert.match(script, /clipboard/);
   assert.match(script, /astro:before-swap/);
   assert.match(script, /astro:page-load/);
+  assert.match(script, /document\.URL === 'about:blank'/u);
+  assert.match(script, /Math\.min\(16000, height \+ 8\)/u);
+});
+
+test('campaign-pack cards link to pack overviews unless a task opts into a section anchor', () => {
+  const grid = read('src/components/marketing/MarketingPackGrid.astro');
+  assert.match(grid, /const \{ anchor \} = Astro\.props/u);
+  assert.match(grid, /const fragment = anchor \? `#\$\{encodeURIComponent\(anchor\)\}` : '';/u);
+  assert.doesNotMatch(grid, /anchor = ['"]member-email['"]/u);
+  assert.doesNotMatch(grid, /CampaignThemeImage|<img/iu);
+
+  const landing = read('src/pages/marketing/packs/index.astro');
+  assert.match(landing, /<h1>Campaign packs by audience<\/h1>/u);
+  assert.match(landing, /<MarketingPackGrid \/>/u);
+  assert.doesNotMatch(landing, /CampaignThemeImage|<img/iu);
+  assert.ok(SITE_SEARCH_ENTRIES.some(({ url }) => url === '/marketing/packs'));
+});
+
+test('rich previews are primary and plain-text copying is an optional disclosure', () => {
+  const copy = read('src/components/marketing/MarketingCopy.astro');
+  assert.match(copy, /<details class="marketing-plain-text">/);
+  assert.match(copy, /View plain text/);
+  assert.doesNotMatch(copy, /<details[^>]+\sopen(?:\s|>|=)/);
+  const preview = read('src/components/marketing/MarketingPreview.astro');
+  assert.match(preview, /<iframe/);
+  assert.match(preview, /loading="lazy"/);
+  for (const page of ['src/pages/marketing/[task].astro', 'src/pages/marketing/packs/[id].astro']) {
+    const source = read(page);
+    assert.match(source, /MarketingPreview/);
+    assert.match(source, /\/email\/opda\.html/);
+    assert.match(source, /\/email\/personal\.html/);
+  }
+  assert.match(read('src/styles/marketing.css'), /\.marketing-flow \.marketing-actions/);
+  const taskPage = read('src/pages/marketing/[task].astro');
+  const packPage = read('src/pages/marketing/packs/[id].astro');
+  assert.match(taskPage, /preview="\/marketing\/general\/email\/employer\.html"/u);
+  assert.match(taskPage, /<MarketingPackGrid anchor="member-email"/u);
+  for (const kind of ['short', 'long']) assert.ok(packPage.includes(`/newsletter/${kind}.html`));
+  for (const page of [taskPage, packPage]) assert.match(page, /<MarketingSocial /u);
+  const social = read('src/components/marketing/MarketingSocial.astro');
+  assert.match(social, /<MarketingPreview /u);
+  assert.match(social, /contribution-infographic\.png/u);
+  assert.match(social, /not a LinkedIn editor/u);
 });

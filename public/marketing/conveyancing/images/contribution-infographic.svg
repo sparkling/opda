@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 628" role="img" aria-labelledby="campaign-conveyancing-title campaign-conveyancing-desc" font-family="Arial, sans-serif">
+<title id="campaign-conveyancing-title">How conveyancing experience contributes</title>
+<desc id="campaign-conveyancing-desc">Practitioners bring evidence to working groups, who review meaning to inform the draft specification. A statement in an enquiry and evidence that supports it play different parts in understanding a property.</desc>
+<defs><marker id="campaign-conveyancing-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#131224"/></marker></defs>
+<rect width="1200" height="628" fill="#ffffff"/>
+<path d="M56 40H1144" stroke="#fec92b" stroke-width="4"/>
+<text x="56" y="88" fill="#625d72" font-size="20" letter-spacing="1">OPDA · CONVEYANCING</text>
+<text x="56" y="144" fill="#131224" font-size="40" font-family="Georgia, serif" font-weight="700">Professional judgement shapes shared meaning.</text>
+<path d="M376 280H428" fill="none" stroke="#131224" stroke-width="4" marker-end="url(#campaign-conveyancing-arrow)"/>
+<path d="M760 280H812" fill="none" stroke="#131224" stroke-width="4" marker-end="url(#campaign-conveyancing-arrow)"/>
+<g><rect x="56" y="192" width="320" height="188" fill="#ffffff" stroke="#131224" stroke-width="2"/>
+<text x="76" y="228" font-size="16" fill="#131224" letter-spacing="1">PRACTITIONERS</text>
+<text x="76" y="272" fill="#131224" font-size="24"><tspan x="76" dy="0">Bring evidence</tspan></text>
+<text x="76" y="316" fill="#131224" font-size="20"><tspan x="76" dy="0">Authorised examples,</tspan><tspan x="76" dy="24">questions and exceptions</tspan><tspan x="76" dy="24">from real work.</tspan></text></g><g><rect x="440" y="192" width="320" height="188" fill="#fec92b" stroke="#131224" stroke-width="2"/>
+<text x="460" y="228" font-size="16" fill="#131224" letter-spacing="1">WORKING GROUPS</text>
+<text x="460" y="272" fill="#131224" font-size="24"><tspan x="460" dy="0">Review meaning</tspan></text>
+<text x="460" y="316" fill="#131224" font-size="20"><tspan x="460" dy="0">Challenge draft definitions</tspan><tspan x="460" dy="24">and clarify the distinctions</tspan><tspan x="460" dy="24">that matter.</tspan></text></g><g><rect x="824" y="192" width="320" height="188" fill="#ffffff" stroke="#131224" stroke-width="2"/>
+<text x="844" y="228" font-size="16" fill="#131224" letter-spacing="1">WORK IN DEVELOPMENT</text>
+<text x="844" y="272" fill="#131224" font-size="24"><tspan x="844" dy="0">Shape the specification</tspan></text>
+<text x="844" y="316" fill="#131224" font-size="20"><tspan x="844" dy="0">Help develop shared</tspan><tspan x="844" dy="24">definitions for property</tspan><tspan x="844" dy="24">information.</tspan></text></g>
+<text x="56" y="428" fill="#625d72" font-size="16" letter-spacing="1">A QUESTION FROM YOUR FIELD</text>
+<text x="56" y="464" fill="#131224" font-size="24"><tspan x="56" dy="0">A statement in an enquiry and evidence that supports it play different parts in</tspan><tspan x="56" dy="32">understanding a property.</tspan></text>
+<path d="M56 568H1144" stroke="#e3e1e9" stroke-width="2"/>
+<text x="56" y="604" fill="#131224" font-size="20">Register interest at opda.org.uk/join · Participation is subject to OPDA review.</text>
+</svg>

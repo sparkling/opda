@@ -1,0 +1,19 @@
+---
+import MarketingLayout from '@/layouts/MarketingLayout.astro';
+import MarketingPackGrid from '@/components/marketing/MarketingPackGrid.astro';
+---
+<MarketingLayout
+  title="Campaign packs by audience"
+  description="Choose complete OPDA recruitment materials for a mixed audience or a particular property field."
+>
+  <div class="marketing-pack-heading">
+    <h1>Campaign packs by audience</h1>
+    <p class="lead">Choose the audience you need to reach. Each pack keeps the same participation terms while using examples that fit that field.</p>
+  </div>
+
+  <section aria-labelledby="choose-audience">
+    <h2 id="choose-audience">Choose a complete campaign pack</h2>
+    <p>Use the general pack for people across the property journey, or select a field-specific pack. Each includes rich HTML invitations, LinkedIn copy, artwork, a short presentation, a one-page overview and optional plain-text fallbacks.</p>
+    <MarketingPackGrid />
+  </section>
+</MarketingLayout>

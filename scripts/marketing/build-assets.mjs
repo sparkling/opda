@@ -10,8 +10,10 @@ import os from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import sharp from 'sharp';
 
-import { marketingPacks } from '../../src/data/marketing/packs.mjs';
+import { employerBrief, marketingPacks } from '../../src/data/marketing/packs.mjs';
+import { renderCampaignInfographic, renderLinkedInPreview, supplementalEmail } from './rich-materials.mjs';
 import {
   canonicalJson, dataUri, fileRecord, jsonBuffer, makeZip, resolveBelow, sha256, stripJpegMetadata,
 } from './lib.mjs';
@@ -79,6 +81,10 @@ export function validateMarketingPacks(packs, options = {}) {
       assertText(linkedIn?.copy, `${pack.id}.linkedin.${voice}.copy`);
       if (!Array.isArray(linkedIn.hashtags)) throw new Error(`${pack.id}.linkedin.${voice}.hashtags must be an array`);
       linkedIn.hashtags.forEach((tag, index) => assertText(tag, `${pack.id}.linkedin.${voice}.hashtags[${index}]`));
+      if (!Array.isArray(linkedIn.posts) || linkedIn.posts.length !== 3
+        || new Set(linkedIn.posts.map((post) => post.id)).size !== 3) {
+        throw new Error(`${pack.id}.linkedin.${voice}.posts must contain three distinct posts`);
+      }
       (linkedIn.posts ?? []).forEach((post, index) => {
         assertText(post.id, `${pack.id}.linkedin.${voice}.posts[${index}].id`);
         if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(post.id)) throw new Error(`${pack.id} has an unsafe post ID`);
@@ -111,7 +117,7 @@ export function validateMarketingPacks(packs, options = {}) {
 }
 
 function generatorDigest() {
-  return sha256(['build-assets.mjs', 'lib.mjs', 'renderers.mjs']
+  return sha256(['build-assets.mjs', 'lib.mjs', 'renderers.mjs', 'rich-materials.mjs']
     .map((name) => readFileSync(path.join(SCRIPT_DIR, name)))
     .reduce((combined, bytes) => Buffer.concat([combined, bytes]), Buffer.alloc(0)));
 }
@@ -143,7 +149,7 @@ export function checkMarketingAssets(options = {}) {
   const outputDir = path.resolve(options.outputDir ?? path.join(publicDir, 'marketing'));
   validateMarketingPacks(packs, { publicDir });
   const summary = JSON.parse(readFileSync(path.join(outputDir, 'manifest.json'), 'utf8'));
-  const inputDigest = sha256(canonicalJson(packs));
+  const inputDigest = sha256(canonicalJson({ packs, employerBrief }));
   if (summary.schemaVersion !== SCHEMA_VERSION || summary.inputDigest !== inputDigest || summary.generatorDigest !== generatorDigest()) {
     throw new Error('Marketing asset manifest is stale');
   }
@@ -215,6 +221,9 @@ async function buildPack(pack, context) {
     ['images/hero.jpg', heroBytes],
     ['images/social-card.jpg', socialBytes],
   ]);
+  const infographic = renderCampaignInfographic(pack);
+  entries.set('images/contribution-infographic.svg', Buffer.from(infographic));
+  entries.set('images/contribution-infographic.png', await sharp(Buffer.from(infographic)).png().toBuffer());
   for (const voice of ['member', 'opda', ...(pack.email.personal ? ['personal'] : [])]) {
     entries.set(`email/${voice}.txt`, Buffer.from(renderEmailPlain(pack, voice)));
     entries.set(`email/${voice}.html`, Buffer.from(renderEmailPreview(pack, voice, context.logoBytes, heroBytes)));
@@ -222,6 +231,7 @@ async function buildPack(pack, context) {
   }
   for (const voice of ['opda', 'partner']) {
     entries.set(`linkedin/${voice}.txt`, Buffer.from(renderLinkedIn(pack, voice)));
+    entries.set(`linkedin/${voice}.html`, Buffer.from(renderLinkedInPreview(pack, voice, context.logoBytes, heroBytes, infographic)));
     for (const [index, post] of (pack.linkedin[voice].posts ?? []).entries()) {
       const name = `${voice}-${String(index + 1).padStart(2, '0')}-${post.id}.txt`;
       entries.set(`linkedin/${name}`, Buffer.from(renderLinkedIn(pack, voice, post)));
@@ -229,6 +239,14 @@ async function buildPack(pack, context) {
   }
   entries.set('newsletter/short.txt', Buffer.from(`${pack.newsletter.title}\n\n${pack.newsletter.short}\n`));
   entries.set('newsletter/long.txt', Buffer.from(`${pack.newsletter.title}\n\n${pack.newsletter.long}\n`));
+  for (const kind of ['short', 'long', ...(pack.id === 'general' ? ['employer'] : [])]) {
+    const supplement = supplementalEmail(pack, kind, employerBrief);
+    const name = kind === 'employer' ? 'email/employer' : `newsletter/${kind}`;
+    const voice = kind === 'employer' ? 'personal' : 'member';
+    entries.set(`${name}.html`, Buffer.from(renderEmailPreview(supplement, voice, context.logoBytes, heroBytes)));
+    entries.set(`${name}.eml`, Buffer.from(renderEml(supplement, voice, context.logoBytes, heroBytes)));
+    if (kind === 'employer') entries.set(`${name}.txt`, Buffer.from(renderEmailPlain(supplement, voice)));
+  }
   entries.set('one-pager.html', Buffer.from(renderOnePager(pack, context.logoBytes, heroBytes)));
   const inlineAssets = new Map([[pack.hero.source, dataUri('image/jpeg', heroBytes)]]);
   const sourcePaths = new Set([sourcePath]);
@@ -298,7 +316,7 @@ export async function buildMarketingAssets(options = {}) {
     const totalBytes = packSummaries.reduce((sum, pack) => sum + pack.bytes, 0);
     const summary = {
       schemaVersion: SCHEMA_VERSION,
-      inputDigest: sha256(canonicalJson(packs)),
+      inputDigest: sha256(canonicalJson({ packs, employerBrief })),
       generatorDigest: context.generatorDigest,
       packCount: packSummaries.length,
       totalFiles,

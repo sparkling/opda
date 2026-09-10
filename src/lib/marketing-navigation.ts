@@ -7,16 +7,17 @@ const packItems = marketingPacks.map(({ id, label }) => ({
   title: label,
 }));
 
+const taskItems = marketingTasks.map(({ id, title }) => ({
+  url: `/marketing/${id}`,
+  title,
+}));
+
 const groups: Array<Group & { url: string }> = [
-  { heading: 'Overview', url: '/marketing', items: [] },
-  ...marketingTasks.map(({ id, title }) => ({
-    heading: title,
-    url: `/marketing/${id}`,
-    items: id === 'share-with-members' ? packItems : [],
-  })),
+  { heading: 'By task', url: '/marketing', items: taskItems },
+  { heading: 'Campaign packs by audience', url: '/marketing/packs', items: packItems },
 ];
 
-/** Task-first local navigation for approved recruitment and promotion material. */
+/** Local navigation separates what someone wants to do from who they need to reach. */
 export const MARKETING_NAVIGATION_SECTION = {
   key: 'marketing',
   title: 'Marketing',

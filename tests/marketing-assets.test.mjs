@@ -3,8 +3,10 @@ import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import sharp from 'sharp';
 
 import { marketingPacks } from '../src/data/marketing/packs.mjs';
+import { marketingTasks } from '../src/data/marketing/tasks.mjs';
 import {
   EXPECTED_PACK_IDS,
   checkMarketingAssets,
@@ -12,6 +14,7 @@ import {
   verifySourceAssetRecord,
 } from '../scripts/marketing/build-assets.mjs';
 import { sha256 } from '../scripts/marketing/lib.mjs';
+import { renderCampaignInfographic } from '../scripts/marketing/rich-materials.mjs';
 import { emailPreviewPath, isScriptFreeEmailPreview, matchesScriptFreeEmailPreview } from './e2e/support.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
@@ -32,6 +35,37 @@ async function filesBelow(directory, prefix = '') {
   }));
   return nested.flat().sort();
 }
+
+test('Marketing illustrations are distinct placements with dimension-matched theme pairs', async () => {
+  const manifestText = await readFile(path.join(ROOT, 'public/images/marketing/2026-09/manifest.json'), 'utf8');
+  const manifest = JSON.parse(manifestText);
+  assert.doesNotMatch(manifestText, /\/Users\/|\.codex\/generated_images|exec-[a-f0-9-]+\.png/u, 'public provenance must not expose private generation paths');
+  const illustrations = [
+    { source: '/images/marketing/2026-09/landing-network-light.webp', width: 1536, height: 512 },
+    ...marketingTasks.map(({ image }) => image),
+    ...marketingPacks.map(({ hero }) => hero),
+  ];
+  assert.equal(illustrations.length, 14);
+  assert.equal(manifest.assets.length, illustrations.length);
+  assert.equal(new Set(illustrations.map(({ source }) => source)).size, illustrations.length);
+  const hashes = new Set();
+  for (const illustration of illustrations) {
+    assert.match(illustration.source, /^\/images\/marketing\/2026-09\//u);
+    const darkSource = illustration.darkSource ?? illustration.source.replace('-light.webp', '-dark.webp');
+    for (const source of [illustration.source, darkSource]) {
+      const bytes = await readFile(path.join(ROOT, 'public', source));
+      const metadata = await sharp(bytes).metadata();
+      assert.equal(metadata.width, illustration.width, `${source} width`);
+      assert.equal(metadata.height, illustration.height, `${source} height`);
+      assert.equal(metadata.format, 'webp', source);
+      const record = manifest.assets.flatMap(({ light, dark }) => [light, dark]).find(({ file }) => file === source);
+      assert.ok(record, `${source} has public provenance`);
+      assert.equal(record.sha256, sha256(bytes), `${source} provenance matches the asset`);
+      hashes.add(sha256(bytes));
+    }
+  }
+  assert.equal(hashes.size, illustrations.length * 2, 'no identical artwork across placements or modes');
+});
 
 function zipRecords(buffer) {
   const records = [];
@@ -75,6 +109,12 @@ test('canonical marketing data defines the seven public campaign packs', () => {
     () => validateMarketingPacks(injected, { publicDir: path.join(ROOT, 'public') }),
     /header|private|unresolved/iu,
   );
+  const incomplete = structuredClone(marketingPacks);
+  incomplete[0].linkedin.opda.posts.pop();
+  assert.throws(() => validateMarketingPacks(incomplete), /three distinct posts/u);
+  const repeated = structuredClone(marketingPacks);
+  repeated[0].linkedin.partner.posts[1].id = repeated[0].linkedin.partner.posts[0].id;
+  assert.throws(() => validateMarketingPacks(repeated), /three distinct posts/u);
   for (const invalidUrl of [
     'https://user@opda.org.uk/join',
     'https://opda.org.uk:444/join',
@@ -186,6 +226,54 @@ test('sandbox diagnostics can only recognise known script-free email documents',
   assert.equal(matchesScriptFreeEmailPreview(Buffer.from('<p>Different response</p>'), expected), false);
   const active = Buffer.from('<script>alert(1)</script>');
   assert.equal(matchesScriptFreeEmailPreview(active, active), false);
+});
+
+test('newsletter and employer invitations have rich HTML and multipart embedded-image editions', async () => {
+  for (const pack of marketingPacks) {
+    const names = ['newsletter/short', 'newsletter/long', ...(pack.id === 'general' ? ['email/employer'] : [])];
+    for (const name of names) {
+      const [html, eml] = await Promise.all([text(`${pack.id}/${name}.html`), text(`${pack.id}/${name}.eml`)]);
+      assert.equal(isScriptFreeEmailPreview(html), true);
+      assert.match(html, /src="data:image\/png;base64,/u);
+      assert.match(html, /src="data:image\/jpeg;base64,/u);
+      assert.match(eml, /Content-Type: multipart\/related/u);
+      assert.match(eml, /Content-ID: <opda-hero>/u);
+      assert.doesNotMatch(html, /src=["']https?:/iu);
+      assert.ok(html.includes(pack.signupUrl));
+      assert.match(html, /target="_top"/u);
+      if (name.startsWith('newsletter/')) {
+        assert.match(html, /shared by your organisation/u);
+        assert.doesNotMatch(html, /shared by a colleague/u);
+      }
+    }
+  }
+});
+
+test('LinkedIn campaigns show all three posts, imagery and an accessible domain-specific infographic', async () => {
+  const images = new Set();
+  for (const pack of marketingPacks) {
+    const svg = await text(`${pack.id}/images/contribution-infographic.svg`);
+    assert.equal(svg, renderCampaignInfographic(pack));
+    assert.match(svg, /viewBox="0 0 1200 628"/u);
+    assert.match(svg, /role="img" aria-labelledby="campaign-[^"]+-title campaign-[^"]+-desc"/u);
+    assert.equal((svg.match(/marker-end=/gu) ?? []).length, 2, 'the three stages have directed handoffs');
+    assert.ok(svg.includes(pack.example.replaceAll('&', '&amp;')));
+    const png = await readFile(path.join(OUTPUT, pack.id, 'images/contribution-infographic.png'));
+    assert.equal(png.subarray(1, 4).toString(), 'PNG');
+    assert.equal(png.readUInt32BE(16), 1200);
+    assert.equal(png.readUInt32BE(20), 628);
+    images.add(sha256(png));
+    for (const voice of ['opda', 'partner']) {
+      const html = await text(`${pack.id}/linkedin/${voice}.html`);
+      assert.equal(isScriptFreeEmailPreview(html), true);
+      assert.match(html, /data:image\/jpeg;base64,/u);
+      assert.equal((html.match(/<article>/gu) ?? []).length, 3);
+      assert.ok(html.includes(svg));
+      for (const post of pack.linkedin[voice].posts) assert.ok(html.includes(post.title));
+      assert.doesNotMatch(html, /<(?:script|iframe)|src=["']https?:/iu);
+    }
+  }
+  assert.equal(images.size, marketingPacks.length, 'the content must be specific to every audience');
 });
 
 test('each pack includes portable campaign copy, editable slides and a deterministic bundle', async () => {

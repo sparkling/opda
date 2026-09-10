@@ -28,7 +28,7 @@ function packFor(domain) {
     ...domain,
     version: MARKETING_VERSION, owner: MARKETING_OWNER, sourceDecisions: MARKETING_SOURCES,
     signupUrl,
-    hero: { source: `/images/join/set-3/${domain.image}-light.webp`, alt: `An editorial illustration of ${domain.id === 'general' ? 'people bringing their experience to a shared property project' : domain.label.toLowerCase() + ' work'}.` },
+    hero: domain.image,
     email: {
       member: email(
         `Help shape property information${domain.id === 'general' ? '' : ` for ${domain.label.toLowerCase()}`}`,
@@ -76,7 +76,7 @@ function packFor(domain) {
       title: 'Professional experience shapes better property information',
       subtitle: `${framework} · ${domain.label}`,
       slides: [
-        { title: 'Property information that people can use', body: `An introduction to OPDA’s ${framework} working groups.`, image: `/images/join/set-3/${domain.image}-light.webp`, notes: 'Introduce OPDA using its full name. Explain that this is a programme in development and an invitation to contribute professional experience. This five-minute introduction is not a statement of adopted requirements.' },
+        { title: 'Property information that people can use', body: `An introduction to OPDA’s ${framework} working groups.`, image: domain.image.source, notes: 'Introduce OPDA using its full name. Explain that this is a programme in development and an invitation to contribute professional experience. This five-minute introduction is not a statement of adopted requirements.' },
         { title: 'A problem in everyday work', body: domain.problem, notes: `Ask whether this is familiar to the audience. Example: ${domain.example} These are illustrative situations, not evidence about a particular organisation.` },
         { title: 'The work in development', body: 'Working groups are developing shared definitions for property information. The aim is to make meaning clearer when people and organisations exchange information.', notes: 'Explain shared definitions in ordinary language. The work develops a specification and recommendations. OPDA is not asking participants to operate a linked-data application.' },
         { title: 'The contribution you can make', bullets: ['Explain the distinctions that matter in your work.', 'Bring authorised examples and difficult cases.', 'Review draft definitions and challenge assumptions.'], notes: domain.contribution },

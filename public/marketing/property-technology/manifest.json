@@ -4,13 +4,13 @@
   "label": "Property Technology",
   "campaignStatus": "current-wave",
   "signupUrl": "https://opda.org.uk/join?context=property-technology",
-  "inputDigest": "d2bb03821052d47354543442d5767d3bd8d21170f626b0a99d1d17865227b78d",
-  "generatorDigest": "a3c538db2cf1afcc7e16f1147b632b147ec773d16eb6160e2b595660cac51e1c",
+  "inputDigest": "df6ef504359eab61d07c1e3a56198bec449afc0aaedf1fa03ed9a37e1baba5f1",
+  "generatorDigest": "4be7717fbf974f68bd05bce25f86351ff9d086d4b6906bfb0f476614d778acd5",
   "sourceAssets": [
     {
-      "path": "public/images/join/set-3/property-technology-light.webp",
-      "sha256": "79d46137a03bb9b179c732558cc050d3d595cea0d391f2b99dd13f6cbecd5156",
-      "bytes": 81052
+      "path": "public/images/marketing/2026-09/packs/property-technology-light.webp",
+      "sha256": "8dee22a45e061fa48d5e245b2710cb3a5e481221a5b03db2da783e33071fe4e4",
+      "bytes": 59008
     }
   ],
   "files": [
@@ -21,13 +21,23 @@
     },
     {
       "path": "images/hero.jpg",
-      "sha256": "3e6b957532f985c02c4ab69a92230f8c24ccfc97635421ff2e0801f06e5b1bf8",
-      "bytes": 87218
+      "sha256": "0a5303952fe4c45630e951c04ca30874324ead70a0a7002523f136c778cfe41e",
+      "bytes": 56953
     },
     {
       "path": "images/social-card.jpg",
-      "sha256": "193115880f8774c51585396d19467337437ca0eb7d422fffcf01e97a5d60a1e4",
-      "bytes": 116911
+      "sha256": "0ac943ed34122da82fc38fbb873d0ffa8164b03e75e04c3450cace5afe8064ab",
+      "bytes": 79421
+    },
+    {
+      "path": "images/contribution-infographic.svg",
+      "sha256": "61b28c9d08562f1f7c892a6a243b837138bc733efeca0de75d3d4e6f69eb31ac",
+      "bytes": 3448
+    },
+    {
+      "path": "images/contribution-infographic.png",
+      "sha256": "043144148a55e6de97317448fa306c6d9a270be01d36c4c8ffd1a3b6270d840c",
+      "bytes": 94053
     },
     {
       "path": "email/member.txt",
@@ -36,13 +46,13 @@
     },
     {
       "path": "email/member.html",
-      "sha256": "4e23bf9f8b51c101114aa013914b6f46b1d3a3b8e346124771ab13070392e316",
-      "bytes": 130594
+      "sha256": "fe06f7b8e46cd1d3038ce9579eac5f0c4255641328c834504869284bf6b8be5c",
+      "bytes": 90315
     },
     {
       "path": "email/member.eml",
-      "sha256": "32818a43c97986f702cac24811e635f28240156d9064f72c31735df95576dbfa",
-      "bytes": 138315
+      "sha256": "41a4f5966c6248991088a8a6d7e36f247aa0224ab6f0b46cd112d5046627d9de",
+      "bytes": 97003
     },
     {
       "path": "email/opda.txt",
@@ -51,13 +61,13 @@
     },
     {
       "path": "email/opda.html",
-      "sha256": "3eca85089ba6e1e6f073ffa9cb82240e38720c35d347867f639af8f508a8ffb1",
-      "bytes": 130991
+      "sha256": "a1434fd1296d465d4f8c7a55bfe5bfb037f1615e9a5e1b6b835a440f928ddafd",
+      "bytes": 90726
     },
     {
       "path": "email/opda.eml",
-      "sha256": "d7dc5612170ce14f7d2a6562cc7eb5a7538b5693121c0d6329f7e98256f71bf0",
-      "bytes": 139135
+      "sha256": "ac17a39745c27e6cf8a6585b99288767e2c11d1c02926ed1a4315fe4779297d7",
+      "bytes": 97839
     },
     {
       "path": "email/personal.txt",
@@ -66,18 +76,23 @@
     },
     {
       "path": "email/personal.html",
-      "sha256": "08226a439c1f745c3791e4145c3cf00a87d89eb6346924e69d108bd6136c024b",
-      "bytes": 130258
+      "sha256": "f08bb9e177b62b3f30344503004bf401adeeba305e285d714828425a908bc397",
+      "bytes": 89979
     },
     {
       "path": "email/personal.eml",
-      "sha256": "011f7a3a9ae3811a41e2783b7cee01eaa0915fb3afd074728953151200f34758",
-      "bytes": 137537
+      "sha256": "dac2338446813c5bd2cb383714117baae5c4dcea0d09e2731597f41e8442c5f8",
+      "bytes": 96225
     },
     {
       "path": "linkedin/opda.txt",
       "sha256": "6bfac56fcfcdcbd4c0d734361da3395b00cd32608640baa1c5540dd4230cbd56",
       "bytes": 734
+    },
+    {
+      "path": "linkedin/opda.html",
+      "sha256": "bc92e96dc56a3185d45b1bb432bf01f01accde68ddd1dded300e68ad8dfbfe4f",
+      "bytes": 94473
     },
     {
       "path": "linkedin/opda-01-invitation.txt",
@@ -98,6 +113,11 @@
       "path": "linkedin/partner.txt",
       "sha256": "707dd43a75c798723f9dc12b650296a981f609c7db429955def357b0beb2ceed",
       "bytes": 755
+    },
+    {
+      "path": "linkedin/partner.html",
+      "sha256": "b1fca7450cfe96622965102f896f76ac9be55a1a3e4998c96e9cbd0d579e1c05",
+      "bytes": 94498
     },
     {
       "path": "linkedin/partner-01-invitation.txt",
@@ -125,14 +145,34 @@
       "bytes": 863
     },
     {
+      "path": "newsletter/short.html",
+      "sha256": "85d1278aa2a7940fefe1b991111fa6e3da5dc14890c2268079ad396df3cabf1e",
+      "bytes": 89371
+    },
+    {
+      "path": "newsletter/short.eml",
+      "sha256": "6cc332ed8f7cc7552c94cbe6ef927456b7496dc641054560d316a01ff17599b7",
+      "bytes": 94965
+    },
+    {
+      "path": "newsletter/long.html",
+      "sha256": "632b234f23c403f8ff0de6096d8793b8c0e2392babadb62a7b1daf9b64cd007f",
+      "bytes": 90007
+    },
+    {
+      "path": "newsletter/long.eml",
+      "sha256": "86974afa17d023305531bd4a3b810f205b2fbf6c43bbdb5a506d576bb56d0fa0",
+      "bytes": 96281
+    },
+    {
       "path": "one-pager.html",
-      "sha256": "8963047c73cc408c5dff1275fa34705e346a005dbd74a166bd4b13c1aac4df89",
-      "bytes": 131398
+      "sha256": "9bfaeee2477422650ae3d1f79be2ad5e398221e3d9146c80ee03f99cfd6dc473",
+      "bytes": 91105
     },
     {
       "path": "slides.html",
-      "sha256": "b7a4af4acb8ebf96e2d9abcec58197b4a7cc124a600fc3007cb200dd4a8f7372",
-      "bytes": 139123
+      "sha256": "242fe12635aa1c56cc720e7504372c718fde5b334305299cb461d55353ab624e",
+      "bytes": 98771
     }
   ]
 }

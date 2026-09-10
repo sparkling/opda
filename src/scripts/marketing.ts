@@ -31,12 +31,12 @@ export function initMarketing() {
   const sizeFrame = (frame: HTMLIFrameElement) => {
     try {
       const document = frame.contentDocument;
-      if (!document?.body) return;
+      if (!document?.body || document.URL === 'about:blank') return;
       // Reset the viewport before measuring so repeated resizes cannot ratchet
       // an already-expanded frame taller. No polling or animation loop.
       frame.style.height = '1px';
       const height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-      if (height > 0) frame.style.height = `${Math.min(4000, height + 8)}px`;
+      if (height > 0) frame.style.height = `${Math.min(16000, height + 8)}px`;
     } catch { /* The open-preview link remains available if the frame is inaccessible. */ }
   };
   for (const frame of frames) {

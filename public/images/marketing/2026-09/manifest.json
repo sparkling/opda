@@ -1,0 +1,294 @@
+{
+  "schemaVersion": 1,
+  "generated": "2026-09-10",
+  "provider": "OpenAI built-in image generation",
+  "generationMethod": "Each light artwork was generated in its own built-in image-generation call. Each dark counterpart was generated in a separate built-in edit call using its selected light artwork as the edit target. The Conveyancing light was refined once to remove pseudo-typography before its dark edit.",
+  "policyStatus": "Active Marketing-only artwork. Do not reuse between Marketing sections or on Join or Modelling pages. Campaign JPEGs and social-card exports made from a pack hero are expected derivatives of that campaign artwork.",
+  "promptPolicy": {
+    "light": "Use the subject and medium specified per asset. Compose a shallow panoramic editorial artwork with all essential subjects in the central horizontal band. Use a coherent OPDA palette of deep violet, ink, warm paper and yellow with restrained mineral blue, teal or coral. No logos, words, letters, numbers or watermark.",
+    "dark": "Edit the selected light image, preserving its exact subjects, geometry, gestures, crop, medium and semantic distinctions. Change only the ground, ink values and pigment or lighting treatment for a deep violet-charcoal theme with warm-ivory details and retained yellow accents. No neon, simple inversion, words, letters, numbers, logos or watermark.",
+    "export": "Sharp resize with fit cover and centre positioning, then WebP quality 88. No compositing, retouching or programmatic artwork changes."
+  },
+  "assets": [
+    {
+      "id": "landing-network",
+      "placement": "/marketing member-sharing introduction",
+      "subject": "Trusted professional networks passing varied property evidence and invitations into one shared public-interest workspace.",
+      "medium": "Tactile cut paper, selective risograph halftone and crisp ink marks.",
+      "alt": "People across professional networks bring varied property evidence into one shared public-interest project.",
+      "width": 1536,
+      "height": 512,
+      "light": {
+        "file": "/images/marketing/2026-09/landing-network-light.webp",
+        "bytes": 273618,
+        "sha256": "98b90604b3a1dcbf8b951d2b5a460307e6abfb1354c61746519b1f2dbce0f1fa"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/landing-network-light.webp",
+        "file": "/images/marketing/2026-09/landing-network-dark.webp",
+        "bytes": 256744,
+        "sha256": "248179f80e4f5d07d55f86c063cfbbb56bff55f8d8b4bff3c85fb6a7fd9fd05f"
+      }
+    },
+    {
+      "id": "share-with-members",
+      "placement": "/marketing/share-with-members",
+      "subject": "A professional body adapting a campaign kit and distributing it through its own member channels.",
+      "medium": "Two-colour risograph and relief-print collage.",
+      "alt": "A print-studio campaign kit radiating through envelopes and member portraits to show an organisation sharing through its own channels.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/tasks/share-with-members-light.webp",
+        "bytes": 115832,
+        "sha256": "c8319fdc8ac4eaaa9ba9f0cafe771cf56113cda12fb47eba47b72b5c73ff4252"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/tasks/share-with-members-light.webp",
+        "file": "/images/marketing/2026-09/tasks/share-with-members-dark.webp",
+        "bytes": 118210,
+        "sha256": "e66926ed935ef2aa0ea2d80fa4061d2c7c3ff66215e6dc1ef2f9970e7d8958a5"
+      }
+    },
+    {
+      "id": "invite-someone",
+      "placement": "/marketing/invite-someone",
+      "subject": "A thoughtful note moving from one colleague to another and into a small professional conversation.",
+      "medium": "Expressive pen-and-ink reportage with flat spot colour.",
+      "alt": "An ink-drawn sequence of a thoughtful note passing from one colleague to another and then into a small professional conversation.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/tasks/invite-someone-light.webp",
+        "bytes": 154062,
+        "sha256": "47327311c0d9d5f2f65c5bb3ddcda31c15818bd6487f57677817a2e050a233bc"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/tasks/invite-someone-light.webp",
+        "file": "/images/marketing/2026-09/tasks/invite-someone-dark.webp",
+        "bytes": 157416,
+        "sha256": "6d7b3f7abe267541c8357205ef171cb4c2fa05efc1d87ae56067478bdb47cd3d"
+      }
+    },
+    {
+      "id": "linkedin",
+      "placement": "/marketing/linkedin",
+      "subject": "A three-panel campaign progressing from invitation to a concrete property example and useful contribution.",
+      "medium": "Contemporary magazine collage, monochrome photography, torn paper and halftone.",
+      "alt": "An editorial triptych showing an invitation, a concrete property-information example and practitioners contributing to a shared model.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/tasks/linkedin-light.webp",
+        "bytes": 107880,
+        "sha256": "26b2faa3a83f9014f48abaef8d80522b91f61e1760b16ce3257e43e471cb811d"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/tasks/linkedin-light.webp",
+        "file": "/images/marketing/2026-09/tasks/linkedin-dark.webp",
+        "bytes": 107506,
+        "sha256": "f561ab4b48690eac2125403983f52b337714e4f1b9212b80d26d7682d9ae3794"
+      }
+    },
+    {
+      "id": "presentations",
+      "placement": "/marketing/presentations",
+      "subject": "A compact slide kit being used to open a useful meeting-room conversation.",
+      "medium": "Architectural paper craft and folded-card construction.",
+      "alt": "A paper-craft presentation kit in use around a meeting table, with the audience turning from the slides into discussion.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/tasks/presentations-light.webp",
+        "bytes": 62494,
+        "sha256": "f6ab9528b0cef16d74faf88ccd05037aec85ec21fc23a2db6e1056e365ceb555"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/tasks/presentations-light.webp",
+        "file": "/images/marketing/2026-09/tasks/presentations-dark.webp",
+        "bytes": 56010,
+        "sha256": "b434ae91cbd4ed4717b92b0c9393c061583a8e0f3f39a2203642c34b6abdf7a9"
+      }
+    },
+    {
+      "id": "employer-support",
+      "placement": "/marketing/employer-support",
+      "subject": "Two colleagues agreeing the value, time, authorised examples and boundaries for participation.",
+      "medium": "Textured coloured pencil and graphite editorial drawing.",
+      "alt": "Two colleagues use a coloured-pencil plan to discuss experience, time, authorised examples and boundaries for participation.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/tasks/employer-support-light.webp",
+        "bytes": 117654,
+        "sha256": "cbd35f78c8db6d52f7cddfb8581787fca8252e1907b4d164237c961ef28a3f14"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/tasks/employer-support-light.webp",
+        "file": "/images/marketing/2026-09/tasks/employer-support-dark.webp",
+        "bytes": 115628,
+        "sha256": "ee04a94612d578850fddc58e1dd5eee0219665c46b52b6608f0f9c24b3f80f4e"
+      }
+    },
+    {
+      "id": "brand",
+      "placement": "/marketing/brand",
+      "subject": "A disciplined identity and message system with separate light and dark plates and partner material.",
+      "medium": "Letterpress and screenprint still life with Swiss-editorial product photography.",
+      "alt": "A precision printmaking bench with separate light and dark identity plates, colour swatches, guides and a blank partner card.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/tasks/brand-light.webp",
+        "bytes": 46792,
+        "sha256": "681ab92d23abacb7c276c25f903e14d13fa88017f12bf29f4e7b39572770ae6d"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/tasks/brand-light.webp",
+        "file": "/images/marketing/2026-09/tasks/brand-dark.webp",
+        "bytes": 34798,
+        "sha256": "1aa237beb7c4c3da4b68910ad85ffc7ae0725a2660bd8adee33ab069884ca709"
+      }
+    },
+    {
+      "id": "general",
+      "placement": "/marketing/packs/general",
+      "subject": "Different property professions adding distinct evidence pieces to a shared layered property model.",
+      "medium": "Modular paper sculpture, screenprinted texture and graphite.",
+      "alt": "Different property professions add distinct evidence pieces to a shared layered model of one property.",
+      "width": 1536,
+      "height": 512,
+      "light": {
+        "file": "/images/marketing/2026-09/packs/general-light.webp",
+        "bytes": 179890,
+        "sha256": "92fbf69d76991c522e882a22f343453f981b392510cf110a66e9db6e4ffbe93a"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/packs/general-light.webp",
+        "file": "/images/marketing/2026-09/packs/general-dark.webp",
+        "bytes": 187340,
+        "sha256": "56441da6838879ef6f6d7190ecdf907240da258b2e06c774c49465b3db0cb975"
+      }
+    },
+    {
+      "id": "finance-and-banking",
+      "placement": "/marketing/packs/finance-and-banking",
+      "subject": "A valuation's property, location, basis and limitations remaining as distinct layers through a lending handoff.",
+      "medium": "Museum-display cutaway, etched linework and translucent vellum.",
+      "alt": "A property model passes between two hands with separate translucent layers for the evidence, context and limitations behind a lending decision.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/packs/finance-and-banking-light.webp",
+        "bytes": 74442,
+        "sha256": "7198806e15e07cb69714d957bf742c00a63237afb96c854c96a0b99380b49291"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/packs/finance-and-banking-light.webp",
+        "file": "/images/marketing/2026-09/packs/finance-and-banking-dark.webp",
+        "bytes": 86622,
+        "sha256": "e55821b2c6fba26f2bc9b142b0fc6db24bd0cc088325d0ed79574109bf1160d8"
+      }
+    },
+    {
+      "id": "conveyancing",
+      "placement": "/marketing/packs/conveyancing",
+      "subject": "Title records, searches, enquiries and supporting evidence retaining distinct roles through a property transfer.",
+      "medium": "Archival brush-and-ink reportage with tracing paper and screenprint.",
+      "alt": "An archival paper trail keeps title plans, searches, enquiries and supporting evidence distinct as a property changes hands.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/packs/conveyancing-light.webp",
+        "bytes": 101088,
+        "sha256": "56177169ab1d8e0a9812da258d0ec972d28873af045afb89b526b7002315cfa4"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/packs/conveyancing-light.webp",
+        "file": "/images/marketing/2026-09/packs/conveyancing-dark.webp",
+        "bytes": 96918,
+        "sha256": "91d7255b65d051eb9f3feb7d1fbd7a4cd8112bba1175fc8c58a5d3b268faf7f8"
+      }
+    },
+    {
+      "id": "estate-agency",
+      "placement": "/marketing/packs/estate-agency",
+      "subject": "One home's information changing from instruction through marketing and negotiation to later findings.",
+      "medium": "Bold screenprint, linocut figures and layered paper masks.",
+      "alt": "A screenprinted sequence follows one home from instruction and marketing through buyer discussion to later professional findings.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/packs/estate-agency-light.webp",
+        "bytes": 173078,
+        "sha256": "b97a49735a8af93d3a741924a554fc37f777c1bc1b6123cd88da7b6a257b149f"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/packs/estate-agency-light.webp",
+        "file": "/images/marketing/2026-09/packs/estate-agency-dark.webp",
+        "bytes": 188604,
+        "sha256": "f8bcd8fcaff8e8308bea8eee08bdb5c3c78712b0d6967613362b9124c0c9235c"
+      }
+    },
+    {
+      "id": "surveying-and-valuation",
+      "placement": "/marketing/packs/surveying-and-valuation",
+      "subject": "Observation, measurement, professional judgement and limitations as related but different inspection record elements.",
+      "medium": "Technical coloured pencil, graphite rubbing and measured-line field notebook.",
+      "alt": "A field-notebook spread separates property observations, measurements, professional judgement and inspection limits.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/packs/surveying-and-valuation-light.webp",
+        "bytes": 123310,
+        "sha256": "4e16505a4e888e634f81dd4fddf2cbca6089e753e4f6652a5fca575271e4198f"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/packs/surveying-and-valuation-light.webp",
+        "file": "/images/marketing/2026-09/packs/surveying-and-valuation-dark.webp",
+        "bytes": 132388,
+        "sha256": "3f6a386f02d7ef874c60ee15fb98d60f8dea6673f296a11b9f2086ff07ae9aa0"
+      }
+    },
+    {
+      "id": "property-data-services",
+      "placement": "/marketing/packs/property-data-services",
+      "subject": "Records with different sources, coverage and update cycles retaining provenance around one property and an ambiguous near-match.",
+      "medium": "Translucent acetate, cyanotype-like contact prints and brass connectors.",
+      "alt": "Translucent records from different sources surround one property while their provenance trails and an uncertain near-match remain visible.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/packs/property-data-services-light.webp",
+        "bytes": 111526,
+        "sha256": "f6950e54704a25c92275e24b64ff5fb131f4ae7ac9bb759d46b482d4327b1248"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/packs/property-data-services-light.webp",
+        "file": "/images/marketing/2026-09/packs/property-data-services-dark.webp",
+        "bytes": 120244,
+        "sha256": "1ef226bc0cbd838f60e3454bafb15acb70b3b3b9a625f8f1d05ccca0e7ff84c1"
+      }
+    },
+    {
+      "id": "property-technology",
+      "placement": "/marketing/packs/property-technology",
+      "subject": "Building, dwelling and boundary concepts remaining distinct while practitioners align their meanings before integration.",
+      "medium": "Tactile clay-and-card product sculpture with technical ink overlays.",
+      "alt": "Distinct models of a building, a dwelling and a property boundary are aligned before their systems are connected.",
+      "width": 1200,
+      "height": 300,
+      "light": {
+        "file": "/images/marketing/2026-09/packs/property-technology-light.webp",
+        "bytes": 59008,
+        "sha256": "8dee22a45e061fa48d5e245b2710cb3a5e481221a5b03db2da783e33071fe4e4"
+      },
+      "dark": {
+        "editedFrom": "/images/marketing/2026-09/packs/property-technology-light.webp",
+        "file": "/images/marketing/2026-09/packs/property-technology-dark.webp",
+        "bytes": 69210,
+        "sha256": "136b74d0e72460b8328a43ca35e51119f4d121dcbe4f15af91da1a774f847381"
+      }
+    }
+  ]
+}

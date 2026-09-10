@@ -83,9 +83,12 @@ export function matchesScriptFreeEmailPreview(actual, expected) {
 export function emailPreviewPath(url, origin) {
   try {
     const parsed = new URL(url);
-    const match = /^\/marketing\/([^/]+)\/email\/member\.html$/u.exec(parsed.pathname);
-    return parsed.origin === origin && !parsed.username && !parsed.password && !parsed.search && !parsed.hash && match
-      && marketingPackIds.has(match[1]) ? parsed.pathname : null;
+    const match = /^\/marketing\/([^/]+)\/(?:email\/(?:member|opda|personal)|newsletter\/(?:short|long)|linkedin\/(?:opda|partner))\.html$/u
+      .exec(parsed.pathname);
+    const isEmployerPreview = parsed.pathname === '/marketing/general/email/employer.html';
+    const isAllowedPath = isEmployerPreview || Boolean(match && marketingPackIds.has(match[1]));
+    return parsed.origin === origin && !parsed.username && !parsed.password && !parsed.search && !parsed.hash
+      && isAllowedPath ? parsed.pathname : null;
   } catch { return null; }
 }
 
@@ -113,9 +116,17 @@ export function watchRuntime(page, { verifyEmailSandboxDiagnostics = false } = {
   });
   page.on('response', (response) => {
     const type = response.request().resourceType();
-    const preview = verifyEmailSandboxDiagnostics && emailPreviewPath(response.url(), new URL(page.url()).origin);
-    if (preview && type === 'document' && response.status() === 200 && response.request().frame().parentFrame()
-      && /^text\/html(?:;|$)/iu.test(response.headers()['content-type'] ?? '')) {
+    const pageUrl = new URL(page.url());
+    const isMarketingFrame = verifyEmailSandboxDiagnostics && type === 'document'
+      && response.request().frame().parentFrame() && pageUrl.pathname.startsWith('/marketing/');
+    const preview = isMarketingFrame && emailPreviewPath(response.url(), pageUrl.origin);
+    if (isMarketingFrame && !preview) {
+      criticalFailures.push(`unsupported marketing preview ${response.url()}`);
+    } else if (preview && response.status() !== 200) {
+      criticalFailures.push(`${response.status()} ${response.url()}`);
+    } else if (preview && !/^text\/html(?:;|$)/iu.test(response.headers()['content-type'] ?? '')) {
+      criticalFailures.push(`non-HTML marketing preview ${response.url()}`);
+    } else if (preview) {
       const verified = response.body().then((body) => matchesScriptFreeEmailPreview(
         body, readFileSync(new URL(`../../public${preview}`, import.meta.url)),
       )).catch(() => false);
@@ -143,6 +154,9 @@ export function watchRuntime(page, { verifyEmailSandboxDiagnostics = false } = {
     // the production sandbox, tracing and every other runtime gate unchanged.
     for (const { source, text } of sandboxDiagnostics) {
       if (!await previewResponses.get(source)) errors.push(`console: ${text} (${source})`);
+    }
+    for (const [source, verified] of previewResponses) {
+      if (!await verified) criticalFailures.push(`unverified marketing preview ${source}`);
     }
     assertClean();
   };

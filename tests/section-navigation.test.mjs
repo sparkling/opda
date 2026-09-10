@@ -8,8 +8,6 @@ import { getRouteStatus } from '../src/lib/site-ia.mjs';
 import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
 import { MODELLING_JOURNEYS } from '../src/lib/modelling-navigation.ts';
 import { SEMANTIC_MODELLING_JOURNEYS } from '../src/lib/section-navigation-journeys.ts';
-import { marketingPacks } from '../src/data/marketing/packs.mjs';
-import { marketingTasks } from '../src/data/marketing/tasks.mjs';
 import {
   SECTION_NAVIGATION,
   findNavigationPage,
@@ -87,7 +85,7 @@ test('the left section navigation implements all seven destinations from one reg
     spdtf: 241,
     'working-groups': 39,
     resources: 12,
-    marketing: 14,
+    marketing: 15,
   });
   const decisionDetail = /^\/modelling\/(?:adr|odr)\/[^/]+$/u;
   for (const url of new Set(legacyUrls.filter((url) => !decisionDetail.test(url)))) {
@@ -112,24 +110,11 @@ test('the left section navigation implements all seven destinations from one reg
     PDTF1_ROUTES.terms, PDTF1_ROUTES.validation,
     PDTF1_ROUTES.trust, PDTF1_ROUTES.use,
     '/resources', '/glossary',
-    '/marketing', '/marketing/invite-someone', '/marketing/share-with-members',
+    '/marketing', '/marketing/invite-someone', '/marketing/share-with-members', '/marketing/packs',
     '/marketing/linkedin', '/marketing/presentations', '/marketing/employer-support',
     '/marketing/brand', '/marketing/packs/general',
   ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
   assert.equal(compositeUrls.filter((url) => url.startsWith('/development/working-groups')).length, 39);
-});
-
-test('Marketing navigation follows the six canonical tasks and nests every campaign pack', () => {
-  const marketing = SECTION_NAVIGATION.marketing;
-  assert.deepEqual(marketing.groups.map(({ heading, url }) => [heading, url]), [
-    ['Overview', '/marketing'],
-    ...marketingTasks.map(({ id, title }) => [title, `/marketing/${id}`]),
-  ]);
-  const sharing = marketing.groups.find(({ url }) => url === '/marketing/share-with-members');
-  assert.deepEqual(sharing.items, marketingPacks.map(({ id, label }) => ({
-    url: `/marketing/packs/${id}`,
-    title: label,
-  })));
 });
 
 test('Governance overview is a leaf and its six task branches sit at the root', () => {
@@ -280,6 +265,7 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
     ['spdtf', 'Property Pack ontology', '/development/property-pack', '/development/property-pack/definition-and-scope'],
     ['working-groups', 'Member guide', '/development/working-groups/member-guide', '/development/working-groups/member-guide/getting-started'],
     ['working-groups', 'Group workspaces', '/development/working-groups', '/development/working-groups/finance-and-banking'],
+    ['marketing', 'Campaign packs by audience', '/marketing/packs', '/marketing/packs/general'],
     ['spdtf', 'Third-party inputs', PDTF1_ROUTES.inputRoot, PDTF1_ROUTES.root],
     ['governance', 'UK initiative context', '/governance/uk-initiative', '/governance/legislation'],
     ['resources', 'Library', '/library', '/library/library-overview'],
