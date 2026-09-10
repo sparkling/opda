@@ -4,6 +4,7 @@ import test from 'node:test';
 import { marketingPacks, getMarketingPack, employerBrief } from '../src/data/marketing/packs.mjs';
 import { marketingTasks } from '../src/data/marketing/tasks.mjs';
 import { marketingBroadcasters } from '../src/data/marketing/broadcasters.mjs';
+import { operationalEmails } from '../src/data/marketing/operational-emails.mjs';
 import { workingGroupContexts } from '../src/data/working-group-campaign.ts';
 import { GLOBAL_DESTINATIONS, getActiveDestination, getRouteStatus } from '../src/lib/site-ia.mjs';
 import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
@@ -32,6 +33,7 @@ test('Marketing navigation separates task, audience and broadcaster without dupl
     ['By task', '/marketing'],
     ['By audience', '/marketing/packs'],
     ['By broadcaster', '/marketing/broadcasters'],
+    ['Service emails', '/marketing/operational-emails'],
   ]);
   assert.deepEqual(marketing.groups[0].items, marketingTasks.map(({ id, title }) => ({
     url: `/marketing/${id}`,
@@ -45,6 +47,9 @@ test('Marketing navigation separates task, audience and broadcaster without dupl
     url: `/marketing/broadcasters/${id}`,
     title,
   })));
+  assert.deepEqual(marketing.groups[3].items, operationalEmails.map(({ url, title }) => ({ url, title })));
+  assert.ok(findNavigationPage('/marketing/operational-emails'));
+  for (const email of operationalEmails) assert.ok(findNavigationPage(email.url));
   for (const broadcaster of marketingBroadcasters) {
     assert.ok(findNavigationPage(`/marketing/broadcasters/${broadcaster.id}`));
     assert.ok(SITE_SEARCH_ENTRIES.some(({ url }) => url === `/marketing/broadcasters/${broadcaster.id}`));

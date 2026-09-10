@@ -1,7 +1,7 @@
 {
   "schemaVersion": "opda.marketing-assets.v1",
   "inputDigest": "b57b4090a684a47ff17a0745ffa352be0593b8bf6007b295ee3f1a29a3fcdff8",
-  "generatorDigest": "e8c916b0af0370b53a92a165c10415d08216862c867c16102a52658c4e56701d",
+  "generatorDigest": "19f720d20c99db294fa5f73ce8f54351dac3a8079dd625a3db9b0aa524bd9905",
   "packCount": 7,
   "totalFiles": 284,
   "totalBytes": 40431356,
@@ -20,7 +20,7 @@
       "path": "/marketing/general/",
       "archive": {
         "path": "general/general-campaign-pack.zip",
-        "sha256": "ea2f2a5492a4450a5ba22f9dd844e3f65a09a26c1b975c560325d6c891569a87",
+        "sha256": "7ee67dc40e67ccf5e40c0177d3b0673408014bdddd7b7c6f35687a76e5a3e09d",
         "bytes": 3373272
       },
       "manifest": "/marketing/general/manifest.json",
@@ -34,7 +34,7 @@
       "path": "/marketing/finance-and-banking/",
       "archive": {
         "path": "finance-and-banking/finance-and-banking-campaign-pack.zip",
-        "sha256": "9c526cee6d6f0252732942130e6bf620fe41ea4657baf84dd0b0a3ab9feaef02",
+        "sha256": "48ed4c06134eb5f7a2c29f70ed345c5914b5bb899a9422aa4010df7f7c90df3e",
         "bytes": 2070087
       },
       "manifest": "/marketing/finance-and-banking/manifest.json",
@@ -48,7 +48,7 @@
       "path": "/marketing/conveyancing/",
       "archive": {
         "path": "conveyancing/conveyancing-campaign-pack.zip",
-        "sha256": "a5e36020258e599a7a778f56af66b8e86dd88dccde32e54afd1529f58f71eaca",
+        "sha256": "2857360920072ddeeb4ac43a21ceda3497349a7f956260012fb1d1884fd0c3ca",
         "bytes": 2738470
       },
       "manifest": "/marketing/conveyancing/manifest.json",
@@ -62,7 +62,7 @@
       "path": "/marketing/estate-agency/",
       "archive": {
         "path": "estate-agency/estate-agency-campaign-pack.zip",
-        "sha256": "39e6e00e5dc318c88bfd2ec134b368ae078e93d99e96f0820f505f4b5f30107e",
+        "sha256": "628f0d09fc6f76d8e0dcdd814f5e426d19de776314ac702b776b0e7b631f9691",
         "bytes": 4299523
       },
       "manifest": "/marketing/estate-agency/manifest.json",
@@ -76,7 +76,7 @@
       "path": "/marketing/surveying-and-valuation/",
       "archive": {
         "path": "surveying-and-valuation/surveying-and-valuation-campaign-pack.zip",
-        "sha256": "ef62d11532bc86e7a93733e7594ddf361a98a0abcf297567662f3508d78f8839",
+        "sha256": "7ea7b17145322e600f1dfe1c0fcbbe869003f59ef3d22e5fd93f386390030985",
         "bytes": 3002160
       },
       "manifest": "/marketing/surveying-and-valuation/manifest.json",
@@ -90,7 +90,7 @@
       "path": "/marketing/property-data-services/",
       "archive": {
         "path": "property-data-services/property-data-services-campaign-pack.zip",
-        "sha256": "354dc331f41d15f0aeefafd3d434af05bc15b3605789d037c79a5661deab5a50",
+        "sha256": "504d3ad5de91af561d86ae3a06fdf60610a52daefefb54a294d09b5720460310",
         "bytes": 2814978
       },
       "manifest": "/marketing/property-data-services/manifest.json",
@@ -104,7 +104,7 @@
       "path": "/marketing/property-technology/",
       "archive": {
         "path": "property-technology/property-technology-campaign-pack.zip",
-        "sha256": "99224c60b9d897414d3884d6bbbf13e4173ae1a358a63b1e0ed5ac1d22a19ff3",
+        "sha256": "483536864c897352bbe2eb0352b8cf35ef389003945225bd520b9e3c7eba6e37",
         "bytes": 1934185
       },
       "manifest": "/marketing/property-technology/manifest.json",

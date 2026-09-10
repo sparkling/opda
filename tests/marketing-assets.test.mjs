@@ -8,6 +8,7 @@ import sharp from 'sharp';
 
 import { employerBrief, marketingPacks } from '../src/data/marketing/packs.mjs';
 import { marketingTasks } from '../src/data/marketing/tasks.mjs';
+import { operationalEmails } from '../src/data/marketing/operational-emails.mjs';
 import {
   EXPECTED_PACK_IDS,
   checkMarketingAssets,
@@ -154,7 +155,11 @@ test('generated manifest is complete, hashed and current', async () => {
   assert.doesNotThrow(() => checkMarketingAssets({ packs: marketingPacks, rootDir: ROOT, outputDir: OUTPUT }));
 
   const emitted = await filesBelow(OUTPUT);
-  assert.equal(emitted.length, manifest.totalFiles, 'summary file count must match the emitted asset set');
+  const operationalPaths = operationalEmails.map(({ preview }) => preview.replace('/marketing/', '')).sort();
+  assert.deepEqual(emitted.filter((name) => name.startsWith('operational-emails/')), operationalPaths,
+    'the separately verified operational gallery must contain only its nineteen known samples');
+  const campaignFiles = emitted.filter((name) => !operationalPaths.includes(name));
+  assert.equal(campaignFiles.length, manifest.totalFiles, 'campaign summary count must match the campaign asset set');
   assert.doesNotMatch((await Promise.all(emitted
     .filter((name) => /\.(?:html|txt|eml|json)$/u.test(name))
     .map((name) => text(name)))).join('\n'), FORBIDDEN);

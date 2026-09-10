@@ -1,0 +1,20 @@
+---
+import MarketingLayout from '@/layouts/MarketingLayout.astro';
+import MarketingPreview from '@/components/marketing/MarketingPreview.astro';
+import Callout from '@/components/Callout.astro';
+import { operationalEmails } from '@/data/marketing/operational-emails.mjs';
+
+export function getStaticPaths() {
+  return operationalEmails.map((email) => ({ params: { id: email.id }, props: { email } }));
+}
+const { email } = Astro.props;
+---
+<MarketingLayout title={email.title} description={email.description}>
+  <h1>{email.title}</h1>
+  <p class="lead">{email.description}</p>
+  <Callout title="Illustrative sample, not an invitation" tone="information">
+    <p>This sample uses the service’s original template with the fictional name Alex Morgan. All links inside it are disabled, including workspace, contact and unsubscribe actions. Downloading or viewing it does not grant or change access.</p>
+  </Callout>
+  <p><strong>Email subject:</strong> {email.subject}</p>
+  <MarketingPreview id={email.id} title={email.title} preview={email.preview} plainText={false} />
+</MarketingLayout>

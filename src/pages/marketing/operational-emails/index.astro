@@ -1,0 +1,20 @@
+---
+import MarketingLayout from '@/layouts/MarketingLayout.astro';
+import CampaignSectionHeading from '@/components/campaign/CampaignSectionHeading.astro';
+import DestinationCards from '@/components/ia/DestinationCards.astro';
+import Callout from '@/components/Callout.astro';
+import { operationalEmails, operationalEmailSections } from '@/data/marketing/operational-emails.mjs';
+---
+<MarketingLayout title="Operational emails" description="See the working-group invitation and access-change emails participants can expect from OPDA.">
+  <h1>Operational emails</h1>
+  <p class="lead">See the emails participants receive about working-group approval and changes to their access.</p>
+  <Callout title="Service communications, not campaign material" tone="information">
+    <p>These are illustrative samples of the templates used by our approval and access-change services. They are not invitations to share or proof of anyone’s access. Names are fictional and every link inside a sample is disabled.</p>
+  </Callout>
+  <p>The samples preserve the original email layout, rather than restyling the messages to match this website. They show the website-owned working-group communications, not Microsoft’s or a sign-in provider’s own messages.</p>
+  {operationalEmailSections.map((section) => <section aria-labelledby={section.id}>
+    <CampaignSectionHeading eyebrow="What participants receive" title={section.title} id={section.id} size="compact" />
+    <p>{section.description}</p>
+    <DestinationCards cards={operationalEmails.filter(({ kind }) => kind === section.kind).map(({ url, title, description }) => ({ url, title, description, audience: 'Illustrative email sample', action: 'View email sample' }))} />
+  </section>)}
+</MarketingLayout>

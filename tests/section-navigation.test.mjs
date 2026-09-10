@@ -8,6 +8,7 @@ import { getRouteStatus } from '../src/lib/site-ia.mjs';
 import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
 import { MODELLING_JOURNEYS } from '../src/lib/modelling-navigation.ts';
 import { SEMANTIC_MODELLING_JOURNEYS } from '../src/lib/section-navigation-journeys.ts';
+import { operationalEmails } from '../src/data/marketing/operational-emails.mjs';
 import {
   SECTION_NAVIGATION,
   findNavigationPage,
@@ -85,7 +86,7 @@ test('the left section navigation implements all seven destinations from one reg
     spdtf: 241,
     'working-groups': 39,
     resources: 12,
-    marketing: 19,
+    marketing: 20 + operationalEmails.length,
   });
   const decisionDetail = /^\/modelling\/(?:adr|odr)\/[^/]+$/u;
   for (const url of new Set(legacyUrls.filter((url) => !decisionDetail.test(url)))) {
@@ -114,6 +115,7 @@ test('the left section navigation implements all seven destinations from one reg
     '/marketing/linkedin', '/marketing/presentations', '/marketing/employer-support',
     '/marketing/brand', '/marketing/packs/general',
     '/marketing/broadcasters', '/marketing/broadcasters/opda', '/marketing/broadcasters/organisations', '/marketing/broadcasters/individuals',
+    '/marketing/operational-emails', ...operationalEmails.map(({ url }) => url),
   ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
   assert.equal(compositeUrls.filter((url) => url.startsWith('/development/working-groups')).length, 39);
 });

@@ -11,6 +11,31 @@ async function exposeCompactHeaderControls(page) {
 }
 
 test.describe('runtime continuity boundaries', () => {
+  test('operational email samples are separate, inert and use the shared preview', async ({ page }) => {
+    const clean = watchRuntime(page, { verifyEmailSandboxDiagnostics: true });
+    await visit(page, '/marketing/operational-emails');
+    await expect(page.locator('article.marketing > h1')).toHaveText('Operational emails');
+    await expect(page.locator('article.marketing iframe')).toHaveCount(0);
+    await expect(page.locator('article.marketing .destination-card-grid a')).toHaveCount(19);
+    for (const id of ['conveyancing-invitation-company-folder', 'conveyancing-invitation-teams-only', 'website-login-disabled']) {
+      await visit(page, `/marketing/operational-emails/${id}`);
+      const preview = page.locator('iframe[data-email-preview]');
+      await expect(preview).toHaveCount(1);
+      await preview.scrollIntoViewIfNeeded();
+      const sample = page.frameLocator('iframe[data-email-preview]');
+      await expect(sample.locator('body')).toContainText('Alex Morgan');
+      await expect(sample.locator('body')).toContainText('Illustrative sample');
+      await expect(sample.locator('a[href], script, form')).toHaveCount(0);
+      await expect(page.locator('details.marketing-plain-text')).toHaveCount(0);
+      for (const theme of ['light', 'dark']) {
+        await page.evaluate(value => document.documentElement.setAttribute('data-theme', value), theme);
+        await page.setViewportSize({ width: 320, height: 900 });
+        await assertNoBodyOverflow(page);
+      }
+    }
+    await clean();
+  });
+
   test('marketing rich previews remain bounded and plain-text copy is disclosed first', async ({ page }) => {
     const clean = watchRuntime(page, { verifyEmailSandboxDiagnostics: true });
     await visit(page, '/marketing/packs/general');

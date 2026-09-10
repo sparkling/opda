@@ -1,4 +1,5 @@
 import { marketingPacks } from './packs.mjs';
+import { operationalEmails } from './operational-emails.mjs';
 
 // One asset identity per post, shared by generation, page composition and the
 // exact preview allowlist. Aggregate exports remain valid existing URLs.
@@ -11,6 +12,7 @@ export function linkedInPostAssets(pack, voice) {
 }
 
 const permitted = new Set([
+  ...operationalEmails.map(({ preview }) => preview),
   '/marketing/general/email/employer.html',
   ...marketingPacks.flatMap((pack) => [
     ...['email/member', 'email/opda', 'email/personal', 'newsletter/short', 'newsletter/long', 'linkedin/opda', 'linkedin/partner']

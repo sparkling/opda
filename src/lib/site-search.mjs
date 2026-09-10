@@ -10,6 +10,7 @@ import { GLOBAL_DESTINATIONS, getActiveDestination, getRouteStatus } from './sit
 import { marketingDomains } from '../data/marketing/domains.mjs';
 import { marketingTasks } from '../data/marketing/tasks.mjs';
 import { marketingBroadcasters } from '../data/marketing/broadcasters.mjs';
+import { operationalEmails } from '../data/marketing/operational-emails.mjs';
 import {
   COLLECTIONS, DOMAINS, FACETS, KINDS, PAGE_TYPES, RESULT_TYPES, STATUSES,
   SEARCH_INDEX_SCHEMA_VERSION, SEARCH_INDEX_URL,
@@ -35,6 +36,8 @@ const entry = (title, url, summary, aliases = []) => {
 
 /** Editorial entries: alternative terms merged into the generated index, and the dev fallback. */
 export const SITE_SEARCH_ENTRIES = Object.freeze([
+  entry('Operational emails', '/marketing/operational-emails', 'Illustrative samples of working-group invitations and access-change notices, not campaign materials', ['approval', 'service emails', 'withdrawal']),
+  ...operationalEmails.map(({ title, url, description }) => entry(title, url, description, ['operational email', 'sample'])),
   entry('Programme', '/programme', 'Purpose, schema-to-scheme progression, roadmap and UK Smart Data context', ['PDTF', 'SPDTF']),
   entry('Development', '/development', 'First collaboratively authored scheme draft, using domain-led and evidence-up semantic modelling', ['SPDTF', 'PDTF', 'ontology']),
   entry('Property Pack ontology', '/development/property-pack', 'Accelerated SPDTF component awaiting Technical Working Group determination', ['Property Pack', 'PDTF', 'ontology']),
