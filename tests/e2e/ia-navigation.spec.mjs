@@ -36,7 +36,7 @@ test('the sole knowledge home mirrors the seven global destinations', async ({ p
 });
 
 test('aria-current follows canonical route ownership', async ({ page }) => {
-  const clean = watchRuntime(page);
+  const clean = watchRuntime(page, { verifyEmailSandboxDiagnostics: true });
   const cases = [
     ['/programme', 'Programme'],
     ['/governance', 'Governance'],
@@ -60,7 +60,7 @@ test('aria-current follows canonical route ownership', async ({ page }) => {
     await expect(active).toHaveCount(1);
     await expect(active).toHaveText(label);
   }
-  clean();
+  await clean();
 });
 
 test('left section navigation covers every canonical destination', async ({ page }) => {
@@ -92,7 +92,7 @@ test('left section navigation covers every canonical destination', async ({ page
 });
 
 test('left navigation follows route ownership with one active link', async ({ page }) => {
-  const clean = watchRuntime(page);
+  const clean = watchRuntime(page, { verifyEmailSandboxDiagnostics: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   for (const [route, section, label] of [
     ['/strategy/project-roadmap', 'programme', 'Project roadmap'],
@@ -120,7 +120,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
   await expect(page.locator('#sidebar-collapse')).toHaveAttribute('aria-expanded', 'false');
   await expect(page.locator('#sidebar-collapse')).toHaveAccessibleName('In this section');
   await expect(page.locator('#sidebar-collapse')).not.toHaveAttribute('aria-label', /.+/u);
-  clean();
+  await clean();
 });
 
 test('PDTF schema navigation separates supporting material from the schema-derived ontology', async ({ page }) => {

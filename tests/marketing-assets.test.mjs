@@ -12,6 +12,7 @@ import {
   verifySourceAssetRecord,
 } from '../scripts/marketing/build-assets.mjs';
 import { sha256 } from '../scripts/marketing/lib.mjs';
+import { emailPreviewPath, isScriptFreeEmailPreview, matchesScriptFreeEmailPreview } from './e2e/support.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const OUTPUT = path.join(ROOT, 'public', 'marketing');
@@ -164,10 +165,27 @@ test('every email voice is a ready-to-open multipart message with inline PNG and
       assert.match(html, /src="data:image\/jpeg;base64,/u);
       assert.doesNotMatch(html, /src=["']https?:/iu);
       assert.doesNotMatch(html, /cid:/iu);
+      assert.equal(isScriptFreeEmailPreview(html), true, 'email previews must remain script-free inside the sandbox');
       assert.ok(plain.includes(pack.signupUrl));
       assert.doesNotMatch(`${message}\n${html}\n${plain}`, FORBIDDEN);
     }
   }
+});
+
+test('sandbox diagnostics can only recognise known script-free email documents', () => {
+  const origin = 'https://opda.org.uk';
+  assert.equal(emailPreviewPath(`${origin}/marketing/general/email/member.html`, origin), '/marketing/general/email/member.html');
+  for (const url of [`${origin}/marketing/unknown/email/member.html`, `${origin}/marketing/general/slides.html`, `${origin}/marketing/general/email/member.html?changed`, 'https://example.com/marketing/general/email/member.html', 'https://user@opda.org.uk/marketing/general/email/member.html']) {
+    assert.equal(emailPreviewPath(url, origin), null);
+  }
+  for (const html of ['<script>alert(1)</script>', '<img onerror="alert(1)">', '<a href="java&#x73;cript:alert(1)">link</a>', '<iframe srcdoc="text"></iframe>', '<meta http-equiv="refresh" content="0;url=/join">']) {
+    assert.equal(isScriptFreeEmailPreview(html), false);
+  }
+  const expected = Buffer.from('<html><body><p>Invitation</p></body></html>');
+  assert.equal(matchesScriptFreeEmailPreview(expected, expected), true);
+  assert.equal(matchesScriptFreeEmailPreview(Buffer.from('<p>Different response</p>'), expected), false);
+  const active = Buffer.from('<script>alert(1)</script>');
+  assert.equal(matchesScriptFreeEmailPreview(active, active), false);
 });
 
 test('each pack includes portable campaign copy, editable slides and a deterministic bundle', async () => {

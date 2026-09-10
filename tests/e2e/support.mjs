@@ -1,4 +1,7 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { parse } from 'parse5';
+import { marketingDomains } from '../../src/data/marketing/domains.mjs';
 import { PDTF1_ROUTES } from '../../src/lib/pdtf1-routes.mjs';
 import { MODELLING_CHAPTERS } from '../../src/lib/modelling-navigation.ts';
 
@@ -59,9 +62,38 @@ export const ROUTES = [
   '/presentation/working-group-kickoff',
 ];
 
-export function watchRuntime(page) {
+const marketingPackIds = new Set(marketingDomains.map(({ id }) => id));
+
+export function isScriptFreeEmailPreview(html) {
+  const inspect = (node) => {
+    if (['script', 'iframe', 'object', 'embed', 'base', 'form', 'link', 'template'].includes(node.tagName)) return false;
+    for (const { name, value } of node.attrs ?? []) {
+      if (/^on/iu.test(name) || name === 'srcdoc' || name === 'http-equiv') return false;
+      if (['href', 'src'].includes(name) && /^(?:javascript|vbscript|data:text\/html):?/iu.test(value.replace(/[\s\x00-\x1f]/gu, ''))) return false;
+    }
+    return (node.childNodes ?? []).every(inspect);
+  };
+  return inspect(parse(html));
+}
+
+export function matchesScriptFreeEmailPreview(actual, expected) {
+  return actual.equals(expected) && isScriptFreeEmailPreview(actual.toString('utf8'));
+}
+
+export function emailPreviewPath(url, origin) {
+  try {
+    const parsed = new URL(url);
+    const match = /^\/marketing\/([^/]+)\/email\/member\.html$/u.exec(parsed.pathname);
+    return parsed.origin === origin && !parsed.username && !parsed.password && !parsed.search && !parsed.hash && match
+      && marketingPackIds.has(match[1]) ? parsed.pathname : null;
+  } catch { return null; }
+}
+
+export function watchRuntime(page, { verifyEmailSandboxDiagnostics = false } = {}) {
   const errors = [];
   const criticalFailures = [];
+  const previewResponses = new Map();
+  const sandboxDiagnostics = [];
   const criticalResourceTypes = ['document', 'script', 'stylesheet', 'font', 'image'];
   page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
   page.on('console', (message) => {
@@ -71,10 +103,25 @@ export function watchRuntime(page) {
     // type, so avoid a duplicate, unactionable failure here.
     if (message.text().startsWith('Failed to load resource:')) return;
     const source = message.location().url;
+    const sandbox = /^Blocked script execution in '([^']+)' because the document's frame is sandboxed and the 'allow-scripts' permission is not set\.$/u.exec(message.text());
+    if (verifyEmailSandboxDiagnostics && sandbox?.[1] === source
+      && emailPreviewPath(source, new URL(page.url()).origin)) {
+      sandboxDiagnostics.push({ source, text: message.text() });
+      return;
+    }
     errors.push(`console: ${message.text()}${source ? ` (${source})` : ''}`);
   });
   page.on('response', (response) => {
     const type = response.request().resourceType();
+    const preview = verifyEmailSandboxDiagnostics && emailPreviewPath(response.url(), new URL(page.url()).origin);
+    if (preview && type === 'document' && response.status() === 200 && response.request().frame().parentFrame()
+      && /^text\/html(?:;|$)/iu.test(response.headers()['content-type'] ?? '')) {
+      const verified = response.body().then((body) => matchesScriptFreeEmailPreview(
+        body, readFileSync(new URL(`../../public${preview}`, import.meta.url)),
+      )).catch(() => false);
+      const earlier = previewResponses.get(response.url()) ?? Promise.resolve(true);
+      previewResponses.set(response.url(), Promise.all([earlier, verified]).then((results) => results.every(Boolean)));
+    }
     if (criticalResourceTypes.includes(type) && response.status() >= 400) {
       criticalFailures.push(`${response.status()} ${response.url()}`);
     }
@@ -84,9 +131,20 @@ export function watchRuntime(page) {
       criticalFailures.push(`${request.failure()?.errorText || 'request failed'} ${request.url()}`);
     }
   });
-  return () => {
+  const assertClean = () => {
     assert.deepEqual(criticalFailures, [], criticalFailures.join('\n'));
     assert.deepEqual(errors, [], errors.join('\n'));
+  };
+  if (!verifyEmailSandboxDiagnostics) return assertClean;
+  return async () => {
+    // Playwright's main-world trace script can be blocked even in an empty
+    // sandbox (microsoft/playwright#33343). Recognise only this exact message
+    // after verifying the actual HTTP body is our script-free preview. Keep
+    // the production sandbox, tracing and every other runtime gate unchanged.
+    for (const { source, text } of sandboxDiagnostics) {
+      if (!await previewResponses.get(source)) errors.push(`console: ${text} (${source})`);
+    }
+    assertClean();
   };
 }
 

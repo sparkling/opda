@@ -4,7 +4,7 @@ import '../styles/marketing.css';
 interface Props { title: string; description: string; landing?: boolean; }
 const { title, description, landing = false } = Astro.props;
 ---
-<Layout title={title} description={description} hideSidebar={landing} hideTableOfContents hideBreadcrumbs={landing} proseClass="prose wide marketing">
+<Layout title={title} description={description} hideTableOfContents hideBreadcrumbs={landing} proseClass="prose wide marketing">
   <div data-marketing-page class="marketing-flow"><slot /></div>
 </Layout>
 <script>

@@ -65,10 +65,13 @@ test('Marketing pages reuse the site shell and static content, with no campaign 
   }
   const layout = read('src/layouts/MarketingLayout.astro');
   assert.match(layout, /Layout\.astro/);
+  assert.doesNotMatch(layout, /hideSidebar/);
   for (const path of ['src/pages/marketing/[task].astro', 'src/pages/marketing/packs/[id].astro']) {
     assert.match(read(path), /renderEmailPlain/);
     assert.doesNotMatch(read(path), /const messageText/);
   }
+  assert.match(read('src/pages/marketing/packs/[id].astro'), /sandbox="allow-same-origin"/);
+  assert.doesNotMatch(read('src/pages/marketing/packs/[id].astro'), /allow-scripts/);
   const script = read('src/scripts/marketing.ts');
   assert.doesNotMatch(script, /postmark|hubspot|fetch\(|requestAnimationFrame|setInterval/i);
   assert.match(script, /clipboard/);
