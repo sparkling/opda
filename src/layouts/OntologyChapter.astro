@@ -37,5 +37,6 @@ const artwork = getModellingPageArtwork(Astro.url.pathname);
     <p class="og-basis"><a href="/semantic-modelling/method/standards-and-decisions#authority">Method basis</a><span aria-hidden="true"> · </span><span>Updated <time datetime={updated}>{updatedLabel}</time></span></p>
   </header>
   <PageIllustration artwork={artwork} />
+  <div class="og-toc-slot" data-inline-toc></div>
   <div class="og-content document-flow"><slot /></div>
 </Layout>

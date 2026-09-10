@@ -166,6 +166,28 @@ function setup({ readyState = 'complete', config = false, loader = false } = {})
   return { document, window, state, frames, media, observers, requests, storage, warnings, originalBridge, beforeSwap, navigate };
 }
 
+test('mobile chapter navigation is inserted after the introduction', async () => {
+  const h = setup({ readyState: 'loading' });
+  const p = h.state.page;
+  const intro = new ElementStub('header'), content = new ElementStub('div'), slot = new ElementStub('div');
+  slot.dataset.inlineToc = '';
+  content.className = 'og-content';
+  p.article.appendChild(intro); p.article.appendChild(slot); p.article.appendChild(content);
+  const matchMedia = h.window.matchMedia;
+  h.window.matchMedia = query => {
+    const result = matchMedia(query);
+    if (query === '(min-width: 1281px)') result.matches = false;
+    return result;
+  };
+  h.document.fire('DOMContentLoaded'); await tick();
+  const toc = p.article.querySelector('.toc');
+  assert.ok(toc);
+  assert.equal(toc.parentElement, slot);
+  assert.equal(toc.children[0].getAttribute('aria-expanded'), 'false');
+  toc.children[0].fire('click');
+  assert.equal(toc.children[0].getAttribute('aria-expanded'), 'true');
+});
+
 test('first-load lifecycle events initialise once and current theme, navigation and TOC controls work', async () => {
   const h = setup({ readyState: 'loading' });
   assert.equal(h.media.length, 0);

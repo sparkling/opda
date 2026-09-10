@@ -42,6 +42,11 @@
   text-align: start;
 }
 .ontology-chapter .og-content { margin-block-start: var(--space-7); container-type: inline-size; }
+.og-toc-slot { display: none; }
+@media (max-width: 1280px) {
+  .og-toc-slot { display: block; min-block-size: calc(var(--target-min) + 2px); }
+  .og-toc-slot > .toc { margin: 0; }
+}
 .ontology-chapter .og-content :where(section, .document-flow) { display: flow-root; }
 .ontology-chapter .og-content :where(p, ul, ol, dl, blockquote, aside) { max-inline-size: var(--og-measure); }
 .ontology-chapter .og-content :where(p, ul, ol, dl, blockquote, figure, aside, section, h2, h3, h4, pre, table) { margin-block: 0; }

@@ -656,6 +656,7 @@
       body?.classList.remove('with-toc', 'toc-collapsed');
     });
     const railQuery = window.matchMedia('(min-width: 1281px)');
+    const inlineSlot = article.querySelector('[data-inline-toc]');
     let collapsed = false;
     try {
       const stored = localStorage.getItem('opda-toc-collapsed');
@@ -678,8 +679,11 @@
         body.appendChild(toc);
         body.classList.add('with-toc');
       } else {
-        collapsed = false;
-        article.insertBefore(toc, article.firstChild);
+        collapsed = Boolean(inlineSlot);
+        // Keep the chapter title and lead illustration stable during startup.
+        // Mobile navigation belongs after that introduction, before the lessons.
+        if (inlineSlot) inlineSlot.appendChild(toc);
+        else article.insertBefore(toc, article.firstChild);
         body?.classList.remove('with-toc', 'toc-collapsed');
       }
       syncTocState(false);
