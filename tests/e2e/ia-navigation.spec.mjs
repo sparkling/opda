@@ -13,7 +13,7 @@ test('primary navigation exposes the seven destinations followed by Search', asy
   const actions = page.locator('.app-header__utilities > .header-actions');
   const cta = actions.locator('.header-cta');
   const membership = actions.locator('.header-membership');
-  await expect(links).toHaveCount(7);
+  await expect(links).toHaveCount(primary.length);
   await expect(links).toHaveText(primary.map(({ title }) => title));
   expect(await links.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href'))))
     .toEqual(primary.map(({ url }) => url));
@@ -29,7 +29,7 @@ test('the sole knowledge home mirrors the seven global destinations', async ({ p
   const clean = watchRuntime(page);
   await visit(page, '/');
   const publicDestinations = page.locator('.public-overview a.card');
-  await expect(publicDestinations).toHaveCount(6);
+  await expect(publicDestinations).toHaveCount(GLOBAL_DESTINATIONS.length);
   expect(await publicDestinations.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href'))))
     .toEqual(GLOBAL_DESTINATIONS.map(({ url }) => url));
   clean();
@@ -46,6 +46,8 @@ test('aria-current follows canonical route ownership', async ({ page }) => {
     ['/development/working-groups', 'Groups'],
     ['/development/working-groups/estate-agency', 'Groups'],
     ['/resources', 'Resources'],
+    ['/marketing', 'Marketing'],
+    ['/marketing/packs/general', 'Marketing'],
     ['/search', 'Search'],
     ['/strategy/strategy-overview', 'Programme'],
     ['/development/property-pack/validation', 'Development'],
@@ -71,6 +73,7 @@ test('left section navigation covers every canonical destination', async ({ page
     ['/development', 'spdtf', 'Overview', 'nav-group-link'],
     ['/development/working-groups', 'working-groups', 'Group workspaces', 'nav-group-link'],
     ['/resources', 'resources', 'Overview', 'nav-group-leaf'],
+    ['/marketing', 'marketing', 'Overview', 'nav-group-leaf'],
   ]) {
     await visit(page, route);
     const sidebar = page.locator('#app-sidebar');
@@ -99,6 +102,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
     ['/governance/decisions', 'governance', 'Decisions'],
     ['/engagement/meetings-decisions', 'governance', 'Programme decisions'],
     ['/engagement/transcripts', 'resources', 'Transcripts index'],
+    ['/marketing/packs/general', 'marketing', 'All property professions'],
   ]) {
     await visit(page, route);
     const navigation = page.locator('#section-navigation');

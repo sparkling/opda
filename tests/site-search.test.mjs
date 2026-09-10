@@ -28,6 +28,7 @@ const expectedDestinations = [
   ['spdtf', 'Development'],
   ['working-groups', 'Groups'],
   ['resources', 'Resources'],
+  ['marketing', 'Marketing'],
 ];
 
 test('site-search facets use Section once and preserve legacy page-type URLs', () => {
@@ -46,6 +47,7 @@ test('site-search facets use Section once and preserve legacy page-type URLs', (
     ['development', ['type', 'collection', 'kind', 'domain']],
     ['working-groups', ['type', 'domain']],
     ['resources', []],
+    ['marketing', []],
   ]);
 
   const typeParams = searchParamsFor('', { type: ['ontology', 'page'] });
@@ -100,6 +102,9 @@ test('site-search entries use canonical destinations and deterministic relevance
   const governance = searchEntries('', { type: 'page', destination: ['governance'] });
   assert.ok(governance.length > 1);
   assert.ok(governance.every(({ destination }) => destination === 'governance'));
+  const marketing = searchEntries('', { type: 'page', destination: ['marketing'] });
+  assert.ok(marketing.some(({ url }) => url === '/marketing'));
+  assert.ok(marketing.every(({ destination }) => destination === 'marketing'));
   assert.deepEqual(searchEntries('', { type: 'decision' }), []);
 
   const distinctWorkAreas = new Set([

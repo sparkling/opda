@@ -5,7 +5,7 @@
   "campaignStatus": "general",
   "signupUrl": "https://opda.org.uk/join",
   "inputDigest": "ffa5310a0f1348cdc673e39411d769719e53926ff72db7e4a1b113e36fdabb06",
-  "generatorDigest": "75b43f0b17e754da8b19736feb36b524c434d360e058ef332fef3e25b954cb64",
+  "generatorDigest": "a3c538db2cf1afcc7e16f1147b632b147ec773d16eb6160e2b595660cac51e1c",
   "sourceAssets": [
     {
       "path": "public/images/join/set-3/motivation-landscape-light.webp",
@@ -131,8 +131,8 @@
     },
     {
       "path": "slides.html",
-      "sha256": "6a979c05a41c8cf85c5363a123d69d947b1dda74af5657369336ebc3abc8c907",
-      "bytes": 247311
+      "sha256": "bde0f8af7e103956b1673f24860be3fe5851ae3d62226aaf38e0455c957d550a",
+      "bytes": 247255
     }
   ]
 }

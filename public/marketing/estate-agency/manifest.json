@@ -5,7 +5,7 @@
   "campaignStatus": "current-wave",
   "signupUrl": "https://opda.org.uk/join?context=estate-agency",
   "inputDigest": "5cbb6d01c577a7f92ef8e0e5d5a3e6fd0a3657fbc9ee2588506935a6eb202e46",
-  "generatorDigest": "75b43f0b17e754da8b19736feb36b524c434d360e058ef332fef3e25b954cb64",
+  "generatorDigest": "a3c538db2cf1afcc7e16f1147b632b147ec773d16eb6160e2b595660cac51e1c",
   "sourceAssets": [
     {
       "path": "public/images/join/set-3/estate-agency-light.webp",
@@ -131,8 +131,8 @@
     },
     {
       "path": "slides.html",
-      "sha256": "ea815ea9f7e3d3f58a921b835fb4d7f6d191ec4c626a29c41b9425628deb5117",
-      "bytes": 212598
+      "sha256": "1a5b5f98de09d4b4c5e9595eaa8722a72fe0cba9b6834f6d4f44b6bcffe4dc4d",
+      "bytes": 212542
     }
   ]
 }

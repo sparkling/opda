@@ -7,6 +7,8 @@
  * through `searchEntries` and describe cards through `describeRecord`.
  */
 import { GLOBAL_DESTINATIONS, getActiveDestination, getRouteStatus } from './site-ia.mjs';
+import { marketingDomains } from '../data/marketing/domains.mjs';
+import { marketingTasks } from '../data/marketing/tasks.mjs';
 import {
   COLLECTIONS, DOMAINS, FACETS, KINDS, PAGE_TYPES, RESULT_TYPES, STATUSES,
   SEARCH_INDEX_SCHEMA_VERSION, SEARCH_INDEX_URL,
@@ -119,6 +121,9 @@ export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Operating Model', '/governance/operating-model', 'Stewardship, meetings, engagement and attachment handling', ['governance', 'decision rights']),
   entry('Quality and security', '/governance/quality-and-security', 'Data-quality and data-security framework records', ['assurance', 'controls']),
   entry('Resources', '/resources', 'Source registry, glossary and machine-readable manifests', ['PDTF', 'SPDTF']),
+  entry('Marketing', '/marketing', 'Share recruitment materials, email templates, LinkedIn campaigns and presentations', ['promotion', 'campaign toolkit']),
+  ...marketingTasks.map(({ id, title, description }) => entry(title, `/marketing/${id}`, description, ['marketing', 'recruitment'])),
+  ...marketingDomains.map(({ id, label, scope }) => entry(`${label} campaign pack`, `/marketing/packs/${id}`, scope, ['marketing', 'email template', 'LinkedIn', 'presentation'])),
 ]);
 
 export function normalizeSearchText(value) {

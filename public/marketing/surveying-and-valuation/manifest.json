@@ -5,7 +5,7 @@
   "campaignStatus": "current-wave",
   "signupUrl": "https://opda.org.uk/join?context=surveying-and-valuation",
   "inputDigest": "fcbb79ce0ccbf6b095055c673ebf169257bd57294c262088381980af53921bff",
-  "generatorDigest": "75b43f0b17e754da8b19736feb36b524c434d360e058ef332fef3e25b954cb64",
+  "generatorDigest": "a3c538db2cf1afcc7e16f1147b632b147ec773d16eb6160e2b595660cac51e1c",
   "sourceAssets": [
     {
       "path": "public/images/join/set-3/surveying-and-valuation-light.webp",
@@ -131,8 +131,8 @@
     },
     {
       "path": "slides.html",
-      "sha256": "236b198808f2cc4ed86d60f8dd50d7d5fd11a3e698df6b2735a9e07bce524b91",
-      "bytes": 138985
+      "sha256": "846e884cdd83d0634af8c4afa4f7de111c8c361c17684ea782e8b8864860f704",
+      "bytes": 138929
     }
   ]
 }

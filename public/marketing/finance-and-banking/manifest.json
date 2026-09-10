@@ -5,7 +5,7 @@
   "campaignStatus": "existing-group",
   "signupUrl": "https://opda.org.uk/join?context=finance-and-banking",
   "inputDigest": "c790feeb67bd6e7128d5f113a9e9eee7fa1d2f80712161292bb3954fe0975a8b",
-  "generatorDigest": "75b43f0b17e754da8b19736feb36b524c434d360e058ef332fef3e25b954cb64",
+  "generatorDigest": "a3c538db2cf1afcc7e16f1147b632b147ec773d16eb6160e2b595660cac51e1c",
   "sourceAssets": [
     {
       "path": "public/images/join/set-3/finance-and-banking-light.webp",
@@ -131,8 +131,8 @@
     },
     {
       "path": "slides.html",
-      "sha256": "f5e56b6be0ec4ec47034069ae7a7e4e494f939ba6f0ecdd01c11f949966faeea",
-      "bytes": 175789
+      "sha256": "a39090b81850916ee8f7853e5cded72cf65720dd301fae9eda47e38f8a30cdc8",
+      "bytes": 175733
     }
   ]
 }

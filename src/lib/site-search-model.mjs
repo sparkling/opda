@@ -28,7 +28,7 @@ export const RESULT_TYPES = Object.freeze([
 ]);
 const ALL_RESULT_TYPES = Object.freeze(RESULT_TYPES.map(({ key }) => key));
 
-/** The six horizontal-navigation destinations, reused directly as search sections. */
+/** Canonical navigation destinations, reused directly as search sections. */
 export const DESTINATIONS = Object.freeze(GLOBAL_DESTINATIONS.map(({ key, title }) => option(key, title)));
 
 /** Corpus membership: the two model deliveries, the third-party schema input and the two decision registers. */
@@ -87,6 +87,7 @@ export const SEARCH_TABS = Object.freeze([
   tab('development', 'Development', { destination: ['spdtf'] }, ['type', 'collection', 'kind', 'domain']),
   tab('working-groups', 'Working groups', { destination: ['working-groups'] }, ['type', 'domain']),
   tab('resources', 'Resources', { type: ['page'], destination: ['resources'] }, []),
+  tab('marketing', 'Marketing', { type: ['page'], destination: ['marketing'] }, []),
 ]);
 export const SEARCH_TAB_PARAM = 'tab';
 export const tabFor = (key) => SEARCH_TABS.find((candidate) => candidate.key === key) ?? SEARCH_TABS[0];
