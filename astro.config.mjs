@@ -28,6 +28,7 @@ import { councilGenerator } from './src/integrations/generate-council.mjs';
 import { odrSourcesGenerator } from './src/integrations/generate-odr-sources.mjs';
 import { siteSearchIndexGenerator } from './src/integrations/generate-site-search-index.mjs';
 import { designSystemBundler } from './src/integrations/bundle-design-system.mjs';
+import { inlineSmallPageStyles } from './src/integrations/asset-inlining.mjs';
 
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
@@ -211,6 +212,7 @@ export default defineConfig({
   // and `/foo/` from the same file by default.
   build: {
     format: 'directory',
+    inlineStylesheets: 'auto',
   },
   trailingSlash: 'never',
   // Astro 7 changed the default to 'jsx' (strips whitespace between inline
@@ -245,6 +247,9 @@ export default defineConfig({
   },
   vite: {
     plugins: [serveProjectRoots, tailwindcss()],
+    build: {
+      assetsInlineLimit: inlineSmallPageStyles,
+    },
     server: {
       // Don't auto-open browser when running `astro dev`
       open: false,

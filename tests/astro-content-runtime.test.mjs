@@ -20,6 +20,19 @@ test('large documentation collections use Astro chunked storage', () => {
   assert.match(contentConfig, /export const collections = \{ manual, odr, adr \};/u);
 });
 
+test('only small emitted page styles trade an asset request for protected HTML bytes', async () => {
+  const { inlineSmallPageStyles } = await import('../src/integrations/asset-inlining.mjs');
+  const bytes = (length) => Buffer.alloc(length);
+  assert.equal(inlineSmallPageStyles('_astro/Layout.hash.css', bytes(8191)), true);
+  assert.equal(inlineSmallPageStyles('_astro/Layout.hash.css', bytes(8192)), false);
+  assert.equal(inlineSmallPageStyles('_astro/kickoff.hash.css', bytes(52_283)), false);
+  for (const name of ['_astro/page.js', '_astro/font.woff2', '_astro/image.webp', '/source.css']) {
+    assert.equal(inlineSmallPageStyles(name, bytes(6000)), undefined, name);
+  }
+  assert.match(astroConfig, /inlineStylesheets:\s*'auto'/u);
+  assert.match(astroConfig, /assetsInlineLimit:\s*inlineSmallPageStyles/u);
+});
+
 function featureHarness({ elements = false, diagrams = false, disabled = false, loaders = {} } = {}) {
   const page = new EventTarget();
   page.documentElement = { dataset: { pageElements: disabled ? 'disabled' : 'auto' } };
