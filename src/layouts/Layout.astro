@@ -135,7 +135,8 @@ const searchMeta = searchMetaEntries(search);
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <FontPreloads />
+  {/* The shared framework heading uses the display face on every KB page. */}
+  <FontPreloads display />
   <title>{fullTitle}</title>
   {description && <meta name="description" content={description} />}
   <meta name="opda:status-registry-version" content={IA_STATUS_REGISTRY_VERSION} />

@@ -315,4 +315,7 @@ test('shared early font hints preload only core Latin faces with reusable CORS r
     const source = await readFile(new URL(`../${file}`, import.meta.url), 'utf8');
     assert.match(source, /<FontPreloads/u, file);
   }
+  const layout = await readFile(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8');
+  assert.match(layout, /<FontPreloads display\s*\/>/u,
+    'the shared framework heading uses the display face on knowledge-base pages too');
 });
