@@ -40,6 +40,7 @@
     { "path": "tests/baspi5_round_trip/test_traceability.py", "owner": "ontology", "tier": "release-blocking", "lane": "ontology" },
     { "path": "tests/ci-pipeline.test.mjs", "owner": "platform", "tier": "release-blocking", "lane": "application" },
     { "path": "tests/dbt-smart-data-terminology.test.mjs", "owner": "programme-content", "tier": "pull-request-blocking", "lane": "editorial" },
+    { "path": "tests/design-system-bundle.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/design-system-contract.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/design-system-layout-contract.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/design-system-table-contract.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
