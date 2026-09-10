@@ -22,7 +22,7 @@ const {
 
 <img
   class={className}
-  src={lightSrc}
+  src={darkSrc ? undefined : lightSrc}
   data-campaign-image-light={darkSrc ? lightSrc : undefined}
   data-campaign-image-dark={darkSrc}
   alt={alt}
@@ -31,6 +31,25 @@ const {
   width={width}
   height={height}
 />
+
+{darkSrc && <>
+  {/* Select before deferred modules run. An unconditional light src starts an
+      unnecessary download on dark pages, even when it is replaced immediately. */}
+  <script is:inline data-astro-rerun data-campaign-image-bootstrap>
+    (() => {
+      const image = document.currentScript?.previousElementSibling;
+      if (!image?.matches('img[data-campaign-image-dark]')) return;
+      const source = document.documentElement.dataset.theme === 'dark'
+        ? image.dataset.campaignImageDark : image.dataset.campaignImageLight;
+      if (source && image.getAttribute('src') !== source) image.setAttribute('src', source);
+    })();
+  </script>
+  <noscript>
+    <style is:inline>img[data-campaign-image-dark] { display: none; }</style>
+    <img class={className} src={lightSrc} alt={alt} loading={loading}
+      decoding="async" width={width} height={height} />
+  </noscript>
+</>}
 
 <script>
   const selectCampaignImages = () => {
