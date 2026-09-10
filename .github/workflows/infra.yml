@@ -199,7 +199,7 @@ jobs:
             ['missing origin', '/_auth/workspace', 'POST', {}, 403],
             ['foreign origin', '/_auth/workspace', 'POST', {origin:'https://example.invalid','sec-fetch-site':'cross-site'}, 403],
             ['missing session', '/_auth/workspace', 'POST', {origin,'sec-fetch-site':'same-origin'}, 403],
-            ['resource listing', '/resources/?list-type=2', 'GET', {}, 404],
+            ['resources landing stays gated', '/resources/?list-type=2', 'GET', {}, 302],
           ];
           await Promise.all(cases.map(async ([name,path,method,headers,status]) => {
             const response = await fetch(origin+path, {method,redirect:'manual',signal:AbortSignal.timeout(10000),
@@ -207,7 +207,10 @@ jobs:
               ...(method==='POST' ? {body:'group=finance-and-banking&phase=open'} : {})});
             assert.equal(response.status,status,name);
             if(method==='POST') assert.equal(typeof (await response.json()).error,'string',name);
-            else assert.equal(await response.text(),'Resource not found.',name);
+            else {
+              assert.match(response.headers.get('location') || '', /^\/_auth\/login\?return=/);
+              assert.equal(await response.text(), '', 'No bucket listing or protected content is returned');
+            }
             console.log('Live workspace check passed: '+name);
           }));
           NODE
