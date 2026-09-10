@@ -1,11 +1,17 @@
 /**
- * Collapse the reviewable design-system CSS module facade into one production
- * response. Source modules stay separate; only Astro's copied dist facade is
- * replaced after the static build is complete.
+ * Collapse and whitespace-minify the reviewable CSS module facade into one
+ * production response. Source modules stay separate; only Astro's copied dist
+ * facade is replaced after the static build is complete.
  */
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { designSystemOutputVersion } from '../lib/design-system-version.mjs';
+
+// Use Astro's declared build dependency, including under pnpm's strict layout.
+const requireFromAstro = createRequire(import.meta.resolve('astro/package.json'));
+const { transform } = requireFromAstro('esbuild');
 
 const LOCAL_IMPORT = /@import\s+url\((["'])([^"'?]+\.css)(?:\?v=[a-f0-9]+)?\1\);/gu;
 const CSS_URL = /url\(\s*(?:(["'])(.*?)\1|([^"')]+))\s*\)/gu;
@@ -55,28 +61,61 @@ export async function renderBundledDesignSystem({ publicDir }) {
     offset = match.index + match[0].length;
   }
   chunks.push(source.slice(offset));
-  return { output: chunks.join(''), imports };
+  const { code, warnings } = await transform(chunks.join(''), {
+    loader: 'css',
+    sourcefile: facadePath,
+    // Preserve the cascade, fallback syntax, identifiers and all selectors.
+    minifyWhitespace: true,
+    minifySyntax: false,
+    minifyIdentifiers: false,
+    legalComments: 'inline',
+    charset: 'utf8',
+    logLevel: 'silent',
+  });
+  // CSS syntax recovery can change meaning; never publish a repaired stylesheet.
+  if (warnings.length > 0) {
+    throw new Error(`CSS minification refused: ${warnings.map((warning) => warning.text).join('; ')}`);
+  }
+  return { output: code, imports };
 }
 
-export async function bundleDesignSystem({ publicDir, outputDir }) {
-  const result = await renderBundledDesignSystem({ publicDir });
+async function writeBundledDesignSystem(result, outputDir) {
   const outputPath = path.resolve(outputDir, 'ui', 'design-system.css');
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, result.output);
   return { ...result, outputPath };
 }
 
+export async function bundleDesignSystem({ publicDir, outputDir }) {
+  return writeBundledDesignSystem(await renderBundledDesignSystem({ publicDir }), outputDir);
+}
+
 export function designSystemBundler() {
-  let publicDir;
+  let productionBundle;
   return {
     name: 'opda-design-system-bundler',
     hooks: {
-      'astro:config:done': ({ config }) => {
-        publicDir = fileURLToPath(config.publicDir);
+      'astro:config:setup': async ({ config, command, updateConfig }) => {
+        // Reusing the integration instance must never reuse another build's CSS.
+        productionBundle = undefined;
+        if (command !== 'build') return;
+        productionBundle = renderBundledDesignSystem({ publicDir: config.publicDir });
+        const { output } = await productionBundle;
+        updateConfig({
+          vite: {
+            define: { __OPDA_DESIGN_SYSTEM_VERSION__: JSON.stringify(designSystemOutputVersion(output)) },
+          },
+        });
       },
       'astro:build:done': async ({ dir }) => {
-        const result = await bundleDesignSystem({ publicDir, outputDir: fileURLToPath(dir) });
-        console.log(`[design-system] bundled ${result.imports.length} modules into one production stylesheet.`);
+        if (!productionBundle) throw new Error('design-system bundle is missing production setup');
+        try {
+          // Emit exactly the snapshot hashed into every generated page's CSS URL.
+          const result = await writeBundledDesignSystem(await productionBundle, fileURLToPath(dir));
+          console.log(`[design-system] bundled and minified ${result.imports.length} modules into one production stylesheet.`);
+        } finally {
+          productionBundle = undefined;
+        }
       },
     },
   };

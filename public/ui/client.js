@@ -26,7 +26,45 @@
 (function () {
   'use strict';
 
-  function bindThemeToggle() {
+  // Same ownership pattern as graph-diagram-lifecycle.mjs, kept in this classic
+  // script so shared chrome needs no extra module/network dependency.
+  function createPageLifecycle() {
+    const controller = new AbortController();
+    const cleanups = new Set();
+    const active = () => !controller.signal.aborted;
+    const guard = callback => (...args) => { if (active()) return callback(...args); };
+    const onDispose = cleanup => { cleanups.add(cleanup); return cleanup; };
+    return {
+      get active() { return active(); },
+      signal: controller.signal, guard, onDispose,
+      markBound(element, key = 'bound') {
+        if (!active() || element.dataset[key] === 'true') return false;
+        element.dataset[key] = 'true';
+        onDispose(() => { delete element.dataset[key]; });
+        return true;
+      },
+      listen(target, type, callback, options) {
+        if (!target || !active()) return;
+        const handler = guard(callback);
+        target.addEventListener(type, handler, options);
+        onDispose(() => target.removeEventListener(type, handler, options));
+      },
+      observe(observer) { onDispose(() => observer.disconnect()); return observer; },
+      frame(callback) {
+        if (!active()) return;
+        const id = requestAnimationFrame(() => { cleanups.delete(stop); if (active()) callback(); });
+        const stop = onDispose(() => cancelAnimationFrame(id));
+      },
+      dispose() {
+        if (!active()) return;
+        controller.abort();
+        for (const cleanup of [...cleanups].reverse()) cleanup();
+        cleanups.clear();
+      },
+    };
+  }
+
+  function bindThemeToggle(life) {
     const buttons = Array.from(document.querySelectorAll('.theme-toggle'));
     if (buttons.length === 0) return;
     function syncThemeState() {
@@ -40,9 +78,8 @@
     }
     syncThemeState();
     buttons.forEach(function (button) {
-      if (button.dataset.themeBound === 'true') return;
-      button.dataset.themeBound = 'true';
-      button.addEventListener('click', function () {
+      if (!life.markBound(button, 'themeBound')) return;
+      life.listen(button, 'click', function () {
         const current = document.documentElement.getAttribute('data-theme') || 'light';
         const next = current === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
@@ -54,7 +91,7 @@
     });
   }
 
-  function bindHeaderPreviewSelector(config) {
+  function bindHeaderPreviewSelector(config, life) {
     const selectors = Array.from(document.querySelectorAll(config.selector));
     if (selectors.length === 0) return;
     const allInputs = Array.from(document.querySelectorAll(config.inputSelector));
@@ -94,8 +131,7 @@
 
     applyValue(document.documentElement.getAttribute(config.documentAttribute), false);
     selectors.forEach(function (selector) {
-      if (selector.dataset.bound === 'true') return;
-      selector.dataset.bound = 'true';
+      if (!life.markBound(selector)) return;
       const summary = selector.querySelector('summary');
       const control = selector.closest('.header-preview-control');
       const previousButton = control?.querySelector(config.previousButton);
@@ -110,35 +146,35 @@
         selector.open = false;
       }
 
-      previousButton?.addEventListener('click', function () { stepValue(-1); });
-      nextButton?.addEventListener('click', function () { stepValue(1); });
-      selector.addEventListener('change', function (event) {
+      life.listen(previousButton, 'click', function () { stepValue(-1); });
+      life.listen(nextButton, 'click', function () { stepValue(1); });
+      life.listen(selector, 'change', function (event) {
         const input = event.target;
         if (!(input instanceof HTMLInputElement) || !input.matches(config.inputSelector)) return;
         applyValue(input.value, true);
         if (config.closeOnSelect !== false) closeSelectorChain(selector);
       });
-      selector.addEventListener('click', function (event) {
+      life.listen(selector, 'click', function (event) {
         if (config.closeOnSelect === false) return;
         const target = event.target;
         if (!(target instanceof Element) || !target.closest(config.optionSelector)) return;
-        requestAnimationFrame(function () { closeSelectorChain(selector); });
+        life.frame(function () { closeSelectorChain(selector); });
       });
-      selector.addEventListener('keydown', function (event) {
+      life.listen(selector, 'keydown', function (event) {
         if (event.key !== 'Escape' || !selector.open) return;
         event.preventDefault();
         selector.open = false;
         summary?.focus();
       });
-      selector.addEventListener('focusout', function (event) {
+      life.listen(selector, 'focusout', function (event) {
         const nextTarget = event.relatedTarget;
         if (nextTarget instanceof Node && !selector.contains(nextTarget)) selector.open = false;
       });
-      document.addEventListener('pointerdown', function (event) {
+      life.listen(document, 'pointerdown', function (event) {
         const target = event.target;
         if (selector.open && target instanceof Node && !selector.contains(target)) selector.open = false;
       });
-      selector.addEventListener('toggle', function () {
+      life.listen(selector, 'toggle', function () {
         if (!selector.open) return;
         document.querySelectorAll('.header-preview-selector[open]').forEach(function (other) {
           if (other !== selector && !other.contains(selector)) other.open = false;
@@ -147,7 +183,7 @@
     });
   }
 
-  function bindHeaderPaletteSelector() {
+  function bindHeaderPaletteSelector(life) {
     bindHeaderPreviewSelector({
       selector: '[data-header-palette-selector]',
       currentLabel: '[data-header-palette-current]',
@@ -161,10 +197,10 @@
       persist: function (palette) {
         try { localStorage.setItem('opda-header-palette', palette); } catch (e) {}
       }
-    });
+    }, life);
   }
 
-  function bindHeaderPalettePagination() {
+  function bindHeaderPalettePagination(life) {
     document.querySelectorAll('[data-header-palette-selector]').forEach(function (selector) {
       if (selector.dataset.paginationBound === 'true') return;
       const options = Array.from(selector.querySelectorAll('[data-header-palette-page]'));
@@ -175,7 +211,7 @@
       const next = pagination?.querySelector('[data-header-palette-page-next]');
       const current = pagination?.querySelector('[data-header-palette-page-current]');
       if (!pagination || !previous || !next || !current) return;
-      selector.dataset.paginationBound = 'true';
+      life.markBound(selector, 'paginationBound');
       let page = 1;
 
       function showPage(requestedPage) {
@@ -188,9 +224,9 @@
         next.disabled = pageCount <= 1;
       }
 
-      previous.addEventListener('click', function () { showPage(page - 1); });
-      next.addEventListener('click', function () { showPage(page + 1); });
-      selector.addEventListener('toggle', function () {
+      life.listen(previous, 'click', function () { showPage(page - 1); });
+      life.listen(next, 'click', function () { showPage(page + 1); });
+      life.listen(selector, 'toggle', function () {
         if (!selector.open) return;
         const selectedIndex = options.findIndex(function (option) {
           return option.querySelector('[data-header-palette-input]')?.checked;
@@ -201,7 +237,7 @@
     });
   }
 
-  function bindHeaderIconSelector() {
+  function bindHeaderIconSelector(life) {
     bindHeaderPreviewSelector({
       selector: '[data-header-icon-selector]',
       currentLabel: '[data-header-icon-current]',
@@ -216,7 +252,7 @@
       persist: function (icon) {
         try { localStorage.setItem('opda-header-icon', icon); } catch (e) {}
       }
-    });
+    }, life);
   }
 
   function syncHeaderConfigurationMode() {
@@ -244,7 +280,7 @@
     });
   }
 
-  async function loadHeaderPreviewControls() {
+  async function loadHeaderPreviewControls(life) {
     const currentUrl = new URL(window.location.href);
     const loaders = Array.from(document.querySelectorAll('[data-header-preview-controls-loader]'));
     if (!currentUrl.searchParams.has('config')) {
@@ -256,24 +292,26 @@
       const source = loader.getAttribute('data-controls-src');
       if (!source) return;
       try {
-        const response = await fetch(source, { credentials: 'same-origin' });
+        const response = await fetch(source, { credentials: 'same-origin', signal: life.signal });
+        if (!life.active) return;
         if (!response.ok) throw new Error('HTTP ' + response.status);
-        const fragment = document.createRange().createContextualFragment(await response.text());
+        const markup = await response.text();
+        if (!life.active || !document.contains(loader)) return;
+        const fragment = document.createRange().createContextualFragment(markup);
         const controls = fragment.querySelector('[data-header-preview-controls]');
         if (!controls) throw new Error('configuration controls were absent');
         if (document.contains(loader)) loader.replaceWith(controls);
       } catch (error) {
-        console.warn('Unable to load header preview controls from ' + source, error);
+        if (life.active) console.warn('Unable to load header preview controls from ' + source, error);
       }
     }));
   }
 
-  function bindHeaderPreviewControls() {
+  function bindHeaderPreviewControls(life) {
     const controls = document.querySelector('[data-header-preview-controls]');
     const toggle = controls?.querySelector('[data-header-preview-toggle]');
     const drawer = toggle ? document.getElementById(toggle.getAttribute('aria-controls')) : null;
-    if (!controls || !drawer || !toggle || toggle.dataset.bound === 'true') return;
-    toggle.dataset.bound = 'true';
+    if (!controls || !drawer || !toggle || !life.markBound(toggle)) return;
     const storageKey = 'opda-header-preview-controls-expanded';
 
     function setExpanded(expanded, persist) {
@@ -293,12 +331,12 @@
     let expanded = true;
     try { expanded = localStorage.getItem(storageKey) !== '0'; } catch (e) {}
     setExpanded(expanded, false);
-    toggle.addEventListener('click', function () {
+    life.listen(toggle, 'click', function () {
       setExpanded(toggle.getAttribute('aria-expanded') !== 'true', true);
     });
   }
 
-  function bindIdentityHeadingControls() {
+  function bindIdentityHeadingControls(life) {
     const applicationHeader = document.getElementById('app-header-identity');
     const applicationShell = applicationHeader?.parentElement;
 
@@ -307,11 +345,10 @@
       applicationShell.style.setProperty('--header-height', Math.ceil(applicationHeader.getBoundingClientRect().height) + 'px');
     }
 
-    if (applicationHeader && applicationHeader.dataset.heightBound !== 'true') {
-      applicationHeader.dataset.heightBound = 'true';
+    if (applicationHeader && life.markBound(applicationHeader, 'heightBound')) {
       syncRenderedHeaderHeight();
       if ('ResizeObserver' in window) {
-        const headerObserver = new ResizeObserver(syncRenderedHeaderHeight);
+        const headerObserver = life.observe(new ResizeObserver(life.guard(syncRenderedHeaderHeight)));
         headerObserver.observe(applicationHeader);
       }
     }
@@ -325,7 +362,7 @@
       const cssUnit = input.dataset.cssUnit || '';
       const ariaUnit = input.dataset.ariaUnit || '';
       if (!identity || !property || !Number.isFinite(factor)) return;
-      input.dataset.bound = 'true';
+      life.markBound(input);
       function applyValue() {
         const peers = rangeInputs.filter(function (candidate) {
           return candidate.getAttribute('aria-controls') === identity.id
@@ -345,11 +382,11 @@
         syncRenderedHeaderHeight();
       }
       applyValue();
-      input.addEventListener('input', applyValue);
+      life.listen(input, 'input', applyValue);
     });
   }
 
-  function bindPrimaryNavigation() {
+  function bindPrimaryNavigation(life) {
     const header = document.querySelector('.app-header');
     const panel = document.getElementById('global-nav-panel');
     const toggle = document.getElementById('global-nav-toggle');
@@ -370,24 +407,24 @@
     }
 
     setOpen(false, false);
-    toggle.addEventListener('click', function () {
+    life.listen(toggle, 'click', function () {
       setOpen(!header.classList.contains('primary-nav-open'), false);
     });
-    panel.addEventListener('keydown', function (event) {
+    life.listen(panel, 'keydown', function (event) {
       if (event.key !== 'Escape' || !header.classList.contains('primary-nav-open')) return;
       event.preventDefault();
       setOpen(false, true);
     });
     panel.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () { setOpen(false, false); });
+      life.listen(link, 'click', function () { setOpen(false, false); });
     });
-    document.getElementById('menu-toggle')?.addEventListener('click', function () {
+    life.listen(document.getElementById('menu-toggle'), 'click', function () {
       setOpen(false, false);
     });
-    mobileQuery.addEventListener('change', function () { setOpen(false, false); });
+    life.listen(mobileQuery, 'change', function () { setOpen(false, false); });
   }
 
-  function bindSidebar() {
+  function bindSidebar(life) {
     const appBody = document.querySelector('.app-body');
     const aside = document.getElementById('app-sidebar');
     const menuToggle = document.getElementById('menu-toggle');
@@ -414,7 +451,7 @@
       } catch (e) {}
     }
     syncSidebarNavigationState();
-    sidebarRailQuery.addEventListener('change', syncSidebarNavigationState);
+    life.listen(sidebarRailQuery, 'change', syncSidebarNavigationState);
 
     // Mobile navigation drawer: labelled state, Escape, focus containment and
     // focus return. The semantic role applies only while the drawer is open.
@@ -478,20 +515,20 @@
 
       setDrawer(false, false);
       if (sidebarCollapse) {
-        sidebarCollapse.addEventListener('click', function (event) {
+        life.listen(sidebarCollapse, 'click', function (event) {
           if (!mobileQuery.matches || !aside.classList.contains('open')) return;
           event.stopImmediatePropagation();
           setDrawer(false);
         }, { capture: true });
       }
 
-      menuToggle.addEventListener('click', function () {
+      life.listen(menuToggle, 'click', function () {
         setDrawer(!aside.classList.contains('open'));
       });
       aside.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () { setDrawer(false); });
+        life.listen(a, 'click', function () { setDrawer(false); });
       });
-      aside.addEventListener('keydown', function (event) {
+      life.listen(aside, 'keydown', function (event) {
         if (!aside.classList.contains('open')) return;
         if (event.key === 'Escape') {
           event.preventDefault();
@@ -516,11 +553,11 @@
           first.focus();
         }
       });
-      mobileQuery.addEventListener('change', function () { setDrawer(false, false); });
+      life.listen(mobileQuery, 'change', function () { setDrawer(false, false); });
     }
 
     if (sidebarCollapse && appBody) {
-      sidebarCollapse.addEventListener('click', function () {
+      life.listen(sidebarCollapse, 'click', function () {
         const nowCollapsed = !appBody.classList.contains('sidebar-collapsed');
         appBody.classList.toggle('sidebar-collapsed', nowCollapsed);
         try { localStorage.setItem('opda-sidebar-collapsed', nowCollapsed ? '1' : '0'); } catch (e) {}
@@ -545,7 +582,7 @@
   }
 
   // ── TOC widget ──────────────────────────────────────────────────────────
-  function renderToc() {
+  function renderToc(life) {
     const article = document.querySelector('.prose');
     if (!article || article.dataset.disableToc === 'true') return;
     const headings = Array.from(article.querySelectorAll('h2[id], h3[id], h4[id]'));
@@ -614,6 +651,10 @@
     toc.appendChild(ul);
 
     const body = document.querySelector('.app-body');
+    life.onDispose(function () {
+      toc.remove();
+      body?.classList.remove('with-toc', 'toc-collapsed');
+    });
     const railQuery = window.matchMedia('(min-width: 1281px)');
     let collapsed = false;
     try {
@@ -644,8 +685,8 @@
       syncTocState(false);
     }
     placeToc();
-    tocToggle.addEventListener('click', function () { collapsed = !collapsed; syncTocState(true); });
-    railQuery.addEventListener('change', placeToc);
+    life.listen(tocToggle, 'click', function () { collapsed = !collapsed; syncTocState(true); });
+    life.listen(railQuery, 'change', placeToc);
 
     if ('IntersectionObserver' in window) {
       const linkById = {};
@@ -653,7 +694,7 @@
         linkById[a.getAttribute('data-toc-target')] = a;
       });
       let lastActive = null;
-      const observer = new IntersectionObserver(function (entries) {
+      const observer = life.observe(new IntersectionObserver(life.guard(function (entries) {
         const visible = entries.filter(e => e.isIntersecting)
                                .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible.length === 0) return;
@@ -667,57 +708,61 @@
         link.classList.add('active');
         link.setAttribute('aria-current', 'location');
         lastActive = link;
-      }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+      }), { rootMargin: '-15% 0px -70% 0px', threshold: 0 }));
       headings.forEach(function (h) { observer.observe(h); });
     }
   }
 
   // ── Init ─────────────────────────────────────────────────────────────────
-  async function init() {
-    bindThemeToggle();
-    await loadHeaderPreviewControls();
+  async function init(life) {
+    bindThemeToggle(life);
+    await loadHeaderPreviewControls(life);
+    if (!life.active) return;
     syncHeaderConfigurationMode();
-    bindHeaderPaletteSelector();
-    bindHeaderPalettePagination();
-    bindHeaderIconSelector();
-    bindHeaderPreviewControls();
-    bindIdentityHeadingControls();
-    bindPrimaryNavigation();
-    bindSidebar();
-    renderToc();
+    bindHeaderPaletteSelector(life);
+    bindHeaderPalettePagination(life);
+    bindHeaderIconSelector(life);
+    bindHeaderPreviewControls(life);
+    bindIdentityHeadingControls(life);
+    bindPrimaryNavigation(life);
+    bindSidebar(life);
+    renderToc(life);
     enhanceHeadings();
     // Mermaid diagrams are rendered by the GraphDiagram island (adopted from the
     // bare .mermaid divs in src/layouts/Layout.astro); client.js's mermaid path
     // is retired.
   }
 
-  // Guard against the first-load double-init: with <ClientRouter /> enabled,
-  // astro:page-load fires on the initial load too, so an unguarded init() would
-  // run once here and again on page-load — double-binding every toggle's click
-  // listener so each click fires twice and cancels out. The flag makes init
-  // run once per document; astro:after-swap clears it so the fresh DOM that a
-  // view-transition navigation swaps in re-binds correctly.
-  let initialised = false;
+  // One owner per mounted document, including first-load event overlap and
+  // BFCache restoration. Disposing also invalidates a pending config fetch.
+  let pageLifecycle;
+  function stopPage() {
+    pageLifecycle?.dispose();
+    pageLifecycle = undefined;
+  }
   function runInitOnce() {
-    if (initialised) return;
-    initialised = true;
-    void init();
+    if (pageLifecycle?.active) return pageLifecycle.ready;
+    pageLifecycle = createPageLifecycle();
+    pageLifecycle.ready = init(pageLifecycle);
+    return pageLifecycle.ready;
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', runInitOnce);
+    document.addEventListener('DOMContentLoaded', runInitOnce, { once: true });
   } else {
     runInitOnce();
   }
 
-  document.addEventListener('astro:after-swap', function () { initialised = false; });
   document.addEventListener('astro:before-swap', function (event) {
+    stopPage();
     ['data-theme', 'data-header-palette', 'data-header-icon'].forEach(function (attribute) {
       const value = document.documentElement.getAttribute(attribute);
       if (value) event.newDocument.documentElement.setAttribute(attribute, value);
     });
   });
   document.addEventListener('astro:page-load', runInitOnce);
+  window.addEventListener('pagehide', stopPage);
+  window.addEventListener('pageshow', function (event) { if (event.persisted) void runInitOnce(); });
 
-  window.OPDA = { init: init };
+  (window.OPDA ??= {}).init = runInitOnce;
 })();

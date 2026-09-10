@@ -155,10 +155,12 @@ test('AuthButton clears dropdown, identifying text and legacy cache on denial wi
   assert.equal(elements.get('auth-user-avatar').style.backgroundImage, '');
   assert.deepEqual(removed, ['ArtalkUser']); assert.equal(win.location.href, 'unchanged');
   doc.dispatchEvent(new Event('astro:page-load')); assert.equal(starts, 1);
+  win.dispatchEvent(new Event('pageshow'));
+  assert.equal(starts, 1, 'initial pageshow must not duplicate a settled first-load eligibility check');
   win.dispatchEvent(new Event('focus')); assert.equal(refreshes, 1);
   doc.visibilityState = 'hidden'; doc.dispatchEvent(new Event('visibilitychange')); assert.equal(pauses, 1);
   doc.visibilityState = 'visible'; doc.dispatchEvent(new Event('visibilitychange')); assert.equal(starts, 2);
-  win.dispatchEvent(new Event('pageshow')); assert.equal(starts, 3);
+  win.dispatchEvent(Object.assign(new Event('pageshow'), { persisted: true })); assert.equal(starts, 3);
   doc.dispatchEvent(new Event('astro:before-swap')); assert.equal(pauses, 2);
   doc.dispatchEvent(new Event('astro:page-load')); assert.equal(starts, 4);
   options.onUnavailable(identity); assert.equal(elements.get('auth-user-menu').hidden, false);

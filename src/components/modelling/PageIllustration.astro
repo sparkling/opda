@@ -1,34 +1,15 @@
 ---
 import CampaignThemeImage from '../campaign/CampaignThemeImage.astro';
+import type { PageArtwork } from '@/lib/modelling-page-artwork';
 
-interface ImageAsset {
-  file: string;
-  width: number;
-  height: number;
-}
-interface PageArtwork {
-  route: string;
-  alt: string;
-  light: ImageAsset;
-  dark: ImageAsset;
-}
-
-// Build-time manifests keep page-specific art out of the two page templates.
-// Only the selected image's attributes are rendered into the page.
-const collections = import.meta.glob<{ pages: PageArtwork[] }>(
-  '/public/images/modelling/page-headers/*/manifest.json',
-  { eager: true, import: 'default' },
-);
-const route = Astro.url.pathname.replace(/\/+$/u, '');
-const artwork = Object.values(collections).flatMap(({ pages }) => pages)
-  .find((page) => page.route === route);
-if (!artwork?.alt.trim()) throw new Error(`Missing modelling page illustration: ${route}`);
+interface Props { artwork: PageArtwork; }
+const { artwork } = Astro.props;
 ---
 
-<figure class="modelling-page-illustration" data-modelling-illustration={route}>
+<figure class="modelling-page-illustration" data-modelling-illustration={artwork.route}>
   <CampaignThemeImage lightSrc={artwork.light.file} darkSrc={artwork.dark.file}
     alt={artwork.alt} width={artwork.light.width} height={artwork.light.height}
-    loading="eager" />
+    loading="eager" fetchpriority="high" />
 </figure>
 
 <style>

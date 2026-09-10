@@ -444,8 +444,8 @@ test('shared design controls remain hidden unless URL configuration is enabled',
   ]);
   assert.match(controls, /data-header-preview-controls[^>]*\bhidden/u);
   assert.match(header, /data-header-preview-controls-loader/u);
-  assert.match(client, /async function loadHeaderPreviewControls\(\)/u);
-  assert.match(client, /fetch\(source, \{ credentials: 'same-origin' \}\)/u);
+  assert.match(client, /async function loadHeaderPreviewControls\(life\)/u);
+  assert.match(client, /fetch\(source, \{ credentials: 'same-origin', signal: life\.signal \}\)/u);
   assert.match(client, /loader\.replaceWith\(controls\)/u);
   assert.match(client, /currentUrl\.searchParams\.has\('config'\)/u);
   assert.match(client, /controls\.hidden = !configurationEnabled/u);

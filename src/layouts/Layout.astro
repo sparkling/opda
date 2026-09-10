@@ -28,6 +28,7 @@ import SiteFooter from '@/components/SiteFooter.astro';
 import Comments from '@/components/Comments.astro';
 import { getNavigationSection } from '@/lib/site-navigation';
 import { assetVersion } from '@/lib/asset-version.mjs';
+import { designSystemVersion } from '@/lib/design-system-version.mjs';
 import {
   AUTHORITY_BY_DESTINATION,
   IA_STATUS_REGISTRY_VERSION,
@@ -38,7 +39,7 @@ import { searchMetaEntries } from '@/lib/site-search-model.mjs';
 import { DEFAULT_HEADER_PALETTE, HEADER_PALETTE_IDS } from '@/lib/header-palettes';
 import { DEFAULT_HEADER_ICON, HEADER_ICON_IDS } from '@/lib/header-icons';
 
-const cssV = assetVersion('/ui/design-system.css');
+const cssV = await designSystemVersion();
 const twV = assetVersion('/ui/tailwind.built.css');
 const clientV = assetVersion('/ui/client.js');
 
@@ -77,6 +78,8 @@ interface Props {
   suppressActiveDestination?: boolean;
   /** Search facets for the build-time indexer (site-search-model.mjs); route defaults apply when omitted. */
   search?: Record<string, string | readonly string[] | undefined>;
+  /** Above-the-fold artwork; preload only the selected theme, before CSS. */
+  priorityImage?: { lightSrc: string; darkSrc?: string };
 }
 
 const {
@@ -97,6 +100,7 @@ const {
   mainClass = '',
   suppressActiveDestination = false,
   search,
+  priorityImage = null,
 } = Astro.props;
 
 const fullTitle = /knowledge base/i.test(title)
@@ -142,9 +146,6 @@ const searchMeta = searchMetaEntries(search);
   <meta name="opda:provenance" content={routeStatus.provenance} />
   {searchAliases.map((alias) => <meta name="opda:search-alias" content={alias} />)}
   {searchMeta.map(([name, content]) => <meta name={name} content={content} />)}
-  <link rel="stylesheet" href={`/ui/design-system.css?v=${cssV}`} />
-  <link rel="stylesheet" href={`/ui/tailwind.built.css?v=${twV}`} />
-
   {/* Pre-paint themes: apply light/dark and the temporary header palette before
       first render to avoid FOUC. Petrol is the palette default.
       Light/dark reads ?theme=, then localStorage, and falls back to light.
@@ -154,11 +155,13 @@ const searchMeta = searchMetaEntries(search);
   <script
     is:inline
     data-astro-rerun
+    data-opda-theme-bootstrap
     define:vars={{
       defaultHeaderPalette: DEFAULT_HEADER_PALETTE,
       headerPaletteIds: HEADER_PALETTE_IDS,
       defaultHeaderIcon: DEFAULT_HEADER_ICON,
       headerIconIds: HEADER_ICON_IDS,
+      priorityImage,
     }}
   >
     (function () {
@@ -182,8 +185,29 @@ const searchMeta = searchMetaEntries(search);
         document.documentElement.setAttribute('data-header-palette', defaultHeaderPalette);
         document.documentElement.setAttribute('data-header-icon', defaultHeaderIcon);
       }
+      // A paired image has no speculative fallback src. Discover its one
+      // selected URL here, without waiting for stylesheets or body scripts.
+      if (priorityImage) {
+        var source = document.documentElement.getAttribute('data-theme') === 'dark'
+          ? priorityImage.darkSrc || priorityImage.lightSrc : priorityImage.lightSrc;
+        var preload = document.querySelector('link[data-opda-priority-image]');
+        if (!preload) {
+          preload = document.createElement('link');
+          preload.rel = 'preload';
+          preload.as = 'image';
+          preload.fetchPriority = 'high';
+          preload.dataset.opdaPriorityImage = '';
+          preload.href = source;
+          document.head.appendChild(preload);
+        } else {
+          preload.href = source;
+        }
+      }
     })();
   </script>
+
+  <link rel="stylesheet" href={`/ui/design-system.css?v=${cssV}`} />
+  <link rel="stylesheet" href={`/ui/tailwind.built.css?v=${twV}`} />
 
   <ClientRouter />
   <slot name="head" />
@@ -230,7 +254,7 @@ const searchMeta = searchMetaEntries(search);
     <SiteFooter />
   </div>
 
-  <script is:inline src={`/ui/client.js?v=${clientV}`}></script>
+  <script is:inline defer src={`/ui/client.js?v=${clientV}`}></script>
   <script>
     // Narrative pages need neither the custom-element package nor the diagram
     // engine. Load each only for its actual DOM, including view transitions and

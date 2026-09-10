@@ -47,9 +47,9 @@
 
   // The path-scoped session service (ADR-0084) owns the opaque participant
   // session and exposes it same-origin: /_auth/me (identity), /_auth/login
-  // (starts the PKCE flow), and /_auth/logout (revokes the session + ends Cognito
-  // SSO). The site itself remains public; this button is a thin view over the
-  // optional member session surface and a 401 shows "Sign in".
+  // (starts the PKCE flow), and /_auth/logout (revokes the session + ends provider
+  // SSO). The development gate protects content separately; this button reflects
+  // current eligibility and a 401 shows "Sign in".
   //
   // On the dev server there is no session service, so /_auth/* 404s. Rather than leave
   // "Sign in" pointing at a dead route, a dev-only mock lets you flip into a
@@ -187,7 +187,12 @@
     if (dropdown && !dropdown.hidden && !dropdown.contains(event.target) && event.target !== trigger) closeDropdown();
   });
   window.addEventListener('focus', () => { if (!leaving) void watcher.refresh(); });
-  window.addEventListener('pageshow', () => { leaving = false; if (observedRoot) void watcher.start(); });
+  window.addEventListener('pageshow', (event) => {
+    // Initial init already checks eligibility. Only BFCache restoration needs
+    // a fresh check here, even when that first request finished before load.
+    if (!event.persisted) return;
+    leaving = false; if (observedRoot) void watcher.start();
+  });
   window.addEventListener('pagehide', () => watcher.pause());
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState !== 'visible') watcher.pause();

@@ -5,6 +5,7 @@ import {
 } from '@/lib/site-ia.mjs';
 import SiteFooter from '@/components/SiteFooter.astro';
 import FontPreloads from '@/components/FontPreloads.astro';
+import { designSystemVersion } from '@/lib/design-system-version.mjs';
 import '@/styles/standalone-public.css';
 import '@/styles/editorial-content.css';
 
@@ -33,6 +34,7 @@ const routeStatus = getRouteStatus(Astro.url.pathname) ?? {
   provenance: 'OPDA programme and service records',
 };
 const pageTitle = `${title} · Open Property Data Association`;
+const cssV = await designSystemVersion();
 ---
 <!doctype html>
 <html
@@ -77,7 +79,7 @@ const pageTitle = `${title} · Open Property Data Association`;
         }
       })();
     </script>
-    <link rel="stylesheet" href="/ui/design-system.css" />
+    <link rel="stylesheet" href={`/ui/design-system.css?v=${cssV}`} />
     <slot name="head" />
   </head>
   <body class:list={['standalone-public', bodyClass]}>

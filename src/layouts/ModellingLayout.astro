@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 import Callout from '@/components/Callout.astro';
 import PageIllustration from '@/components/modelling/PageIllustration.astro';
+import { getModellingPageArtwork } from '@/lib/modelling-page-artwork';
 import '@/styles/modelling/learning.css';
 import '@/styles/modelling/field-guide.css';
 
@@ -30,12 +31,14 @@ const claims = {
   },
 };
 const scopeNote = claim === 'guide' ? null : claims[claim];
+const artwork = getModellingPageArtwork(Astro.url.pathname);
 ---
 
-<Layout title={title} description={description} proseClass={proseClass}>
+<Layout title={title} description={description} proseClass={proseClass}
+  priorityImage={{ lightSrc: artwork.light.file, darkSrc: artwork.dark.file }}>
   <h1>{title}</h1>
   <p class="lead">{description}</p>
-  <PageIllustration />
+  <PageIllustration artwork={artwork} />
   {scopeNote && (
     <Callout title={scopeNote.label} tone={scopeNote.tone}>
       <p>{scopeNote.body}</p>

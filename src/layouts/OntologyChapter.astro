@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import PageIllustration from '@/components/modelling/PageIllustration.astro';
+import { getModellingPageArtwork } from '@/lib/modelling-page-artwork';
 import '@/styles/modelling/judgement.css';
 
 interface Props {
@@ -18,10 +19,12 @@ if (!/^\d{4}-\d{2}-\d{2}$/.test(updated) || !Number.isFinite(Date.parse(updated)
 const updatedLabel = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
 }).format(new Date(updated));
+const artwork = getModellingPageArtwork(Astro.url.pathname);
 ---
 
 <Layout title={title} description={description}
-  proseClass="prose wide ontology-chapter" mainClass="ontology-chapter-shell">
+  proseClass="prose wide ontology-chapter" mainClass="ontology-chapter-shell"
+  priorityImage={{ lightSrc: artwork.light.file, darkSrc: artwork.dark.file }}>
   <header class="og-opening" data-chapter={section}>
     <h1>{title}</h1>
     <p class="og-deck">{description}</p>
@@ -33,6 +36,6 @@ const updatedLabel = new Intl.DateTimeFormat('en-GB', {
     </p>
     <p class="og-basis"><a href="/semantic-modelling/method/standards-and-decisions#authority">Method basis</a><span aria-hidden="true"> · </span><span>Updated <time datetime={updated}>{updatedLabel}</time></span></p>
   </header>
-  <PageIllustration />
+  <PageIllustration artwork={artwork} />
   <div class="og-content document-flow"><slot /></div>
 </Layout>

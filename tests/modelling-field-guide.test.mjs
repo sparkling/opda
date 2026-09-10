@@ -323,10 +323,11 @@ test('both modelling templates share the top illustration and natural reading-wi
     const imagePosition = layout.indexOf('<PageIllustration');
     assert.ok(imagePosition > layout.indexOf('<h1>') && imagePosition < layout.indexOf('<slot'), name + ' must show the image before the page content');
     assert.equal([...layout.matchAll(/<PageIllustration\b/gu)].length, 1);
+    assert.match(layout, /getModellingPageArtwork\(Astro\.url\.pathname\)/u);
   }
   const component = read('src/components/modelling/PageIllustration.astro');
   assert.match(component, /CampaignThemeImage/u);
-  assert.match(component, /Astro\.url\.pathname/u);
+  assert.match(component, /data-modelling-illustration=\{artwork\.route\}/u);
   assert.match(component, /max-inline-size: min\(100%, var\(--editorial-text-max, 64rem\)\)/u);
   assert.match(component, /margin-inline: 0 auto/u);
   assert.match(component, /block-size: auto/u);

@@ -126,6 +126,12 @@ test('the shared layout uses a conditional feature bootstrap rather than eager e
   const features = readFileSync(new URL('../src/scripts/page-features.mjs', import.meta.url), 'utf8');
   assert.match(layout, /data-page-elements=\{tailwindPlus \? 'auto' : 'disabled'\}/u);
   assert.match(layout, /initialisePageFeatures\(\)/u);
+  assert.match(layout, /<script is:inline defer src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u,
+    'the shared controls must not block the HTML parser or first paint');
+  for (const path of ['../src/pages/index.astro', '../src/pages/join/index.astro']) {
+    assert.match(readFileSync(new URL(path, import.meta.url), 'utf8'),
+      /<script is:inline defer src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
+  }
   assert.doesNotMatch(layout, /import ['"]@tailwindplus\/elements['"]|import \{ adoptBareMermaid \}/u);
   assert.match(features, /import\('@tailwindplus\/elements'\)/u);
   assert.match(features, /import\('\.\/graph-diagram\.ts'\)/u);

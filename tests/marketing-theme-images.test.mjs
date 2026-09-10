@@ -62,3 +62,73 @@ test('no-JavaScript readers retain the image and its intrinsic dimensions', () =
   assert.match(component, /attributeFilter: \['data-theme'\]/u, 'later theme changes remain supported');
   assert.match(component, /astro:page-load/u, 'in-site navigation still selects images');
 });
+
+const layout = readFileSync(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8');
+const themeBootstrap = layout.match(/<script\b[^>]*data-opda-theme-bootstrap[\s\S]*?>([\s\S]*?)<\/script>/u)?.[1];
+
+function preloadImage({ query = '', storedTheme = null, storageBlocked = false, existing, priorityImage = { lightSrc: '/light.webp', darkSrc: '/dark.webp' } } = {}) {
+  const attributes = {};
+  const links = existing ? [existing] : [];
+  runInNewContext(themeBootstrap, {
+    priorityImage,
+    defaultHeaderPalette: 'petrol', headerPaletteIds: ['petrol'],
+    defaultHeaderIcon: '01', headerIconIds: ['01'],
+    URLSearchParams, location: { search: query },
+    localStorage: { getItem: (key) => {
+      if (storageBlocked) throw new Error('Storage unavailable');
+      return key === 'opda-theme' ? storedTheme : null;
+    } },
+    document: {
+      documentElement: {
+        setAttribute: (key, value) => { attributes[key] = value; },
+        getAttribute: (key) => attributes[key],
+      },
+      querySelector: () => links[0],
+      createElement: (tag) => {
+        assert.equal(tag, 'link');
+        return { dataset: {}, setAttribute: (key, value) => { attributes[key] = value; } };
+      },
+      head: { appendChild: (link) => links.push(link) },
+    },
+  });
+  return { attributes, links };
+}
+
+test('the selected hero is requested from the head before blocking stylesheets', () => {
+  assert.ok(themeBootstrap);
+  assert.ok(layout.indexOf('data-opda-theme-bootstrap') < layout.indexOf('<link rel="stylesheet"'));
+  for (const [query, storedTheme, expected] of [
+    ['?theme=dark', 'light', '/dark.webp'],
+    ['?theme=light', 'dark', '/light.webp'],
+    ['', 'dark', '/dark.webp'],
+    ['?theme=unknown', 'bad-value', '/light.webp'],
+  ]) {
+    const { links } = preloadImage({ query, storedTheme });
+    assert.equal(links.length, 1);
+    assert.equal(links[0].rel, 'preload');
+    assert.equal(links[0].as, 'image');
+    assert.equal(links[0].fetchPriority, 'high');
+    assert.equal(links[0].href, expected);
+  }
+});
+
+test('hero preloading has a light fallback and is opt-in, without duplicate Astro reruns', () => {
+  assert.ok(themeBootstrap);
+  assert.equal(preloadImage({ storageBlocked: true }).links[0].href, '/light.webp');
+  assert.equal(preloadImage({ priorityImage: { lightSrc: '/single.webp' }, query: '?theme=dark' }).links[0].href, '/single.webp');
+  assert.equal(preloadImage({ priorityImage: null }).links.length, 0);
+  const first = preloadImage({ query: '?theme=dark' }).links[0];
+  assert.equal(preloadImage({ query: '?theme=dark', existing: first }).links.length, 1);
+});
+
+test('only top-of-page modelling artwork opts into high priority using the same manifest as the preload', () => {
+  const image = readFileSync(new URL('../src/components/modelling/PageIllustration.astro', import.meta.url), 'utf8');
+  assert.match(component, /fetchpriority=\{fetchpriority\}/u);
+  assert.match(image, /loading="eager" fetchpriority="high"/u);
+  for (const file of ['ModellingLayout', 'OntologyChapter']) {
+    const source = readFileSync(new URL(`../src/layouts/${file}.astro`, import.meta.url), 'utf8');
+    assert.match(source, /getModellingPageArtwork\(Astro\.url\.pathname\)/u);
+    assert.match(source, /priorityImage=\{\{ lightSrc: artwork\.light\.file, darkSrc: artwork\.dark\.file \}\}/u);
+    assert.match(source, /<PageIllustration artwork=\{artwork\}/u);
+  }
+});

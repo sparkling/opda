@@ -9,6 +9,7 @@ import CampaignIdentity from '@/components/campaign/CampaignIdentity.astro';
 import { HEADER_ICON_IDS } from '@/lib/header-icons';
 import { HEADER_PALETTE_IDS } from '@/lib/header-palettes';
 import { assetVersion } from '@/lib/asset-version.mjs';
+import { designSystemVersion } from '@/lib/design-system-version.mjs';
 import KickoffFeature from '@/components/home/KickoffFeature.astro';
 import MethodFlowFigure from '@/components/home/MethodFlowFigure.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
@@ -26,6 +27,7 @@ const title = 'OPDA Knowledge Base';
 const description =
   'Explore the OPDA programme, governance, semantic modelling, SPDTF development, working groups and evidence behind a shared language for property data.';
 const routeStatus = getRouteStatus('/');
+const cssV = await designSystemVersion();
 const clientV = assetVersion('/ui/client.js');
 const homeHeaderIcon = CAMPAIGN_HEADER_DEFAULTS.icon;
 const homeHeaderPalette = CAMPAIGN_HEADER_DEFAULTS.palette;
@@ -86,7 +88,7 @@ const domains = [
       }
     })();
   </script>
-  <link rel="stylesheet" href="/ui/design-system.css" />
+  <link rel="stylesheet" href={`/ui/design-system.css?v=${cssV}`} />
 </head>
 <body class="public-site">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -157,7 +159,7 @@ const domains = [
     </div>
   </main>
   <SiteFooter />
-  <script is:inline src={`/ui/client.js?v=${clientV}`}></script>
+  <script is:inline defer src={`/ui/client.js?v=${clientV}`}></script>
 </body>
 </html>
 
