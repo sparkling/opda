@@ -1,8 +1,8 @@
 ---
 import MarketingPreview from './MarketingPreview.astro';
-import MarketingCopy from './MarketingCopy.astro';
 import Button from '@/components/Button.astro';
-import ActionGroup from '@/components/ActionGroup.astro';
+import { linkedInPostAssets } from '@/data/marketing/previews.mjs';
+import { linkedInImageDescription } from '../../../scripts/marketing/rich-materials.mjs';
 import { renderLinkedIn } from '../../../scripts/marketing/renderers.mjs';
 const { pack } = Astro.props;
 const base = `/marketing/${pack.id}`;
@@ -11,14 +11,26 @@ const voices = [
   { key: 'partner', title: 'From your organisation', description: 'For an organisation or interest group sharing the invitation without implying partnership or endorsement.' },
 ];
 ---
-<p>These are designed campaign previews, not a LinkedIn editor. Upload the JPEG illustration or PNG infographic, then use <strong>View plain text</strong> to copy a selected post. The HTML is for reviewing and sharing the campaign outside LinkedIn. Add your own perspective and an image description before publishing.</p>
-<ActionGroup>
-  <Button variant="ghost" href={`${base}/images/social-card.jpg`} download>Download LinkedIn image · JPEG</Button>
-  <Button href={`${base}/images/contribution-infographic.png`} download>Download infographic · PNG</Button>
-  <Button variant="ghost" href={`${base}/images/contribution-infographic.svg`} download>Download editable infographic · SVG</Button>
-</ActionGroup>
+<p>These are designed campaign previews, not a LinkedIn editor. Upload the JPEG illustration or PNG infographic, then use <strong>View plain text</strong> to copy a selected post. The HTML is for reviewing and sharing the campaign outside LinkedIn. Add your own perspective and use the suggested image description when an upload image is supplied.</p>
 {voices.map((voice) => <section aria-labelledby={`${pack.id}-linkedin-${voice.key}`}>
   <h3 id={`${pack.id}-linkedin-${voice.key}`}>{voice.title}</h3><p>{voice.description}</p>
-  <MarketingPreview id={`${pack.id}-${voice.key}-sequence`} title={`${pack.label} · ${voice.title}`} preview={`${base}/linkedin/${voice.key}.html`} plainText={false} />
-  {pack.linkedin[voice.key].posts.map((post, index) => <MarketingCopy id={`${pack.id}-${voice.key}-${post.id}`} title={`${index + 1}. ${post.title}`} text={renderLinkedIn(pack, voice.key, post)} download={`${base}/linkedin/${voice.key}-${String(index + 1).padStart(2, '0')}-${post.id}.txt`} rows={10} />)}
+  {linkedInPostAssets(pack, voice.key).map(({ post, index, html, text }) => {
+    const materialTitle = `${pack.label} · ${voice.title} · ${post.title}`;
+    const imageDescription = linkedInImageDescription(pack, index);
+    return <section data-marketing-post aria-labelledby={`${pack.id}-linkedin-${voice.key}-${post.id}`}>
+      <h4 id={`${pack.id}-linkedin-${voice.key}-${post.id}`}>Post {index + 1}: {post.title}</h4>
+      {imageDescription
+        ? <p><strong>Suggested image description:</strong> {imageDescription}</p>
+        : <p><strong>Upload image:</strong> No upload image for this post.</p>}
+      <MarketingPreview id={`${pack.id}-${voice.key}-${post.id}`} title={materialTitle} preview={html} text={renderLinkedIn(pack, voice.key, post)} textDownload={text} rows={10}>
+        <Fragment slot="actions">
+          {index === 0 && <Button href={`${base}/images/social-card.jpg`} download>Download LinkedIn image · JPEG<span class="visually-hidden">: {materialTitle}</span></Button>}
+          {index === 1 && <>
+            <Button href={`${base}/images/contribution-infographic.png`} download>Download infographic · PNG<span class="visually-hidden">: {materialTitle}</span></Button>
+            <Button variant="ghost" href={`${base}/images/contribution-infographic.svg`} download>Download editable infographic · SVG<span class="visually-hidden">: {materialTitle}</span></Button>
+          </>}
+        </Fragment>
+      </MarketingPreview>
+    </section>;
+  })}
 </section>)}

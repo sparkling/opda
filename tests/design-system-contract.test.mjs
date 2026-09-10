@@ -166,6 +166,13 @@ test('major semantic pairs meet the AA contrast contract', () => {
   }
 });
 
+test('visited prose links cannot override shared button foregrounds', async () => {
+  const base = await readFile(file('public/ui/design/base.css'), 'utf8');
+  const visited = base.match(/([^{}]+)\{\s*color:\s*var\(--color-link-visited\);\s*\}/u)?.[1].trim();
+  assert.equal(visited, '.prose a:visited:not(:where(.btn, .cta, [role="button"]))');
+  assert.doesNotMatch(base, /\.prose\s+a:visited\s*\{/u);
+});
+
 test('live shared surfaces no longer depend on the superseded visual language', async () => {
   const paths = [
     'public/ui/design-tokens.css',

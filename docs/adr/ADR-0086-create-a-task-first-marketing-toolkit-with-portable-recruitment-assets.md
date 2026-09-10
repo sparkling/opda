@@ -106,6 +106,10 @@ appearance remains in the common `.btn` CSS. Copy controls and preview containme
 are the only toolkit-specific UI styling. Standalone email and campaign artefacts
 remain self-contained, with their email-compatible styling unchanged.
 
+Ordinary prose-link states, including visited colours, must exclude shared buttons
+and button-role links. A button retains the foreground belonging to its semantic
+variant in both themes; visited history must not turn yellow actions into text links.
+
 ### 2. One canonical content registry
 
 `src/data/marketing/packs.mjs` is the selected canonical registry and exports seven
@@ -129,8 +133,10 @@ rewriting them. The selected output contract is:
 
 - `email/member.{html,txt,eml}` and `email/opda.{html,txt,eml}`;
 - `email/personal.{html,txt,eml}` for a separately voiced personal invitation;
-- `linkedin/{opda,partner}.{html,txt}` with all three posts in each rich preview;
-- three numbered text alternatives per LinkedIn voice;
+- three numbered standalone `linkedin/<voice>-<number>-<post-id>.{html,txt}`
+  documents per voice, each containing only that post;
+- retained `linkedin/{opda,partner}.{html,txt}` aggregate export URLs for compatibility,
+  not used as the website's individual-post previews;
 - `newsletter/{short,long}.{html,txt,eml}`;
 - `email/employer.{html,txt,eml}` in the general pack;
 - audience-specific `images/contribution-infographic.{svg,png}`;
@@ -198,6 +204,9 @@ places optional copy controls behind a closed **View plain text** disclosure.
 The same treatment covers member, OPDA, personal, employer and newsletter messages.
 Only allowlisted, generated, script-free documents may be embedded. The marketing
 pages use the shared `ActionGroup` spacing so buttons do not collide with nearby content.
+Repeated download and preview actions include the material title in their accessible
+names. A post's primary upload asset leads its action group; generic HTML and
+plain-text alternatives remain secondary.
 
 The EML uses a MIME multipart structure with plain text and HTML alternatives and
 inline image parts referenced by `cid:`. Include the actual encoded image bytes,
@@ -236,6 +245,9 @@ PPTX. The overview is printable HTML, not a pre-rendered PDF. Both are labelled
 honestly and generated from the canonical registry. A later native presentation
 format may be added when the supported authoring runtime and verification are
 available; do not substitute a renamed file or an unverified conversion.
+Slides use the available width until speaker notes are requested. Notes and edit
+controls expose their toggle state. Copying slide text excludes speaker notes, and
+an edited download preserves content changes while resetting transient UI modes.
 
 Reuse authorised marks, but give each illustration placement its own concept and
 composition under the 10 September amendment to ADR-0073. Record exact purpose,
@@ -246,12 +258,19 @@ An organisation may identify itself in its own message but the toolkit does not
 invent co-branding rights, display unapproved logos or imply endorsement. All
 essential explanations remain text, not rasterised words alone.
 
-LinkedIn receives distinct OPDA and organisation-voice campaign previews with
-all three posts, illustration and an audience-specific contribution infographic.
+LinkedIn receives distinct OPDA and organisation voices. Each post is presented in
+its own labelled section, with one rich preview, matching downloads and one optional
+plain-text disclosure. Never put several posts inside one visible preview followed
+by detached copy buttons. Shared `src/data/marketing/previews.mjs` defines each
+post's asset identity and the exact embed allowlist for the website and its checks.
+The campaign includes illustration and an audience-specific contribution infographic.
 HTML is the portable review document, not a format pasted into a LinkedIn feed.
 Provide JPEG and PNG assets suitable for upload and editable SVG alongside optional
 per-post text. The infographic shows authorised practitioner evidence informing
 working-group review and the draft specification, not automatic adoption or approval.
+An upload-image preview contains the same artwork as its download. Suggested image
+descriptions are visible beside the relevant post and share the artwork's canonical
+description; posts without an upload image state that explicitly.
 The portable email/graphic typography deliberately uses the existing invitation's
 Georgia/Arial fallback stacks; it does not claim exact web-font rendering in clients.
 

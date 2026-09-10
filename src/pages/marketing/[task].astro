@@ -10,13 +10,14 @@ import ActionGroup from '@/components/ActionGroup.astro';
 import Button from '@/components/Button.astro';
 import { marketingTasks } from '@/data/marketing/tasks.mjs';
 import { getMarketingPack, employerBrief, marketingFaq } from '@/data/marketing/packs.mjs';
+import { supplementalEmail } from '../../../scripts/marketing/rich-materials.mjs';
 import { renderEmailPlain } from '../../../scripts/marketing/renderers.mjs';
 
 export function getStaticPaths() {
   return marketingTasks.map((task) => ({ params: { task: task.id }, props: { task } }));
 }
 const { task } = Astro.props;
-const general = getMarketingPack('general');
+const pack = getMarketingPack('general');
 ---
 <MarketingLayout title={task.title} description={task.description}>
   <h1>{task.title}</h1>
@@ -46,12 +47,12 @@ const general = getMarketingPack('general');
     <section aria-labelledby="organisation-invite">
       <CampaignSectionHeading eyebrow="OPDA to an organisation" title="Ask a network to share the opportunity." id="organisation-invite" size="compact" />
       <p>For Maria and other authorised OPDA representatives contacting professional bodies, interest groups and community networks. Personalise why this audience matters and offer the relevant member-sharing pack. The recipient can edit the invitation and choose whether and how to share it.</p>
-      <MarketingPreview id="organisation-copy" title="OPDA request to share" preview="/marketing/general/email/opda.html" text={renderEmailPlain(general, 'opda')} textDownload="/marketing/general/email/opda.txt" emailDownload="/marketing/general/email/opda.eml" rows={15} />
+      <MarketingPreview id="organisation-copy" title="OPDA request to share" preview="/marketing/general/email/opda.html" text={renderEmailPlain(pack, 'opda')} textDownload="/marketing/general/email/opda.txt" emailDownload="/marketing/general/email/opda.eml" rows={15} />
     </section>
     <section aria-labelledby="personal-invite">
       <CampaignSectionHeading eyebrow="You to a colleague" title="Make a personal introduction." id="personal-invite" size="compact" />
       <p>Use this when you want to draw one person’s attention to the opportunity. Add a sentence about why their experience could be useful and sign with your own name. You are sharing an OPDA invitation, not speaking on behalf of OPDA.</p>
-      <MarketingPreview id="personal-copy" title="Personal invitation" preview="/marketing/general/email/personal.html" text={renderEmailPlain(general, 'personal')} textDownload="/marketing/general/email/personal.txt" emailDownload="/marketing/general/email/personal.eml" />
+      <MarketingPreview id="personal-copy" title="Personal invitation" preview="/marketing/general/email/personal.html" text={renderEmailPlain(pack, 'personal')} textDownload="/marketing/general/email/personal.txt" emailDownload="/marketing/general/email/personal.eml" />
     </section>
     <section aria-labelledby="target-invitation"><h2 id="target-invitation">Make the invitation relevant</h2><p>Each field has its own version of both messages, with a practical reason to contribute.</p><MarketingPackGrid anchor="opda-request" /></section>
   </>}
@@ -61,7 +62,7 @@ const general = getMarketingPack('general');
       <CampaignSectionHeading eyebrow="A campaign with three useful conversations" title="Invite. Make it concrete. Explain the contribution." id="social-sequence" size="compact" />
       <p>Use the three posts as a sequence or choose the one that suits the conversation. Space them to fit your usual publishing rhythm. OPDA’s version speaks directly about our work; the organisation version passes on the opportunity without claiming a partnership or endorsement.</p>
       <p>Add your own perspective and relevant image description. The files do not publish or schedule posts, and contain no recipient tracking. Do not tag organisations as partners unless that relationship has been agreed.</p>
-      <MarketingSocial pack={general} />
+      <MarketingSocial pack={pack} />
     </section>
     <section aria-labelledby="social-fields"><h2 id="social-fields">Campaigns for different audiences</h2><p>Each field has its own three-post sequence in both voices, plus a downloadable image and suggested alternative text.</p><MarketingPackGrid anchor="linkedin" /></section>
   </>}
@@ -90,7 +91,7 @@ const general = getMarketingPack('general');
     <section aria-labelledby="employer-value">
       <CampaignSectionHeading eyebrow="A conversation with your manager" title="Explain why your experience belongs in the work." id="employer-value" size="compact" />
       <p>You may need support from your employer before taking part. This briefing explains the opportunity without promising commercial outcomes or committing your organisation. Adapt it to your responsibilities and the issues you encounter.</p>
-      <MarketingPreview id="employer-copy" title="Request for employer support" preview="/marketing/general/email/employer.html" text={`Subject: ${employerBrief.subject}\n\n${employerBrief.paragraphs.join('\n\n')}`} textDownload="/marketing/general/email/employer.txt" emailDownload="/marketing/general/email/employer.eml" rows={16} />
+      <MarketingPreview id="employer-copy" title="Request for employer support" preview="/marketing/general/email/employer.html" text={renderEmailPlain(supplementalEmail(pack, 'employer', employerBrief), 'personal')} textDownload="/marketing/general/email/employer.txt" emailDownload="/marketing/general/email/employer.eml" rows={16} />
       <ActionGroup><Button href="/marketing/general/one-pager.html" variant="ghost">Attach the one-page overview</Button><Button href="/join" variant="ghost">Explore participation</Button></ActionGroup>
     </section>
     <section aria-labelledby="agree-scope"><h2 id="agree-scope">Agree the scope before committing</h2><ul><li>Which professional experience would you contribute?</li><li>What time and organisational approval would be needed once OPDA confirms the arrangements?</li><li>What examples are you authorised to share, and what must stay confidential?</li><li>Are you contributing your own experience or representing an agreed organisational position?</li></ul></section>

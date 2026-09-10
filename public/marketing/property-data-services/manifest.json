@@ -5,7 +5,7 @@
   "campaignStatus": "current-wave",
   "signupUrl": "https://opda.org.uk/join?context=property-data-services",
   "inputDigest": "662a5d0fae45bf8e69bd4042bc292415740a02f0bf77cb9ce8848fe480542a8b",
-  "generatorDigest": "4be7717fbf974f68bd05bce25f86351ff9d086d4b6906bfb0f476614d778acd5",
+  "generatorDigest": "e8c916b0af0370b53a92a165c10415d08216862c867c16102a52658c4e56701d",
   "sourceAssets": [
     {
       "path": "public/images/marketing/2026-09/packs/property-data-services-light.webp",
@@ -91,8 +91,8 @@
     },
     {
       "path": "linkedin/opda.html",
-      "sha256": "ff790704b0b925297ea4b7a2c83c23ccf93d6c6ae8749aecaefe79add2b751c3",
-      "bytes": 141586
+      "sha256": "2a58711fc18f95ae7428b0bbb446abff3dacea9cf4722045b954f731e085ec2f",
+      "bytes": 182268
     },
     {
       "path": "linkedin/opda-01-invitation.txt",
@@ -100,14 +100,29 @@
       "bytes": 728
     },
     {
+      "path": "linkedin/opda-01-invitation.html",
+      "sha256": "2f3d0a64983a29f6f3bab5754351e3c4fd3067f45312e02ee2af416cdc8d30dd",
+      "bytes": 176860
+    },
+    {
       "path": "linkedin/opda-02-real-work.txt",
       "sha256": "f27e3feb28b3d8d13e371922773e3ebfc157856604c87930d00ce6a97956505f",
       "bytes": 741
     },
     {
+      "path": "linkedin/opda-02-real-work.html",
+      "sha256": "33fa0463b6a0323d812f70786893e57f1f727b52401d88328e698c327d46c671",
+      "bytes": 16646
+    },
+    {
       "path": "linkedin/opda-03-participation.txt",
       "sha256": "4bb6e28a5aa1fb125cd31fd60a57397b385fc3ac0c33b3608be0e00469935a47",
       "bytes": 627
+    },
+    {
+      "path": "linkedin/opda-03-participation.html",
+      "sha256": "8ea2f397505ce13d57fc3e146310bd07607b85668aca48dc3bd83043ad36ff5c",
+      "bytes": 12955
     },
     {
       "path": "linkedin/partner.txt",
@@ -116,8 +131,8 @@
     },
     {
       "path": "linkedin/partner.html",
-      "sha256": "c93d6e271a669a11fc2f8a5a6e7701bb46672f8c55d1b8a198c01b8bc00d01e9",
-      "bytes": 141611
+      "sha256": "7193ab54b272296383d5cc15c32329af13c3f31d4810e93f78d4a75496718bc1",
+      "bytes": 182293
     },
     {
       "path": "linkedin/partner-01-invitation.txt",
@@ -125,14 +140,29 @@
       "bytes": 749
     },
     {
+      "path": "linkedin/partner-01-invitation.html",
+      "sha256": "f7c431ec03aafd6c99c674c38e0a319c3ba1e6dc1b714b677ce2ce88e33ebd47",
+      "bytes": 176907
+    },
+    {
       "path": "linkedin/partner-02-real-work.txt",
       "sha256": "f5223e656687dffffd067954826f486280f35f0ef410257ce4e04d35cbb10f71",
       "bytes": 725
     },
     {
+      "path": "linkedin/partner-02-real-work.html",
+      "sha256": "613cf26b8f1fb3e5c2ce48d33333d2221f26d7b216ec4c4fb7e576bb0a2ece5d",
+      "bytes": 16656
+    },
+    {
       "path": "linkedin/partner-03-participation.txt",
       "sha256": "0d9a1b61377cb087c8b4bfffd95fdcb9cdaa56f3adc521cb6347f9143fd4e94e",
       "bytes": 621
+    },
+    {
+      "path": "linkedin/partner-03-participation.html",
+      "sha256": "bad5b2336a6e471c47ad1af9fc4f96f354b5eebf7fc568571c12202ad3431671",
+      "bytes": 12975
     },
     {
       "path": "newsletter/short.txt",
@@ -171,8 +201,8 @@
     },
     {
       "path": "slides.html",
-      "sha256": "88564e6e10a00da1aad897ddb59a8ab02e6b9c9372776ea1f289f450785f734a",
-      "bytes": 145878
+      "sha256": "2fc131eea27b6b36f2cbcfcb61eeee34a1e4c0d53359e1554758cf7744895185",
+      "bytes": 146623
     }
   ]
 }

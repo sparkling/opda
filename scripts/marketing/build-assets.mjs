@@ -13,7 +13,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import sharp from 'sharp';
 
 import { employerBrief, marketingPacks } from '../../src/data/marketing/packs.mjs';
-import { renderCampaignInfographic, renderLinkedInPreview, supplementalEmail } from './rich-materials.mjs';
+import { linkedInPostAssets } from '../../src/data/marketing/previews.mjs';
+import { renderCampaignInfographic, renderLinkedInPreview, renderNewsletterPlain, supplementalEmail } from './rich-materials.mjs';
 import {
   canonicalJson, dataUri, fileRecord, jsonBuffer, makeZip, resolveBelow, sha256, stripJpegMetadata,
 } from './lib.mjs';
@@ -117,7 +118,7 @@ export function validateMarketingPacks(packs, options = {}) {
 }
 
 function generatorDigest() {
-  return sha256(['build-assets.mjs', 'lib.mjs', 'renderers.mjs', 'rich-materials.mjs']
+  return sha256(['build-assets.mjs', 'lib.mjs', 'renderers.mjs', 'rich-materials.mjs', '../../src/data/marketing/previews.mjs']
     .map((name) => readFileSync(path.join(SCRIPT_DIR, name)))
     .reduce((combined, bytes) => Buffer.concat([combined, bytes]), Buffer.alloc(0)));
 }
@@ -231,14 +232,14 @@ async function buildPack(pack, context) {
   }
   for (const voice of ['opda', 'partner']) {
     entries.set(`linkedin/${voice}.txt`, Buffer.from(renderLinkedIn(pack, voice)));
-    entries.set(`linkedin/${voice}.html`, Buffer.from(renderLinkedInPreview(pack, voice, context.logoBytes, heroBytes, infographic)));
-    for (const [index, post] of (pack.linkedin[voice].posts ?? []).entries()) {
-      const name = `${voice}-${String(index + 1).padStart(2, '0')}-${post.id}.txt`;
-      entries.set(`linkedin/${name}`, Buffer.from(renderLinkedIn(pack, voice, post)));
+    entries.set(`linkedin/${voice}.html`, Buffer.from(renderLinkedInPreview(pack, voice, context.logoBytes, socialBytes, infographic)));
+    for (const { index, post, stem } of linkedInPostAssets(pack, voice)) {
+      entries.set(`linkedin/${stem}.txt`, Buffer.from(renderLinkedIn(pack, voice, post)));
+      entries.set(`linkedin/${stem}.html`, Buffer.from(renderLinkedInPreview(pack, voice, context.logoBytes, socialBytes, infographic, index)));
     }
   }
-  entries.set('newsletter/short.txt', Buffer.from(`${pack.newsletter.title}\n\n${pack.newsletter.short}\n`));
-  entries.set('newsletter/long.txt', Buffer.from(`${pack.newsletter.title}\n\n${pack.newsletter.long}\n`));
+  entries.set('newsletter/short.txt', Buffer.from(renderNewsletterPlain(pack, 'short')));
+  entries.set('newsletter/long.txt', Buffer.from(renderNewsletterPlain(pack, 'long')));
   for (const kind of ['short', 'long', ...(pack.id === 'general' ? ['employer'] : [])]) {
     const supplement = supplementalEmail(pack, kind, employerBrief);
     const name = kind === 'employer' ? 'email/employer' : `newsletter/${kind}`;

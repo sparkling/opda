@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { parse } from 'parse5';
-import { marketingDomains } from '../../src/data/marketing/domains.mjs';
+import { isMarketingPreviewPath } from '../../src/data/marketing/previews.mjs';
 import { PDTF1_ROUTES } from '../../src/lib/pdtf1-routes.mjs';
 import { MODELLING_CHAPTERS } from '../../src/lib/modelling-navigation.ts';
 
@@ -62,8 +62,6 @@ export const ROUTES = [
   '/presentation/working-group-kickoff',
 ];
 
-const marketingPackIds = new Set(marketingDomains.map(({ id }) => id));
-
 export function isScriptFreeEmailPreview(html) {
   const inspect = (node) => {
     if (['script', 'iframe', 'object', 'embed', 'base', 'form', 'link', 'template'].includes(node.tagName)) return false;
@@ -83,12 +81,8 @@ export function matchesScriptFreeEmailPreview(actual, expected) {
 export function emailPreviewPath(url, origin) {
   try {
     const parsed = new URL(url);
-    const match = /^\/marketing\/([^/]+)\/(?:email\/(?:member|opda|personal)|newsletter\/(?:short|long)|linkedin\/(?:opda|partner))\.html$/u
-      .exec(parsed.pathname);
-    const isEmployerPreview = parsed.pathname === '/marketing/general/email/employer.html';
-    const isAllowedPath = isEmployerPreview || Boolean(match && marketingPackIds.has(match[1]));
     return parsed.origin === origin && !parsed.username && !parsed.password && !parsed.search && !parsed.hash
-      && isAllowedPath ? parsed.pathname : null;
+      && isMarketingPreviewPath(parsed.pathname) ? parsed.pathname : null;
   } catch { return null; }
 }
 

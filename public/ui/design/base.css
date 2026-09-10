@@ -29,7 +29,7 @@ a {
 }
 a:hover { color: var(--color-link-hover); }
 a:visited { text-decoration-color: currentColor; }
-.prose a:visited { color: var(--color-link-visited); }
+.prose a:visited:not(:where(.btn, .cta, [role="button"])) { color: var(--color-link-visited); }
 
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--color-focus);

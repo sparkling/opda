@@ -9,6 +9,7 @@ import Callout from '@/components/Callout.astro';
 import ActionGroup from '@/components/ActionGroup.astro';
 import Button from '@/components/Button.astro';
 import { marketingPacks } from '@/data/marketing/packs.mjs';
+import { renderNewsletterPlain } from '../../../../scripts/marketing/rich-materials.mjs';
 import { renderEmailPlain } from '../../../../scripts/marketing/renderers.mjs';
 
 export function getStaticPaths() {
@@ -53,8 +54,8 @@ const base = `/marketing/${pack.id}`;
   </section>
 
   <section aria-labelledby="newsletter"><h2 id="newsletter">Newsletter editions</h2><p>Use a short notice when space is limited, or the longer introduction when readers need more context. Both are rich HTML with embedded images. Add your own introduction without changing the nature of the invitation.</p>
-    <h3>Short newsletter notice</h3><MarketingPreview id="newsletter-short" title="Short newsletter notice" preview={`${base}/newsletter/short.html`} text={pack.newsletter.short} textDownload={`${base}/newsletter/short.txt`} emailDownload={`${base}/newsletter/short.eml`} rows={5} />
-    <h3>Longer newsletter introduction</h3><MarketingPreview id="newsletter-long" title="Longer newsletter introduction" preview={`${base}/newsletter/long.html`} text={pack.newsletter.long} textDownload={`${base}/newsletter/long.txt`} emailDownload={`${base}/newsletter/long.eml`} rows={10} />
+    <h3>Short newsletter notice</h3><MarketingPreview id="newsletter-short" title="Short newsletter notice" preview={`${base}/newsletter/short.html`} text={renderNewsletterPlain(pack, 'short')} textDownload={`${base}/newsletter/short.txt`} emailDownload={`${base}/newsletter/short.eml`} rows={5} />
+    <h3>Longer newsletter introduction</h3><MarketingPreview id="newsletter-long" title="Longer newsletter introduction" preview={`${base}/newsletter/long.html`} text={renderNewsletterPlain(pack, 'long')} textDownload={`${base}/newsletter/long.txt`} emailDownload={`${base}/newsletter/long.eml`} rows={10} />
   </section>
 
   <section aria-labelledby="adapt-check"><h2 id="adapt-check">Before you share</h2><ul><li>Add an authorised sender’s introduction and signature.</li><li>Keep registration as an expression of interest, subject to OPDA review.</li><li>Do not imply government approval, adopted requirements or unconfirmed organisational endorsement.</li><li>Keep your mailing list in your own systems and use your usual communication preferences.</li><li>Test the email and links, including whether your intended audience can open the participation page.</li></ul><p>See <a href="/marketing/brand">brand and message guidance</a> for the official wordmarks and answers to common questions.</p></section>

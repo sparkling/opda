@@ -142,10 +142,18 @@ test('rich previews are primary and plain-text copying is an optional disclosure
   const copy = read('src/components/marketing/MarketingCopy.astro');
   assert.match(copy, /<details class="marketing-plain-text">/);
   assert.match(copy, /View plain text/);
+  assert.match(copy, /View plain text<span class="visually-hidden">: \{title\}<\/span>/u);
+  assert.match(copy, /Download text<span class="visually-hidden">: \{title\}<\/span>/u);
+  assert.match(copy, /aria-label=\{`Copy \$\{title\}`\} title=\{`Copy \$\{title\}`\}/u);
+  assert.doesNotMatch(copy, /title\.toLowerCase|class="sr-only"/u);
   assert.doesNotMatch(copy, /<details[^>]+\sopen(?:\s|>|=)/);
   const preview = read('src/components/marketing/MarketingPreview.astro');
   assert.match(preview, /<iframe/);
   assert.match(preview, /loading="lazy"/);
+  for (const action of ['Download email with embedded images · EML', 'Download rich HTML', 'Open full preview']) {
+    assert.match(preview, new RegExp(`${action}<span class="visually-hidden">: \\{title\\}</span>`, 'u'));
+  }
+  assert.ok(preview.indexOf('<slot name="actions" />') < preview.indexOf('Download email with embedded images · EML'));
   for (const page of ['src/pages/marketing/[task].astro', 'src/pages/marketing/packs/[id].astro']) {
     const source = read(page);
     assert.match(source, /MarketingPreview/);
@@ -156,13 +164,34 @@ test('rich previews are primary and plain-text copying is an optional disclosure
   const taskPage = read('src/pages/marketing/[task].astro');
   const packPage = read('src/pages/marketing/packs/[id].astro');
   assert.match(taskPage, /preview="\/marketing\/general\/email\/employer\.html"/u);
+  assert.match(taskPage, /renderEmailPlain\(supplementalEmail\(pack, 'employer', employerBrief\), 'personal'\)/u);
   assert.match(taskPage, /<MarketingPackGrid anchor="member-email"/u);
-  for (const kind of ['short', 'long']) assert.ok(packPage.includes(`/newsletter/${kind}.html`));
+  for (const kind of ['short', 'long']) {
+    assert.ok(packPage.includes(`/newsletter/${kind}.html`));
+    assert.ok(packPage.includes(`text={renderNewsletterPlain(pack, '${kind}')}`));
+  }
   for (const page of [taskPage, packPage]) assert.match(page, /<MarketingSocial /u);
   const social = read('src/components/marketing/MarketingSocial.astro');
   assert.match(social, /<MarketingPreview /u);
   assert.match(social, /contribution-infographic\.png/u);
   assert.match(social, /not a LinkedIn editor/u);
+});
+
+test('each LinkedIn post owns a labelled rich preview and its own actions', () => {
+  const social = read('src/components/marketing/MarketingSocial.astro');
+  assert.match(social, /linkedInPostAssets\(pack, voice\.key\)\.map/u);
+  assert.match(social, /data-marketing-post/u);
+  assert.match(social, /<h4\s+id=/u);
+  assert.match(social, /preview=\{html\}/u);
+  assert.match(social, /text=\{renderLinkedIn\(pack, voice\.key, post\)\}/u);
+  assert.match(social, /textDownload=\{text\}/u);
+  assert.match(social, /linkedInImageDescription\(pack, index\)/u);
+  assert.match(social, /Suggested image description:/u);
+  assert.match(social, /No upload image for this post\./u);
+  assert.match(social, /index === 0 && <Button href=\{`\$\{base\}\/images\/social-card\.jpg`\}/u);
+  assert.match(social, /Download LinkedIn image · JPEG<span class="visually-hidden">: \{materialTitle\}<\/span>/u);
+  assert.match(social, /Download infographic · PNG<span class="visually-hidden">: \{materialTitle\}<\/span>/u);
+  assert.doesNotMatch(social, /<MarketingCopy|plainText=\{false\}|-sequence/u);
 });
 
 test('Marketing uses shared buttons, cards and editorial flow, not a parallel design system', () => {
@@ -175,7 +204,7 @@ test('Marketing uses shared buttons, cards and editorial flow, not a parallel de
   for (const component of ['MarketingCopy', 'MarketingPreview', 'MarketingSocial']) {
     const source = read(`src/components/marketing/${component}.astro`);
     assert.match(source, /Button\.astro/);
-    assert.match(source, /ActionGroup\.astro/);
+    assert.match(source, /ActionGroup\.astro|MarketingPreview\.astro/);
     assert.doesNotMatch(source, /<(?:a|button|summary)\b[^>]*class="[^"]*\bbtn\b/);
   }
   assert.match(read('src/components/marketing/MarketingPackGrid.astro'), /DestinationCards/);

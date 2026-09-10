@@ -30,6 +30,25 @@ test.describe('runtime continuity boundaries', () => {
     await expect(disclosure.locator('textarea')).toBeVisible();
     await disclosure.getByRole('button', { name: /Copy .*member email preview/iu }).click();
     await expect(disclosure.locator('[data-copy-status]')).toHaveText(/Copied|Text selected/iu);
+
+    const posts = page.locator('[data-marketing-post]');
+    await expect(posts).toHaveCount(6);
+    const previewPaths = new Set();
+    for (const post of await posts.all()) {
+      const heading = await post.locator('h4').innerText();
+      const frame = post.locator('iframe[data-email-preview]');
+      previewPaths.add(await frame.getAttribute('src'));
+      await expect(post.locator('.marketing-plain-text')).toHaveCount(1);
+      await expect(post.locator('textarea')).toBeHidden();
+      await frame.scrollIntoViewIfNeeded();
+      await expect(post.frameLocator('iframe').locator('article')).toHaveCount(1);
+      await expect(post.frameLocator('iframe').locator('h1')).toHaveText(heading.replace(/^Post \d+:\s*/u, ''));
+      const title = await frame.getAttribute('title');
+      const downloadHtml = post.getByRole('link', { name: /^Download rich HTML/u });
+      await expect(downloadHtml).toHaveAccessibleName(new RegExp(title.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&'), 'u'));
+      await expect(downloadHtml).toHaveAttribute('href', await frame.getAttribute('src'));
+    }
+    expect(previewPaths.size).toBe(6);
     await clean();
   });
 
@@ -49,6 +68,20 @@ test.describe('runtime continuity boundaries', () => {
       await assertNoBodyOverflow(page);
     }
     await visit(page, '/marketing');
+    // Browsers conceal :visited colours from computed-style reads. Replay the
+    // actual rule with an equivalent-specificity marker to test the cascade.
+    await page.evaluate(() => {
+      const rules = [...document.styleSheets].flatMap((sheet) => {
+        try { return [...sheet.cssRules]; } catch { return []; }
+      }).filter((rule) => rule instanceof CSSStyleRule && rule.selectorText.includes(':visited'));
+      if (!rules.some((rule) => rule.style.color.includes('--color-link-visited'))) {
+        throw new Error('The shared visited-link rule must be exercised');
+      }
+      const style = document.createElement('style');
+      style.textContent = rules.map((rule) => rule.cssText.replaceAll(':visited', '[data-test-visited]')).join('\n');
+      document.head.append(style);
+      document.querySelectorAll('article.marketing a.btn').forEach((link) => link.setAttribute('data-test-visited', ''));
+    });
     for (const theme of ['light', 'dark']) {
       await page.evaluate((theme) => document.documentElement.setAttribute('data-theme', theme), theme);
       const primary = page.getByRole('link', { name: 'Get a member-sharing pack', exact: true });
@@ -56,11 +89,81 @@ test.describe('runtime continuity boundaries', () => {
       await expect(primary.locator('..')).toHaveClass(/\bbutton-actions\b/u);
       await primary.focus();
       await expect(primary).toBeFocused();
+      await expect(primary).toHaveCSS('color', 'rgb(0, 0, 0)');
+      await primary.hover();
+      await expect(primary).toHaveCSS('color', 'rgb(0, 0, 0)');
       for (const width of [768, 320]) {
         await page.setViewportSize({ width, height: 900 });
         await assertNoBodyOverflow(page);
       }
     }
+    await clean();
+  });
+
+  test('portable Marketing slides use full width until notes are requested', async ({ page }) => {
+    const clean = watchRuntime(page);
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: { writeText: async value => { window.__marketingCopiedText = value; } },
+      });
+    });
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await visit(page, '/marketing/general/slides.html');
+    const canvas = page.locator('.slide[aria-hidden="false"] .slide-canvas');
+    const notes = page.getByRole('button', { name: 'Speaker notes', exact: true });
+    const edit = page.getByRole('button', { name: 'Edit text', exact: true });
+    const fullWidth = (await canvas.boundingBox()).width;
+    const availableWidth = await page.locator('.slide[aria-hidden="false"]').evaluate(node => {
+      const style = getComputedStyle(node);
+      return node.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    });
+    expect(Math.abs(fullWidth - availableWidth)).toBeLessThanOrEqual(1);
+    await expect(notes).toHaveAttribute('aria-pressed', 'false');
+    await notes.click();
+    await expect(notes).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('.slide[aria-hidden="false"] .speaker-notes')).toBeVisible();
+    expect((await canvas.boundingBox()).width).toBeLessThan(fullWidth);
+    await notes.click();
+    await expect(notes).toHaveAttribute('aria-pressed', 'false');
+    expect((await canvas.boundingBox()).width).toBeGreaterThanOrEqual(fullWidth - 1);
+    await edit.click();
+    await expect(edit).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('.slide[aria-hidden="false"] .editable')).toHaveAttribute('contenteditable', 'true');
+    await edit.click();
+    await expect(edit).toHaveAttribute('aria-pressed', 'false');
+    await page.getByRole('button', { name: 'Next', exact: true }).click();
+    await notes.click();
+    await edit.click();
+    const copy = page.locator('.slide[aria-hidden="false"] .slide-copy');
+    await copy.locator('h2').fill('A locally edited presentation title');
+    const expectedText = await copy.evaluate(node => [...node.querySelectorAll('h1,h2,p,li')]
+      .map(element => element.textContent.trim()).filter(Boolean).join('\n'));
+    await page.getByRole('button', { name: 'Copy slide text', exact: true }).click();
+    await expect(page.locator('.control-status')).toHaveText('Slide text copied.');
+    expect(await page.evaluate(() => window.__marketingCopiedText)).toBe(expectedText);
+    const downloading = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Download edited HTML', exact: true }).click();
+    const download = await downloading;
+    let exportedHtml = '';
+    for await (const chunk of await download.createReadStream()) exportedHtml += chunk.toString();
+    const exportedState = await page.evaluate(html => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      return {
+        editable: doc.querySelectorAll('[contenteditable]').length,
+        controls: [...doc.querySelectorAll('[data-action="notes"],[data-action="edit"]')].map(node => node.getAttribute('aria-pressed')),
+        notes: doc.documentElement.dataset.notes ?? null,
+        printMode: doc.documentElement.dataset.printMode ?? null,
+        status: doc.querySelector('.control-status').textContent,
+        visibleSlides: [...doc.querySelectorAll('.slide[aria-hidden="false"]')].map(node => node.dataset.slide),
+        title: doc.querySelector('[data-slide="2"] h2').textContent,
+      };
+    }, exportedHtml);
+    expect(exportedState).toEqual({ editable: 0, controls: ['false', 'false'], notes: null, printMode: null,
+      status: '', visibleSlides: ['1'], title: 'A locally edited presentation title' });
+    await page.setViewportSize({ width: 375, height: 900 });
+    await expect(page.locator('.slide[aria-hidden="false"] .speaker-notes')).toBeVisible();
+    await assertNoBodyOverflow(page);
     await clean();
   });
 

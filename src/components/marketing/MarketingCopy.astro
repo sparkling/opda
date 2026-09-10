@@ -6,13 +6,13 @@ interface Props { id: string; title: string; text: string; rows?: number; downlo
 const { id, title, text, rows = 10, download } = Astro.props;
 ---
 <details class="marketing-plain-text">
-  <Button as="summary" variant="ghost" size="compact">View plain text<span class="sr-only">: {title}</span></Button>
+  <Button as="summary" variant="ghost" size="compact">View plain text<span class="visually-hidden">: {title}</span></Button>
   <div class="marketing-copy">
   <div class="marketing-copy__toolbar">
     <label for={id}>{title}</label>
     <ActionGroup compact>
-      {download && <Button variant="ghost" size="compact" href={download} download>Download text</Button>}
-      <Button variant="ghost" size="compact" data-copy={id} aria-label={`Copy ${title.toLowerCase()}`} title={`Copy ${title.toLowerCase()}`}><Copy size={18} aria-hidden="true" /></Button>
+      {download && <Button variant="ghost" size="compact" href={download} download>Download text<span class="visually-hidden">: {title}</span></Button>}
+      <Button variant="ghost" size="compact" data-copy={id} aria-label={`Copy ${title}`} title={`Copy ${title}`}><Copy size={18} aria-hidden="true" /></Button>
     </ActionGroup>
   </div>
   <textarea id={id} readonly rows={rows} spellcheck="false">{text}</textarea>

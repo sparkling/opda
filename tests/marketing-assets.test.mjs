@@ -5,7 +5,7 @@ import path from 'node:path';
 import test from 'node:test';
 import sharp from 'sharp';
 
-import { marketingPacks } from '../src/data/marketing/packs.mjs';
+import { employerBrief, marketingPacks } from '../src/data/marketing/packs.mjs';
 import { marketingTasks } from '../src/data/marketing/tasks.mjs';
 import {
   EXPECTED_PACK_IDS,
@@ -15,6 +15,8 @@ import {
 } from '../scripts/marketing/build-assets.mjs';
 import { sha256 } from '../scripts/marketing/lib.mjs';
 import { renderCampaignInfographic } from '../scripts/marketing/rich-materials.mjs';
+import * as richMaterials from '../scripts/marketing/rich-materials.mjs';
+import { renderEmailPlain } from '../scripts/marketing/renderers.mjs';
 import { emailPreviewPath, isScriptFreeEmailPreview, matchesScriptFreeEmailPreview } from './e2e/support.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
@@ -215,6 +217,9 @@ test('every email voice is a ready-to-open multipart message with inline PNG and
 test('sandbox diagnostics can only recognise known script-free email documents', () => {
   const origin = 'https://opda.org.uk';
   assert.equal(emailPreviewPath(`${origin}/marketing/general/email/member.html`, origin), '/marketing/general/email/member.html');
+  const postPath = `/marketing/general/linkedin/opda-01-${marketingPacks[0].linkedin.opda.posts[0].id}.html`;
+  assert.equal(emailPreviewPath(`${origin}${postPath}`, origin), postPath);
+  assert.equal(emailPreviewPath(`${origin}/marketing/general/linkedin/opda-01-invented.html`, origin), null);
   for (const url of [`${origin}/marketing/unknown/email/member.html`, `${origin}/marketing/general/slides.html`, `${origin}/marketing/general/email/member.html?changed`, 'https://example.com/marketing/general/email/member.html', 'https://user@opda.org.uk/marketing/general/email/member.html']) {
     assert.equal(emailPreviewPath(url, origin), null);
   }
@@ -247,6 +252,20 @@ test('newsletter and employer invitations have rich HTML and multipart embedded-
       }
     }
   }
+});
+
+test('supplemental copy and image descriptions share the generated asset definitions', async () => {
+  for (const pack of marketingPacks) {
+    for (const kind of ['short', 'long']) {
+      assert.equal(richMaterials.renderNewsletterPlain(pack, kind), await text(`${pack.id}/newsletter/${kind}.txt`));
+    }
+    const description = richMaterials.linkedInImageDescription(pack, 1);
+    assert.ok((await text(`${pack.id}/images/contribution-infographic.svg`)).includes(description.replaceAll('&', '&amp;')));
+    assert.ok(richMaterials.linkedInImageDescription(pack, 0).includes(pack.hero.alt));
+    assert.equal(richMaterials.linkedInImageDescription(pack, 2), null);
+  }
+  const employer = richMaterials.supplementalEmail(marketingPacks[0], 'employer', employerBrief);
+  assert.equal(renderEmailPlain(employer, 'personal'), await text('general/email/employer.txt'));
 });
 
 test('LinkedIn campaigns show all three posts, imagery and an accessible domain-specific infographic', async () => {
@@ -305,12 +324,21 @@ test('each pack includes portable campaign copy, editable slides and a determini
     assert.match(slides, /data-action="copy"/u);
     assert.match(slides, /data-action="download"/u);
     assert.match(slides, /role="status"[^>]*aria-live="polite"/u);
-    assert.match(slides, /slides\[current\]\.querySelectorAll/u, 'copy must read only the current slide');
+    assert.ok(slides.includes("slides[current].querySelector('.slide-copy').querySelectorAll("), 'copy must exclude speaker notes and read only the current slide content');
+    assert.ok(slides.includes("clone.querySelectorAll('[data-action=\"notes\"],[data-action=\"edit\"]').forEach(node=>node.setAttribute('aria-pressed','false'))"), 'download must reset control states');
+    assert.ok(slides.includes("delete clone.dataset.notes;delete clone.dataset.printMode"), 'download must discard transient presentation modes');
+    assert.ok(slides.includes("clone.querySelector('.control-status').textContent=''"), 'download must not retain a stale copy notification');
     assert.match(slides, /navigator\.clipboard\?\.writeText/u);
     assert.match(slides, /document\.execCommand\('copy'\)/u, 'copy must include an offline fallback');
     assert.match(slides, /Copy unavailable\. Select the slide text and copy it manually\./u);
     assert.match(slides, /closest\('input,textarea,select,button,a,\[contenteditable="true"\]'\)/u);
     assert.match(slides, /@media print/iu);
+    assert.match(slides, /\.slide\[aria-hidden="false"\]\{display:grid;grid-template-columns:minmax\(0,1fr\);/u);
+    assert.match(slides, /@media screen and\s*\(min-width:801px\)\{html\[data-notes="true"\] \.slide\[aria-hidden="false"\]\{grid-template-columns:minmax\(0,1fr\) minmax\(260px,34vw\)/u);
+    for (const action of ['notes', 'edit']) {
+      assert.ok(slides.includes(`data-action="${action}" aria-pressed="false"`));
+    }
+    assert.match(slides, /setAttribute\('aria-pressed',String\(on\)\)/u);
     assert.ok(opdaPost.includes(pack.signupUrl));
     assert.ok(partnerPost.includes(pack.signupUrl));
     assert.match(manifest.inputDigest, /^[a-f0-9]{64}$/u);
@@ -330,7 +358,7 @@ test('each pack includes portable campaign copy, editable slides and a determini
   }
 });
 
-test('LinkedIn sequences emit one stable text file per supplied post', async () => {
+test('LinkedIn posts each have a standalone rich document and matching text download', async () => {
   for (const pack of marketingPacks) {
     for (const voice of ['opda', 'partner']) {
       const posts = pack.linkedin[voice].posts ?? [];
@@ -341,6 +369,23 @@ test('LinkedIn sequences emit one stable text file per supplied post', async () 
         assert.ok(rendered.includes(post.title));
         assert.ok(rendered.includes(post.copy));
         assert.ok(rendered.includes(pack.signupUrl));
+        const htmlPath = `${pack.id}/linkedin/${filename.replace(/\.txt$/u, '.html')}`;
+        const html = await text(htmlPath);
+        if (index === 0) {
+          const embeddedJpeg = html.match(/src="data:image\/jpeg;base64,([^"]+)"/u)?.[1];
+          assert.ok(embeddedJpeg, `${htmlPath} must preview the upload artwork`);
+          const download = await readFile(path.join(OUTPUT, pack.id, 'images/social-card.jpg'));
+          assert.equal(sha256(Buffer.from(embeddedJpeg, 'base64')), sha256(download), 'preview and downloaded LinkedIn artwork must be identical');
+        }
+        assert.equal(isScriptFreeEmailPreview(html), true);
+        assert.equal((html.match(/<article>/gu) ?? []).length, 1, htmlPath);
+        assert.ok(html.includes(post.title), htmlPath);
+        assert.ok(html.includes(post.copy.split('\n\n')[0].replaceAll('&', '&amp;')), htmlPath);
+        for (const other of posts.filter((entry) => entry.id !== post.id)) {
+          assert.ok(!html.includes(other.title), `${htmlPath} must not combine posts`);
+        }
+        assert.ok(html.includes(pack.signupUrl));
+        assert.equal(emailPreviewPath(`https://opda.org.uk/marketing/${htmlPath}`, 'https://opda.org.uk'), `/marketing/${htmlPath}`);
       }
     }
   }
