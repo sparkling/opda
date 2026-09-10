@@ -1,17 +1,18 @@
 # SPDTF information architecture
 Status: **implementation in progress on `main`; publication pending**<br>
 Date: 2026-08-27<br>
-Updated: 2026-09-07<br>
-Decision records: [ADR-0069](./adr/ADR-0069-public-working-group-recruitment-and-signup.md) · [ADR-0071](./adr/ADR-0071-bounded-context-recruitment-campaign.md) · [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) · [ADR-0077](./adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md) · [ADR-0078](./adr/ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md) · [ADR-0079](./adr/ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md)<br>
+Updated: 2026-09-10<br>
+Decision records: [ADR-0069](./adr/ADR-0069-public-working-group-recruitment-and-signup.md) · [ADR-0071](./adr/ADR-0071-bounded-context-recruitment-campaign.md) · [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) · [ADR-0077](./adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md) · [ADR-0078](./adr/ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md) · [ADR-0079](./adr/ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md) · [ADR-0086](./adr/ADR-0086-create-a-task-first-marketing-toolkit-with-portable-recruitment-assets.md)<br>
 Review artefact: [HTML presentation](./spdtf-information-architecture.html)
 ## Executive decision
-Reorganise the documentation around six global destinations, in this order:
+Reorganise the site around seven global destinations, in this order:
 1. **Programme**
 2. **Governance**
 3. **Modelling**
 4. **Development**
 5. **Groups** — a direct shortcut into the SPDTF workspace
 6. **Resources**
+7. **Marketing**
 
 `Development` is the global-navigation label for `/development`; it does not rename SPDTF, create a numbered generation or imply adoption. Modelling is a peer destination at `/semantic-modelling/**`, not a branch beneath Development. This remains an asymmetric schema-to-scheme structure: the existing PDTF schema is a third-party input beneath Development, its separately derived evidence retains a distinct draft status, and stable `/pdtf/**` RDF identifiers remain unchanged. The `LeaseTerm` class and `leaseTerm` property representation documents use lowercase, type-scoped routes so publication does not depend on case sensitivity.
 
@@ -150,14 +151,16 @@ The Modelling standards page records purpose, version/conformance, `reuse`/`refe
 | Current implementer | Find the existing schemas, validation and implementation guidance | Development → Third-party inputs |
 | Governance reviewer | Determine authority, maturity, unresolved issues and decision history | Governance |
 | Researcher or auditor | Trace a claim from source through proposal, review and decision | Resources plus the record’s evidence panel |
+| Member, partner or supporter | Share approved recruitment material or invite prospective contributors | Marketing |
 
-The public home page should mirror the six global destinations in their accepted order, expressed as audience-led tasks:
+The public home page should mirror the seven global destinations in their accepted order, expressed as audience-led tasks:
 - understand the programme purpose, direction, roadmap and policy context;
 - check governance, authority, maturity and lifecycle;
 - learn about ontologies or follow the SPDTF semantic-modelling method;
 - review developing SPDTF candidates, questions, outputs and attributed inputs;
 - join or visit a working group; and
-- trace a term, source, standard, recording or decision.
+- trace a term, source, standard, recording or decision; and
+- share approved recruitment and promotion materials without presenting them as standards authority.
 
 Current implementers still reach the PDTF schema through **Development → Third-party inputs**. It remains findable without becoming a peer homepage destination or SPDTF's organising story.
 
@@ -179,12 +182,13 @@ Current implementers still reach the PDTF schema through **Development → Third
 | 4 | Development | Collaborative scheme-development work products, candidates and inputs | `/development` |
 | 5 | Groups | Task shortcut to the single SPDTF working-group family | `/development/working-groups` |
 | 6 | Resources | Source registry, library, glossary and historical records | `/resources` |
+| 7 | Marketing | Task-first approved recruitment and promotion materials | `/marketing` |
 
-Modelling is a peer reader destination and route family, but it acquires no independent standards authority: human working groups still own domain meaning and Governance controls promotion. “Groups” is not a second content owner. It links to the exact canonical landing inside Development. Candidate, evidence, question and disposition records exist once.
+Modelling is a peer reader destination and route family, but it acquires no independent standards authority: human working groups still own domain meaning and Governance controls promotion. “Groups” is not a second content owner. It links to the exact canonical landing inside Development. Marketing owns approved recruitment and communication materials, not standards content or authority. Candidate, evidence, question and disposition records exist once.
 
 ADR-0074 amends only the top-level placement clauses in ADR-0002, ADR-0041, ADR-0059 and ADR-0062. Their generation, traceability and provenance decisions survive. ADR-0074 is Accepted while this navigation correction is implemented and validated on `main`; ADR-0075 governs the authorised Property Pack consolidation described below, without authorising publication.
 
-Home is reached through the wordmark. Programme is the home task gateway's content owner and may therefore be shown as current there. Search, glossary, design system, account and feedback controls are utilities rather than primary destinations. In every left rail, each category heading is the category's canonical page link; a separate 44px disclosure controls its children, the landing is not repeated as a child, and the category page remains in breadcrumbs and the previous/next sequence.
+Home is reached through the wordmark. Programme is the home task gateway's content owner and may therefore be shown as current there. Search follows the seven content destinations as an eighth navigation item; glossary, design system, account and feedback controls remain utilities rather than primary destinations. In every left rail, each category heading is the category's canonical page link; a separate 44px disclosure controls its children, the landing is not repeated as a child, and the category page remains in breadcrumbs and the previous/next sequence.
 
 ## Accepted hierarchy
 
@@ -253,16 +257,24 @@ Home /
 ├── Join a working group /join — standalone public recruitment service
 │   └── Privacy notice /join/privacy
 ├── Accessibility statement /accessibility — standalone public statement
-└── Resources /resources
-    ├── Source registry
-    ├── Participant resources
-    ├── Programme documents
-    ├── Glossary and terminology
-    ├── Meetings, recordings and transcripts
-    ├── External standards, policy and research
-    ├── Official Smart Data sources
-    ├── Historical snapshots
-    └── Machine-readable artefact manifests
+├── Resources /resources
+│   ├── Source registry
+│   ├── Participant resources
+│   ├── Programme documents
+│   ├── Glossary and terminology
+│   ├── Meetings, recordings and transcripts
+│   ├── External standards, policy and research
+│   ├── Official Smart Data sources
+│   ├── Historical snapshots
+│   └── Machine-readable artefact manifests
+└── Marketing /marketing
+    ├── Invite someone
+    ├── Share with your members
+    │   └── General and six working-group campaign packs
+    ├── Post on LinkedIn
+    ├── Give a presentation
+    ├── Get support to participate
+    └── Brand and approved messages
 ```
 
 The DBT Smart Data scheme-design group is the accepted OPDA cross-sector working
@@ -390,13 +402,9 @@ One versioned registry owned by Governance supplies five independent fields:
 | Version | PDTF schema release; candidate identifier; immutable cut | Which exact version? |
 | Provenance | Participant-supplied; observed source; derived from PDTF schema; machine-generated; human-reviewed | Where did it come from? |
 
-The vocabulary ceiling is **first working-group draft — non-normative** until a
-separate accepted governance decision defines later promotion states. ADR-0068 is
-currently Proposed, so its lifecycle cannot be presented as operative.
+The vocabulary ceiling is **first working-group draft — non-normative** until a separate accepted governance decision defines later promotion states. ADR-0068 is currently Proposed, so its lifecycle cannot be presented as operative.
 
-A successful machine validation proves conformance to encoded checks, not semantic
-agreement. “Accepted ADR” also does not mean every confirmation condition is
-operational.
+A successful machine validation proves conformance to encoded checks, not semantic agreement. “Accepted ADR” also does not mean every confirmation condition is operational.
 
 ## Route and migration contract
 
@@ -412,7 +420,7 @@ RDF source identifiers remain unchanged.
 2. **Classify every entry.** Every authored route, generated family, bundled artefact,
    source/archive record, machine representation, runtime service, support-asset dependency,
    utility and alias receives: `keep`, `reframe`, `redirect` or `retire`; canonical
-   content owner from the six-destination taxonomy; accountable governance body where one
+   content owner from the seven-destination taxonomy; accountable governance body where one
    exists; five-field status source; search facet; cross-work-area relationship; current
    path, content checksum, preserved destination and consumers.
 3. **Add context before movement.** Introduce landing pages, status strips,
@@ -458,29 +466,20 @@ This implementation record authorises no publication by itself. Deployment remai
 The implementation is not releasable unless all of these pass:
 
 - Every entry in the current-site inventory has an explicit migration disposition.
-- Source objects, council records, ontology artefacts, data/support assets and runtime
-  services have owners plus count, checksum, consumer, endpoint and journey parity checks.
+- Source objects, council records, ontology artefacts, data/support assets and runtime services have owners plus count, checksum, consumer, endpoint and journey parity checks.
 - Every generated page inherits work area, authority, maturity, version and provenance.
-- The Modelling destination explains why ontologies, the evidence-to-release loop,
-  the six semantic outputs and the boundary between meaning and projections.
-- Every group exposes the exact eight formal concerns and four allowed dispositions;
-  the separate four-lens/eleven-theme workshop crosswalk remains intact.
-- Every standards-profile entry records status, mechanism, owner, version/conformance,
-  evidence and re-open trigger; legacy standards claims are not inherited.
+- The Modelling destination explains why ontologies, the evidence-to-release loop, the six semantic outputs and the boundary between meaning and projections.
+- Every group exposes the exact eight formal concerns and four allowed dispositions; the separate four-lens/eleven-theme workshop crosswalk remains intact.
+- Every standards-profile entry records status, mechanism, owner, version/conformance, evidence and re-open trigger; legacy standards claims are not inherited.
 - RML, JSON-LD, cross-context, coverage and runtime mappings are unambiguous.
-- All six semantic outputs and technical projections cite one versioned package
-  manifest; no representation becomes an independent source of meaning.
-- A participant can reach their group, evidence, questions and review action without
-  knowing RDF vocabulary.
+- All six semantic outputs and technical projections cite one versioned package manifest; no representation becomes an independent source of meaning.
+- A participant can reach their group, evidence, questions and review action without knowing RDF vocabulary.
 - A current implementer can reach schema and validation guidance within two interactions and without entering anything labelled “archive”.
 - A governance reviewer can identify who may decide and whether a decision occurred.
-- The public root renders the six canonical destination labels and URLs in exact order, centres collaborative SPDTF purpose and status, and gives PDTF no standalone promotion.
-- The public root is the sole Knowledge Base homepage. `/home` is absent from the built
-  site, internal links, redirects and rewrites; its retirement receipt records
-  the former landing role and confirms that the six root destinations remain reachable.
+- The public root renders the seven canonical destination labels and URLs in exact order, centres collaborative SPDTF purpose and status, and gives PDTF no standalone promotion.
+- The public root is the sole Knowledge Base homepage. `/home` is absent from the built site, internal links, redirects and rewrites; its retirement receipt records the former landing role and confirms that the seven root destinations remain reachable.
 - The canonical join and privacy routes resolve within Groups navigation; both former URLs are absent from output, redirects and rewrites and return an unchanged 404.
-- Every route is retained or covered by an explicitly authorised move/retirement receipt;
-  every retained or moved fragment resolves, and retired routes remain absent without redirects.
+- Every route is retained or covered by an explicitly authorised move/retirement receipt; every retained or moved fragment resolves, and retired routes remain absent without redirects.
 - Search results expose work area and authority and distinguish the PDTF schema from SPDTF records that cite it.
 - No page equates technical validation with semantic approval.
 - Interoperability remains a peer of domain groups and has one canonical home in SPDTF.

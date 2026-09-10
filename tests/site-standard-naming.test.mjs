@@ -75,6 +75,7 @@ test('public hierarchy uses schema and scheme names in labels and routes', () =>
       ['spdtf', 'Development', '/development'],
       ['working-groups', 'Groups', '/development/working-groups'],
       ['resources', 'Resources', '/resources'],
+      ['marketing', 'Marketing', '/marketing'],
     ],
   );
   assert.equal(PDTF1_ROUTES.inputRoot, '/development/inputs');

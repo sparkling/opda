@@ -1,0 +1,13 @@
+A question from real work
+
+Property records come from sources with different coverage and update cycles. People need to understand what a record describes, where it came from and how it can be used.
+
+Matching two records to an address does not automatically establish that they describe the same thing.
+
+The Open Property Data Association (OPDA) is inviting professional experience to help make these distinctions clear. Bring examples that make provenance, quality and limitations easier for other organisations to understand.
+
+Registration expresses interest, subject to OPDA review, not automatic membership or access.
+
+Register your interest: https://opda.org.uk/join?context=property-data-services
+
+#PropertyData #SPDTF

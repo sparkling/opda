@@ -1,0 +1,13 @@
+A question from real work
+
+A property transaction brings together information from many organisations. Repeated questions and differences in meaning make that information harder to use.
+
+An address can help locate a property, but it does not by itself explain whether a report describes a building, a dwelling or a title record.
+
+At the Open Property Data Association (OPDA), our working groups need professional experience to help make these distinctions clear. Help explain what information means in your work, which exceptions matter and what other people need to understand when you share it.
+
+Registration expresses interest, subject to OPDA review, not automatic membership or access.
+
+Register your interest: https://opda.org.uk/join
+
+#PropertyData #SPDTF

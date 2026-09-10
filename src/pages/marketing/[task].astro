@@ -1,0 +1,120 @@
+---
+import MarketingLayout from '@/layouts/MarketingLayout.astro';
+import CampaignSectionHeading from '@/components/campaign/CampaignSectionHeading.astro';
+import CampaignThemeImage from '@/components/campaign/CampaignThemeImage.astro';
+import MarketingPackGrid from '@/components/marketing/MarketingPackGrid.astro';
+import MarketingCopy from '@/components/marketing/MarketingCopy.astro';
+import Callout from '@/components/Callout.astro';
+import { marketingTasks } from '@/data/marketing/tasks.mjs';
+import { getMarketingPack, employerBrief, marketingFaq } from '@/data/marketing/packs.mjs';
+import { renderEmailPlain } from '../../../scripts/marketing/renderers.mjs';
+
+export function getStaticPaths() {
+  return marketingTasks.map((task) => ({ params: { task: task.id }, props: { task } }));
+}
+const { task } = Astro.props;
+const general = getMarketingPack('general');
+---
+<MarketingLayout title={task.title} description={task.description}>
+  <div class="marketing-pack-heading">
+    <h1>{task.title}</h1>
+    <p class="lead">{task.description}</p>
+  </div>
+
+  {task.id === 'share-with-members' && <>
+    <section aria-labelledby="member-packs">
+      <CampaignSectionHeading eyebrow="For professional bodies and communities" title="Share an invitation your members can act on." id="member-packs" size="panel" />
+      <p>Choose a pack below. The member email introduces OPDA and the opportunity in your organisation’s voice, with relevant examples. Add an introduction and signature from an authorised sender, then distribute through your own email, newsletter or social channels.</p>
+      <p>Every pack contains the complete rich HTML email, an email file with its images included, plain text, newsletter copy, LinkedIn posts, artwork and a short presentation. It is an invitation to contribute, not a claim that your organisation endorses the framework.</p>
+      <MarketingPackGrid />
+    </section>
+    <Callout title="No mailing-list handover" tone="method"><p>Keep your member data in your own systems. Interested members register with OPDA themselves. Sharing the invitation does not register anyone or commit your organisation to participate.</p></Callout>
+    <section aria-labelledby="distribution-check">
+      <h2 id="distribution-check">Before you distribute</h2>
+      <ul>
+        <li>Check the examples fit your audience and the wording reflects your reason for sharing.</li>
+        <li>Add your organisation’s normal signature, footer and communication preferences.</li>
+        <li>Send a test to yourself and check the images, links and layout in the email clients you use.</li>
+        <li>Check that the working-group page is available to your intended recipients before external distribution.</li>
+      </ul>
+    </section>
+  </>}
+
+  {task.id === 'invite-someone' && <>
+    <section aria-labelledby="organisation-invite">
+      <CampaignSectionHeading eyebrow="OPDA to an organisation" title="Ask a network to share the opportunity." id="organisation-invite" size="panel" />
+      <p>For Maria and other authorised OPDA representatives contacting professional bodies, interest groups and community networks. Personalise why this audience matters and offer the relevant member-sharing pack. The recipient can edit the invitation and choose whether and how to share it.</p>
+      <MarketingCopy id="organisation-copy" title="OPDA request to share" text={renderEmailPlain(general, 'opda')} download="/marketing/general/email/opda.txt" rows={15} />
+      <div class="marketing-actions">
+        <a class="btn btn--ghost" href="/marketing/general/email/opda.html">Preview the rich HTML email</a>
+        <a class="btn btn--ghost" href="/marketing/packs/general#opda-request">Get the email files</a>
+      </div>
+    </section>
+    <section aria-labelledby="personal-invite">
+      <CampaignSectionHeading eyebrow="You to a colleague" title="Make a personal introduction." id="personal-invite" size="panel" />
+      <p>Use this when you want to draw one person’s attention to the opportunity. Add a sentence about why their experience could be useful and sign with your own name. You are sharing an OPDA invitation, not speaking on behalf of OPDA.</p>
+      <MarketingCopy id="personal-copy" title="Personal invitation" text={renderEmailPlain(general, 'personal')} download="/marketing/general/email/personal.txt" rows={12} />
+    </section>
+    <section aria-labelledby="target-invitation"><h2 id="target-invitation">Make the invitation relevant</h2><p>Each field has its own version of both messages, with a practical reason to contribute.</p><MarketingPackGrid anchor="opda-request" /></section>
+  </>}
+
+  {task.id === 'linkedin' && <>
+    <section aria-labelledby="social-sequence">
+      <CampaignSectionHeading eyebrow="A campaign with three useful conversations" title="Invite. Make it concrete. Explain the contribution." id="social-sequence" size="panel" />
+      <p>Use the three posts as a sequence or choose the one that suits the conversation. Space them to fit your usual publishing rhythm. OPDA’s version speaks directly about our work; the organisation version passes on the opportunity without claiming a partnership or endorsement.</p>
+      <p>Add your own perspective and relevant image description. The files do not publish or schedule posts, and contain no recipient tracking. Do not tag organisations as partners unless that relationship has been agreed.</p>
+      <div class="marketing-actions">
+        <a class="btn" href="/marketing/packs/general#linkedin">Get the general LinkedIn campaign</a>
+        <a class="btn btn--ghost" href="/marketing/general/images/social-card.jpg" download>Download general LinkedIn artwork</a>
+      </div>
+      <img class="marketing-graphic" src="/marketing/general/images/social-card.jpg" alt={general.hero.alt} width={1200} height={627} loading="lazy" />
+    </section>
+    <section aria-labelledby="social-fields"><h2 id="social-fields">Campaigns for different audiences</h2><p>Each field has its own three-post sequence in both voices, plus a downloadable image and suggested alternative text.</p><MarketingPackGrid anchor="linkedin" /></section>
+  </>}
+
+  {task.id === 'presentations' && <>
+    <section aria-labelledby="presentation-intro">
+      <CampaignSectionHeading eyebrow="At a meeting, event or briefing" title="Explain the opportunity in five minutes." id="presentation-intro" size="panel" />
+      <p>Introduce the problem, the work in development and the experience participants can bring. The six-slide presentation includes speaker notes and a relevant example. Follow it with a conversation about what matters to your audience.</p>
+      <div class="marketing-presentation">
+        <CampaignThemeImage lightSrc={general.hero.source} darkSrc={general.hero.source.replace('-light.webp', '-dark.webp')} alt={general.hero.alt} width={1536} height={512} />
+        <div class="marketing-section">
+          <h3>A short deck and a useful leave-behind</h3>
+          <p>The deck is a self-contained HTML file that opens in a browser and works offline. Choose <strong>Edit text</strong> to adapt it, then <strong>Download edited HTML</strong> to keep your version. It is not a PowerPoint file. The one-page HTML overview is designed for printing or saving as PDF.</p>
+          <div class="marketing-actions">
+            <a class="btn" href="/marketing/general/slides.html">Open the presentation</a>
+            <a class="btn btn--ghost" href="/marketing/general/slides.html" download>Download HTML slides</a>
+            <a class="btn btn--ghost" href="/marketing/general/one-pager.html">Open the one-page overview</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section aria-labelledby="sector-presentations"><h2 id="sector-presentations">Start with an example your audience recognises</h2><MarketingPackGrid anchor="presentations" /></section>
+    <Callout title="Leave room for questions" tone="method"><p>Invite people to describe a real difficulty with property information. Do not promise a meeting schedule, time commitment or adopted requirement that OPDA has not confirmed. The aim is to help people decide whether to explore participation.</p></Callout>
+  </>}
+
+  {task.id === 'employer-support' && <>
+    <section aria-labelledby="employer-value">
+      <CampaignSectionHeading eyebrow="A conversation with your manager" title="Explain why your experience belongs in the work." id="employer-value" size="panel" />
+      <p>You may need support from your employer before taking part. This briefing explains the opportunity without promising commercial outcomes or committing your organisation. Adapt it to your responsibilities and the issues you encounter.</p>
+      <MarketingCopy id="employer-copy" title="Request for employer support" text={`Subject: ${employerBrief.subject}\n\n${employerBrief.paragraphs.join('\n\n')}`} rows={16} />
+      <div class="marketing-actions"><a class="btn btn--ghost" href="/marketing/general/one-pager.html">Attach the one-page overview</a><a class="btn btn--ghost" href="/join">Explore participation</a></div>
+    </section>
+    <section aria-labelledby="agree-scope"><h2 id="agree-scope">Agree the scope before committing</h2><ul><li>Which professional experience would you contribute?</li><li>What time and organisational approval would be needed once OPDA confirms the arrangements?</li><li>What examples are you authorised to share, and what must stay confidential?</li><li>Are you contributing your own experience or representing an agreed organisational position?</li></ul></section>
+  </>}
+
+  {task.id === 'brand' && <>
+    <section aria-labelledby="identity">
+      <CampaignSectionHeading eyebrow="Recognisable, accurate and easy to share" title="Use the OPDA identity as supplied." id="identity" size="panel" />
+      <p>Use the official wordmark on a suitable background. Do not redraw it, change its colours or imply that sharing an invitation makes your organisation an OPDA partner. Add your own organisation’s identity separately when you are the sender.</p>
+      <div class="marketing-actions">
+        <a href="/ui/brand/opda-wordmark-dark.svg" download aria-label="Download dark OPDA wordmark for light backgrounds"><img class="marketing-wordmark" src="/ui/brand/opda-wordmark-dark.svg" alt="Open Property Data Association, dark wordmark for light backgrounds" width={320} height={88} /></a>
+        <a href="/ui/brand/opda-wordmark-white.svg" download aria-label="Download white OPDA wordmark for dark backgrounds"><img class="marketing-wordmark marketing-wordmark--dark" src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association, white wordmark for dark backgrounds" width={320} height={88} /></a>
+      </div>
+      <div class="marketing-actions"><a class="btn btn--ghost" href="/ui/brand/opda-wordmark-dark.svg" download>Dark wordmark · SVG</a><a class="btn btn--ghost" href="/ui/brand/opda-wordmark-white.svg" download>White wordmark · SVG</a></div>
+    </section>
+    <section aria-labelledby="message-guidance"><h2 id="message-guidance">Keep the message clear</h2><ul><li>Use <strong>Open Property Data Association (OPDA)</strong> and <strong>Smart Property Data Trust Framework (SPDTF)</strong> in full before abbreviating them.</li><li>Describe a programme in development, with professional experience helping shape shared definitions.</li><li>Make clear that data-modelling expertise is not required.</li><li>Invite people to register interest, not to claim automatic membership or access.</li><li>Keep essential information in text. Include image descriptions and descriptive links when sharing.</li></ul></section>
+    <section aria-labelledby="questions"><h2 id="questions">Answers you can use</h2><div class="marketing-faq">{marketingFaq.map((item) => <div><h3>{item.question}</h3><p>{item.answer}</p></div>)}</div></section>
+    <Callout title="Share the invitation, not an invented endorsement" tone="important"><p>Use the materials to promote participation in this work. Do not add government approval, accreditation, guaranteed outcomes or organisational partnerships that have not been established.</p></Callout>
+  </>}
+</MarketingLayout>

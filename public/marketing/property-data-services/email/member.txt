@@ -1,0 +1,20 @@
+Help shape property information for property data services
+
+Your experience can help shape the work
+
+We are sharing an opportunity for our members to contribute their experience to the future of property information.
+
+The Open Property Data Association (OPDA) is inviting property data providers and people responsible for sourcing or assuring information to help develop the Smart Property Data Trust Framework. The working groups are developing shared definitions for property information so that people can understand and exchange it more clearly.
+
+Property records come from sources with different coverage and update cycles. People need to understand what a record describes, where it came from and how it can be used.
+
+Bring examples that make provenance, quality and limitations easier for other organisations to understand.
+
+You do not need data-modelling expertise. Your professional experience and judgement can help shape the work.
+
+Registering is an expression of interest. OPDA reviews each submission and confirms the next steps. It does not automatically give membership or access.
+
+Find your working group and register interest
+https://opda.org.uk/join?context=property-data-services
+
+An invitation from the Open Property Data Association, shared by your organisation.

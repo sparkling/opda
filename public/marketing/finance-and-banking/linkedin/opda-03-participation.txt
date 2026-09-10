@@ -1,0 +1,13 @@
+What you can contribute
+
+You do not need to be a data modeller to help improve property information.
+
+Contributors can explain the language and rules used in their work, bring authorised examples, review draft definitions and challenge assumptions.
+
+At the Open Property Data Association (OPDA), we want the definitions to reflect real work, including difficult cases.
+
+Registering is an expression of interest. OPDA reviews each submission and confirms the next steps. It does not automatically give membership or access.
+
+Find your working group: https://opda.org.uk/join?context=finance-and-banking
+
+#PropertyData #SPDTF

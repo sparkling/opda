@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-14
-updated: 2026-09-09
+updated: 2026-09-10
 tags: [engagement, recruitment, linkedin, trade-bodies, working-groups, signup, campaign, measurement]
 supersedes: []
 depends-on: [ADR-0063, ADR-0065, ADR-0069]
@@ -103,7 +103,9 @@ domain account.
 
 ### 3. LinkedIn campaign
 
-OPDA publishes the maintained organic post from its own LinkedIn account. The post:
+OPDA publishes the maintained organic post from its own LinkedIn account. ADR-0086's
+Marketing registry supplies new toolkit variants, keeping OPDA's own post separate
+from an organisation's post to its network. The post:
 
 - names the five target contexts;
 - asks for practitioners, subject-matter experts, professional bodies, product/data specialists
@@ -128,8 +130,11 @@ outreach wave should contact one primary organisation per context. Further organ
 used to address an observed coverage gap, not simply to maximise volume. Listing, contacting or
 sharing the opportunity does not imply endorsement, partnership or agreement with OPDA.
 
-Messages use the approved HTML or plain-text template and context parameters. Email is sent
-individually from `smartdata@openpropdata.org.uk` through Postmark with open and link tracking
+Messages use approved content for the appropriate speaker and audience. ADR-0086 supplies
+new OPDA-to-organisation requests and separate, ready organisation-to-members invitations
+from one registry, including rich HTML previews and unsent CID-image EML drafts. The earlier
+HTML/text templates and parameter file remain historical sources. OPDA's organisation-level
+outreach is sent individually from `smartdata@openpropdata.org.uk` through Postmark with open and link tracking
 disabled, or the same approved text is used in an official contact form. Every send, response and
 approved follow-up is recorded. No contact is made merely because an organisation appears in the
 research register.
@@ -208,6 +213,17 @@ to target contexts, collected fields, automated onboarding or data use require a
 
 ## Amendments
 
+- **2026-09-10 — task-first Marketing toolkit.** ADR-0086 establishes `/marketing` as
+  a top-level destination and the canonical registry for new toolkit assets: invitation
+  requests, member-sharing packs, separately voiced LinkedIn copy, portable recruitment
+  material, employer-support copy and brand assets. Six domain inserts include a labelled
+  Finance and Banking existing-group variant; they do not expand this five-context campaign
+  wave. The original campaign documents and outreach records are preserved, not replayed.
+  Preparing assets does not authorise an email, external provider draft or LinkedIn post.
+  The current development protection remains in force. At the separately authorised public
+  launch, all pages and Marketing assets are intended to be open, with only per-page
+  discussions authenticated. No route exception or access cutover is part of this toolkit.
+
 - **2026-09-09 — separate approval follow-up.** ADR-0085 defines the operator-authorised
   invitation after a trusted HubSpot approval and verified Microsoft access. This recruitment
   campaign still seeks expressions of interest; submitting the form is not approval, Microsoft
@@ -245,6 +261,7 @@ to target contexts, collected fields, automated onboarding or data use require a
 - [ADR-0078 — standalone working-group recruitment campaign](./ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md)
 - [ADR-0079 — public site and retired edge authentication gate](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md)
 - [ADR-0085 — approval-driven onboarding and invitations](./ADR-0085-approval-driven-working-group-onboarding-and-invitations.md)
+- [ADR-0086 — task-first Marketing toolkit](./ADR-0086-create-a-task-first-marketing-toolkit-with-portable-recruitment-assets.md)
 - [Approved LinkedIn copy](../recruitment/2026-08-bounded-context-working-group-linkedin.md)
 - [Trade and professional body outreach register](../recruitment/2026-08-bounded-context-trade-body-outreach.md)
 - [Outreach parameter set](../recruitment/2026-08-bounded-context-outreach-parameters.json)

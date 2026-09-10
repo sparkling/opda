@@ -1,0 +1,69 @@
+---
+import MarketingLayout from '@/layouts/MarketingLayout.astro';
+import CampaignSectionHeading from '@/components/campaign/CampaignSectionHeading.astro';
+import CampaignThemeImage from '@/components/campaign/CampaignThemeImage.astro';
+import MarketingCopy from '@/components/marketing/MarketingCopy.astro';
+import MarketingPackGrid from '@/components/marketing/MarketingPackGrid.astro';
+import Callout from '@/components/Callout.astro';
+import { marketingPacks } from '@/data/marketing/packs.mjs';
+import { renderEmailPlain } from '../../../../scripts/marketing/renderers.mjs';
+
+export function getStaticPaths() {
+  return marketingPacks.map((pack) => ({ params: { id: pack.id }, props: { pack } }));
+}
+const { pack } = Astro.props;
+const base = `/marketing/${pack.id}`;
+const voices = [{ key: 'opda', title: 'From the OPDA account', description: 'For authorised OPDA representatives publishing on OPDA’s LinkedIn account.' }, { key: 'partner', title: 'From your organisation', description: 'For an organisation or interest group sharing the invitation through its own LinkedIn account.' }];
+---
+<MarketingLayout title={`${pack.label} campaign pack`} description={`Email, LinkedIn, presentation and newsletter materials for ${pack.label.toLowerCase()}.`}>
+  <div class="marketing-pack-heading">
+    <h1>{pack.label} campaign pack</h1>
+    <p class="lead">{pack.scope} Choose the material that fits your audience and the account you are sharing from.</p>
+    <CampaignThemeImage className="marketing-pack-hero" lightSrc={pack.hero.source} darkSrc={pack.hero.source.replace('-light.webp', '-dark.webp')} alt={pack.hero.alt} width={pack.id === 'general' ? 1536 : 1200} height={pack.id === 'general' ? 512 : 300} loading="eager" />
+    <div class="marketing-actions"><a class="btn" href={`${base}/${pack.id}-campaign-pack.zip`} download>Download the complete campaign pack · ZIP</a><a class="btn btn--ghost" href={pack.signupUrl}>See the participation page</a></div>
+    <dl class="marketing-meta"><div><dt>Version</dt><dd>{pack.version}</dd></div><div><dt>Published by</dt><dd>OPDA</dd></div><div><dt>Language</dt><dd>English (UK)</dd></div><div><dt>Audience</dt><dd>{pack.campaignStatus === 'existing-group' ? 'Existing working group' : pack.campaignStatus === 'current-wave' ? 'Current recruitment wave' : 'Mixed professions'}</dd></div></dl>
+  </div>
+
+  <section aria-labelledby="member-email">
+    <CampaignSectionHeading eyebrow="Your organisation to its members" title="The member invitation." id="member-email" size="panel" />
+    <p>Send this through your own channels. Add an introduction and signature from your organisation, check that the examples fit your audience, and retain your usual communication preferences and footer. You are sharing an invitation from OPDA, not claiming a partnership or endorsement.</p>
+    <p><strong>Subject:</strong> {pack.email.member.subject}</p>
+    <div class="marketing-email-preview"><iframe src={`${base}/email/member.html`} title={`${pack.label} member email preview`} data-email-preview loading="lazy" sandbox="allow-same-origin"></iframe></div>
+    <div class="marketing-actions">
+      <a class="btn" href={`${base}/email/member.eml`} download>Download email with embedded images · EML</a>
+      <a class="btn btn--ghost" href={`${base}/email/member.html`} download>Download self-contained HTML</a>
+      <a class="btn btn--ghost" href={`${base}/email/member.html`}>Open full preview</a>
+    </div>
+    <MarketingCopy id="member-text" title="Plain-text member email" text={renderEmailPlain(pack, 'member')} download={`${base}/email/member.txt`} rows={12} />
+    <Callout title="Choose the format your email tool supports" tone="method">
+      <p>The EML file includes its images as inline attachments. Opening it for editing depends on your email application; webmail may not support that workflow. HTML and plain text are also provided. Copying text does not copy embedded images. Check the result with a test email before distributing it.</p>
+    </Callout>
+  </section>
+
+  <section aria-labelledby="opda-request">
+    <CampaignSectionHeading eyebrow="Two different conversations" title="Ask an organisation, or invite a colleague." id="opda-request" size="panel" />
+    <div class="marketing-section"><h3>OPDA request to share</h3><p>For Maria and other authorised OPDA representatives. Introduce the opportunity to an organisation and offer this campaign pack for its members.</p><MarketingCopy id="opda-text" title="OPDA request to share" text={renderEmailPlain(pack, 'opda')} download={`${base}/email/opda.txt`} rows={12} /><div class="marketing-actions"><a class="btn btn--ghost" href={`${base}/email/opda.html`}>Preview request email</a><a class="btn btn--ghost" href={`${base}/email/opda.eml`} download>Download EML</a><a class="btn btn--ghost" href={`${base}/email/opda.html`} download>Download HTML</a></div></div>
+    <div class="marketing-section"><h3>Personal invitation</h3><p>For a message from you to a colleague. Explain why you thought of them and sign with your own name.</p><MarketingCopy id="personal-text" title="Personal invitation" text={renderEmailPlain(pack, 'personal')} download={`${base}/email/personal.txt`} rows={10} /><div class="marketing-actions"><a class="btn btn--ghost" href={`${base}/email/personal.html`}>Preview personal email</a><a class="btn btn--ghost" href={`${base}/email/personal.eml`} download>Download EML</a><a class="btn btn--ghost" href={`${base}/email/personal.html`} download>Download HTML</a></div></div>
+  </section>
+
+  <section aria-labelledby="linkedin">
+    <CampaignSectionHeading eyebrow="LinkedIn campaign" title="Three posts, written for the right speaker." id="linkedin" size="panel" />
+    <p>Introduce the opportunity, make it concrete with an example, then explain how to contribute. Use the sequence at a pace that suits your audience, or select individual posts. No posts are scheduled or published by this page.</p>
+    <img class="marketing-graphic" src={`${base}/images/social-card.jpg`} alt={pack.hero.alt} width={1200} height={627} loading="lazy" />
+    <div class="marketing-actions"><a class="btn btn--ghost" href={`${base}/images/social-card.jpg`} download>Download LinkedIn image · JPEG</a><a class="btn btn--ghost" href={`${base}/images/hero.jpg`} download>Download landscape illustration · JPEG</a></div>
+    <MarketingCopy id="image-alt" title="Suggested image description" text={pack.hero.alt} rows={2} />
+    {voices.map((voice) => <div class="marketing-voice"><h3>{voice.title}</h3><p>{voice.description} Add your own perspective before posting.</p>{pack.linkedin[voice.key].posts.map((post, index) => <MarketingCopy id={`${voice.key}-${post.id}`} title={`${index + 1}. ${post.title}`} text={`${post.copy}\n\n${pack.linkedin[voice.key].hashtags.map((tag) => `#${tag}`).join(' ')}`} rows={8} />)}</div>)}
+  </section>
+
+  <section aria-labelledby="presentations">
+    <CampaignSectionHeading eyebrow="Meetings, events and conversations" title="A short presentation and a one-page overview." id="presentations" size="panel" />
+    <p>The six-slide HTML deck includes speaker notes, a practical example and an invitation to register interest. It works offline: choose <strong>Edit text</strong> to adapt it, then <strong>Download edited HTML</strong> to save your version. The one-page HTML overview can be printed or saved as PDF from a browser.</p>
+    <div class="marketing-actions"><a class="btn" href={`${base}/slides.html`}>Open the presentation</a><a class="btn btn--ghost" href={`${base}/slides.html`} download>Download HTML slides</a><a class="btn btn--ghost" href={`${base}/one-pager.html`}>Open the one-page overview</a><a class="btn btn--ghost" href={`${base}/one-pager.html`} download>Download HTML overview</a></div>
+  </section>
+
+  <section aria-labelledby="newsletter"><h2 id="newsletter">Newsletter copy</h2><p>Use a short notice when space is limited, or the longer introduction when readers need more context. Add your own introduction without changing the nature of the invitation.</p><MarketingCopy id="newsletter-short" title="Short newsletter notice" text={pack.newsletter.short} download={`${base}/newsletter/short.txt`} rows={5} /><MarketingCopy id="newsletter-long" title="Longer newsletter introduction" text={pack.newsletter.long} download={`${base}/newsletter/long.txt`} rows={10} /></section>
+
+  <section aria-labelledby="adapt-check"><h2 id="adapt-check">Before you share</h2><ul><li>Add an authorised sender’s introduction and signature.</li><li>Keep registration as an expression of interest, subject to OPDA review.</li><li>Do not imply government approval, adopted requirements or unconfirmed organisational endorsement.</li><li>Keep your mailing list in your own systems and use your usual communication preferences.</li><li>Test the email and links, including whether your intended audience can open the participation page.</li></ul><p>See <a href="/marketing/brand">brand and message guidance</a> for the official wordmarks and answers to common questions.</p></section>
+
+  <section aria-labelledby="other-audiences"><h2 id="other-audiences">Sharing with another audience?</h2><MarketingPackGrid /></section>
+</MarketingLayout>

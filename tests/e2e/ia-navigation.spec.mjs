@@ -6,7 +6,7 @@ import { assertNoBodyOverflow, visit, watchRuntime } from './support.mjs';
 const primary = GLOBAL_NAVIGATION_ITEMS.map(({ title, url }) => ({ title, url }));
 const pdtfClasses = `${PDTF1_ROUTES.terms}/classes`;
 
-test('primary navigation exposes the six destinations followed by Search', async ({ page }) => {
+test('primary navigation exposes the seven destinations followed by Search', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/programme');
   const links = page.locator('nav[aria-label="Primary"] > a');
@@ -25,7 +25,7 @@ test('primary navigation exposes the six destinations followed by Search', async
   clean();
 });
 
-test('the sole knowledge home mirrors the six global destinations', async ({ page }) => {
+test('the sole knowledge home mirrors the seven global destinations', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/');
   const publicDestinations = page.locator('.public-overview a.card');

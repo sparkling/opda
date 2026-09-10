@@ -1,62 +1,25 @@
 /**
  * Executable information-architecture contract for the SPDTF website.
  *
- * Global destinations describe reader tasks and authority. They deliberately do
- * not replace the existing SECTIONS route taxonomy. site-navigation.ts
- * composes those stable routes into current sidebars and page sequences.
+ * Global destinations describe reader tasks and authority. Their canonical
+ * definitions live in site-destinations.mjs; this module adds route ownership,
+ * status and preservation contracts.
  */
+import {
+  AUTHORITY_BY_DESTINATION,
+  GLOBAL_DESTINATION_CARDS,
+  GLOBAL_DESTINATIONS,
+  GLOBAL_NAVIGATION_ITEMS,
+  IA_STATUS_FIELDS,
+} from './site-destinations.mjs';
 
-export const GLOBAL_DESTINATIONS = Object.freeze([
-  { key: 'programme', title: 'Programme', url: '/programme' },
-  { key: 'governance', title: 'Governance', url: '/governance' },
-  { key: 'semantic-modelling', title: 'Modelling', url: '/semantic-modelling' },
-  { key: 'spdtf', title: 'Development', url: '/development' },
-  { key: 'working-groups', title: 'Groups', url: '/development/working-groups' },
-  { key: 'resources', title: 'Resources', url: '/resources' },
-]);
-
-/** Primary header navigation adds the cross-site search task without turning it
- * into a seventh content destination or homepage directory card. */
-export const GLOBAL_NAVIGATION_ITEMS = Object.freeze([
-  ...GLOBAL_DESTINATIONS,
-  Object.freeze({ key: 'search', title: 'Search', url: '/search' }),
-]);
-
-const DESTINATION_CARD_DETAILS = Object.freeze({
-  programme: {
-    audience: 'For programme leaders and new readers',
-    description: 'Understand the purpose, current direction, roadmap and policy context for a shared property-data scheme.',
-  },
-  governance: {
-    audience: 'For decision-makers and reviewers',
-    description: 'See who can decide, what is under review, and how authority, maturity and lifecycle are recorded.',
-  },
-  'semantic-modelling': {
-    audience: 'For domain experts and ontology learners',
-    description: 'Learn why ontologies are used, then follow the evidence-up method, contextual boundaries and mapping approach.',
-  },
-  spdtf: {
-    audience: 'For implementers, stewards and interoperability leads',
-    description: 'Review collaborative work products, candidates, open questions, outputs and attributed third-party inputs.',
-  },
-  'working-groups': {
-    audience: 'For contributors and facilitators',
-    description: 'Find group scopes, member guidance, contribution routes and the workspaces where domain meaning is reviewed.',
-  },
-  resources: {
-    audience: 'For researchers and auditors',
-    description: 'Trace terms, source records, standards, recordings and historical material with their provenance and maturity.',
-  },
-});
-
-export const GLOBAL_DESTINATION_CARDS = Object.freeze(GLOBAL_DESTINATIONS.map((destination) => Object.freeze({
-  ...destination,
-  ...DESTINATION_CARD_DETAILS[destination.key],
-})));
-
-export const IA_STATUS_FIELDS = Object.freeze([
-  'workArea', 'authority', 'maturity', 'version', 'provenance',
-]);
+export {
+  AUTHORITY_BY_DESTINATION,
+  GLOBAL_DESTINATION_CARDS,
+  GLOBAL_DESTINATIONS,
+  GLOBAL_NAVIGATION_ITEMS,
+  IA_STATUS_FIELDS,
+} from './site-destinations.mjs';
 
 export const IA_STATUS_REGISTRY_VERSION = '2026-08-23';
 
@@ -88,6 +51,7 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
   governance: 'governance',
   council: 'governance',
   resources: 'resources',
+  marketing: 'marketing',
   resource: 'resources',
   library: 'resources',
   glossary: 'resources',
@@ -103,51 +67,6 @@ export const ROUTE_OWNER_OVERRIDES = Object.freeze([
   { pattern: /^\/engagement\/meetings-decisions(?:\/|$)/u, owner: 'governance' },
   { pattern: /^\/engagement\/working-groups(?:\/|$)/u, owner: 'programme' },
 ]);
-
-export const AUTHORITY_BY_DESTINATION = Object.freeze({
-  programme: {
-    workArea: 'Cross-programme',
-    authority: 'Programme context; source authority remains with each cited body',
-    maturity: 'Maintained context',
-    version: 'Current programme view',
-    provenance: 'OPDA records and attributed external sources',
-  },
-  'semantic-modelling': {
-    workArea: 'SPDTF semantic modelling',
-    authority: 'Human working groups own domain meaning; governance controls promotion',
-    maturity: 'Teaching and implementation guidance for work in development',
-    version: 'Current modelling method and candidate-specific examples',
-    provenance: 'Accepted modelling decisions, participant evidence and attributed technical sources',
-  },
-  'spdtf': {
-    workArea: 'SPDTF',
-    authority: 'Human working groups own domain meaning; governance controls promotion',
-    maturity: 'In development — not an adopted standard',
-    version: 'Context-owned candidates vary',
-    provenance: 'Participant evidence, recognised sources and attributed PDTF schema evidence',
-  },
-  'working-groups': {
-    workArea: 'SPDTF',
-    authority: 'Each group charter identifies its decision owner',
-    maturity: 'Participation and candidate review',
-    version: 'Candidate-specific',
-    provenance: 'Participant-supplied and facilitator-maintained records',
-  },
-  governance: {
-    workArea: 'Cross-programme',
-    authority: 'Governance records define decision rights and lifecycle',
-    maturity: 'Ratified, practised and proposed rules are distinguished',
-    version: 'Decision-specific',
-    provenance: 'ADR, ODR, council and governance records',
-  },
-  resources: {
-    workArea: 'Cross-programme',
-    authority: 'Evidence registry; listing does not confer standards authority',
-    maturity: 'Source-specific',
-    version: 'Immutable source or generated-manifest identifier',
-    provenance: 'Attributed participant, programme, policy and technical sources',
-  },
-});
 
 const PDTF_DERIVED_DRAFT_STATUS = Object.freeze({
   workArea: 'SPDTF input · OPDA-derived evidence',
@@ -424,6 +343,7 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['engagement', 'resources', 'reframe'],
     ['resources', 'resources', 'reframe'],
     ['library', 'resources', 'reframe'],
+    ['marketing', 'marketing', 'keep'],
   ].map(([path, owner, disposition]) => routeDisposition(`/${path}/**`, owner, disposition)),
   ...[
     ['/', 'programme', 'reframe'],
@@ -524,7 +444,7 @@ export function findForbiddenIaLabels(text, { historical = false } = {}) {
 }
 
 export function validateIaContract() {
-  if (GLOBAL_DESTINATIONS.length !== 6) throw new Error('IA requires exactly six global destinations');
+  if (GLOBAL_DESTINATIONS.length !== 7) throw new Error('IA requires exactly seven global destinations');
   if (GLOBAL_DESTINATION_CARDS.length !== GLOBAL_DESTINATIONS.length) {
     throw new Error('Every global destination requires one shared destination card');
   }

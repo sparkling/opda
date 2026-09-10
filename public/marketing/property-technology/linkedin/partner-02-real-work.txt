@@ -1,0 +1,13 @@
+A question from real work
+
+Products exchange information across systems that often use different labels and assumptions. An apparently simple field can conceal a difference in meaning.
+
+Two systems can both contain a field called property while one means a building and the other means a legal interest.
+
+The Open Property Data Association (OPDA) is inviting professional experience to help make these distinctions clear. Explain where clearer definitions would help services work together and which requirements need to reflect existing products and users.
+
+Registration expresses interest, subject to OPDA review, not automatic membership or access.
+
+Register your interest: https://opda.org.uk/join?context=property-technology
+
+#PropertyData #SPDTF

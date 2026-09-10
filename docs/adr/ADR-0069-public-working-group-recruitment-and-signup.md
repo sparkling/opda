@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-12
-updated: 2026-09-07
+updated: 2026-09-10
 tags: [engagement, recruitment, working-groups, linkedin, trade-bodies, professional-bodies, signup, privacy, security, aws]
 supersedes: []
 depends-on: [ADR-0038, ADR-0040, ADR-0063, ADR-0065]
@@ -9,6 +9,15 @@ implements: [ADR-0065]
 ---
 
 # Recruit later bounded-context working groups through a public campaign and simple sign-up
+
+> **Change note — 2026-09-10:** ADR-0086 introduces the top-level Marketing toolkit
+> and one canonical registry for its new recruitment assets. OPDA's request to an
+> organisation and that organisation's member-facing invitation have separate voices;
+> rich email previews and unsent CID-image EML drafts share the same content authority.
+> The earlier outreach files below remain preserved historical sources. Signup fields,
+> storage, human review and dispatch authority do not change. The development gate
+> remains in force; all pages, including Marketing, are intended to be publicly readable
+> at a separately authorised launch, with only per-page discussions authenticated.
 
 > **Change note — 2026-09-07:** Client wall-clock timing no longer determines whether a
 > working-group registration is stored: clock skew can make a legitimate submission appear too
@@ -138,13 +147,14 @@ Participants are not being asked to understand ontologies, adopt AI or have tech
 The campaign must not promise immediate access, membership, accreditation, voting rights,
 endorsement, publication of material or a release date.
 
-The approved LinkedIn copy is maintained in
+The original approved LinkedIn copy is preserved in
 [`docs/recruitment/2026-08-bounded-context-working-group-linkedin.md`](../recruitment/2026-08-bounded-context-working-group-linkedin.md).
 
 Trade-body outreach asks an organisation to share the public opportunity with its network. OPDA
 does not request a member list, infer endorsement, bulk-add people or grant access through this
 route. Messages are sent individually to an official organisation-level contact or contact form.
-The maintained outreach assets are:
+The original outreach assets are preserved below; ADR-0086's registry is the
+authority for new Marketing toolkit variants:
 
 - [`docs/recruitment/2026-08-bounded-context-trade-body-outreach.md`](../recruitment/2026-08-bounded-context-trade-body-outreach.md);
 - [`docs/templates/bounded-context-trade-body-outreach-email.html`](../templates/bounded-context-trade-body-outreach-email.html)
@@ -334,7 +344,10 @@ This decision is confirmed when:
 - [ADR-0078](./ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md) defines
   the canonical route, standalone composition and campaign interaction contract.
 - [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md) removes the
-  site authentication gate while preserving the registration API and comments boundaries.
+  site authentication gate in its historical decision; its 9 September amendment restores
+  development protection while preserving the registration API and comments boundaries.
+- [ADR-0086](./ADR-0086-create-a-task-first-marketing-toolkit-with-portable-recruitment-assets.md)
+  defines the new Marketing toolkit, asset authority, separate voices and current/future access.
 - [AWS HTTP API throttling](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-throttling.html)
 - [DynamoDB encryption at rest](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/EncryptionAtRest.html)
 - [DynamoDB time to live](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html)

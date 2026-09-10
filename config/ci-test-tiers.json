@@ -73,6 +73,8 @@
     { "path": "tests/lib/remark/frontmatter-uri-extraction.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/lib/remark/rewrite-manual-links.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/lib/remark/unwrap-mermaid-details.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/marketing-assets.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "editorial" },
+    { "path": "tests/marketing-pages.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "editorial" },
     { "path": "tests/mermaid-property-layers.test.mjs", "owner": "ontology-visualisation", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/modelling-redesign-routes.test.mjs", "owner": "semantic-modelling-content", "tier": "pull-request-blocking", "lane": "editorial" },
     { "path": "tests/modelling-enrichment-visuals.test.mjs", "owner": "semantic-modelling-content", "tier": "development-aid", "lane": "editorial" },

@@ -1,0 +1,15 @@
+---
+import { marketingPacks } from '@/data/marketing/packs.mjs';
+import CampaignThemeImage from '@/components/campaign/CampaignThemeImage.astro';
+interface Props { anchor?: string; }
+const { anchor = 'member-email' } = Astro.props;
+---
+<div class="marketing-pack-grid">
+  {marketingPacks.map((pack) => <a class="marketing-pack-card" href={`/marketing/packs/${pack.id}#${anchor}`}>
+    <h3>{pack.label}</h3>
+    <span class="marketing-pack-card__status">{pack.campaignStatus === 'existing-group' ? 'Existing working group' : pack.campaignStatus === 'current-wave' ? 'Current recruitment wave' : 'For a mixed audience'}</span>
+    <CampaignThemeImage lightSrc={pack.hero.source} darkSrc={pack.hero.source.replace('-light.webp', '-dark.webp')} width={pack.id === 'general' ? 1536 : 1200} height={pack.id === 'general' ? 512 : 300} />
+    <p>{pack.scope}</p>
+    <span class="marketing-pack-card__action">Open campaign pack <span aria-hidden="true">↗</span></span>
+  </a>)}
+</div>

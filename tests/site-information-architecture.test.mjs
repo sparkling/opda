@@ -47,6 +47,7 @@ const expectedDestinations = [
   ['spdtf', 'Development', '/development'],
   ['working-groups', 'Groups', '/development/working-groups'],
   ['resources', 'Resources', '/resources'],
+  ['marketing', 'Marketing', '/marketing'],
 ];
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const readRouteBaseline = () => JSON.parse(
@@ -68,21 +69,21 @@ test('the maintained IA source and companion stay below the project file limit',
     assert.ok(source.split('\n').length < 500, `${relativePath} must remain below 500 lines`);
   }
 });
-test('the global information architecture has exactly the six accepted destinations', () => {
+test('the global information architecture has exactly the seven accepted destinations', () => {
   assert.deepEqual(
     GLOBAL_DESTINATIONS.map(({ key, title, url }) => [key, title, url]),
     expectedDestinations,
   );
-  assert.equal(new Set(GLOBAL_DESTINATIONS.map(({ url }) => url)).size, 6);
-  assert.equal(new Set(GLOBAL_DESTINATIONS.map(({ title }) => title)).size, 6);
+  assert.equal(new Set(GLOBAL_DESTINATIONS.map(({ url }) => url)).size, 7);
+  assert.equal(new Set(GLOBAL_DESTINATIONS.map(({ title }) => title)).size, 7);
   assert.equal(validateIaContract(), true);
 });
-test('primary navigation adds Search without creating a seventh content destination', () => {
+test('primary navigation adds Search without creating an eighth content destination', () => {
   assert.deepEqual(
     GLOBAL_NAVIGATION_ITEMS.map(({ key, title, url }) => [key, title, url]),
     [...expectedDestinations, ['search', 'Search', '/search']],
   );
-  assert.equal(GLOBAL_DESTINATIONS.length, 6);
+  assert.equal(GLOBAL_DESTINATIONS.length, 7);
 });
 test('working groups is a shortcut into the canonical SPDTF workspace', () => {
   const workingGroups = GLOBAL_DESTINATIONS.find(({ key }) => key === 'working-groups');
@@ -101,6 +102,8 @@ test('working groups is a shortcut into the canonical SPDTF workspace', () => {
   assert.equal(getActiveDestination('/subscribe'), 'programme');
   assert.equal(getContentOwner('/subscribe/privacy'), 'programme');
   assert.equal(getActiveDestination('/accessibility'), 'resources');
+  assert.equal(getActiveDestination('/marketing'), 'marketing');
+  assert.equal(getActiveDestination('/marketing/packs/general'), 'marketing');
   for (const retired of [
     '/working-groups/join', '/working-groups/join/privacy',
     '/spdtf/working-groups/join', '/spdtf/working-groups/join/privacy',
@@ -126,6 +129,7 @@ test('specific route ownership overrides broad legacy families deterministically
   assert.equal(getRouteDisposition('/modelling/adr/adr-0074').owner, 'governance');
   for (const path of [
     '/development/working-groups/estate-agency',
+    '/marketing/packs/general',
     '/join',
     '/accessibility',
     '/presentation/working-group-kickoff',
@@ -182,6 +186,7 @@ test('every audited route family has a deterministic owner and disposition', () 
     '/programme/**', '/semantic-modelling/**', '/development/**', '/development/working-groups/**', '/development/inputs/**',
     '/development/inputs/pdtf-schema/**',
     '/resources/**', '/strategy/**', '/governance/**',
+    '/marketing/**',
     '/dbt-smart-data/**', '/engagement/**',
     '/library/**', '/', '/join/**', '/accessibility', '/glossary', '/design-system', '/resource', '/404',
     '/development/property-pack/**', '/pdtf/**',

@@ -1,5 +1,5 @@
 /**
- * Reader-facing section navigation for the six-destination information
+ * Reader-facing section navigation for the seven-destination information
  * architecture. Content-source groupings remain defined in site.ts; this
  * module composes their canonical routes by current task and authority.
  */
@@ -7,6 +7,7 @@ import type { Group, Item, Section } from './site.ts';
 import { SECTIONS, normalizeUrl } from './site.ts';
 import { GLOBAL_DESTINATIONS, getActiveDestination } from './site-ia.mjs';
 import { isRetiredPdtf1DocumentationRoute, PDTF1_ROUTES } from './pdtf1-routes.mjs';
+import { MARKETING_NAVIGATION_SECTION } from './marketing-navigation.ts';
 import { workPackageRoute, workPackages } from './property-pack-model.mjs';
 import {
   GOVERNANCE_FRAMEWORK_ITEMS,
@@ -16,7 +17,7 @@ import {
 import { WORKING_GROUPS } from '../components/ia/working-groups.ts';
 
 type DestinationKey = 'programme' | 'governance' | 'semantic-modelling' | 'spdtf'
-  | 'working-groups' | 'resources';
+  | 'working-groups' | 'resources' | 'marketing';
 
 export interface NavigationMatch {
   section: NavigationSection;
@@ -380,6 +381,7 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
       category('Find and inspect', '/glossary'),
     ],
   },
+  marketing: MARKETING_NAVIGATION_SECTION,
 };
 
 export const SECTION_NAVIGATION = Object.freeze(navigationSections);

@@ -48,6 +48,14 @@ preview: build	## Build then serve dist/ via Astro preview
 css: node_modules	## Rebuild the Tailwind stylesheet
 	npm run css
 
+.PHONY: marketing-build
+marketing-build:	## Generate the portable Marketing packs (local ffmpeg required)
+	npm run marketing:build
+
+.PHONY: marketing-check
+marketing-check:	## Check Marketing sources, generated files and focused contracts (Node only)
+	npm run marketing:check
+
 ##@ Triplestore / API (Jena Fuseki — ontology refresh and local development)
 .PHONY: serve-data
 serve-data: node_modules	## Start Fuseki + GRLC API and keep them running (Ctrl-C to stop)

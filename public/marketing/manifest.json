@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "opda.marketing-assets.v1",
+  "inputDigest": "ca8106b1aa8303ff387d0003baa6979fadd5d1e29cae589526d38d4d5f82c331",
+  "generatorDigest": "75b43f0b17e754da8b19736feb36b524c434d360e058ef332fef3e25b954cb64",
+  "packCount": 7,
+  "totalFiles": 183,
+  "totalBytes": 23188050,
+  "sourceAssets": [
+    {
+      "path": "docs/templates/assets/opda-email-logo.png",
+      "sha256": "1720556e2115232066d0b31e74800ba7918a74ed3fc53389c7787748aeeb77d5",
+      "bytes": 7783
+    }
+  ],
+  "packs": [
+    {
+      "id": "general",
+      "label": "All property professions",
+      "campaignStatus": "general",
+      "path": "/marketing/general/",
+      "archive": {
+        "path": "general/general-campaign-pack.zip",
+        "sha256": "21c7cebc32350040716f03652bcc84f737681a7ccd92340fb660cea3ef18a402",
+        "bytes": 2355450
+      },
+      "manifest": "/marketing/general/manifest.json",
+      "files": 26,
+      "bytes": 4707944
+    },
+    {
+      "id": "finance-and-banking",
+      "label": "Finance and Banking",
+      "campaignStatus": "existing-group",
+      "path": "/marketing/finance-and-banking/",
+      "archive": {
+        "path": "finance-and-banking/finance-and-banking-campaign-pack.zip",
+        "sha256": "5ea6c361091ab5068dba8efe447e5c1456f6c7ede0a042cf6c19f035a11f15a0",
+        "bytes": 1664250
+      },
+      "manifest": "/marketing/finance-and-banking/manifest.json",
+      "files": 26,
+      "bytes": 3325544
+    },
+    {
+      "id": "conveyancing",
+      "label": "Conveyancing",
+      "campaignStatus": "current-wave",
+      "path": "/marketing/conveyancing/",
+      "archive": {
+        "path": "conveyancing/conveyancing-campaign-pack.zip",
+        "sha256": "53c7481d1cc881e25ecc3162ecef752a45fe5caa0bf714c438c030516c2125e7",
+        "bytes": 1370087
+      },
+      "manifest": "/marketing/conveyancing/manifest.json",
+      "files": 26,
+      "bytes": 2737218
+    },
+    {
+      "id": "estate-agency",
+      "label": "Estate Agency",
+      "campaignStatus": "current-wave",
+      "path": "/marketing/estate-agency/",
+      "archive": {
+        "path": "estate-agency/estate-agency-campaign-pack.zip",
+        "sha256": "a4278b1583f88f0a323d30924b9cd63bbc2041a8dd853e107408b8c5863e0553",
+        "bytes": 2020534
+      },
+      "manifest": "/marketing/estate-agency/manifest.json",
+      "files": 26,
+      "bytes": 4038112
+    },
+    {
+      "id": "surveying-and-valuation",
+      "label": "Surveying and Valuation",
+      "campaignStatus": "current-wave",
+      "path": "/marketing/surveying-and-valuation/",
+      "archive": {
+        "path": "surveying-and-valuation/surveying-and-valuation-campaign-pack.zip",
+        "sha256": "1e7932a1edeaa8e43adbb285f57815751c3a68e6da3d9d4d64ec486d0e135e7b",
+        "bytes": 1305820
+      },
+      "manifest": "/marketing/surveying-and-valuation/manifest.json",
+      "files": 26,
+      "bytes": 2608684
+    },
+    {
+      "id": "property-data-services",
+      "label": "Property Data Services",
+      "campaignStatus": "current-wave",
+      "path": "/marketing/property-data-services/",
+      "archive": {
+        "path": "property-data-services/property-data-services-campaign-pack.zip",
+        "sha256": "fe1e6071a55a1ca2280824452dbe7b95bf7429f44bd10c24a84b2f9bf62d7523",
+        "bytes": 1580561
+      },
+      "manifest": "/marketing/property-data-services/manifest.json",
+      "files": 26,
+      "bytes": 3158166
+    },
+    {
+      "id": "property-technology",
+      "label": "Property Technology",
+      "campaignStatus": "current-wave",
+      "path": "/marketing/property-technology/",
+      "archive": {
+        "path": "property-technology/property-technology-campaign-pack.zip",
+        "sha256": "895e7471ba8ba6468290b9f2e80d66fd15bbd0b9d976cfcaae6a4e7c2a5e88af",
+        "bytes": 1307669
+      },
+      "manifest": "/marketing/property-technology/manifest.json",
+      "files": 26,
+      "bytes": 2612382
+    }
+  ]
+}

@@ -8,6 +8,8 @@ import { getRouteStatus } from '../src/lib/site-ia.mjs';
 import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
 import { MODELLING_JOURNEYS } from '../src/lib/modelling-navigation.ts';
 import { SEMANTIC_MODELLING_JOURNEYS } from '../src/lib/section-navigation-journeys.ts';
+import { marketingPacks } from '../src/data/marketing/packs.mjs';
+import { marketingTasks } from '../src/data/marketing/tasks.mjs';
 import {
   SECTION_NAVIGATION,
   findNavigationPage,
@@ -23,6 +25,7 @@ const expectedDestinations = [
   ['spdtf', 'Development', '/development'],
   ['working-groups', 'Groups', '/development/working-groups'],
   ['resources', 'Resources', '/resources'],
+  ['marketing', 'Marketing', '/marketing'],
 ];
 
 const originalSchema = `${PDTF1_ROUTES.original}/schema`;
@@ -52,7 +55,7 @@ test('category headings own canonical landing pages without duplicate landing ch
   }
 });
 
-test('the left section navigation implements all six destinations from one registry', () => {
+test('the left section navigation implements all seven destinations from one registry', () => {
   assert.deepEqual(Object.keys(SECTION_NAVIGATION), expectedDestinations.map(([key]) => key));
   for (const [key, title, url] of expectedDestinations) {
     const section = SECTION_NAVIGATION[key];
@@ -84,6 +87,7 @@ test('the left section navigation implements all six destinations from one regis
     spdtf: 241,
     'working-groups': 39,
     resources: 12,
+    marketing: 14,
   });
   const decisionDetail = /^\/modelling\/(?:adr|odr)\/[^/]+$/u;
   for (const url of new Set(legacyUrls.filter((url) => !decisionDetail.test(url)))) {
@@ -108,8 +112,24 @@ test('the left section navigation implements all six destinations from one regis
     PDTF1_ROUTES.terms, PDTF1_ROUTES.validation,
     PDTF1_ROUTES.trust, PDTF1_ROUTES.use,
     '/resources', '/glossary',
+    '/marketing', '/marketing/invite-someone', '/marketing/share-with-members',
+    '/marketing/linkedin', '/marketing/presentations', '/marketing/employer-support',
+    '/marketing/brand', '/marketing/packs/general',
   ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
   assert.equal(compositeUrls.filter((url) => url.startsWith('/development/working-groups')).length, 39);
+});
+
+test('Marketing navigation follows the six canonical tasks and nests every campaign pack', () => {
+  const marketing = SECTION_NAVIGATION.marketing;
+  assert.deepEqual(marketing.groups.map(({ heading, url }) => [heading, url]), [
+    ['Overview', '/marketing'],
+    ...marketingTasks.map(({ id, title }) => [title, `/marketing/${id}`]),
+  ]);
+  const sharing = marketing.groups.find(({ url }) => url === '/marketing/share-with-members');
+  assert.deepEqual(sharing.items, marketingPacks.map(({ id, label }) => ({
+    url: `/marketing/packs/${id}`,
+    title: label,
+  })));
 });
 
 test('Governance overview is a leaf and its six task branches sit at the root', () => {
