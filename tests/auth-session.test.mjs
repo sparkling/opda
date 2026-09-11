@@ -542,9 +542,9 @@ test('comments use the opaque website session without browser bearer tokens or a
   assert.match(source, /getLegacyCommentKey\(Astro\.url\.pathname\)/u);
 });
 
-test('approved comment reads include same-origin credentials and render remote text without interpreting HTML', async () => {
+test('public comment reads omit credentials and render remote text without interpreting HTML', async () => {
   const source = await readFile(new URL('../src/components/Comments.astro', import.meta.url), 'utf8');
-  const script = source.match(/<script>([\s\S]*?)<\/script>/u)[1];
+  const script = source.match(/<script>([\s\S]*?)<\/script>/u)[1].replace(/import\s*\{[^}]+\}\s*from\s*'[^']+';/gu, '');
   class Element {
     children = []; dataset = {}; hidden = false; disabled = false; textContent = '';
     append(...children) { this.children.push(...children); }
@@ -561,6 +561,7 @@ test('approved comment reads include same-origin credentials and render remote t
   const malicious = '<img src=x onerror=alert(1)>';
   const context = {
     URL, URLSearchParams, AbortController, HTMLButtonElement: Element,
+    subscribeSessionView(listener) { listener(undefined); return () => {}; }, publishSessionView() {},
     window: { location: { pathname: '/new-location', origin: SITE }, localStorage: { removeItem: key => removed.push(key) },
       setTimeout, clearTimeout, addEventListener() {}, removeEventListener() {} },
     document: { readyState: 'complete', getElementById: id => ids.get(id), querySelector: () => section,
@@ -577,7 +578,7 @@ test('approved comment reads include same-origin credentials and render remote t
   assert.deepEqual(removed, ['ArtalkUser']);
   assert.equal(requests.length, 1);
   assert.equal(requests[0].options.method, 'GET');
-  assert.equal(requests[0].options.credentials, 'same-origin');
+  assert.equal(requests[0].options.credentials, 'omit');
   assert.equal(requests[0].options.headers.Authorization, undefined);
   const target = new URL(requests[0].url);
   assert.equal(target.pathname, '/api/v2/comments');

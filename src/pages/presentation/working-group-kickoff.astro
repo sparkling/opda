@@ -1,5 +1,6 @@
 ---
 import WorkshopDeck from '../../components/presentations/WorkshopDeck.astro';
+import SeoHead from '../../components/SeoHead.astro';
 import '../../styles/presentations/workshop-tokens.css';
 import '../../styles/presentations/workshop-deck.css';
 import '../../styles/presentations/workshop-scenes.css';
@@ -11,12 +12,11 @@ import '../../styles/presentations/workshop-responsive.css';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="OPDA working-group kick-off: a non-technical, interactive introduction to shared property information, participation and review."
+    <SeoHead
+      title="Working Group Kick-off — OPDA"
+      description="OPDA working-group kick-off: a non-technical, interactive introduction to shared property information, participation and review."
     />
     <meta name="theme-color" content="#071d18" />
-    <title>Working Group Kick-off — OPDA</title>
   </head>
   <body>
     <WorkshopDeck />

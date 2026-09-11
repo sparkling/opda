@@ -4,7 +4,8 @@ import vm from 'node:vm';
 import test from 'node:test';
 
 const source = await readFile(new URL('../src/components/Comments.astro', import.meta.url), 'utf8');
-const script = source.match(/<script>([\s\S]*?)<\/script>/u)[1];
+const script = source.match(/<script>([\s\S]*?)<\/script>/u)[1]
+  .replace(/import\s*\{[^}]+\}\s*from\s*'[^']+';/gu, '');
 const tick = () => new Promise(resolve => setTimeout(resolve, 0));
 const comment = { id: 1, nick: 'Another member', content: 'A useful question', date: '2026-09-09', rid: 0 };
 
@@ -25,7 +26,7 @@ function setup({ postStatus = 200, readStatus = 200, viewer = { name: 'Signed-in
     .map(suffix => ['opda-comments' + suffix, new Element()]));
   const section = new Element(); section.dataset.commentPageKey = '/retained-thread';
   const events = {}, windowEvents = {}, requests = [], observers = [];
-  const state = { postStatus, readStatus, heldPost: undefined };
+  const state = { postStatus, readStatus, heldPost: undefined, subscriber: undefined };
   const document = { readyState, getElementById: id => ids.get(id), querySelector: () => section,
     createElement: () => new Element(), addEventListener: (name, callback) => { events[name] = callback; } };
   class IntersectionObserver {
@@ -38,6 +39,12 @@ function setup({ postStatus = 200, readStatus = 200, viewer = { name: 'Signed-in
   }
   const context = {
     URL, URLSearchParams, AbortController,
+    publishSessionView(identity) { state.subscriber?.({ authenticated: Boolean(identity), name: identity?.name || '' }); },
+    subscribeSessionView(listener) {
+      state.subscriber = listener;
+      listener(viewer ? { authenticated: true, name: viewer.name } : { authenticated: false, name: '' });
+      return () => { state.subscriber = undefined; };
+    },
     window: {
       location: { pathname: '/new-route', origin: 'https://opda.org.uk' }, localStorage: { removeItem() {} },
       setTimeout, clearTimeout,
@@ -53,7 +60,7 @@ function setup({ postStatus = 200, readStatus = 200, viewer = { name: 'Signed-in
       const status = options.method === 'POST' ? state.postStatus : state.readStatus;
       return { ok: status === 200, status, json: async () => options.method === 'POST'
         ? { data: { ...comment, id: 2 } }
-        : { data: { viewer, count: 1, comments: [comment] } } };
+        : { data: { count: 1, comments: [comment] } } };
     },
     ...(withIntersectionObserver ? { IntersectionObserver } : {}),
   };
@@ -143,6 +150,26 @@ test('posting is deliberate, cookie-bound and sends no client-supplied author or
   assert.equal(post.options.headers.Authorization, undefined);
   assert.equal(s.element('-content').value, '');
   assert.equal(s.element('-status').textContent, 'Your comment has been posted.');
+  const refreshed = s.requests.at(-1);
+  assert.equal(new URL(refreshed.url).searchParams.get('after'), '2');
+  await s.element('-more').fire('click');
+  assert.equal(new URL(s.requests.at(-1).url).searchParams.get('after'), '2',
+    'pagination and retry retain the post-success revision, not a stale count');
+});
+
+test('public reads omit cookies and use the shared cache independently of identity updates', async () => {
+  const s = setup(); await tick();
+  assert.equal(s.requests[0].options.credentials, 'omit');
+  assert.equal(s.requests[0].options.cache, 'default');
+  assert.equal(new URL(s.requests[0].url).searchParams.get('public'), '1');
+  s.element('-content').value = 'A kept draft';
+  s.state.subscriber({ authenticated: false, name: '' });
+  assert.equal(s.element('-form').hidden, true);
+  assert.equal(s.element('-author').textContent, '');
+  assert.equal(s.element('-content').value, 'A kept draft');
+  assert.equal(s.requests.length, 1, 'a session change does not reload the public feed');
+  s.events['astro:before-swap']();
+  assert.equal(s.state.subscriber, undefined, 'old-page subscribers are released');
 });
 
 test('reply controls preserve the exact legacy thread and parent ID', async () => {

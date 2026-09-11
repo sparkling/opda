@@ -1,4 +1,104 @@
 /* Locally hosted typography used by the OPDA design system. */
+/*
+ * Local fallback metrics measured from the shipped Latin WOFF2 files at their
+ * actual weights with FontTools on 2026-09-11. Their hhea and OS/2 typo metrics
+ * agree (USE_TYPO_METRICS), so these vertical dimensions are cross-platform.
+ * Source Sans 3: UPM 1000, ascent 1024, descent 400, line gap 0.
+ * Atkinson Hyperlegible Next: UPM 1000, ascent 984, descent 316, line gap 0.
+ * Roboto Slab: UPM 2048, ascent 2146, descent 555, line gap 0.
+ * size-adjust matches mean advance width in representative OPDA English copy;
+ * ascent/descent overrides divide the target ratios by that adjustment.
+ * See tests/rendering-font-fallbacks.test.mjs for the sample and measurements.
+ * Arial/Georgia are local only; devices without them retain system fallbacks.
+ */
+@font-face {
+  font-family: 'Source Sans 3 Fallback';
+  src: local('Arial');
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  size-adjust: 94.1256%;
+  ascent-override: 108.7908%;
+  descent-override: 42.4964%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Source Sans 3 Fallback';
+  src: local('Arial Bold');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  size-adjust: 89.9412%;
+  ascent-override: 113.8522%;
+  descent-override: 44.4735%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Source Sans 3 Fallback';
+  src: local('Arial Bold');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  size-adjust: 92.4119%;
+  ascent-override: 110.8082%;
+  descent-override: 43.2845%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next Fallback';
+  src: local('Arial');
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  size-adjust: 99.3821%;
+  ascent-override: 99.0118%;
+  descent-override: 31.7965%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next Fallback';
+  src: local('Arial Bold');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  size-adjust: 96.9495%;
+  ascent-override: 101.4961%;
+  descent-override: 32.5943%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next Fallback';
+  src: local('Arial Bold');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  size-adjust: 99.0143%;
+  ascent-override: 99.3796%;
+  descent-override: 31.9146%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Roboto Slab Fallback';
+  src: local('Georgia Bold');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  size-adjust: 92.4305%;
+  ascent-override: 113.3664%;
+  descent-override: 29.3189%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Roboto Slab Fallback';
+  src: local('Georgia Bold');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  size-adjust: 92.6730%;
+  ascent-override: 113.0698%;
+  descent-override: 29.2422%;
+  line-gap-override: 0%;
+}
 @font-face {
   font-family: 'Source Sans 3';
   src: url('./fonts/SourceSans3-Variable-cyrillic-ext.woff2') format('woff2');

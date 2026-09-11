@@ -30,9 +30,11 @@ import { siteSearchIndexGenerator } from './src/integrations/generate-site-searc
 import { designSystemBundler } from './src/integrations/bundle-design-system.mjs';
 import { responsiveArtworkPublisher } from './src/integrations/responsive-artwork.mjs';
 import { inlineSmallPageStyles } from './src/integrations/asset-inlining.mjs';
+import { immutableUiAssets } from './src/integrations/immutable-ui-assets.mjs';
 
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import { sitemapPageIsIndexable } from './src/lib/sitemap-pages.mjs';
 
 // Dev-only Vite plugin: expose project sub-trees (source/, _build/) that
 // live OUTSIDE publicDir so the resource viewer can fetch them at
@@ -174,11 +176,11 @@ export default defineConfig({
   // embedded meta-reports before build/dev resolves the page imports.
   // @astrojs/sitemap auto-generates /sitemap-index.xml (+ /sitemap-0.xml) from
   // every built route, using `site` above for absolute URLs — replaces the
-  // former hand-maintained src/pages/sitemap.xml.js (stale page list + the dead
-  // opda-kb.pages.dev domain). Drop the utility 404/resource-viewer routes.
+  // former hand-maintained src/pages/sitemap.xml.js. Exclude utility pages and
+  // inspect emitted head metadata for noindex/redirects; preserve their files.
   integrations: [odrSourcesGenerator(), reportGenerator(), diagramLinksGenerator(), councilGenerator(), siteSearchIndexGenerator(), designSystemBundler(), responsiveArtworkPublisher(), sitemap({
-    filter: (page) => !/\/(404|resource)\/?$/.test(page),
-  })],
+    filter: (page) => sitemapPageIsIndexable(page, new URL('./dist/', import.meta.url)),
+  }), immutableUiAssets()],
   // The ADR, ODR and generated manual collections exceed Vite's safe
   // single-module size in development. Astro's chunked store keeps each
   // virtual module below 1 MiB, so getCollection() cannot silently fall back

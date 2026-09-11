@@ -121,10 +121,21 @@ test('me fetch is same-origin, uncached, abortable and distinguishes denial from
   }
 });
 
+test('denied and failed identity responses close their unused body streams', async () => {
+  for (const status of [401, 403, 503]) {
+    let cancelled = false;
+    const response = new Response(new ReadableStream({ cancel() { cancelled = true; } }), { status });
+    const result = readSessionIdentity({ fetch: async () => response });
+    if (status === 503) await assert.rejects(result, /unavailable/);
+    else assert.equal(await result, null);
+    assert.equal(cancelled, true);
+  }
+});
+
 test('AuthButton clears dropdown, identifying text and legacy cache on denial without navigation', () => {
   const source = readFileSync(new URL('../src/components/AuthButton.astro', import.meta.url), 'utf8');
   const script = source.match(/<script>([\s\S]*?)<\/script>/u)[1]
-    .replace(/import\s*\{[^}]+\}\s*from\s*'[^']+';/u, '').replaceAll('import.meta.env.DEV', 'false');
+    .replace(/import\s*\{[^}]+\}\s*from\s*'[^']+';/gu, '').replaceAll('import.meta.env.DEV', 'false');
   class Element extends EventTarget {
     dataset = {}; hidden = true; disabled = false; textContent = ''; style = { backgroundImage: '' }; attributes = {};
     setAttribute(name, value) { this.attributes[name] = value; }
@@ -135,12 +146,12 @@ test('AuthButton clears dropdown, identifying text and legacy cache on denial wi
     'auth-user-trigger', 'auth-user-dropdown', 'auth-logout-btn'];
   const elements = new Map(names.map(name => [name, new Element()]));
   const root = new Element(), doc = new EventTarget(), win = new EventTarget();
-  const removed = []; let options, starts = 0, pauses = 0, refreshes = 0;
+  const removed = [], published = []; let options, starts = 0, pauses = 0, refreshes = 0;
   Object.assign(doc, { readyState: 'complete', visibilityState: 'visible',
     getElementById: id => elements.get(id), querySelector: () => root });
   Object.assign(win, { localStorage: { removeItem: key => removed.push(key) },
     location: { pathname: '/programme', search: '', href: 'unchanged' } });
-  vm.runInNewContext(script, { document: doc, window: win, readSessionIdentity,
+  vm.runInNewContext(script, { document: doc, window: win, readSessionIdentity, publishSessionView: id => published.push(id),
     createSessionWatch: config => { options = config; return { start: () => starts++, refresh: () => refreshes++,
       pause: () => pauses++, stop() {} }; } });
   options.onIdentity({ ...identity, picture: 'https://example.test/avatar.png' });
@@ -163,6 +174,8 @@ test('AuthButton clears dropdown, identifying text and legacy cache on denial wi
   win.dispatchEvent(Object.assign(new Event('pageshow'), { persisted: true })); assert.equal(starts, 3);
   doc.dispatchEvent(new Event('astro:before-swap')); assert.equal(pauses, 2);
   doc.dispatchEvent(new Event('astro:page-load')); assert.equal(starts, 4);
+  const beforeOutage = published.length;
   options.onUnavailable(identity); assert.equal(elements.get('auth-user-menu').hidden, false);
+  assert.equal(published.length, beforeOutage, 'outage presentation cannot republish stale eligibility');
   assert.equal(root.dataset.authState, 'unavailable');
 });

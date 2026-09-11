@@ -42,51 +42,15 @@
             decoding="async"
           />
         </noscript>
-        <script is:inline>
-          (() => {
-            const wrapper = document.currentScript?.closest('.method-flow__graphic-wrap');
-            const image = wrapper?.querySelector('[data-method-theme-image]');
-            if (!(image instanceof HTMLImageElement)) return;
-
-            const wide = window.matchMedia('(min-width: 64.01rem)');
-            const forcedColours = window.matchMedia('(forced-colors: active)');
-            let request = 0;
-
-            const selectAsset = () => {
-              if (!wide.matches || forcedColours.matches) {
-                request += 1;
-                image.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-                return;
-              }
-
-              const theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
-              const source = theme === 'dark' ? image.dataset.darkSrc : image.dataset.lightSrc;
-              if (!source || image.getAttribute('src') === source) return;
-
-              const currentRequest = ++request;
-              const next = new Image();
-              next.decoding = 'async';
-              next.src = source;
-
-              const apply = () => {
-                if (currentRequest === request) image.src = source;
-              };
-
-              if (typeof next.decode === 'function') next.decode().then(apply, apply);
-              else {
-                next.onload = apply;
-                next.onerror = apply;
-              }
-            };
-
-            new MutationObserver(selectAsset).observe(document.documentElement, {
-              attributes: true,
-              attributeFilter: ['data-theme'],
+        <script>
+          import { initialiseLazyMethodImage } from '../../scripts/lazy-method-image.mjs';
+          const initialise = () => {
+            document.querySelectorAll('.method-flow__graphic-wrap').forEach((wrapper) => {
+              initialiseLazyMethodImage(wrapper);
             });
-            wide.addEventListener('change', selectAsset);
-            forcedColours.addEventListener('change', selectAsset);
-            selectAsset();
-          })();
+          };
+          initialise();
+          document.addEventListener('astro:page-load', initialise);
         </script>
       </div>
 

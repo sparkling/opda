@@ -9,11 +9,12 @@ import CampaignIdentity from '@/components/campaign/CampaignIdentity.astro';
 import { HEADER_ICON_IDS } from '@/lib/header-icons';
 import { HEADER_PALETTE_IDS } from '@/lib/header-palettes';
 import { assetVersion } from '@/lib/asset-version.mjs';
-import { designSystemVersion } from '@/lib/design-system-version.mjs';
+import CampaignDesignStyles from '@/components/CampaignDesignStyles.astro';
 import KickoffFeature from '@/components/home/KickoffFeature.astro';
 import MethodFlowFigure from '@/components/home/MethodFlowFigure.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
 import FontPreloads from '@/components/FontPreloads.astro';
+import SeoHead from '@/components/SeoHead.astro';
 import {
   CAMPAIGN_HEADER_DEFAULTS,
   campaignPanelStyle,
@@ -23,11 +24,10 @@ import '@/styles/working-group-campaign.css';
 import '@/styles/working-group-campaign-responsive.css';
 import '@/styles/editorial-content.css';
 
-const title = 'OPDA Knowledge Base';
+const title = 'A shared language for property data · Open Property Data Association';
 const description =
   'Explore the OPDA programme, governance, semantic modelling, SPDTF development, working groups and evidence behind a shared language for property data.';
 const routeStatus = getRouteStatus('/');
-const cssV = await designSystemVersion();
 const clientV = assetVersion('/ui/client.js');
 const homeHeaderIcon = CAMPAIGN_HEADER_DEFAULTS.icon;
 const homeHeaderPalette = CAMPAIGN_HEADER_DEFAULTS.palette;
@@ -47,16 +47,12 @@ const domains = [
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <FontPreloads display />
-  <title>{title}</title>
-  <meta name="description" content={description} />
+  <SeoHead title={title} description={description} />
   <meta name="opda:work-area" content={routeStatus.workArea} />
   <meta name="opda:authority" content={routeStatus.authority} />
   <meta name="opda:maturity" content={routeStatus.maturity} />
   <meta name="opda:version" content={routeStatus.version} />
   <meta name="opda:provenance" content={routeStatus.provenance} />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta name="twitter:card" content="summary" />
   <script
     is:inline
     data-astro-rerun
@@ -88,7 +84,7 @@ const domains = [
       }
     })();
   </script>
-  <link rel="stylesheet" href={`/ui/design-system.css?v=${cssV}`} />
+  <CampaignDesignStyles />
 </head>
 <body class="public-site">
   <a class="skip-link" href="#main-content">Skip to main content</a>

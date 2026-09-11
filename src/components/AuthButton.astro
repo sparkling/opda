@@ -44,6 +44,7 @@
 
 <script>
   import { createSessionWatch, readSessionIdentity } from '../scripts/auth-session-watch.mjs';
+  import { publishSessionView } from '../scripts/auth-session-view.mjs';
 
   // The path-scoped session service (ADR-0084) owns the opaque participant
   // session and exposes it same-origin: /_auth/me (identity), /_auth/login
@@ -66,7 +67,8 @@
     return readSessionIdentity({ signal });
   }
 
-  function renderIdentity(id) {
+  function renderIdentity(id, fresh = true) {
+    if (fresh) publishSessionView(id);
     const loginBtn = document.getElementById('auth-login-btn');
     const userMenu = document.getElementById('auth-user-menu');
     const userEmail = document.getElementById('auth-user-email');
@@ -110,7 +112,7 @@
     onUnavailable(id) {
       // Keep a previously confirmed view during a transient failure. Without any
       // successful check, show a neutral unavailable control, not a logout claim.
-      if (id !== undefined) renderIdentity(id);
+      if (id !== undefined) renderIdentity(id, false);
       else {
         const button = document.getElementById('auth-login-btn');
         if (button) { button.hidden = false; button.disabled = true; button.textContent = 'Sign-in unavailable'; }

@@ -5,7 +5,8 @@ import {
 } from '@/lib/site-ia.mjs';
 import SiteFooter from '@/components/SiteFooter.astro';
 import FontPreloads from '@/components/FontPreloads.astro';
-import { designSystemVersion } from '@/lib/design-system-version.mjs';
+import SeoHead from '@/components/SeoHead.astro';
+import CampaignDesignStyles from '@/components/CampaignDesignStyles.astro';
 import '@/styles/standalone-public.css';
 import '@/styles/editorial-content.css';
 
@@ -24,8 +25,7 @@ const {
   socialImage,
   displayFont = false,
 } = Astro.props;
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
-const socialImageUrl = socialImage ? new URL(socialImage, canonicalUrl).href : undefined;
+const pageContent = await Astro.slots.render('default');
 const routeStatus = getRouteStatus(Astro.url.pathname) ?? {
   workArea: 'Public participation',
   authority: 'OPDA public service information',
@@ -34,7 +34,6 @@ const routeStatus = getRouteStatus(Astro.url.pathname) ?? {
   provenance: 'OPDA programme and service records',
 };
 const pageTitle = `${title} · Open Property Data Association`;
-const cssV = await designSystemVersion();
 ---
 <!doctype html>
 <html
@@ -50,23 +49,12 @@ const cssV = await designSystemVersion();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <FontPreloads display={displayFont} />
-    <title>{pageTitle}</title>
-    <meta name="description" content={description} />
+    <SeoHead title={pageTitle} description={description} socialImage={socialImage} contentHtml={pageContent} />
     <meta name="opda:work-area" content={routeStatus.workArea} />
     <meta name="opda:authority" content={routeStatus.authority} />
     <meta name="opda:maturity" content={routeStatus.maturity} />
     <meta name="opda:version" content={routeStatus.version} />
     <meta name="opda:provenance" content={routeStatus.provenance} />
-    <link rel="canonical" href={canonicalUrl} />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl} />
-    {socialImageUrl && <meta property="og:image" content={socialImageUrl} />}
-    <meta name="twitter:card" content={socialImage ? 'summary_large_image' : 'summary'} />
-    <meta name="twitter:title" content={pageTitle} />
-    <meta name="twitter:description" content={description} />
-    {socialImageUrl && <meta name="twitter:image" content={socialImageUrl} />}
     <script is:inline>
       (() => {
         try {
@@ -79,13 +67,13 @@ const cssV = await designSystemVersion();
         }
       })();
     </script>
-    <link rel="stylesheet" href={`/ui/design-system.css?v=${cssV}`} />
+    <CampaignDesignStyles />
     <slot name="head" />
   </head>
   <body class:list={['standalone-public', bodyClass]}>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <main id="main-content" class="editorial-content" tabindex="-1">
-      <slot />
+      <Fragment set:html={pageContent} />
     </main>
     <SiteFooter />
   </body>

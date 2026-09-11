@@ -116,9 +116,9 @@
   --color-data-diverging-mid: var(--neutral-100);
   --color-data-diverging-high: var(--color-data-2);
   /* Typography. */
-  --font-display: 'Roboto Slab', Rockwell, 'Roboto Slab Fallback', Georgia, serif;
-  --font-sans: 'Source Sans 3', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
-  --font-reading: 'Atkinson Hyperlegible Next', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Roboto Slab', 'Roboto Slab Fallback', Rockwell, Georgia, serif;
+  --font-sans: 'Source Sans 3', 'Source Sans 3 Fallback', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+  --font-reading: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible Next Fallback', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'Roboto Mono', 'SFMono-Regular', Consolas, monospace;
   --font-serif: var(--font-display);
   --text-xs: 0.75rem;

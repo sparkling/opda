@@ -130,6 +130,27 @@ test('content-addressed assets are immutable, published first and retained for o
   const release = await readFile(new URL('../.github/workflows/site-release.yml', import.meta.url), 'utf8');
   assert.match(release, /for ASSET_PREFIX in _astro _images/u);
   assert.match(release, /--cache-control 'public,max-age=31536000,immutable'/u);
-  assert.ok(release.indexOf('for ASSET_PREFIX') < release.indexOf('aws s3 sync dist/'));
-  assert.match(release, /aws s3 sync dist\/[\s\S]*--exclude "_astro\/\*" --exclude "_images\/\*"/u);
+  assert.ok(release.indexOf('for ASSET_PREFIX') < release.indexOf('site-cache-release.mjs deploy dist'));
+  assert.match(release, /for ASSET_PREFIX in _astro _images _ui/u);
+  assert.doesNotMatch(release, /aws s3 sync[^\n]*--delete/u);
+});
+
+test('break-glass shares the production lock and cache-safe publisher without adding release gates', async () => {
+  const [normal, emergency] = await Promise.all([
+    readFile(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8'),
+    readFile(new URL('../.github/workflows/deploy-aws-break-glass.yml', import.meta.url), 'utf8'),
+  ]);
+  const lock = workflow => workflow.match(/concurrency:\s*\n\s*group:\s*(.+)/u)?.[1];
+  assert.equal(lock(emergency), lock(normal), 'all main-site publishers serialize on the same production lock');
+  assert.match(emergency, /cancel-in-progress: false/u);
+  assert.match(emergency, /github\.event_name == 'workflow_dispatch' && inputs\.confirm_release/u);
+  assert.match(emergency, /contains\(github\.event\.head_commit\.message, '\[break-glass-release\]'\)/u);
+  assert.match(emergency, /run: pnpm run build/u);
+  assert.doesNotMatch(emergency, /pnpm run test:|make ci\b|pnpm run check:/u);
+  assert.match(emergency, /site-cache-release\.mjs manifest dist/u);
+  assert.match(emergency, /for ASSET_PREFIX in _astro _images _ui/u);
+  assert.match(emergency, /--cache-control 'public,max-age=31536000,immutable'/u);
+  assert.ok(emergency.indexOf('site-cache-release.mjs manifest dist') < emergency.indexOf('for ASSET_PREFIX'));
+  assert.ok(emergency.indexOf('for ASSET_PREFIX') < emergency.indexOf('site-cache-release.mjs deploy dist'));
+  assert.doesNotMatch(emergency, /--delete|--paths ['"]\/\*/u);
 });

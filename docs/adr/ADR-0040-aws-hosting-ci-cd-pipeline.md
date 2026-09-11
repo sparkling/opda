@@ -10,6 +10,34 @@ implements: [ADR-0038]
 
 # AWS hosting CI/CD pipeline
 
+> **Cache-safe static releases, 2026-09-11.** Normal and explicitly authorised
+> break-glass releases use the shared `scripts/site-cache-release.mjs` publisher
+> and the same `opda-site-${{ github.ref }}` production lock. Their existing
+> validation and activation policies remain distinct. This amendment supersedes
+> the blanket S3 synchronisation/deletion and `/*` invalidation described below.
+> UI CSS, JavaScript, fonts and referenced assets use dependency-aware filename
+> hashes. Publish `_astro/`, `_images/` and `_ui/` before HTML and retain historical
+> hashed objects for open pages and rollback. These objects receive
+> `public,max-age=31536000,immutable`. HTML and mutable original URLs both receive
+> `public,max-age=0,s-maxage=86400,must-revalidate`: browsers revalidate while
+> CloudFront can retain them for one day between targeted release invalidations.
+>
+> A SHA-256 `cache-manifest.json` identifies changed uploads and explicitly removed
+> previously managed objects. Invalidation covers changed/deleted paths and their
+> extensionless, trailing-slash and `index.html` aliases. A complete changed
+> subtree may be compacted only without flushing known unchanged objects; the
+> root and immutable prefixes are never blanket-purged. First adoption preserves
+> unknown existing keys: an inventory is not proof of deletion ownership. Its
+> `cache-bootstrap-baseline.json` is conditionally persisted before mutable
+> publication and reused after interruption rather than overwritten.
+>
+> CloudFront caller references include the deployment run/attempt, both manifests
+> and the exact invalidation batch. Identical retries are idempotent; changed
+> batches and later roll-forward executions cannot accidentally reuse an earlier
+> purge. The successful manifest advances only after uploads, scoped deletions
+> and invalidation completion. Both deployment paths retain protected historical
+> resource prefixes and use the existing short-lived GitHub OIDC role.
+
 > **Public delivery restored, 2026-09-11.** The owner explicitly authorizes public
 > access to all pages, illustrations, downloads and comment reading. This supersedes
 > the development barrier below. CloudFront uses a network-free path-rewrite

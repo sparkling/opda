@@ -176,6 +176,8 @@ jobs:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
         run: pnpm run release:manifest
+      - name: Record mutable-object hashes and cache policies
+        run: node scripts/site-cache-release.mjs manifest dist
       - name: Enforce artifact budget
         env:
           MAX_ARTIFACT_MB: 500
@@ -221,6 +223,13 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Check out the exact release tooling
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
       - name: Download immutable validated site
         uses: actions/download-artifact@v8
         with:
@@ -236,29 +245,24 @@ jobs:
         with:
           role-to-assume: ${{ vars.OPDA_SITE_DEPLOY_ROLE_ARN }}
           aws-region: eu-west-2
-      - name: Sync dist to the site bucket
+      - name: Publish immutable assets then changed mutable objects
         run: |
+          set -euo pipefail
           SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
-          # Content-addressed assets publish before HTML and remain available to
-          # already-open pages across releases. Never apply immutable caching to HTML.
-          for ASSET_PREFIX in _astro _images; do
-            if [ -d "dist/$ASSET_PREFIX" ]; then
-              aws s3 cp "dist/$ASSET_PREFIX/" "s3://$SITE_BUCKET/$ASSET_PREFIX/" \
-                --recursive --only-show-errors --cache-control 'public,max-age=31536000,immutable'
-            fi
-          done
-          aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
-            --exclude "_astro/*" --exclude "_images/*" \
-            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*" \
-            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/*" \
-            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/*" \
-            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/*" \
-            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/*"
-      - name: Invalidate CloudFront
-        run: |
           DISTRIBUTION_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" --output text)
-          aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths '/*'
+          # Content-addressed assets publish before HTML and remain available to
+          # already-open pages across releases. Never apply immutable caching to HTML.
+          for ASSET_PREFIX in _astro _images _ui; do
+            if [ -d "dist/$ASSET_PREFIX" ]; then
+              aws s3 sync "dist/$ASSET_PREFIX/" "s3://$SITE_BUCKET/$ASSET_PREFIX/" \
+                --size-only --only-show-errors --cache-control 'public,max-age=31536000,immutable'
+            fi
+          done
+          # Hash comparison avoids timestamp-driven reuploads. This also applies
+          # explicit HTML/mutable cache policies and invalidates only changed or
+          # deleted paths (including their extensionless rewrite aliases).
+          node scripts/site-cache-release.mjs deploy dist "$SITE_BUCKET" "$DISTRIBUTION_ID"

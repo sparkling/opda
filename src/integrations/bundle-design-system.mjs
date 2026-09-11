@@ -16,6 +16,21 @@ const { transform } = requireFromAstro('esbuild');
 const LOCAL_IMPORT = /@import\s+url\((["'])([^"'?]+\.css)(?:\?v=[a-f0-9]+)?\1\);/gu;
 const CSS_URL = /url\(\s*(?:(["'])(.*?)\1|([^"')]+))\s*\)/gu;
 
+// These components exist only in the knowledge-base shell. Keep every other
+// module, including any new module, by default: this is not homepage-only
+// coverage purging. Campaign forms, branding/configuration, shared buttons,
+// prose/callouts, newsletter, print and forced-colour rules remain available.
+export const CAMPAIGN_EXCLUDED_MODULES = Object.freeze([
+  './design/shell.css',
+  './design/shell-support.css',
+  './design/tables.css',
+  './design/search-page.css',
+  './design/diagrams.css',
+  './design/data.css',
+  './design/glossary-toc.css',
+  './design/mermaid.css',
+]);
+
 function inside(directory, target) {
   const relative = path.relative(directory, target);
   return relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
@@ -36,7 +51,7 @@ function rebaseModuleUrls(source, modulePath, facadePath) {
   });
 }
 
-export async function renderBundledDesignSystem({ publicDir }) {
+export async function renderBundledDesignSystem({ publicDir, excludedModules = [] }) {
   const publicPath = path.resolve(publicDir instanceof URL ? fileURLToPath(publicDir) : publicDir);
   const uiRoot = path.join(publicPath, 'ui');
   const facadePath = path.join(uiRoot, 'design-system.css');
@@ -53,6 +68,10 @@ export async function renderBundledDesignSystem({ publicDir }) {
     const modulePath = path.resolve(path.dirname(facadePath), relativeImport);
     if (!inside(uiRoot, modulePath)) {
       throw new Error(`design-system import escapes public/ui: ${relativeImport}`);
+    }
+    if (excludedModules.includes(relativeImport)) {
+      offset = match.index + match[0].length;
+      continue;
     }
     const moduleSource = await readFile(modulePath, 'utf8');
     const moduleName = path.relative(uiRoot, modulePath).replaceAll(path.sep, '/');
@@ -79,6 +98,21 @@ export async function renderBundledDesignSystem({ publicDir }) {
   return { output: code, imports };
 }
 
+/** A complete campaign stylesheet, emitted inline without a CSS request chain. */
+export async function renderCampaignDesignSystem({ publicDir }) {
+  const result = await renderBundledDesignSystem({ publicDir, excludedModules: CAMPAIGN_EXCLUDED_MODULES });
+  // Inline CSS resolves against the document URL, not /ui/design-system.css.
+  // Keep root-relative URLs explicit so the immutable-asset publisher can hash
+  // and rewrite the same font/brand references in HTML and external CSS.
+  const output = result.output.replace(CSS_URL, (match, quote = '', quotedValue, bareValue) => {
+    const value = quotedValue ?? bareValue.trim();
+    if (/^(?:[a-z][a-z\d+.-]*:|\/\/|\/|#)/iu.test(value)) return match;
+    const absolute = new URL(value, 'https://build.invalid/ui/design-system.css');
+    return `url(${quote}${absolute.pathname}${absolute.search}${absolute.hash}${quote})`;
+  });
+  return { ...result, output };
+}
+
 async function writeBundledDesignSystem(result, outputDir) {
   const outputPath = path.resolve(outputDir, 'ui', 'design-system.css');
   await mkdir(path.dirname(outputPath), { recursive: true });
@@ -100,10 +134,16 @@ export function designSystemBundler() {
         productionBundle = undefined;
         if (command !== 'build') return;
         productionBundle = renderBundledDesignSystem({ publicDir: config.publicDir });
-        const { output } = await productionBundle;
+        const [{ output }, campaign] = await Promise.all([
+          productionBundle,
+          renderCampaignDesignSystem({ publicDir: config.publicDir }),
+        ]);
         updateConfig({
           vite: {
-            define: { __OPDA_DESIGN_SYSTEM_VERSION__: JSON.stringify(designSystemOutputVersion(output)) },
+            define: {
+              __OPDA_DESIGN_SYSTEM_VERSION__: JSON.stringify(designSystemOutputVersion(output)),
+              __OPDA_CAMPAIGN_DESIGN_SYSTEM_CSS__: JSON.stringify(campaign.output),
+            },
           },
         });
       },

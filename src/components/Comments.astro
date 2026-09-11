@@ -27,11 +27,14 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
 </section>
 
 <script>
+  import { publishSessionView, subscribeSessionView } from '../scripts/auth-session-view.mjs';
+
   let controller;
   let observedContainer;
   let observer;
   let pendingArm;
   let waitingForWindowLoad = false;
+  let unsubscribeIdentity;
 
   function cancelPendingArm() {
     if (pendingArm !== undefined) {
@@ -55,6 +58,8 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
 
   function stop() {
     cancelPendingArm();
+    unsubscribeIdentity?.();
+    unsubscribeIdentity = undefined;
     controller?.abort();
     observer?.disconnect();
     controller = undefined;
@@ -122,11 +127,22 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
     let busy = false;
     let posting = false;
     let replyId = 0;
+    let feedRevision;
     const seen = new Set();
     list.replaceChildren();
     more.hidden = true;
     form.hidden = true;
     signIn.hidden = true;
+
+    // Reuse the header's single identity watcher. Public discussion data never
+    // carries viewer information and can safely be shared by the CDN.
+    unsubscribeIdentity = subscribeSessionView(view => {
+      if (signal.aborted) return;
+      const canPost = view?.authenticated === true;
+      author.textContent = canPost ? 'Commenting as ' + view.name : '';
+      form.hidden = !canPost;
+      signIn.hidden = canPost;
+    });
 
     function replyTo(comment) {
       if (form.hidden) { signIn.focus(); return; }
@@ -144,6 +160,7 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
     }
 
     function denied() {
+      publishSessionView(null);
       form.hidden = true;
       signIn.hidden = false;
       status.textContent = 'Please sign in with an approved account to post comments.';
@@ -158,10 +175,11 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
         const target = new URL('/api/v2/comments', window.location.origin);
         target.search = new URLSearchParams({
           page_key: pageKey, site_name: 'OPDA', limit: '20', offset: String(offset),
-          flat_mode: 'true', sort_by: 'date_asc',
+          flat_mode: 'true', sort_by: 'date_asc', public: '1',
         }).toString();
+        if (feedRevision) target.searchParams.set('after', String(feedRevision));
         const response = await fetch(target.toString(), {
-          method: 'GET', credentials: 'same-origin', cache: 'no-store', redirect: 'error',
+          method: 'GET', credentials: 'omit', cache: 'default', redirect: 'error',
           headers: { accept: 'application/json' }, signal,
         });
         if (response.status === 401 || response.status === 403) { denied(); return; }
@@ -184,10 +202,6 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
         more.hidden = data.comments.length === 0 || offset >= data.count;
         more.textContent = 'Load more comments';
         status.textContent = seen.size === 0 ? 'No comments yet.' : '';
-        const canPost = typeof data.viewer?.name === 'string' && !!data.viewer.name;
-        author.textContent = canPost ? 'Commenting as ' + data.viewer.name : '';
-        form.hidden = !canPost;
-        signIn.hidden = canPost;
         return true;
       } catch {
         if (signal.aborted) return;
@@ -224,6 +238,7 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
         content.value = '';
         cancelReply();
         list.replaceChildren(); seen.clear(); offset = 0;
+        feedRevision = comment.id;
         const refreshed = await load();
         if (!form.hidden && !signal.aborted) {
           status.textContent = (comment.is_pending ? 'Your comment has been submitted for review.' : 'Your comment has been posted.')

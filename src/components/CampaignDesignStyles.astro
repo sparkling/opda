@@ -1,0 +1,6 @@
+---
+import { campaignDesignSystemCss } from '../lib/campaign-design-system.mjs';
+const css = await campaignDesignSystemCss();
+---
+<!-- The full campaign cascade is present before paint; no deferred visible styles. -->
+<style is:inline data-opda-campaign-design-system set:html={css} />

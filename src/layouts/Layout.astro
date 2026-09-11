@@ -16,6 +16,8 @@
 import { ClientRouter } from 'astro:transitions';
 import { inspectContents } from '@/lib/contents-slot.mjs';
 import FontPreloads from '@/components/FontPreloads.astro';
+import SeoHead from '@/components/SeoHead.astro';
+import { navigationBreadcrumbs } from '@/lib/page-seo.mjs';
 import { responsiveArtwork, ARTWORK_SIZES } from '@/lib/responsive-artwork.mjs';
 // Global GraphDiagram island styling — needed on every page because the
 // site-wide bare-.mermaid adoption (adoptBareMermaid) has no component to carry
@@ -28,7 +30,7 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import PageFooter from '@/components/PageFooter.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
 import Comments from '@/components/Comments.astro';
-import { getNavigationSection } from '@/lib/site-navigation';
+import { findNavigationPage, getNavigationSection } from '@/lib/site-navigation';
 import { assetVersion } from '@/lib/asset-version.mjs';
 import { designSystemVersion } from '@/lib/design-system-version.mjs';
 import {
@@ -36,6 +38,8 @@ import {
   IA_STATUS_REGISTRY_VERSION,
   getRouteDisposition,
   getRouteStatus,
+  getActiveDestination,
+  getDestination,
 } from '@/lib/site-ia.mjs';
 import { searchMetaEntries } from '@/lib/site-search-model.mjs';
 import { DEFAULT_HEADER_PALETTE, HEADER_PALETTE_IDS } from '@/lib/header-palettes';
@@ -50,6 +54,10 @@ interface Props {
   title: string;
   /** <meta name="description"> contents. */
   description?: string;
+  /** Optional social rendition for this page's own artwork. */
+  socialImage?: string;
+  /** Explicit search exception; index/follow is the default. */
+  robots?: string;
   /** Prose width class. Default 'prose wide'; pass 'prose' for narrow reading width. */
   proseClass?: string;
   /** Keep machine-generated reference content on its existing typography. */
@@ -87,6 +95,8 @@ interface Props {
 const {
   title,
   description,
+  socialImage,
+  robots,
   proseClass = 'prose wide',
   generatedContent = false,
   tailwindPlus = true,
@@ -133,6 +143,12 @@ const routeStatus = getRouteStatus(Astro.url.pathname) ?? AUTHORITY_BY_DESTINATI
 const routeDisposition = getRouteDisposition(Astro.url.pathname);
 const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
 const searchMeta = searchMetaEntries(search);
+const breadcrumbs = hideBreadcrumbs ? [] : navigationBreadcrumbs({
+  pathname: Astro.url.pathname,
+  title: breadcrumbTitle,
+  found: findNavigationPage(Astro.url.pathname),
+  destination: getDestination(getActiveDestination(Astro.url.pathname)),
+});
 ---
 <!doctype html>
 <html
@@ -152,8 +168,8 @@ const searchMeta = searchMetaEntries(search);
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   {/* The shared framework heading uses the display face on every KB page. */}
   <FontPreloads display />
-  <title>{fullTitle}</title>
-  {description && <meta name="description" content={description} />}
+  <SeoHead title={fullTitle} description={description} contentHtml={pageContent}
+    socialImage={socialImage ?? priorityImage?.lightSrc} breadcrumbs={breadcrumbs} robots={robots} />
   <meta name="opda:status-registry-version" content={IA_STATUS_REGISTRY_VERSION} />
   <meta name="opda:work-area" content={routeStatus.workArea} />
   <meta name="opda:authority" content={routeStatus.authority} />

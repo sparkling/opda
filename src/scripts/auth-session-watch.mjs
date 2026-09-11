@@ -4,8 +4,13 @@ export async function readSessionIdentity({ fetch: fetcher = globalThis.fetch, s
     credentials: 'same-origin', cache: 'no-store', redirect: 'error',
     headers: { accept: 'application/json' }, signal,
   });
-  if (response.status === 401 || response.status === 403) return null;
-  if (!response.ok) throw new Error('Session status unavailable');
+  if (!response.ok) {
+    // Error bodies are not identity data. Close the stream explicitly instead
+    // of leaving an unread response attached to the page's request lifecycle.
+    try { await response.body?.cancel(); } catch { /* Preserve the HTTP outcome. */ }
+    if (response.status === 401 || response.status === 403) return null;
+    throw new Error('Session status unavailable');
+  }
   const identity = await response.json();
   if (!identity || typeof identity.email !== 'string' || !identity.email.trim()
     || identity.email.length > 254 || identity.authenticated === false

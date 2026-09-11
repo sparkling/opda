@@ -160,7 +160,7 @@ test('the bundler rejects imports outside the public UI boundary', async () => {
   }
 });
 
-test('Astro registers production CSS bundling without changing the public stylesheet URL', async () => {
+test('Astro keeps the full documentation bundle and inlines the shared campaign cascade', async () => {
   const [config, layout, standalone, homepage] = await Promise.all([
     readFile(new URL('../astro.config.mjs', import.meta.url), 'utf8'),
     readFile(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8'),
@@ -168,11 +168,17 @@ test('Astro registers production CSS bundling without changing the public styles
     readFile(new URL('../src/pages/index.astro', import.meta.url), 'utf8'),
   ]);
   assert.match(config, /designSystemBundler\(\)/u);
-  for (const source of [layout, standalone, homepage]) {
+  for (const source of [layout]) {
     assert.match(source, /import \{ designSystemVersion \} from '@\/lib\/design-system-version\.mjs'/u);
     assert.match(source, /const cssV = await designSystemVersion\(\)/u);
     assert.match(source, /href=\{`\/ui\/design-system\.css\?v=\$\{cssV\}`\}/u);
     assert.doesNotMatch(source, /design-system\.built\.css/u);
+  }
+  for (const source of [standalone, homepage]) {
+    assert.match(source, /import CampaignDesignStyles from/u);
+    assert.match(source, /<CampaignDesignStyles\s*\/>/u);
+    assert.doesNotMatch(source, /href=\{`\/ui\/design-system\.css/u,
+      'campaign pages must not also request the full documentation bundle');
   }
   assert.match(homepage, /<script is:inline defer src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
 });

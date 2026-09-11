@@ -14,7 +14,7 @@ on:
         default: false
 
 concurrency:
-  group: opda-site-production
+  group: opda-site-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -45,27 +45,30 @@ jobs:
       - name: Build site from committed inputs
         run: pnpm run build
 
+      - name: Record mutable-object hashes and cache policies
+        run: node scripts/site-cache-release.mjs manifest dist
+
       - name: Assume deploy role (OIDC)
         uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ vars.OPDA_SITE_DEPLOY_ROLE_ARN }}
           aws-region: eu-west-2
 
-      - name: Sync dist to the site bucket
+      - name: Publish immutable assets then changed mutable objects
         run: |
+          set -euo pipefail
           SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
-          aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
-            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*" \
-            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/*" \
-            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/*" \
-            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/*" \
-            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/*"
-
-      - name: Invalidate CloudFront
-        run: |
           DISTRIBUTION_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" --output text)
-          aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths '/*'
+          # Emergency publication skips its existing release gates, not the
+          # cache-safety guarantees needed by open pages and later releases.
+          for ASSET_PREFIX in _astro _images _ui; do
+            if [ -d "dist/$ASSET_PREFIX" ]; then
+              aws s3 sync "dist/$ASSET_PREFIX/" "s3://$SITE_BUCKET/$ASSET_PREFIX/" \
+                --size-only --only-show-errors --cache-control 'public,max-age=31536000,immutable'
+            fi
+          done
+          node scripts/site-cache-release.mjs deploy dist "$SITE_BUCKET" "$DISTRIBUTION_ID"

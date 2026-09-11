@@ -1,6 +1,5 @@
-# opda.org.uk — most of the site is behind the member gate (Lambda@Edge);
-# only the homepage, static assets, and the sitemap are public. The sitemap
-# is published so search engines can discover the URL structure ahead of launch.
+# Public static pages and their styles, scripts and images are crawlable.
+# Sign-in is for participation; no member gate protects public site content.
 User-agent: *
 Allow: /
 
