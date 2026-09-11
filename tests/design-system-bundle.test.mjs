@@ -180,7 +180,7 @@ test('Astro keeps the full documentation bundle and inlines the shared campaign 
     assert.doesNotMatch(source, /href=\{`\/ui\/design-system\.css/u,
       'campaign pages must not also request the full documentation bundle');
   }
-  assert.match(homepage, /<script is:inline defer src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
+  assert.match(homepage, /<DeferredClientScript src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
 });
 
 test('CSS versions hash exact output and refresh for child edits, not roots or mtimes', async () => {
@@ -297,7 +297,7 @@ test('Source Sans 3 retains all original script subsets as local variable WOFF2 
   const sources = new Set();
   for (const face of faces) {
     assert.match(face, /font-weight:\s*400 700/u);
-    assert.match(face, /font-display:\s*swap/u);
+    assert.match(face, /font-display:\s*optional/u);
     assert.match(face, /unicode-range:/u);
     const source = face.match(/url\('\.\/fonts\/([^']+\.woff2)'\)/u)?.[1];
     assert.ok(source);
@@ -314,6 +314,7 @@ test('shared early font hints preload only core Latin faces with reusable CORS r
   const hints = await readFile(new URL('../src/components/FontPreloads.astro', import.meta.url), 'utf8');
   assert.match(hints, /SourceSans3-Variable-latin\.woff2/u);
   assert.match(hints, /AtkinsonHyperlegibleNext-Variable-latin\.woff2/u);
+  assert.match(hints, /reading &&/u);
   assert.match(hints, /display &&/u);
   assert.doesNotMatch(hints, /latin-ext|Mono|https:\/\//u);
   assert.equal((hints.match(/rel="preload"/gu) ?? []).length, 3);
@@ -325,4 +326,15 @@ test('shared early font hints preload only core Latin faces with reusable CORS r
   const layout = await readFile(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8');
   assert.match(layout, /<FontPreloads display\s*\/>/u,
     'the shared framework heading uses the display face on knowledge-base pages too');
+  const homepage = await readFile(new URL('../src/pages/index.astro', import.meta.url), 'utf8');
+  assert.match(homepage, /<FontPreloads display reading=\{false\}\s*\/>/u,
+    'the homepage must not preload its below-fold reading face');
+});
+
+test('the shared client bootstrap waits until the browser has painted', async () => {
+  const bootstrap = await readFile(new URL('../src/components/DeferredClientScript.astro', import.meta.url), 'utf8');
+  assert.match(bootstrap, /requestAnimationFrame\(\(\) => requestAnimationFrame\(load\)\)/u);
+  assert.match(bootstrap, /script\.dataset\.opdaClient/u);
+  assert.match(bootstrap, /querySelector\('script\[data-opda-client\]'\)/u);
+  assert.doesNotMatch(bootstrap, /DOMContentLoaded|window\.addEventListener\('load'/u);
 });

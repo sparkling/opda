@@ -14,6 +14,7 @@ import KickoffFeature from '@/components/home/KickoffFeature.astro';
 import MethodFlowFigure from '@/components/home/MethodFlowFigure.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
 import FontPreloads from '@/components/FontPreloads.astro';
+import DeferredClientScript from '@/components/DeferredClientScript.astro';
 import SeoHead from '@/components/SeoHead.astro';
 import {
   CAMPAIGN_HEADER_DEFAULTS,
@@ -46,7 +47,7 @@ const domains = [
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <FontPreloads display />
+  <FontPreloads display reading={false} />
   <SeoHead title={title} description={description} />
   <meta name="opda:work-area" content={routeStatus.workArea} />
   <meta name="opda:authority" content={routeStatus.authority} />
@@ -155,7 +156,7 @@ const domains = [
     </div>
   </main>
   <SiteFooter />
-  <script is:inline defer src={`/ui/client.js?v=${clientV}`}></script>
+  <DeferredClientScript src={`/ui/client.js?v=${clientV}`} />
 </body>
 </html>
 

@@ -166,8 +166,8 @@ test('public recruitment and statement routes use their shared shells without si
   assert.doesNotMatch(standalone, /campaign-masthead/u);
   assert.match(standalone, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
   assert.match(standalone, /<SiteFooter\s*\/>/u);
-  assert.match(join, /<script is:inline defer src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}><\/script>/u,
-    'the join page uses the shared controls without blocking initial rendering');
+  assert.match(join, /<DeferredClientScript src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}\s*\/>/u,
+    'the join page delays shared controls until after initial rendering');
   assert.doesNotMatch(standalone, /campaign-footer/u);
   assert.match(layout, /<Header[\s\S]*showSidebar=\{showSidebar\}[\s\S]*suppressActiveDestination=\{suppressActiveDestination\}/u);
   assert.match(layout, /<article class=\{proseClass\}>/u);

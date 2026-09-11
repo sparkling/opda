@@ -199,8 +199,8 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(campaignControls, /variant: 'home' \| 'join'[\s\S]*data-header-preview-controls-loader[\s\S]*data-controls-src=\{`\/ui\/header-preview-controls\/\$\{variant\}`\}/u);
   assert.match(homeControls, /controlId="home-header-preview-selectors"[\s\S]*identityId="home-campaign-identity"[\s\S]*positionTargetId="home-domains-panel"[\s\S]*initialScale=\{configuration\.scale\}[\s\S]*initialPanelItemSpacing=\{configuration\.panelItemSpacing\}/u);
   assert.match(joinControls, /controlId="join-header-preview-selectors"[\s\S]*identityId="join-campaign-identity"[\s\S]*positionTargetId="join-influence-panel"[\s\S]*initialScale=\{configuration\.scale\}[\s\S]*initialPanelItemSpacing=\{configuration\.panelItemSpacing\}/u);
-  assert.match(home, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs';[\s\S]*const clientV = assetVersion\('\/ui\/client\.js'\);[\s\S]*src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
-  assert.match(join, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs';[\s\S]*const clientV = assetVersion\('\/ui\/client\.js'\);[\s\S]*src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
+  assert.match(home, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs';[\s\S]*const clientV = assetVersion\('\/ui\/client\.js'\);[\s\S]*<DeferredClientScript src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
+  assert.match(join, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs';[\s\S]*const clientV = assetVersion\('\/ui\/client\.js'\);[\s\S]*<DeferredClientScript src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
   assert.doesNotMatch(home, /src="\/ui\/client\.js"/u);
   assert.doesNotMatch(join, /src="\/ui\/client\.js"/u);
   assert.match(previewControls, /<HeaderTuningSelector/u);

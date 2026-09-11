@@ -6,6 +6,7 @@ import ContributionRegister from '@/components/campaign/ContributionRegister.ast
 import CampaignHeaderControls from '@/components/campaign/CampaignHeaderControls.astro';
 import CampaignIdentity from '@/components/campaign/CampaignIdentity.astro';
 import CampaignSectionHeading from '@/components/campaign/CampaignSectionHeading.astro';
+import DeferredClientScript from '@/components/DeferredClientScript.astro';
 import { contributionOptions, workingGroupContexts, motivationCards, policyCards, participationCards, evidenceCards } from '@/data/working-group-campaign';
 import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
 import { assetVersion } from '@/lib/asset-version.mjs';
@@ -247,7 +248,7 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
     import '@/scripts/working-group-join';
     import '@/scripts/working-group-campaign';
   </script>
-  <script is:inline defer src={`/ui/client.js?v=${clientV}`}></script>
+  <DeferredClientScript src={`/ui/client.js?v=${clientV}`} />
 </StandalonePublicLayout>
 
 <style>

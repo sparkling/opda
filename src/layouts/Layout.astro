@@ -16,6 +16,7 @@
 import { ClientRouter } from 'astro:transitions';
 import { inspectContents } from '@/lib/contents-slot.mjs';
 import FontPreloads from '@/components/FontPreloads.astro';
+import DeferredClientScript from '@/components/DeferredClientScript.astro';
 import SeoHead from '@/components/SeoHead.astro';
 import { navigationBreadcrumbs } from '@/lib/page-seo.mjs';
 import { responsiveArtwork, ARTWORK_SIZES } from '@/lib/responsive-artwork.mjs';
@@ -296,7 +297,7 @@ const breadcrumbs = hideBreadcrumbs ? [] : navigationBreadcrumbs({
     <SiteFooter />
   </div>
 
-  <script is:inline defer src={`/ui/client.js?v=${clientV}`}></script>
+  <DeferredClientScript src={`/ui/client.js?v=${clientV}`} />
   <script>
     // Narrative pages need neither the custom-element package nor the diagram
     // engine. Load each only for its actual DOM, including view transitions and

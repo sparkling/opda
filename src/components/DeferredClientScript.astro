@@ -1,0 +1,16 @@
+---
+interface Props { src: string; }
+const { src } = Astro.props;
+---
+<script is:inline define:vars={{ src }}>
+  (() => {
+    const load = () => {
+      if (document.querySelector('script[data-opda-client]')) return;
+      const script = document.createElement('script');
+      script.src = src;
+      script.dataset.opdaClient = '';
+      document.head.append(script);
+    };
+    requestAnimationFrame(() => requestAnimationFrame(load));
+  })();
+</script>
