@@ -69,6 +69,19 @@ test('a changed subtree cannot invalidate unchanged archived resources beneath i
   assert.ok(!plan.invalidations.some(value => value.endsWith('*')));
 });
 
+test('unchanged managed non-HTML objects do not block route-level invalidation compaction', () => {
+  const previous = { schemaVersion: 1, files: {
+    'section/index.html': { sha256: 'a'.repeat(64), cacheControl: cachePolicyFor('section/index.html') },
+    'section/feed.xml': { sha256: 'b'.repeat(64), cacheControl: cachePolicyFor('section/feed.xml') },
+  } };
+  const next = { schemaVersion: 1, files: {
+    'section/index.html': { sha256: 'c'.repeat(64), cacheControl: cachePolicyFor('section/index.html') },
+    'section/feed.xml': previous.files['section/feed.xml'],
+  } };
+  const plan = planCacheRelease(previous, next, Object.keys(previous.files));
+  assert.deepEqual(plan.invalidations, ['/section', '/section/*']);
+});
+
 test('release workflow keeps hash prefixes, stages changed mutable files and avoids blanket purge', async () => {
   const workflow = await readFile(new URL('../.github/workflows/site-release.yml', import.meta.url), 'utf8');
   assert.match(workflow, /_astro _images _ui/);

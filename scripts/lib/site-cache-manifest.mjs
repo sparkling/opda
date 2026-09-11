@@ -82,8 +82,9 @@ export function invalidationAliases(key) {
   return [uri];
 }
 
-function compactInvalidations(affected, knownKeys) {
+function compactInvalidations(affected, knownKeys, ownedKeys) {
   const affectedSet = new Set(affected);
+  const ownedSet = new Set(ownedKeys);
   const paths = new Set(affected.flatMap(invalidationAliases));
   const prefixes = new Set();
   for (const key of affected) {
@@ -93,7 +94,9 @@ function compactInvalidations(affected, knownKeys) {
   for (const prefix of [...prefixes].sort((a, b) => a.length - b.length || a.localeCompare(b, 'en'))) {
     // Do not flush a subtree containing any unchanged published mutable object.
     // Root and immutable prefixes are never candidates, even on first adoption.
-    if (isImmutable(prefix) || knownKeys.some(key => key.startsWith(prefix) && !affectedSet.has(key))) continue;
+    if (isImmutable(prefix) || knownKeys.some(key => key.startsWith(prefix)
+      && !affectedSet.has(key)
+      && (key.endsWith('.html') || !ownedSet.has(key)))) continue;
     const uri = encodedPath(prefix.slice(0, -1)) + '/';
     const descendants = [...paths].filter(value => value.startsWith(uri));
     if (descendants.length < 2) continue;
@@ -118,5 +121,5 @@ export function planCacheRelease(previous, next, publishedKeys = [], bootstrapBa
   // Excluded archived/vendor keys are not ours to remove, but still prevent a
   // wildcard from flushing a subtree containing their unchanged CDN objects.
   const known = [...new Set([...Object.keys(old), ...Object.keys(next.files), ...publishedKeys, ...(previous ? [] : bootstrapBaseline.keys)])];
-  return { changed, deleted, invalidations: compactInvalidations([...changed, ...deleted], known) };
+  return { changed, deleted, invalidations: compactInvalidations([...changed, ...deleted], known, [...Object.keys(old), ...Object.keys(next.files)]) };
 }
