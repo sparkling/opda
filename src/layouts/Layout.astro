@@ -15,6 +15,7 @@
  */
 import { ClientRouter } from 'astro:transitions';
 import FontPreloads from '@/components/FontPreloads.astro';
+import { responsiveArtwork, ARTWORK_SIZES } from '@/lib/responsive-artwork.mjs';
 // Global GraphDiagram island styling — needed on every page because the
 // site-wide bare-.mermaid adoption (adoptBareMermaid) has no component to carry
 // scoped styles. Also serves the <GraphDiagram> component.
@@ -103,6 +104,12 @@ const {
   priorityImage = null,
 } = Astro.props;
 
+const responsivePriorityImage = priorityImage ? { ...priorityImage,
+  lightSrcset: await responsiveArtwork(priorityImage.lightSrc, { enabled: import.meta.env.PROD }),
+  darkSrcset: await responsiveArtwork(priorityImage.darkSrc, { enabled: import.meta.env.PROD }),
+  sizes: ARTWORK_SIZES,
+} : null;
+
 const fullTitle = /knowledge base/i.test(title)
   ? title
   : `${title} · OPDA Knowledge Base`;
@@ -162,7 +169,7 @@ const searchMeta = searchMetaEntries(search);
       headerPaletteIds: HEADER_PALETTE_IDS,
       defaultHeaderIcon: DEFAULT_HEADER_ICON,
       headerIconIds: HEADER_ICON_IDS,
-      priorityImage,
+      priorityImage: responsivePriorityImage,
     }}
   >
     (function () {
@@ -198,9 +205,15 @@ const searchMeta = searchMetaEntries(search);
           preload.as = 'image';
           preload.fetchPriority = 'high';
           preload.dataset.opdaPriorityImage = '';
+          preload.imageSrcset = document.documentElement.getAttribute('data-theme') === 'dark'
+            ? priorityImage.darkSrcset || priorityImage.lightSrcset || '' : priorityImage.lightSrcset || '';
+          preload.imageSizes = priorityImage.sizes || '';
           preload.href = source;
           document.head.appendChild(preload);
         } else {
+          preload.imageSrcset = document.documentElement.getAttribute('data-theme') === 'dark'
+            ? priorityImage.darkSrcset || priorityImage.lightSrcset || '' : priorityImage.lightSrcset || '';
+          preload.imageSizes = priorityImage.sizes || '';
           preload.href = source;
         }
       }

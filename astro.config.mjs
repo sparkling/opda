@@ -28,6 +28,7 @@ import { councilGenerator } from './src/integrations/generate-council.mjs';
 import { odrSourcesGenerator } from './src/integrations/generate-odr-sources.mjs';
 import { siteSearchIndexGenerator } from './src/integrations/generate-site-search-index.mjs';
 import { designSystemBundler } from './src/integrations/bundle-design-system.mjs';
+import { responsiveArtworkPublisher } from './src/integrations/responsive-artwork.mjs';
 import { inlineSmallPageStyles } from './src/integrations/asset-inlining.mjs';
 
 import tailwindcss from '@tailwindcss/vite';
@@ -175,7 +176,7 @@ export default defineConfig({
   // every built route, using `site` above for absolute URLs — replaces the
   // former hand-maintained src/pages/sitemap.xml.js (stale page list + the dead
   // opda-kb.pages.dev domain). Drop the utility 404/resource-viewer routes.
-  integrations: [odrSourcesGenerator(), reportGenerator(), diagramLinksGenerator(), councilGenerator(), siteSearchIndexGenerator(), designSystemBundler(), sitemap({
+  integrations: [odrSourcesGenerator(), reportGenerator(), diagramLinksGenerator(), councilGenerator(), siteSearchIndexGenerator(), designSystemBundler(), responsiveArtworkPublisher(), sitemap({
     filter: (page) => !/\/(404|resource)\/?$/.test(page),
   })],
   // The ADR, ODR and generated manual collections exceed Vite's safe

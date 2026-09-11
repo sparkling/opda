@@ -1,4 +1,5 @@
 ---
+import { responsiveArtwork, ARTWORK_SIZES } from '@/lib/responsive-artwork.mjs';
 interface Props {
   lightSrc: string;
   darkSrc?: string;
@@ -20,11 +21,18 @@ const {
   width,
   height,
 } = Astro.props;
+const lightSrcset = await responsiveArtwork(lightSrc, { enabled: import.meta.env.PROD });
+const darkSrcset = await responsiveArtwork(darkSrc, { enabled: import.meta.env.PROD });
+const imageSizes = loading === 'lazy' ? `auto, ${ARTWORK_SIZES}` : ARTWORK_SIZES;
 ---
 
 <img
   class={className}
   src={darkSrc ? undefined : lightSrc}
+  srcset={darkSrc ? undefined : lightSrcset}
+  sizes={imageSizes}
+  data-campaign-srcset-light={darkSrc ? lightSrcset : undefined}
+  data-campaign-srcset-dark={darkSrcset}
   data-campaign-image-light={darkSrc ? lightSrc : undefined}
   data-campaign-image-dark={darkSrc}
   alt={alt}
@@ -45,12 +53,15 @@ const {
       if (!image?.matches('img[data-campaign-image-dark]')) return;
       const source = document.documentElement.dataset.theme === 'dark'
         ? image.dataset.campaignImageDark : image.dataset.campaignImageLight;
+      const srcset = document.documentElement.dataset.theme === 'dark'
+        ? image.dataset.campaignSrcsetDark : image.dataset.campaignSrcsetLight;
+      if (srcset) image.setAttribute('srcset', srcset);
       if (source && image.getAttribute('src') !== source) image.setAttribute('src', source);
     })();
   </script>
   <noscript>
     <style is:inline>img[data-campaign-image-dark] { display: none; }</style>
-    <img class={className} src={lightSrc} alt={alt} loading={loading} fetchpriority={fetchpriority}
+    <img class={className} src={lightSrc} srcset={lightSrcset} sizes={imageSizes} alt={alt} loading={loading} fetchpriority={fetchpriority}
       decoding="async" width={width} height={height}
       style={width && height ? `aspect-ratio: ${width} / ${height}` : undefined} />
   </noscript>
@@ -61,6 +72,8 @@ const {
     const dark = document.documentElement.dataset.theme === 'dark';
     document.querySelectorAll<HTMLImageElement>('img[data-campaign-image-dark]').forEach((image) => {
       const source = dark ? image.dataset.campaignImageDark : image.dataset.campaignImageLight;
+      const srcset = dark ? image.dataset.campaignSrcsetDark : image.dataset.campaignSrcsetLight;
+      if (srcset && image.getAttribute('srcset') !== srcset) image.srcset = srcset;
       if (source && image.getAttribute('src') !== source) image.src = source;
     });
   };

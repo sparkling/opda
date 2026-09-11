@@ -121,6 +121,27 @@ test('hero preloading has a light fallback and is opt-in, without duplicate Astr
   assert.equal(preloadImage({ query: '?theme=dark', existing: first }).links.length, 1);
 });
 
+test('hero preload uses the selected theme responsive candidates and updates on navigation', () => {
+  const priorityImage = { lightSrc: '/light.webp', darkSrc: '/dark.webp',
+    lightSrcset: '/light-small.webp 480w, /light.webp 1200w',
+    darkSrcset: '/dark-small.webp 480w, /dark.webp 1200w', sizes: '(max-width: 768px) 100vw, 1024px' };
+  const link = preloadImage({ query: '?theme=dark', priorityImage }).links[0];
+  assert.equal(link.imageSrcset, priorityImage.darkSrcset);
+  assert.equal(link.imageSizes, priorityImage.sizes);
+  preloadImage({ query: '?theme=light', priorityImage, existing: link });
+  assert.equal(link.imageSrcset, priorityImage.lightSrcset);
+  assert.equal(link.href, '/light.webp');
+});
+
+test('responsive candidates are selected before fallback src to avoid a full-size duplicate', () => {
+  const assigned = [];
+  const image = { dataset: { campaignImageDark: '/dark.webp', campaignSrcsetDark: '/dark-small.webp 480w' },
+    matches: () => true, getAttribute: () => null, setAttribute: (key, value) => assigned.push([key, value]) };
+  runInNewContext(bootstrap, { document: { documentElement: { dataset: { theme: 'dark' } },
+    currentScript: { previousElementSibling: image } } });
+  assert.deepEqual(assigned, [['srcset', '/dark-small.webp 480w'], ['src', '/dark.webp']]);
+});
+
 test('only top-of-page modelling artwork opts into high priority using the same manifest as the preload', () => {
   const image = readFileSync(new URL('../src/components/modelling/PageIllustration.astro', import.meta.url), 'utf8');
   assert.match(component, /fetchpriority=\{fetchpriority\}/u);
