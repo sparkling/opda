@@ -173,7 +173,9 @@ function payloadFor(records) {
   const unique = new Map(records.filter(Boolean).map((record) => [record.url, record]));
   const entries = [...unique.values()].sort((left, right) => left.title.localeCompare(right.title, 'en-GB'));
   const counts = Object.fromEntries(RESULT_TYPES.map(({ key }) => [key, entries.filter((record) => record.type === key).length]));
-  return { schemaVersion: SEARCH_INDEX_SCHEMA_VERSION, generatedAt: new Date().toISOString(), counts, entries };
+  // Build time belongs in release.json; unchanged search content must keep the
+  // same bytes and CDN cache entry. Dates on individual records remain intact.
+  return { schemaVersion: SEARCH_INDEX_SCHEMA_VERSION, counts, entries };
 }
 
 function describeCounts(payload) {
