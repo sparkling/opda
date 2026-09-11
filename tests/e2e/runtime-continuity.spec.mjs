@@ -246,17 +246,18 @@ test.describe('runtime continuity boundaries', () => {
     clean();
   });
 
-  test('approved comments use same-origin credentials and post only after deliberate submission', async ({ page, baseURL }) => {
+  test('approved comments read without cookies and post with credentials only after deliberate submission', async ({ page, baseURL }) => {
     const clean = watchRuntime(page);
     const apiRequests = [];
     const loginRequests = [];
     const content = '<strong>Retained comment, displayed as plain text.</strong>';
     const comments = [{ id: 41, rid: 0, nick: 'Test Participant', date: '2026-09-08T12:00:00Z', content }];
 
-    // A non-auth fixture cookie proves same-origin browser transport. The real
-    // HttpOnly session and approval checks are covered by gateway contracts.
+    // A non-auth fixture cookie proves public reads omit browser credentials
+    // while deliberate writes retain them. Approval checks remain server-side.
     await page.context().addCookies([{ name: 'legacy-comment-session', value: 'synthetic-old-session', url: baseURL }]);
 
+    // Composer identity comes from the shared sign-in check, never the feed.
     await page.route('**/_auth/me', (route) => route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -282,7 +283,7 @@ test.describe('runtime continuity boundaries', () => {
         return;
       }
       await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({
-        data: { comments, count: comments.length, viewer: { name: 'Test Member' } },
+        data: { comments, count: comments.length },
       }) });
     });
 
@@ -303,12 +304,12 @@ test.describe('runtime continuity boundaries', () => {
     expect(read.url.pathname).toBe('/api/v2/comments');
     expect(Object.fromEntries(read.url.searchParams)).toEqual({
       page_key: await page.locator('.comments-section').getAttribute('data-comment-page-key'),
-      site_name: 'OPDA', limit: '20', offset: '0', flat_mode: 'true', sort_by: 'date_asc',
+      site_name: 'OPDA', limit: '20', offset: '0', flat_mode: 'true', sort_by: 'date_asc', public: '1',
     });
     expect(read.method).toBe('GET');
     expect(read.body).toBeNull();
     expect(read.headers.authorization).toBeUndefined();
-    expect(read.headers.cookie).toContain('legacy-comment-session=synthetic-old-session');
+    expect(read.headers.cookie).toBeUndefined();
     await page.locator('#atk-comment-41').getByRole('button', { name: 'Reply', exact: true }).click();
     await page.getByLabel('Your comment', { exact: true }).fill('A deliberate reply');
     await page.getByRole('button', { name: 'Post comment', exact: true }).click();
@@ -320,6 +321,17 @@ test.describe('runtime continuity boundaries', () => {
     expect(JSON.parse(posts[0].body)).toEqual({ page_key: read.url.searchParams.get('page_key'), content: 'A deliberate reply', rid: 41 });
     expect(posts[0].headers.authorization).toBeUndefined();
     expect(posts[0].headers.cookie).toContain('legacy-comment-session=synthetic-old-session');
+    const reads = apiRequests.filter(request => request.method === 'GET');
+    expect(reads).toHaveLength(2);
+    const refreshed = reads[1];
+    expect(refreshed.url.origin).toBe(read.url.origin);
+    expect(refreshed.url.pathname).toBe('/api/v2/comments');
+    expect(Object.fromEntries(refreshed.url.searchParams)).toEqual({
+      ...Object.fromEntries(read.url.searchParams), after: '42',
+    });
+    expect(refreshed.body).toBeNull();
+    expect(refreshed.headers.authorization).toBeUndefined();
+    expect(refreshed.headers.cookie).toBeUndefined();
     expect(loginRequests).toEqual([]);
     clean();
   });
@@ -328,7 +340,7 @@ test.describe('runtime continuity boundaries', () => {
     const clean = watchRuntime(page);
     await page.route('**/_auth/me', route => route.fulfill({ status: 401, contentType: 'application/json', body: '{}' }));
     await page.route('**/api/v2/comments?**', route => route.fulfill({ status: 200, contentType: 'application/json',
-      body: JSON.stringify({ data: { viewer: null, count: 1, comments: [
+      body: JSON.stringify({ data: { count: 1, comments: [
         { id: 41, rid: 0, nick: 'Participant', content: 'A public discussion', date: '2026-09-11' },
       ] } }) }));
     await visit(page, '/governance/stakeholder-engagement');
