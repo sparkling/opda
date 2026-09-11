@@ -14,7 +14,7 @@
  * page-to-page navigation (docs/adr/0003 idiomatic Astro refactor).
  */
 import { ClientRouter } from 'astro:transitions';
-import { needsContentsSlot } from '@/lib/contents-slot.mjs';
+import { inspectContents } from '@/lib/contents-slot.mjs';
 import FontPreloads from '@/components/FontPreloads.astro';
 import { responsiveArtwork, ARTWORK_SIZES } from '@/lib/responsive-artwork.mjs';
 // Global GraphDiagram island styling — needed on every page because the
@@ -108,7 +108,9 @@ const {
 // Render once so navigation space exists in the initial HTML, not after JS.
 // Chapters with their own post-introduction slot retain that placement.
 const pageContent = await Astro.slots.render('default');
-const reserveInlineContents = wrapArticle && !hideTableOfContents && needsContentsSlot(pageContent);
+const contents = inspectContents(pageContent);
+const hasAutomaticContents = wrapArticle && !hideTableOfContents && contents.hasHeading;
+const reserveInlineContents = hasAutomaticContents && !contents.hasSlot;
 
 const responsivePriorityImage = priorityImage ? { ...priorityImage,
   lightSrcset: await responsiveArtwork(priorityImage.lightSrc, { enabled: import.meta.env.PROD }),
@@ -240,11 +242,14 @@ const searchMeta = searchMetaEntries(search);
       alignWithNavigationRail={showSidebar || reserveNavigationRail}
       suppressActiveDestination={suppressActiveDestination}
     />
-    <div class={`app-body rail-state-restoring${showSidebar ? '' : ' no-sidebar'}${reserveNavigationRail && !showSidebar ? ' reserve-navigation-rail' : ''}${reserveTableOfContentsRail ? ' reserve-toc-rail' : ''}`}>
+    <div data-automatic-contents={hasAutomaticContents ? 'true' : undefined} class={`app-body rail-state-restoring${showSidebar ? '' : ' no-sidebar'}${reserveNavigationRail && !showSidebar ? ' reserve-navigation-rail' : ''}${reserveTableOfContentsRail ? ' reserve-toc-rail' : ''}`}>
       <script is:inline data-astro-rerun>
         (function () {
           var body = document.currentScript && document.currentScript.parentElement;
           if (!body) return;
+          // Establish the final desktop grid before any content can paint.
+          // Below this breakpoint the existing inline slot owns the contents.
+          body.classList.toggle('with-toc', body.dataset.automaticContents === 'true' && window.matchMedia('(min-width: 1281px)').matches);
           try {
             body.classList.toggle('sidebar-collapsed', localStorage.getItem('opda-sidebar-collapsed') === '1');
             body.classList.toggle('toc-collapsed', localStorage.getItem('opda-toc-collapsed') === '1');

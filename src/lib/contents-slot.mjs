@@ -1,7 +1,7 @@
 import { parseFragment } from 'parse5';
 
 /** Inspect rendered content without rewriting its markup or executing scripts. */
-export function needsContentsSlot(html) {
+export function inspectContents(html) {
   let hasHeading = false;
   let hasSlot = false;
   function visit(node) {
@@ -11,5 +11,10 @@ export function needsContentsSlot(html) {
     for (const child of node.childNodes ?? []) visit(child);
   }
   visit(parseFragment(html));
+  return { hasHeading, hasSlot };
+}
+
+export function needsContentsSlot(html) {
+  const { hasHeading, hasSlot } = inspectContents(html);
   return hasHeading && !hasSlot;
 }

@@ -1,7 +1,16 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import test from 'node:test';
-import { needsContentsSlot } from '../src/lib/contents-slot.mjs';
+import { inspectContents, needsContentsSlot } from '../src/lib/contents-slot.mjs';
+
+test('desktop contents geometry includes chapters with their own inline slot', async () => {
+  assert.deepEqual(inspectContents('<div data-inline-toc></div><h2 id="one">One</h2>'), { hasHeading: true, hasSlot: true });
+  assert.deepEqual(inspectContents('<h1>Title</h1>'), { hasHeading: false, hasSlot: false });
+  const layout = await readFile(file('src/layouts/Layout.astro'), 'utf8');
+  assert.match(layout, /hasAutomaticContents = wrapArticle && !hideTableOfContents && contents.hasHeading/);
+  assert.match(layout, /data-automatic-contents=\{hasAutomaticContents \? 'true' : undefined\}/);
+  assert.match(layout, /body\.classList\.toggle\('with-toc', body\.dataset\.automaticContents === 'true' && window\.matchMedia\('\(min-width: 1281px\)'\)\.matches\)/);
+});
 
 test('contents space is reserved only for pages needing shared navigation', () => {
   assert.equal(needsContentsSlot('<h1>Title</h1><h2 id="one">One</h2>'), true);
