@@ -324,16 +324,19 @@ test.describe('runtime continuity boundaries', () => {
     clean();
   });
 
-  test('signed-out comments expose only the explicit sign-in link, not an editor or retained content', async ({ page }) => {
+  test('signed-out visitors can read public comments and sign in only to post', async ({ page }) => {
     const clean = watchRuntime(page);
     await page.route('**/_auth/me', route => route.fulfill({ status: 401, contentType: 'application/json', body: '{}' }));
-    await page.route('**/api/v2/comments?**', route => route.fulfill({ status: 401, contentType: 'application/json', body: '{}' }));
+    await page.route('**/api/v2/comments?**', route => route.fulfill({ status: 200, contentType: 'application/json',
+      body: JSON.stringify({ data: { viewer: null, count: 1, comments: [
+        { id: 41, rid: 0, nick: 'Participant', content: 'A public discussion', date: '2026-09-11' },
+      ] } }) }));
     await visit(page, '/governance/stakeholder-engagement');
     await page.locator('.comments-section').scrollIntoViewIfNeeded();
     await expect(page.locator('#opda-comments-sign-in')).toBeVisible();
     await expect(page.locator('#opda-comments-form')).toBeHidden();
-    await expect(page.locator('#opda-comments-list')).toBeEmpty();
-    await expect(page.locator('#opda-comments-status')).toHaveText('Please sign in with an approved account to use comments.');
+    await expect(page.locator('#opda-comments-list')).toContainText('A public discussion');
+    await expect(page.locator('#opda-comments-status')).toBeEmpty();
     clean();
   });
 
