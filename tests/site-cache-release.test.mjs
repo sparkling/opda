@@ -172,6 +172,14 @@ function fakeAws(initial = {}, before = () => {}) {
   return { objects, calls, invalidations, runAws };
 }
 
+function assertInvalidationsRetriedExactlyOnce(invalidations) {
+  const counts = new Map();
+  for (const batch of invalidations) {
+    counts.set(batch.CallerReference, (counts.get(batch.CallerReference) ?? 0) + 1);
+  }
+  assert.deepEqual([...counts.values()].sort(), [2, 2]);
+}
+
 test('artifact writers precede the manifest; a later added report fails integrity before AWS calls', async () => {
   const { root } = await releaseFixture();
   const report = JSON.stringify({ schemaVersion: 1, withinBudget: true });
@@ -211,7 +219,7 @@ test('an interrupted bootstrap persists its baseline before publication and safe
   assert.equal(remote.objects.get('_ui/old.HASH.js'), 'immutable history');
   assert.equal(remote.calls.filter(args => args[0] === 's3api' && args[1] === 'put-object').length, 1);
   assert.equal(remote.calls.filter(args => args[1] === 'delete-objects').length, 0);
-  assert.deepEqual(remote.invalidations[0], remote.invalidations[1]);
+  assertInvalidationsRetriedExactlyOnce(remote.invalidations);
   assert.equal(remote.calls.at(-1)[3], `s3://test-site-bucket/${CACHE_MANIFEST}`);
 });
 
@@ -236,7 +244,7 @@ test('tracked removals remain in the retry plan after deletion but before manife
   assert.equal(remote.objects.has('retired/index.html'), false);
   assert.deepEqual(JSON.parse(remote.objects.get(CACHE_MANIFEST)), previous);
   await deployCacheRelease(root, 'test-site-bucket', 'E123456789', options);
-  assert.deepEqual(remote.invalidations[0], remote.invalidations[1]);
+  assertInvalidationsRetriedExactlyOnce(remote.invalidations);
   assert.ok(remote.invalidations.some(batch => batch.Paths.Items.includes('/retired')));
   assert.equal(remote.objects.get('outside-owner.txt'), 'not ours');
   assert.deepEqual(JSON.parse(remote.objects.get(CACHE_MANIFEST)), next);

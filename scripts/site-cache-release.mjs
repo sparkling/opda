@@ -107,12 +107,14 @@ export async function deployCacheRelease(directory, bucket, distribution, { runA
   if (typeof executionId !== 'string' || !executionId.trim()) throw new Error('Missing deployment execution identity');
   const { root, next, previous, workspace, plan } = await prepareRelease(directory, bucket, runAws);
   // The workflow has already uploaded all immutable prefixes before this step.
+  const uploads = [];
   for (const [stage, cacheControl] of [['mutable', MUTABLE_CACHE_CONTROL], ['html', HTML_CACHE_CONTROL]]) {
     const stagePath = path.join(workspace, stage);
     if (await access(stagePath).then(() => true, () => false)) {
-      await runAws(['s3', 'cp', `${stagePath}/`, `s3://${bucket}/`, '--recursive', '--only-show-errors', '--cache-control', cacheControl]);
+      uploads.push(runAws(['s3', 'cp', `${stagePath}/`, `s3://${bucket}/`, '--recursive', '--only-show-errors', '--cache-control', cacheControl]));
     }
   }
+  await Promise.all(uploads);
   for (const [index, keys] of batches(plan.deleted, 1000).entries()) {
     const filename = path.join(workspace, `delete-${index}.json`);
     await writeJson(filename, { Objects: keys.map(Key => ({ Key })), Quiet: true });
@@ -123,12 +125,15 @@ export async function deployCacheRelease(directory, bucket, distribution, { runA
   // individual paths are in flight at once. Compact complete changed subtrees
   // keep the normal release to a small batch without touching immutable assets.
   const invalidationBatches = createInvalidationBatches(previous, next, plan.invalidations, executionId);
-  for (const [index, batch] of invalidationBatches.entries()) {
-    const filename = path.join(workspace, `invalidate-${index}.json`);
-    await writeJson(filename, batch);
-    const response = JSON.parse(await runAws(['cloudfront', 'create-invalidation', '--distribution-id', distribution, '--invalidation-batch', `file://${filename}`]));
-    await runAws(['cloudfront', 'wait', 'invalidation-completed', '--distribution-id', distribution, '--id', response.Invalidation.Id]);
-  }
+  const queues = Object.groupBy(invalidationBatches.entries(), ([, batch]) => batch.Paths.Items[0]?.endsWith('*') ? 'wildcard' : 'exact');
+  await Promise.all(Object.values(queues).map(async queue => {
+    for (const [index, batch] of queue) {
+      const filename = path.join(workspace, `invalidate-${index}.json`);
+      await writeJson(filename, batch);
+      const response = JSON.parse(await runAws(['cloudfront', 'create-invalidation', '--distribution-id', distribution, '--invalidation-batch', `file://${filename}`]));
+      await runAws(['cloudfront', 'wait', 'invalidation-completed', '--distribution-id', distribution, '--id', response.Invalidation.Id]);
+    }
+  }));
   // Advance the baseline only after the whole publication succeeds. Immutable
   // objects are deliberately absent from deletion plans and survive rollbacks.
   await runAws(['s3', 'cp', path.join(root, CACHE_MANIFEST), `s3://${bucket}/${CACHE_MANIFEST}`, '--only-show-errors', '--cache-control', 'no-store']);

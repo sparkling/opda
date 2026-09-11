@@ -267,11 +267,16 @@ jobs:
             --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" --output text)
           # Content-addressed assets publish before HTML and remain available to
           # already-open pages across releases. Never apply immutable caching to HTML.
+          PUBLISH_PIDS=()
           for ASSET_PREFIX in _astro _images _ui; do
             if [ -d "dist/$ASSET_PREFIX" ]; then
               aws s3 sync "dist/$ASSET_PREFIX/" "s3://$SITE_BUCKET/$ASSET_PREFIX/" \
-                --size-only --only-show-errors --cache-control 'public,max-age=31536000,immutable'
+                --size-only --only-show-errors --cache-control 'public,max-age=31536000,immutable' &
+              PUBLISH_PIDS+=("$!")
             fi
+          done
+          for PUBLISH_PID in "${PUBLISH_PIDS[@]}"; do
+            wait "$PUBLISH_PID"
           done
           # Hash comparison avoids timestamp-driven reuploads. This also applies
           # explicit HTML/mutable cache policies and invalidates only changed or
