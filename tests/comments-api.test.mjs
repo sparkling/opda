@@ -16,10 +16,11 @@ function setup() {
     approvedDomains: ['conveyancing'], domainApprovals: { conveyancing: { status: 'approved' } } };
   const saved = { pk: sessionKey(TOKEN), sub: row.cognitoSub, participantId: row.participantId, email: row.email,
     accessVersion: 2, createdAt: NOW, expiresAt: NOW + 3600 };
-  const calls = [], state = { row, saved, fail: false };
+  const calls = [], state = { row, saved, fail: false, sessionReads: 0, participantReads: 0 };
   const store = { getSession: async key => {
+    state.sessionReads++;
     if (state.fail) throw new Error('Storage unavailable'); return key === saved.pk ? state.saved : null;
-  }, getParticipant: async () => state.row };
+  }, getParticipant: async () => { state.participantReads++; return state.row; } };
   const comments = {
     list: async options => { calls.push(['list', options]); return { count: 1, comments: [entry] }; },
     create: async (body, identity) => { calls.push(['create', body, identity]); return entry; },
@@ -81,6 +82,37 @@ test('public comment reading survives absent, withdrawn and unavailable sessions
   }
   const s = setup();
   assert.equal((await s.handler(s.event({ cookies: [] }))).statusCode, 200);
+});
+
+test('the explicit public feed is identical for all viewers and never reads session storage', async () => {
+  const s = setup();
+  const withCookie = await s.handler(s.event({ rawQueryString: query + '&public=1' }));
+  s.state.fail = true;
+  const withoutCookie = await s.handler(s.event({ rawQueryString: query + '&public=1', cookies: [] }));
+  assert.equal(withCookie.statusCode, 200);
+  assert.deepEqual(withCookie, withoutCookie);
+  assert.equal(withCookie.headers['cache-control'], 'public, max-age=0, s-maxage=30, must-revalidate');
+  const data = JSON.parse(withCookie.body).data;
+  assert.equal(data.viewer, undefined);
+  assert.equal(data.comments[0].email, undefined);
+  assert.equal(withCookie.headers['set-cookie'], undefined);
+  assert.equal(s.state.sessionReads, 0);
+  assert.equal(s.state.participantReads, 0);
+  assert.deepEqual(s.calls[0][1], Object.fromEntries(new URLSearchParams(query)));
+});
+
+test('post-success refresh uses a separate public cache key, not a viewer identity or upstream option', async () => {
+  const s = setup();
+  const response = await s.handler(s.event({ rawQueryString: query + '&public=1&after=42' }));
+  assert.equal(response.statusCode, 200);
+  assert.equal(s.calls[0][1].after, undefined);
+  for (const suffix of ['&public=0', '&public=1&public=1', '&after=42',
+    '&public=1&after=0', '&public=1&after=abc', '&public=1&after=9007199254740992']) {
+    const bad = await s.handler(s.event({ rawQueryString: query + suffix }));
+    assert.equal(bad.statusCode, 400);
+    assert.match(bad.headers['cache-control'], /private, no-store/);
+  }
+  assert.match((await s.handler(s.post())).headers['cache-control'], /private, no-store/);
 });
 
 test('cross-site, missing-origin and non-JSON writes are rejected before storage work', async () => {

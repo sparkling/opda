@@ -4,6 +4,21 @@ import test from 'node:test';
 
 const commentsStack = await readFile(new URL('../config/aws/comments-stack.yaml', import.meta.url), 'utf8');
 const apiStack = await readFile(new URL('../config/aws/comments-api-stack.yaml', import.meta.url), 'utf8');
+const siteStack = await readFile(new URL('../config/aws/site-stack.yaml', import.meta.url), 'utf8');
+
+test('the CDN caches only opt-in public reads, never identity, denied responses or writes', () => {
+  const cache = section(siteStack, '  CommentsCachePolicy:', '  PublicFormOriginRequestPolicy:');
+  assert.match(cache, /MinTTL: 0/);
+  assert.match(cache, /DefaultTTL: 0/);
+  assert.match(cache, /MaxTTL: 30/);
+  assert.match(cache, /CookiesConfig: \{ CookieBehavior: none \}/);
+  assert.match(cache, /QueryStringsConfig: \{ QueryStringBehavior: all \}/);
+  const behavior = section(siteStack, "          - PathPattern: '/api/v2/*'", '          # Public registration API');
+  assert.match(behavior, /CachePolicyId: !Ref CommentsCachePolicy/);
+  assert.match(behavior, /CachedMethods: \[GET, HEAD\]/);
+  assert.match(behavior, /OriginRequestPolicyId: !Ref CommentsOriginRequestPolicy/);
+  assert.doesNotMatch(behavior, /ResponseHeadersPolicyId: !Ref PrivateResponseHeaders/);
+});
 
 function section(source, start, end) {
   const begin = source.indexOf(start);

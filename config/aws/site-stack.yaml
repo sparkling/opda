@@ -32,8 +32,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Metadata:
       cfn-lint:
-        config:
-          ignore_checks: [W3002]
+        config: { ignore_checks: [W3002] }
     Properties:
       TemplateURL: auth-session-stack.yaml
       Parameters:
@@ -44,8 +43,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Metadata:
       cfn-lint:
-        config:
-          ignore_checks: [W3002]
+        config: { ignore_checks: [W3002] }
     Properties:
       TemplateURL: working-group-interest-stack.yaml
 
@@ -53,8 +51,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Metadata:
       cfn-lint:
-        config:
-          ignore_checks: [W3002]
+        config: { ignore_checks: [W3002] }
     Properties:
       TemplateURL: newsletter-subscription-stack.yaml
 
@@ -62,8 +59,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Metadata:
       cfn-lint:
-        config:
-          ignore_checks: [W3002]
+        config: { ignore_checks: [W3002] }
     Properties:
       TemplateURL: submission-events-stack.yaml
       Parameters:
@@ -193,6 +189,23 @@ Resources:
         HeadersConfig: { HeaderBehavior: whitelist, Headers: [Content-Type, Origin, Sec-Fetch-Site] }
         CookiesConfig: { CookieBehavior: whitelist, Cookies: [__Host-opda_session] }
         QueryStringsConfig: { QueryStringBehavior: all }
+
+  # Only ?public=1 success responses opt in. Legacy reads and errors are no-store;
+  # MinTTL zero honours that even during independent API/site deployments.
+  CommentsCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name: opda-public-comments-30s
+        MinTTL: 0
+        DefaultTTL: 0
+        MaxTTL: 30
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          EnableAcceptEncodingBrotli: true
+          CookiesConfig: { CookieBehavior: none }
+          HeadersConfig: { HeaderBehavior: none }
+          QueryStringsConfig: { QueryStringBehavior: all }
 
   PublicFormOriginRequestPolicy:
     Type: AWS::CloudFront::OriginRequestPolicy
@@ -333,28 +346,16 @@ Resources:
           # HTTPS approval gateway; Artalk itself is reachable only inside its VPC.
           - Id: comments
             DomainName: !ImportValue opda-comments-ApiOriginDomainName
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtocolPolicy: https-only
-              OriginSSLProtocols: [TLSv1.2]
+            CustomOriginConfig: { HTTPSPort: 443, OriginProtocolPolicy: https-only, OriginSSLProtocols: [TLSv1.2] }
           - Id: working-group-interest-api
             DomainName: !GetAtt WorkingGroupInterestApplication.Outputs.ApiOriginDomainName
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtocolPolicy: https-only
-              OriginSSLProtocols: [TLSv1.2]
+            CustomOriginConfig: { HTTPSPort: 443, OriginProtocolPolicy: https-only, OriginSSLProtocols: [TLSv1.2] }
           - Id: newsletter-subscription-api
             DomainName: !GetAtt NewsletterSubscriptionApplication.Outputs.ApiOriginDomainName
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtocolPolicy: https-only
-              OriginSSLProtocols: [TLSv1.2]
+            CustomOriginConfig: { HTTPSPort: 443, OriginProtocolPolicy: https-only, OriginSSLProtocols: [TLSv1.2] }
           - Id: auth-session-api
             DomainName: !GetAtt AuthSessionApplication.Outputs.ApiOriginDomainName
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtocolPolicy: https-only
-              OriginSSLProtocols: [TLSv1.2]
+            CustomOriginConfig: { HTTPSPort: 443, OriginProtocolPolicy: https-only, OriginSSLProtocols: [TLSv1.2] }
         DefaultCacheBehavior:
           TargetOriginId: site-s3
           ResponseHeadersPolicyId: !Ref PublicResponseHeaders
@@ -395,12 +396,12 @@ Resources:
               - { EventType: viewer-request, FunctionARN: !GetAtt PublicPathFunction.FunctionARN }
           - PathPattern: '/api/v2/*'
             TargetOriginId: comments
-            ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
             ViewerProtocolPolicy: redirect-to-https
             # CloudFront's POST-capable set is all seven methods; the gateway
             # exposes only exact GET/POST /api/v2/comments and rejects the rest.
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
-            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
+            CachedMethods: [GET, HEAD]
+            CachePolicyId: !Ref CommentsCachePolicy
             OriginRequestPolicyId: !Ref CommentsOriginRequestPolicy
           # Public registration API; API Gateway restricts routes and methods.
           - PathPattern: '/api/working-group-interest*'

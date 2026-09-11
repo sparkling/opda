@@ -6,8 +6,11 @@ import { readApprovedSession, SESSION_COOKIE } from '../auth-session/session.mjs
 const SITE_ORIGIN = 'https://opda.org.uk';
 const PATH = '/api/v2/comments';
 const headers = { 'content-type': 'application/json; charset=utf-8',
+  'x-robots-tag': 'noindex, nofollow, noarchive',
   'cache-control': 'private, no-store', 'x-content-type-options': 'nosniff', 'referrer-policy': 'no-referrer' };
-const reply = (statusCode, body) => ({ statusCode, headers, body: JSON.stringify(body) });
+const reply = (statusCode, body, publicFeed = false) => ({ statusCode,
+  headers: publicFeed ? { ...headers, 'cache-control': 'public, max-age=0, s-maxage=30, must-revalidate' } : headers,
+  body: JSON.stringify(body) });
 const invalid = () => reply(400, { error: 'Invalid comment request.' });
 const validPage = value => typeof value === 'string' && value.length <= 2048
   && value.startsWith('/') && !/[\\?#\u0000-\u001f\u007f]|\/\/|(?:^|\/)\.{1,2}(?:\/|$)/u.test(value);
@@ -23,12 +26,21 @@ function readQuery(raw) {
   if (typeof raw !== 'string' || raw.length > 12000) return null;
   const query = new URLSearchParams(raw);
   const keys = ['page_key', 'site_name', 'limit', 'offset', 'flat_mode', 'sort_by'];
-  if ([...query.keys()].some(key => !keys.includes(key)) || keys.some(key => query.getAll(key).length !== 1)) return null;
+  if ([...query.keys()].some(key => ![...keys, 'public', 'after'].includes(key))
+    || keys.some(key => query.getAll(key).length !== 1)
+    || ['public', 'after'].some(key => query.getAll(key).length > 1)) return null;
+  const publicFeed = query.get('public') === '1';
+  if (query.has('public') && !publicFeed) return null;
+  // A successful write's ID gives its subsequent read a fresh cache key.
+  // It is not forwarded to Artalk and has no bearing on authorisation.
+  if (query.has('after') && (!publicFeed || !/^[1-9][0-9]{0,15}$/u.test(query.get('after'))
+    || !Number.isSafeInteger(Number(query.get('after'))))) return null;
+  query.delete('public'); query.delete('after');
   const value = Object.fromEntries(query);
   if (!validPage(value.page_key) || value.site_name !== 'OPDA' || value.flat_mode !== 'true'
     || value.sort_by !== 'date_asc' || !/^(?:[1-9]|[1-4][0-9]|50)$/u.test(value.limit)
     || !/^(?:0|[1-9][0-9]{0,5})$/u.test(value.offset)) return null;
-  return value;
+  return { query: value, publicFeed };
 }
 
 function readBody(event) {
@@ -75,11 +87,14 @@ export function createHandler(overrides = {}) {
         return reply(415, { error: 'Use application/json.' });
       }
     }
-    const input = method === 'GET' ? readQuery(event.rawQueryString) : readBody(event);
-    if (!input) return invalid();
+    const request = method === 'GET' ? readQuery(event.rawQueryString) : readBody(event);
+    if (!request) return invalid();
+    const input = method === 'GET' ? request.query : request;
+    const publicFeed = method === 'GET' && request.publicFeed;
     try {
-      // Public reading must work even when session storage is unavailable.
-      const approved = method === 'POST'
+      // Public feed reads have no viewer identity or database dependency.
+      // The legacy private GET remains compatible with already-open old pages.
+      const approved = publicFeed ? null : method === 'POST'
         ? await readApprovedSession(cookie(event), store, now)
         : await readApprovedSession(cookie(event), store, now).catch(() => null);
       if (method === 'POST' && !approved) return reply(401, { error: 'An approved website session is required.' });
@@ -90,7 +105,8 @@ export function createHandler(overrides = {}) {
       const data = await comments.list(input);
       if (!Array.isArray(data.comments) || data.comments.length > Number(input.limit)
         || !Number.isSafeInteger(data.count) || data.count < 0) throw new Error('Invalid comment list');
-      return reply(200, { data: { comments: data.comments.map(safeComment), count: data.count, viewer: identity ? { name: identity.name } : null } });
+      return reply(200, { data: { comments: data.comments.map(safeComment), count: data.count,
+        ...(!publicFeed ? { viewer: identity ? { name: identity.name } : null } : {}) } }, publicFeed);
     } catch (error) {
       if (error?.statusCode === 429) return reply(429, { error: 'Please wait before posting again.' });
       if (method === 'POST' && [400, 404].includes(error?.statusCode)) return invalid();

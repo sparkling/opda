@@ -22,6 +22,27 @@ implements: [config/aws/site-stack.yaml, config/aws/auth-session-stack.yaml, con
 > CI detaches the legacy gate without deleting its replicated versions or identity
 > records. Existing workspace and onboarding permissions are unchanged.
 
+### Public comment delivery, 2026-09-11
+
+Public discussion reads use `GET /api/v2/comments?public=1` with the existing
+validated page and pagination parameters. Successful responses contain only the
+public comment projection and count, never viewer identity or cookies, and do
+not read the session or participant stores. They revalidate in browsers and may
+be shared by CloudFront for at most 30 seconds. The cache key includes the full
+query string; its minimum and default TTL are zero so errors, identity responses,
+legacy reads and writes retain their `private, no-store` policy.
+
+The header's existing session watcher supplies only display state to the comment
+composer in memory; that state is not authorization. Posting still checks current
+approved membership and the same-origin boundary at the API. After a successful
+post, its returned comment ID selects a fresh public-feed cache key, retained
+while paginating. Withdrawal or denial closes the composer, and an unavailable
+identity check must not restore a previously denied state.
+
+Deploy the backward-compatible API and cache policy before the new client. Old
+clients without `public=1` retain their private response contract during rollout.
+The public feed remains deferred until after page load and near the discussion.
+
 ## Amendment: restore the development access barrier, 2026-09-09
 
 The owner has withdrawn public-access approval. This amendment supersedes the
