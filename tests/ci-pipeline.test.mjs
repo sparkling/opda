@@ -17,6 +17,7 @@ test('change classification selects only the evidence lanes touched by a change'
     application: false,
     ontology: false,
     infrastructure: false,
+    tooling: false,
     site: true,
     primary: 'editorial',
   });
@@ -27,6 +28,7 @@ test('change classification selects only the evidence lanes touched by a change'
     application: false,
     ontology: false,
     infrastructure: true,
+    tooling: false,
     site: false,
     primary: 'infrastructure',
   });
@@ -35,6 +37,20 @@ test('change classification selects only the evidence lanes touched by a change'
   assert.equal(mixed.infrastructure, true);
   assert.equal(mixed.site, true);
   assert.equal(mixed.primary, 'infrastructure');
+});
+
+test('release tooling changes validate contracts without rebuilding the site', () => {
+  for (const path of [
+    'scripts/site-cache-release.mjs',
+    'scripts/lib/site-cache-manifest.mjs',
+    'tests/site-cache-release.test.mjs',
+    '.github/workflows/site-release.yml',
+  ]) {
+    const result = classifyPaths([path]);
+    assert.equal(result.tooling, true);
+    assert.equal(result.site, false);
+    assert.equal(result.primary, 'tooling');
+  }
 });
 
 test('unknown and empty changes fail safe into application validation', () => {

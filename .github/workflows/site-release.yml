@@ -30,6 +30,7 @@ jobs:
       application: ${{ steps.classify.outputs.application }}
       ontology: ${{ steps.classify.outputs.ontology }}
       infrastructure: ${{ steps.classify.outputs.infrastructure }}
+      tooling: ${{ steps.classify.outputs.tooling }}
       site: ${{ steps.classify.outputs.site }}
       primary: ${{ steps.classify.outputs.primary }}
     steps:
@@ -60,7 +61,7 @@ jobs:
 
   contracts:
     name: ${{ needs.classify.outputs.primary }} contracts
-    if: needs.classify.outputs.site == 'true'
+    if: needs.classify.outputs.site == 'true' || needs.classify.outputs.tooling == 'true'
     needs: classify
     runs-on: ubuntu-latest
     steps:

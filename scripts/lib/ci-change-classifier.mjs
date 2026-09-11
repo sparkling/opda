@@ -12,6 +12,13 @@ const INFRASTRUCTURE = [
   /^\.github\/workflows\/infra\.yml$/u,
 ];
 
+const TOOLING = [
+  /^scripts\/(?:site-cache-release|classify-ci-changes)\.mjs$/u,
+  /^scripts\/lib\/(?:site-cache-manifest|ci-change-classifier)\.mjs$/u,
+  /^tests\/(?:site-cache-release|ci-pipeline)\.test\.mjs$/u,
+  /^\.github\/workflows\/(?:deploy-aws|site-release|site-assurance)\.yml$/u,
+];
+
 const APPLICATION = [
   /^src\/(?:components|layouts|scripts|api)\//u,
   /^public\/ui\/.*\.js$/u,
@@ -19,7 +26,6 @@ const APPLICATION = [
   /^scripts\//u,
   /^(?:astro|playwright)\.config\.mjs$/u,
   /^(?:package\.json|pnpm-lock\.yaml|tsconfig\.json|Makefile)$/u,
-  /^\.github\/workflows\/(?:deploy-aws|site-release|site-assurance)\.yml$/u,
 ];
 
 const EDITORIAL = [
@@ -40,6 +46,7 @@ export function classifyPaths(inputPaths) {
     application: false,
     ontology: false,
     infrastructure: false,
+    tooling: false,
   };
   let unknown = paths.length === 0;
 
@@ -47,7 +54,8 @@ export function classifyPaths(inputPaths) {
     let known = false;
     if (matches(path, ONTOLOGY)) result.ontology = known = true;
     if (matches(path, INFRASTRUCTURE)) result.infrastructure = known = true;
-    if (matches(path, APPLICATION)) result.application = known = true;
+    if (matches(path, TOOLING)) result.tooling = known = true;
+    else if (matches(path, APPLICATION)) result.application = known = true;
     if (matches(path, EDITORIAL)) result.editorial = known = true;
     if (!known) unknown = true;
   }
@@ -57,6 +65,7 @@ export function classifyPaths(inputPaths) {
   const primary = result.infrastructure ? 'infrastructure'
     : result.ontology ? 'ontology'
       : result.application ? 'application'
-        : 'editorial';
+        : result.editorial ? 'editorial'
+          : 'tooling';
   return { ...result, site, primary };
 }
