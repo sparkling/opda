@@ -1,11 +1,9 @@
 # Regional site and participant services (ADR-0038/0040/0079/0084).
-# CI passes the us-east-1 certificate ARN and packages local nested templates.
-# Artalk runtime is independent; only its CloudFront origin/behavior live here.
-# The approved-session gate protects every CloudFront behavior.
+# Public static delivery; APIs own their authentication boundaries.
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
   opda.org.uk site resources (eu-west-2): S3 + CloudFront, Route 53 records,
-  development-restricted site, path-scoped auth session, submission APIs and their shared
+  public static site, path-scoped auth session, submission APIs and their shared
   post-persistence event boundary
   (ADR-0038/ADR-0040/ADR-0069/ADR-0079).
 
@@ -16,9 +14,6 @@ Parameters:
   CertificateArn:
     Type: String
     Description: ACM certificate ARN (us-east-1, from the opda-edge stack).
-  GateFunctionVersionArn:
-    Type: String
-    AllowedPattern: '^arn:aws:lambda:us-east-1:[0-9]{12}:function:opda-session-gate:[0-9]+$'
   IdentityStackName:
     Type: String
     Default: opda-participant-identity
@@ -242,6 +237,34 @@ Resources:
         SigningBehavior: always
         SigningProtocol: sigv4
 
+  PublicResponseHeaders:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: opda-public-static-responses
+        SecurityHeadersConfig:
+          ContentTypeOptions: { Override: true }
+          ReferrerPolicy: { ReferrerPolicy: strict-origin-when-cross-origin, Override: true }
+
+  PublicPathFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: opda-public-paths
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Static path rewriting only; no authentication or network calls
+        Runtime: cloudfront-js-2.0
+      FunctionCode: |
+        function handler(event) {
+          var request = event.request;
+          var uri = request.uri;
+          if (uri === '/resources' || uri === '/resources/') request.uri = '/resources/index.html';
+          else if (uri.startsWith('/resources/')) request.uri = uri.slice('/resources'.length);
+          else if (uri.endsWith('/')) request.uri = uri + 'index.html';
+          else if (!uri.split('/').pop().includes('.')) request.uri = uri + '/index.html';
+          return request;
+        }
+
   PrivateResponseHeaders:
     Type: AWS::CloudFront::ResponseHeadersPolicy
     Properties:
@@ -255,10 +278,7 @@ Resources:
           ContentTypeOptions: { Override: true }
           ReferrerPolicy: { ReferrerPolicy: no-referrer, Override: true }
 
-  # Retained emergency fallback; normal associations use the approved-session gate.
-  # This denies every viewer if reattached during incident containment.
-  # Runs before cache lookup on EVERY behavior, not only HTML navigation.
-  # No cookie-presence bypass, asset exception, external dependency or origin fetch.
+  # Unattached emergency fallback; normal delivery uses PublicPathFunction.
   DevelopmentBarrierFunction:
     Type: AWS::CloudFront::Function
     Properties:
@@ -304,7 +324,7 @@ Resources:
             OriginAccessControlId: !Ref OriginAccessControl
             S3OriginConfig:
               OriginAccessIdentity: ''
-          # Protected resources origin (served under /resources/* below).
+          # Resource downloads (served under /resources/* below).
           - Id: resources-s3
             DomainName: !GetAtt ResourcesBucket.RegionalDomainName
             OriginAccessControlId: !Ref ResourcesOriginAccessControl
@@ -337,16 +357,15 @@ Resources:
               OriginSSLProtocols: [TLSv1.2]
         DefaultCacheBehavior:
           TargetOriginId: site-s3
-          ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
+          ResponseHeadersPolicyId: !Ref PublicResponseHeaders
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
-          LambdaFunctionAssociations:
+          FunctionAssociations:
             - EventType: viewer-request
-              LambdaFunctionARN: !Ref GateFunctionVersionArn
+              FunctionARN: !GetAtt PublicPathFunction.FunctionARN
         CacheBehaviors:
-          # Only the four explicit OAuth/session endpoints may pass anonymously.
-          # The same viewer-request gate also owns every content behavior.
+          # APIs enforce their own method, identity and input boundaries.
           - PathPattern: '/_auth/*'
             TargetOriginId: auth-session-api
             ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
@@ -357,30 +376,23 @@ Resources:
             Compress: true
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref AuthSessionOriginRequestPolicy
-            LambdaFunctionAssociations:
-              - EventType: viewer-request
-                LambdaFunctionARN: !Ref GateFunctionVersionArn
           - PathPattern: '/resources/'
             TargetOriginId: site-s3
-            ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
+            ResponseHeadersPolicyId: !Ref PublicResponseHeaders
             ViewerProtocolPolicy: redirect-to-https
             Compress: true
             CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
-            LambdaFunctionAssociations:
-              - { EventType: viewer-request, LambdaFunctionARN: !Ref GateFunctionVersionArn }
-          # Protected static assets. Long-TTL at the CDN via the
-          # same managed CachingOptimized policy the default behavior uses.
-          # Ordered ahead of the default behavior.
+            FunctionAssociations:
+              - { EventType: viewer-request, FunctionARN: !GetAtt PublicPathFunction.FunctionARN }
+          # Public downloads cached at the CDN.
           - PathPattern: '/resources/*'
             TargetOriginId: resources-s3
-            ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
+            ResponseHeadersPolicyId: !Ref PublicResponseHeaders
             ViewerProtocolPolicy: redirect-to-https
             Compress: true
             CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
-            # Resources are protected too; an HTML-only barrier would leak files.
-            LambdaFunctionAssociations:
-              - EventType: viewer-request
-                LambdaFunctionARN: !Ref GateFunctionVersionArn
+            FunctionAssociations:
+              - { EventType: viewer-request, FunctionARN: !GetAtt PublicPathFunction.FunctionARN }
           - PathPattern: '/api/v2/*'
             TargetOriginId: comments
             ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
@@ -390,12 +402,7 @@ Resources:
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref CommentsOriginRequestPolicy
-            LambdaFunctionAssociations:
-              - EventType: viewer-request
-                LambdaFunctionARN: !Ref GateFunctionVersionArn
-          # Public same-origin API. HTTP API exposes only the registration POST route;
-          # CloudFront's POST-capable method set necessarily includes the
-          # remaining verbs, which API Gateway rejects because no routes exist.
+          # Public registration API; API Gateway restricts routes and methods.
           - PathPattern: '/api/working-group-interest*'
             TargetOriginId: working-group-interest-api
             ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
@@ -403,9 +410,6 @@ Resources:
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref PublicFormOriginRequestPolicy
-            LambdaFunctionAssociations:
-              - EventType: viewer-request
-                LambdaFunctionARN: !Ref GateFunctionVersionArn
           - PathPattern: '/api/newsletter-subscription*'
             TargetOriginId: newsletter-subscription-api
             ResponseHeadersPolicyId: !Ref PrivateResponseHeaders
@@ -413,16 +417,11 @@ Resources:
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref PublicFormOriginRequestPolicy
-            LambdaFunctionAssociations:
-              - EventType: viewer-request
-                LambdaFunctionARN: !Ref GateFunctionVersionArn
         CustomErrorResponses:
           # S3 now returns 404 for missing keys. Preserve API-origin 403 bodies.
           - ErrorCode: 404
             ResponseCode: 404
             ResponsePagePath: /404.html
-
-  # ---------------- DNS ----------------
 
   ApexRecords:
     Type: AWS::Route53::RecordSetGroup

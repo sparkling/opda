@@ -12,7 +12,7 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
     <div id="opda-comments-list" class="comments-section__list"></div>
     <p id="opda-comments-status" role="status">Loading comments…</p>
     <button id="opda-comments-more" class="btn btn--compact" type="button" hidden>Load more comments</button>
-    <a id="opda-comments-sign-in" href={`/_auth/login?return=${encodeURIComponent(Astro.url.pathname + '#comments')}`} hidden>Sign in to read and join the discussion</a>
+    <a id="opda-comments-sign-in" href={`/_auth/login?return=${encodeURIComponent(Astro.url.pathname + '#comments')}`} hidden>Sign in to post a comment</a>
     <form id="opda-comments-form" class="comments-section__form" hidden>
       <p id="opda-comments-author"></p>
       <p id="opda-comments-reply" hidden></p>
@@ -129,6 +129,7 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
     signIn.hidden = true;
 
     function replyTo(comment) {
+      if (form.hidden) { signIn.focus(); return; }
       replyId = comment.id;
       replyLabel.textContent = 'Replying to comment #' + comment.id + ' by ' + comment.nick;
       replyLabel.hidden = false;
@@ -144,10 +145,8 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
 
     function denied() {
       form.hidden = true;
-      more.hidden = true;
-      list.replaceChildren();
       signIn.hidden = false;
-      status.textContent = 'Please sign in with an approved account to use comments.';
+      status.textContent = 'Please sign in with an approved account to post comments.';
     }
 
     async function load() {
@@ -185,9 +184,10 @@ const commentPageKey = getLegacyCommentKey(Astro.url.pathname);
         more.hidden = data.comments.length === 0 || offset >= data.count;
         more.textContent = 'Load more comments';
         status.textContent = seen.size === 0 ? 'No comments yet.' : '';
-        if (typeof data.viewer?.name !== 'string' || !data.viewer.name) throw new Error('Missing member identity');
-        author.textContent = 'Commenting as ' + data.viewer.name;
-        form.hidden = false;
+        const canPost = typeof data.viewer?.name === 'string' && !!data.viewer.name;
+        author.textContent = canPost ? 'Commenting as ' + data.viewer.name : '';
+        form.hidden = !canPost;
+        signIn.hidden = canPost;
         return true;
       } catch {
         if (signal.aborted) return;

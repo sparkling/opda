@@ -78,16 +78,19 @@ export function createHandler(overrides = {}) {
     const input = method === 'GET' ? readQuery(event.rawQueryString) : readBody(event);
     if (!input) return invalid();
     try {
-      const approved = await readApprovedSession(cookie(event), store, now);
-      if (!approved) return reply(401, { error: 'An approved website session is required.' });
-      const identity = { participantId: approved.participant.participantId,
-        name: (approved.participant.name?.trim() || 'Participant').slice(0, 256), email: approved.session.email };
+      // Public reading must work even when session storage is unavailable.
+      const approved = method === 'POST'
+        ? await readApprovedSession(cookie(event), store, now)
+        : await readApprovedSession(cookie(event), store, now).catch(() => null);
+      if (method === 'POST' && !approved) return reply(401, { error: 'An approved website session is required.' });
+      const identity = approved ? { participantId: approved.participant.participantId,
+        name: (approved.participant.name?.trim() || 'Participant').slice(0, 256), email: approved.session.email } : null;
       comments ??= (await import('./artalk.mjs')).createArtalkClient();
       if (method === 'POST') return reply(200, { data: safeComment(await comments.create(input, identity)) });
       const data = await comments.list(input);
       if (!Array.isArray(data.comments) || data.comments.length > Number(input.limit)
         || !Number.isSafeInteger(data.count) || data.count < 0) throw new Error('Invalid comment list');
-      return reply(200, { data: { comments: data.comments.map(safeComment), count: data.count, viewer: { name: identity.name } } });
+      return reply(200, { data: { comments: data.comments.map(safeComment), count: data.count, viewer: identity ? { name: identity.name } : null } });
     } catch (error) {
       if (error?.statusCode === 429) return reply(429, { error: 'Please wait before posting again.' });
       if (method === 'POST' && [400, 404].includes(error?.statusCode)) return invalid();

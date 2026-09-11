@@ -2,7 +2,7 @@ name: Infrastructure (CloudFormation)
 
 # Infra CI/CD per ADR-0040 §3: validates and deploys the CloudFormation stacks
 # in dependency order: participant stores → packaged/versioned edge gate → site.
-# CloudFront replaces its barrier with a validated gate, never an ungated state.
+# Public static delivery has no Lambda association; regional APIs own authorization.
 # Change-set based and
 # idempotent (--no-fail-on-empty-changeset), so a run that touches only one
 # stack is a no-op for the others.
@@ -184,7 +184,6 @@ jobs:
             --no-fail-on-empty-changeset \
             --parameter-overrides \
               CertificateArn="$OPDA_CERTIFICATE_ARN" \
-              GateFunctionVersionArn="$OPDA_GATE_FUNCTION_ARN" \
               OnboardingCutover="${{ vars.OPDA_ONBOARDING_CUTOVER || '' }}" \
               DomainReviewCutover="${{ vars.OPDA_DOMAIN_REVIEW_CUTOVER || '' }}" \
               OnboardingEnabled="${{ vars.OPDA_ONBOARDING_ENABLED || 'false' }}" \
@@ -207,7 +206,7 @@ jobs:
             ['missing origin', '/_auth/workspace', 'POST', {}, 403],
             ['foreign origin', '/_auth/workspace', 'POST', {origin:'https://example.invalid','sec-fetch-site':'cross-site'}, 403],
             ['missing session', '/_auth/workspace', 'POST', {origin,'sec-fetch-site':'same-origin'}, 403],
-            ['resources landing stays gated', '/resources/?list-type=2', 'GET', {}, 302],
+            ['resources landing is public', '/resources/?list-type=2', 'GET', {}, 200],
           ];
           await Promise.all(cases.map(async ([name,path,method,headers,status]) => {
             const response = await fetch(origin+path, {method,redirect:'manual',signal:AbortSignal.timeout(10000),
@@ -216,8 +215,10 @@ jobs:
             assert.equal(response.status,status,name);
             if(method==='POST') assert.equal(typeof (await response.json()).error,'string',name);
             else {
-              assert.match(response.headers.get('location') || '', /^\/_auth\/login\?return=/);
-              assert.equal(await response.text(), '', 'No bucket listing or protected content is returned');
+              assert.match(response.headers.get('content-type') || '', /text\/html/);
+              const html = await response.text();
+              assert.match(html, /Resources/);
+              assert.doesNotMatch(html, /<ListBucketResult/);
             }
             console.log('Live workspace check passed: '+name);
           }));

@@ -54,21 +54,33 @@ test('post identity is derived only from current approved membership, not the re
   assert.equal(JSON.parse(response.body).data.ip, undefined);
 });
 
-test('missing, duplicate, expired, withdrawn and stale sessions never reach Artalk', async () => {
+test('missing, duplicate, expired, withdrawn and stale sessions cannot post', async () => {
   for (const mutate of [s => s.state.saved = null, s => s.row.active = false, s => s.row.suspended = true,
     s => s.row.domainApprovals.conveyancing.status = 'withdrawn', s => s.row.accessVersion++,
     s => s.saved.expiresAt = NOW, s => s.state.row = null]) {
     const s = setup(); mutate(s);
-    for (const request of [s.event(), s.post()]) assert.equal((await s.handler(request)).statusCode, 401);
+    assert.equal((await s.handler(s.post())).statusCode, 401);
     assert.equal(s.calls.length, 0);
   }
   const s = setup();
   for (const cookies of [[], ['__Host-opda_session=forged'], ['__Host-opda_session=' + TOKEN, '__Host-opda_session=' + TOKEN]]) {
-    assert.equal((await s.handler(s.event({ cookies }))).statusCode, 401);
+    assert.equal((await s.handler(s.post(undefined, { cookies }))).statusCode, 401);
   }
   s.state.fail = true;
-  assert.equal((await s.handler(s.event())).statusCode, 503);
+  assert.equal((await s.handler(s.post())).statusCode, 503);
   assert.equal(s.calls.length, 0);
+});
+
+test('public comment reading survives absent, withdrawn and unavailable sessions', async () => {
+  for (const mutate of [s => s.state.saved = null, s => s.row.active = false, s => s.state.fail = true]) {
+    const s = setup(); mutate(s);
+    const response = await s.handler(s.event());
+    assert.equal(response.statusCode, 200);
+    assert.equal(JSON.parse(response.body).data.viewer, null);
+    assert.equal(s.calls[0][0], 'list');
+  }
+  const s = setup();
+  assert.equal((await s.handler(s.event({ cookies: [] }))).statusCode, 200);
 });
 
 test('cross-site, missing-origin and non-JSON writes are rejected before storage work', async () => {

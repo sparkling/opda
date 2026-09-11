@@ -8,7 +8,7 @@ const script = source.match(/<script>([\s\S]*?)<\/script>/u)[1];
 const tick = () => new Promise(resolve => setTimeout(resolve, 0));
 const comment = { id: 1, nick: 'Another member', content: 'A useful question', date: '2026-09-09', rid: 0 };
 
-function setup({ postStatus = 200, readStatus = 200, readyState = 'complete', withIntersectionObserver = false } = {}) {
+function setup({ postStatus = 200, readStatus = 200, viewer = { name: 'Signed-in Member' }, readyState = 'complete', withIntersectionObserver = false } = {}) {
   class Element {
     children = []; dataset = {}; hidden = false; disabled = false; textContent = ''; value = ''; events = {};
     append(...children) { this.children.push(...children); }
@@ -53,7 +53,7 @@ function setup({ postStatus = 200, readStatus = 200, readyState = 'complete', wi
       const status = options.method === 'POST' ? state.postStatus : state.readStatus;
       return { ok: status === 200, status, json: async () => options.method === 'POST'
         ? { data: { ...comment, id: 2 } }
-        : { data: { viewer: { name: 'Signed-in Member' }, count: 1, comments: [comment] } } };
+        : { data: { viewer, count: 1, comments: [comment] } } };
     },
     ...(withIntersectionObserver ? { IntersectionObserver } : {}),
   };
@@ -157,7 +157,15 @@ test('reply controls preserve the exact legacy thread and parent ID', async () =
   assert.equal(s.element('-cancel').hidden, true);
 });
 
-test('expired or revoked reads and writes hide the editor and stale private comments', async () => {
+test('public readers see the discussion with a sign-in link instead of an editor', async () => {
+  const s = setup({ viewer: null }); await tick();
+  assert.equal(s.element('-list').children.length, 1);
+  assert.equal(s.element('-form').hidden, true);
+  assert.equal(s.element('-sign-in').hidden, false);
+  assert.equal(s.element('-status').textContent, '');
+});
+
+test('expired or revoked writes hide the editor but preserve public comments and drafts', async () => {
   for (const status of [401, 403]) {
     const s = setup({ readStatus: status }); await tick();
     assert.equal(s.element('-form').hidden, true);
@@ -166,7 +174,7 @@ test('expired or revoked reads and writes hide the editor and stale private comm
     p.element('-content').value = 'Keep my unsent draft';
     await p.element('-form').fire('submit');
     assert.equal(p.element('-form').hidden, true);
-    assert.equal(p.element('-list').children.length, 0);
+    assert.equal(p.element('-list').children.length, 1);
     assert.equal(p.element('-content').value, 'Keep my unsent draft');
   }
 });

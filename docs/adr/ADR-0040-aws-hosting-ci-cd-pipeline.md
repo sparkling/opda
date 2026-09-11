@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-06
-updated: 2026-09-09
+updated: 2026-09-11
 tags: [infrastructure, ci-cd, deployment, security]
 supersedes: []
 depends-on: [ADR-0021, ADR-0037]
@@ -9,6 +9,17 @@ implements: [ADR-0038]
 ---
 
 # AWS hosting CI/CD pipeline
+
+> **Public delivery restored, 2026-09-11.** The owner explicitly authorizes public
+> access to all pages, illustrations, downloads and comment reading. This supersedes
+> the development barrier below. CloudFront uses a network-free path-rewrite
+> function for static content, with no Lambda/session/database checks and no forced
+> browser no-store policy. Private S3 origins remain accessible through CloudFront.
+> Regional APIs retain their own validation. Only comment posting requires current
+> approved membership; anonymous, withdrawn or unavailable sessions do not block
+> public reading. Comment loading remains deferred until after page load.
+> CI detaches the legacy gate without deleting its replicated versions or identity
+> records. Existing workspace and onboarding permissions are unchanged.
 
 > **Gate restored, 2026-09-09 (ADR-0038).** Infra again packages a numbered
 > Lambda@Edge version in `us-east-1` before updating the regional site. The package

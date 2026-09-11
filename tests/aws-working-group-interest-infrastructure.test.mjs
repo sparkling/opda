@@ -4,14 +4,31 @@ import test from 'node:test';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('the restored edge gate shares current approvals and never restores the old email allowlist', async () => {
+test('public path function preserves index pages and resource downloads without network work', async () => {
+  const site = await read('config/aws/site-stack.yaml');
+  const block = site.split('  PublicPathFunction:')[1].split('  PrivateResponseHeaders:')[0];
+  const source = block.split('      FunctionCode: |\n')[1].split('\n').map(line => line.replace(/^ {8}/u, '')).join('\n');
+  const handler = Function(`${source}\nreturn handler;`)();
+  for (const [uri, expected] of [['/', '/index.html'], ['/programme', '/programme/index.html'],
+    ['/programme/', '/programme/index.html'], ['/resources', '/resources/index.html'],
+    ['/resources/', '/resources/index.html'], ['/resources/model.ttl', '/model.ttl'],
+    ['/ui/design-system.css', '/ui/design-system.css'], ['/_astro/a.js', '/_astro/a.js']]) {
+    const request = { uri, method: 'GET', querystring: {} };
+    assert.equal(handler({ request }).uri, expected);
+  }
+  assert.doesNotMatch(source, /fetch|cookie|session|DynamoDB/u);
+  const policy = site.split('  PublicResponseHeaders:')[1].split('  PublicPathFunction:')[0];
+  assert.doesNotMatch(policy, /no-store|noindex|Cache-Control/u);
+});
+
+test('public delivery detaches the retained legacy gate and preserves regional identity', async () => {
   const [site, edge, workflow] = await Promise.all([
     read('config/aws/site-stack.yaml'),
     read('config/aws/edge-stack.yaml'),
     read('.github/workflows/infra.yml'),
   ]);
 
-  assert.match(site, /LambdaFunctionAssociations/u);
+  assert.doesNotMatch(site, /LambdaFunctionAssociations/u);
   assert.doesNotMatch(site, /GateConfigParameter|\/opda\/gate\/config|MemberEmails/u);
   assert.match(site, /AuthSessionApplication:[\s\S]*TemplateURL: auth-session-stack\.yaml/u);
   assert.match(edge, /AutoPublishAlias: live/u);
@@ -25,12 +42,12 @@ test('the restored edge gate shares current approvals and never restores the old
   assert.doesNotMatch(workflow, /members\.txt/u);
   assert.match(workflow, /--stack-name opda-participant-identity/u);
   assert.doesNotMatch(workflow, /OPDA_AUTH0_CLIENT_ID|OPDA_MEMBER_EMAILS/u);
-  assert.match(site, /AllowedPattern: '\^arn:aws:lambda:us-east-1:\[0-9\]\{12\}:function:opda-session-gate:\[0-9\]\+\$'/u);
+  assert.doesNotMatch(site, /GateFunctionVersionArn/u);
   assert.doesNotMatch(site, /function:opda-gate:/u);
   assert.ok(workflow.indexOf('name: Deploy comments stack') < workflow.indexOf('name: Deploy site stack'),
     'the origin read-only boundary must deploy before the session cutover');
   assert.ok(workflow.indexOf('name: Deploy versioned gate') < workflow.indexOf('name: Deploy site stack'));
-  assert.match(workflow, /GateFunctionVersionArn="\$OPDA_GATE_FUNCTION_ARN"/u);
+  assert.doesNotMatch(workflow, /GateFunctionVersionArn="\$OPDA_GATE_FUNCTION_ARN"/u);
 });
 
 test('the same-origin auth surface forwards cookies and query strings without caching', async () => {
@@ -45,7 +62,7 @@ test('the same-origin auth surface forwards cookies and query strings without ca
   assert.match(behavior, /AllowedMethods: \[GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE\]/u);
   assert.match(behavior, /4135ea2d-6df8-44a3-9df3-4b5a84be39ad/u);
   assert.match(behavior, /OriginRequestPolicyId: !Ref AuthSessionOriginRequestPolicy/u);
-  assert.match(behavior, /LambdaFunctionAssociations/u);
+  assert.doesNotMatch(behavior, /LambdaFunctionAssociations|FunctionAssociations/u);
 
   const policy = site.match(/AuthSessionOriginRequestPolicy:[\s\S]*?(?=\n\s{2}\w)/u)?.[0];
   assert.match(policy ?? '', /HeaderBehavior: whitelist, Headers: \[Content-Type, Origin, Sec-Fetch-Site\]/u);
@@ -103,7 +120,7 @@ test('the auth service exposes session and workspace routes with bounded capacit
   assert.doesNotMatch(stack, /CLIENT_SECRET|client_secret|AWS::ApiGatewayV2::DomainName|CorsConfiguration/u);
 });
 
-test('every behavior is gated and the retained emergency fallback remains fail-closed', async () => {
+test('public content uses only path rewriting; APIs enforce their own authorization', async () => {
   const site = await read('config/aws/site-stack.yaml');
   const gate = site.match(/DevelopmentBarrierFunction:[\s\S]*?(?=\n\s{2}Distribution:)/u)?.[0];
   assert.ok(gate, 'the development barrier exists');
@@ -113,8 +130,10 @@ test('every behavior is gated and the retained emergency fallback remains fail-c
   const behaviors = site.match(/DefaultCacheBehavior:[\s\S]*?(?=\n\s{8}CustomErrorResponses:)/u)?.[0];
   assert.ok(behaviors);
   assert.equal((behaviors.match(/TargetOriginId:/gu) ?? []).length, 7);
-  assert.equal((behaviors.match(/(?:EventType: viewer-request\n\s+LambdaFunctionARN: !Ref GateFunctionVersionArn|\{ EventType: viewer-request, LambdaFunctionARN: !Ref GateFunctionVersionArn \})/gu) ?? []).length, 7);
-  assert.equal((behaviors.match(/ResponseHeadersPolicyId: !Ref PrivateResponseHeaders/gu) ?? []).length, 7);
+  assert.doesNotMatch(behaviors, /LambdaFunctionAssociations|GateFunctionVersionArn/u);
+  assert.equal((behaviors.match(/FunctionARN: !GetAtt PublicPathFunction.FunctionARN/gu) ?? []).length, 3);
+  assert.equal((behaviors.match(/ResponseHeadersPolicyId: !Ref PrivateResponseHeaders/gu) ?? []).length, 4);
+  assert.equal((behaviors.match(/ResponseHeadersPolicyId: !Ref PublicResponseHeaders/gu) ?? []).length, 3);
   assert.match(behaviors, /PathPattern: '\/resources\/'[\s\S]*?TargetOriginId: site-s3[\s\S]*?PathPattern: '\/resources\/\*'[\s\S]*?TargetOriginId: resources-s3/u);
   const source = gate.match(/FunctionCode: \|\n([\s\S]*)$/u)?.[1]
     .split('\n').map((line) => line.replace(/^ {8}/u, '')).join('\n');
@@ -145,7 +164,7 @@ test('the registration API configuration stays same-origin and cache-disabled be
   assert.ok(behavior, 'working-group API cache behavior exists');
   assert.match(behavior, /TargetOriginId: working-group-interest-api/u);
   assert.match(behavior, /4135ea2d-6df8-44a3-9df3-4b5a84be39ad/u);
-  assert.match(behavior, /LambdaFunctionAssociations/u);
+  assert.doesNotMatch(behavior, /LambdaFunctionAssociations|FunctionAssociations/u);
 
   const policy = site.match(/PublicFormOriginRequestPolicy:[\s\S]*?(?=\n\s{2}\w)/u)?.[0];
   assert.match(policy ?? '', /Headers: \[Content-Type\]/u);

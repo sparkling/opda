@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-27
-updated: 2026-09-09
+updated: 2026-09-11
 tags: [infrastructure, hosting, authentication, cloudfront, lambda-edge, public-access]
 supersedes: []
 amends: [ADR-0038, ADR-0040, ADR-0054, ADR-0069]
@@ -10,6 +10,17 @@ implements: [config/aws/site-stack.yaml, config/aws/auth-session-stack.yaml, con
 ---
 
 # Make the site public and retire the edge authentication gate
+
+> **Public delivery restored, 2026-09-11.** The owner explicitly authorizes public
+> access to all pages, illustrations, downloads and comment reading. This supersedes
+> the development barrier below. CloudFront uses a network-free path-rewrite
+> function for static content, with no Lambda/session/database checks and no forced
+> browser no-store policy. Private S3 origins remain accessible through CloudFront.
+> Regional APIs retain their own validation. Only comment posting requires current
+> approved membership; anonymous, withdrawn or unavailable sessions do not block
+> public reading. Comment loading remains deferred until after page load.
+> CI detaches the legacy gate without deleting its replicated versions or identity
+> records. Existing workspace and onboarding permissions are unchanged.
 
 ## Amendment: restore the development access barrier, 2026-09-09
 
