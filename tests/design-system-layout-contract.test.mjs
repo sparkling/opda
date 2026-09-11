@@ -1,6 +1,23 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import test from 'node:test';
+import { needsContentsSlot } from '../src/lib/contents-slot.mjs';
+
+test('contents space is reserved only for pages needing shared navigation', () => {
+  assert.equal(needsContentsSlot('<h1>Title</h1><h2 id="one">One</h2>'), true);
+  assert.equal(needsContentsSlot('<h3 id="nested">Nested</h3>'), true);
+  assert.equal(needsContentsSlot('<h2>No anchor</h2>'), false);
+  assert.equal(needsContentsSlot('<div data-inline-toc></div><h2 id="one">One</h2>'), false);
+  assert.equal(needsContentsSlot('<script>"<h2 id=one>"</script>'), false);
+});
+
+test('shared mobile contents slot reserves the collapsed control before enhancement', async () => {
+  const layout = await readFile(file('src/layouts/Layout.astro'), 'utf8');
+  const css = await readFile(file('public/ui/design/glossary-toc.css'), 'utf8');
+  assert.match(layout, /reserveInlineContents && <div class="page-toc-slot" data-inline-toc/);
+  assert.match(css, /\.page-toc-slot\s*\{[^}]*min-block-size: calc\(var\(--target-min\) \+ 2px\)/s);
+  assert.match(css, /\.page-toc-slot > \.toc \{ margin: 0; \}/);
+});
 
 const root = new URL('../', import.meta.url);
 const file = (path) => new URL(path, root);

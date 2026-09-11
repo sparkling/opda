@@ -14,6 +14,7 @@
  * page-to-page navigation (docs/adr/0003 idiomatic Astro refactor).
  */
 import { ClientRouter } from 'astro:transitions';
+import { needsContentsSlot } from '@/lib/contents-slot.mjs';
 import FontPreloads from '@/components/FontPreloads.astro';
 import { responsiveArtwork, ARTWORK_SIZES } from '@/lib/responsive-artwork.mjs';
 // Global GraphDiagram island styling — needed on every page because the
@@ -103,6 +104,11 @@ const {
   search,
   priorityImage = null,
 } = Astro.props;
+
+// Render once so navigation space exists in the initial HTML, not after JS.
+// Chapters with their own post-introduction slot retain that placement.
+const pageContent = await Astro.slots.render('default');
+const reserveInlineContents = wrapArticle && !hideTableOfContents && needsContentsSlot(pageContent);
 
 const responsivePriorityImage = priorityImage ? { ...priorityImage,
   lightSrcset: await responsiveArtwork(priorityImage.lightSrc, { enabled: import.meta.env.PROD }),
@@ -253,12 +259,13 @@ const searchMeta = searchMetaEntries(search);
         {!hideBreadcrumbs && <Breadcrumbs currentPageTitle={breadcrumbTitle} />}
         {wrapArticle ? (
           <article class:list={[proseClass, { 'editorial-content': !generatedContent }]} data-disable-toc={hideTableOfContents ? 'true' : undefined}>
-            <slot />
+            {reserveInlineContents && <div class="page-toc-slot" data-inline-toc></div>}
+            <Fragment set:html={pageContent} />
             {!hideFooter && <PageFooter />}
           </article>
         ) : (
           <>
-            <slot />
+            <Fragment set:html={pageContent} />
             {!hideFooter && <PageFooter />}
           </>
         )}

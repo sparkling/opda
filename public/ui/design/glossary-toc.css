@@ -168,7 +168,14 @@
   }
 }
 
+.page-toc-slot { display: none; }
 @media (max-width: 1280px) {
+  .page-toc-slot {
+    display: block;
+    min-block-size: calc(var(--target-min) + 2px);
+    margin-block-end: var(--space-6);
+  }
+  .page-toc-slot > .toc { margin: 0; }
   .toc {
     position: relative;
     top: auto;
