@@ -79,6 +79,7 @@
     { "path": "tests/marketing-pages.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "editorial" },
     { "path": "tests/marketing-operational-emails.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "editorial" },
     { "path": "tests/marketing-theme-images.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/marketing-responsive-artwork.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/mermaid-property-layers.test.mjs", "owner": "ontology-visualisation", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/graph-diagram-lifecycle.test.mjs", "owner": "ontology-visualisation", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/modelling-redesign-routes.test.mjs", "owner": "semantic-modelling-content", "tier": "pull-request-blocking", "lane": "editorial" },

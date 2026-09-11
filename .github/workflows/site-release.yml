@@ -241,7 +241,16 @@ jobs:
           SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
+          # Content-addressed assets publish before HTML and remain available to
+          # already-open pages across releases. Never apply immutable caching to HTML.
+          for ASSET_PREFIX in _astro _images; do
+            if [ -d "dist/$ASSET_PREFIX" ]; then
+              aws s3 cp "dist/$ASSET_PREFIX/" "s3://$SITE_BUCKET/$ASSET_PREFIX/" \
+                --recursive --only-show-errors --cache-control 'public,max-age=31536000,immutable'
+            fi
+          done
           aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
+            --exclude "_astro/*" --exclude "_images/*" \
             --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*" \
             --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/*" \
             --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/*" \

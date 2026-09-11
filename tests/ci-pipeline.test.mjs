@@ -125,3 +125,11 @@ test('release browser evidence stays small while broad assurance stays off the d
   assert.match(assurance, /pnpm run check:routes && pnpm run check:resource-links/u);
   assert.doesNotMatch(assurance, /configure-aws-credentials|aws s3 sync/u);
 });
+
+test('content-addressed assets are immutable, published first and retained for open pages', async () => {
+  const release = await readFile(new URL('../.github/workflows/site-release.yml', import.meta.url), 'utf8');
+  assert.match(release, /for ASSET_PREFIX in _astro _images/u);
+  assert.match(release, /--cache-control 'public,max-age=31536000,immutable'/u);
+  assert.ok(release.indexOf('for ASSET_PREFIX') < release.indexOf('aws s3 sync dist/'));
+  assert.match(release, /aws s3 sync dist\/[\s\S]*--exclude "_astro\/\*" --exclude "_images\/\*"/u);
+});
