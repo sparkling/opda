@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { existsSync, readFileSync } from 'node:fs';
+import vm from 'node:vm';
+import { parse, parseFragment } from 'parse5';
 import { canonicalPageUrl, createPageMetadata, inspectSeoContent, isSearchUtility, navigationBreadcrumbs, serialiseStructuredData } from '../src/lib/page-seo.mjs';
 import { hasIndexableHead } from '../src/lib/sitemap-pages.mjs';
 import { auditPageHead } from '../scripts/check-page-seo.mjs';
@@ -105,4 +107,69 @@ test('all four public page templates use the static shared head without duplicat
   }
   const component = readFileSync(new URL('../src/components/SeoHead.astro', import.meta.url), 'utf8');
   assert.doesNotMatch(component, /client:|<img|<iframe|application\/javascript/u);
+});
+
+test('header preview utilities share a lightweight noindex document outside their controls', () => {
+  const wrapper = readFileSync(new URL('../src/layouts/UtilityDocument.astro', import.meta.url), 'utf8');
+  assert.match(wrapper, /<!doctype html>[\s\S]*<html lang="en">/iu);
+  assert.match(wrapper, /<head>[\s\S]*<meta charset="utf-8"[\s\S]*<meta name="viewport"/u);
+  assert.match(wrapper, /<head>[\s\S]*<SeoHead\b[^>]*robots="noindex,follow"[^>]*canonical=\{null\}[^>]*\/>[\s\S]*<\/head>/u);
+  assert.match(wrapper, /<body>\s*<slot\s*\/>\s*<\/body>/u);
+  assert.doesNotMatch(wrapper, /<script\b|<style\b|<Header\b|<Footer\b|FontPreloads|ClientRouter|rel="stylesheet"/u);
+  for (const route of ['home', 'join', 'kb']) {
+    const source = readFileSync(new URL(`../src/pages/ui/header-preview-controls/${route}.astro`, import.meta.url), 'utf8');
+    assert.match(source, /import UtilityDocument from '@\/layouts\/UtilityDocument\.astro'/u);
+    assert.match(source, /<UtilityDocument\b[^>]*title="[^"]+"[^>]*description="[^"]+"[^>]*>\s*<HeaderPreviewControls\b[\s\S]*\/>\s*<\/UtilityDocument>/u);
+    assert.doesNotMatch(source, /<meta\b|<title\b/u, 'page head must remain owned by the wrapper');
+    const metadata = createPageMetadata({ title: `${route} header controls`, url: `/ui/header-preview-controls/${route}`, robots: 'noindex,follow', canonical: null });
+    assert.equal(metadata.robots, 'noindex,follow');
+    assert.equal(metadata.canonical, undefined);
+    assert.deepEqual(metadata.structuredData, []);
+  }
+});
+
+test('the actual lazy loader imports only controls, never the utility document head', async () => {
+  const client = readFileSync(new URL('../public/ui/client.js', import.meta.url), 'utf8');
+  const start = client.indexOf('async function loadHeaderPreviewControls(life) {');
+  const end = client.indexOf('\n  function bindHeaderPreviewControls', start);
+  assert.ok(start >= 0 && end > start);
+  const walk = node => [node, ...(node.childNodes ?? []).flatMap(walk)];
+  const attrs = node => Object.fromEntries((node.attrs ?? []).map(({ name, value }) => [name, value]));
+  const markup = '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Header preview controls</title><meta name="robots" content="noindex,follow"></head><body><div data-header-preview-controls hidden><button data-header-preview-toggle>Controls</button><input type="range" value="27"></div></body></html>';
+  assert.equal(hasIndexableHead(markup), false, 'direct utility response is noindex');
+  let imported;
+  const warnings = [];
+  const parentHead = parse('<html><head><title>Public page</title><meta name="description" content="Public description"></head></html>');
+  const originalHead = JSON.stringify(walk(parentHead).filter(node => node.tagName === 'meta' || node.tagName === 'title').map(node => ({ tag: node.tagName, attrs: node.attrs })));
+  const placeholder = {
+    getAttribute: name => name === 'data-controls-src' ? '/ui/header-preview-controls/kb' : null,
+    replaceWith: node => { imported = node; },
+  };
+  const document = {
+    head: parentHead,
+    querySelectorAll: selector => selector === '[data-header-preview-controls-loader]' ? [placeholder] : [],
+    contains: node => node === placeholder && !imported,
+    createRange: () => ({ createContextualFragment: html => {
+      // Range's initial document context parses HTML as a body fragment. Head
+      // metadata becomes siblings, and must never be adopted with the controls.
+      const context = walk(parse('<html><head></head><body></body></html>')).find(node => node.tagName === 'body');
+      const fragment = parseFragment(context, html);
+      return { querySelector: selector => {
+        assert.equal(selector, '[data-header-preview-controls]');
+        return walk(fragment).find(node => Object.hasOwn(attrs(node), 'data-header-preview-controls'));
+      } };
+    } }),
+  };
+  const load = vm.runInNewContext(`(${client.slice(start, end).trim()})`, {
+    URL, document, window: { location: { href: 'https://opda.org.uk/programme?config' } },
+    fetch: async () => ({ ok: true, text: async () => markup }),
+    console: { warn: (...args) => warnings.push(args) },
+  });
+  await load({ active: true, signal: new AbortController().signal });
+  assert.equal(warnings.length, 0);
+  assert.equal(imported?.tagName, 'div');
+  assert.ok(Object.hasOwn(attrs(imported), 'data-header-preview-controls'));
+  assert.ok(walk(imported).some(node => node.tagName === 'input' && attrs(node).value === '27'));
+  assert.ok(!walk(imported).some(node => ['html', 'head', 'body', 'meta', 'title', 'script', 'link'].includes(node.tagName)));
+  assert.equal(JSON.stringify(walk(parentHead).filter(node => node.tagName === 'meta' || node.tagName === 'title').map(node => ({ tag: node.tagName, attrs: node.attrs }))), originalHead);
 });

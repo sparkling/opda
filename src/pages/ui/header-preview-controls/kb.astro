@@ -1,16 +1,22 @@
 ---
 import HeaderPreviewControls from '@/components/HeaderPreviewControls.astro';
+import UtilityDocument from '@/layouts/UtilityDocument.astro';
 ---
-<HeaderPreviewControls
-  showScaleControl
-  identityId="app-header-identity"
-  utilityGroupTargetId="app-header-utilities"
-  initialScale={27}
-  initialOpdaScale={90}
-  initialSpaceAbove={0}
-  initialLineGap={0}
-  initialSpaceBelow={0}
-  initialUtilityGroupPosition={8}
-  initialIcon="twin-frames"
-  initialPalette="petrol"
-/>
+<UtilityDocument
+  title="Knowledge-base header preview controls · Open Property Data Association"
+  description="Design controls loaded by OPDA knowledge-base pages when configuration mode is enabled."
+>
+  <HeaderPreviewControls
+    showScaleControl
+    identityId="app-header-identity"
+    utilityGroupTargetId="app-header-utilities"
+    initialScale={27}
+    initialOpdaScale={90}
+    initialSpaceAbove={0}
+    initialLineGap={0}
+    initialSpaceBelow={0}
+    initialUtilityGroupPosition={8}
+    initialIcon="twin-frames"
+    initialPalette="petrol"
+  />
+</UtilityDocument>

@@ -1,23 +1,29 @@
 ---
 import HeaderPreviewControls from '@/components/HeaderPreviewControls.astro';
+import UtilityDocument from '@/layouts/UtilityDocument.astro';
 import { CAMPAIGN_HEADER_DEFAULTS as configuration } from '@/lib/campaign-header-config';
 ---
-<HeaderPreviewControls
-  showScaleControl
-  controlId="home-header-preview-selectors"
-  identityId="home-campaign-identity"
-  positionTargetId="home-domains-panel"
-  themeToggleTargetId="home-theme-toggle"
-  initialScale={configuration.scale}
-  initialOpdaScale={configuration.opdaScale}
-  initialSpaceAbove={configuration.spaceAbove}
-  initialLineGap={configuration.lineGap}
-  initialSpaceBelow={configuration.spaceBelow}
-  initialPositionX={configuration.panelPositionX}
-  initialPositionY={configuration.panelPositionY}
-  initialPanelWidth={configuration.panelWidth}
-  initialPanelItemSpacing={configuration.panelItemSpacing}
-  initialThemeTogglePosition={configuration.themeTogglePositionY}
-  initialIcon={configuration.icon}
-  initialPalette={configuration.palette}
-/>
+<UtilityDocument
+  title="Homepage header preview controls · Open Property Data Association"
+  description="Design controls loaded by the OPDA homepage when configuration mode is enabled."
+>
+  <HeaderPreviewControls
+    showScaleControl
+    controlId="home-header-preview-selectors"
+    identityId="home-campaign-identity"
+    positionTargetId="home-domains-panel"
+    themeToggleTargetId="home-theme-toggle"
+    initialScale={configuration.scale}
+    initialOpdaScale={configuration.opdaScale}
+    initialSpaceAbove={configuration.spaceAbove}
+    initialLineGap={configuration.lineGap}
+    initialSpaceBelow={configuration.spaceBelow}
+    initialPositionX={configuration.panelPositionX}
+    initialPositionY={configuration.panelPositionY}
+    initialPanelWidth={configuration.panelWidth}
+    initialPanelItemSpacing={configuration.panelItemSpacing}
+    initialThemeTogglePosition={configuration.themeTogglePositionY}
+    initialIcon={configuration.icon}
+    initialPalette={configuration.palette}
+  />
+</UtilityDocument>
