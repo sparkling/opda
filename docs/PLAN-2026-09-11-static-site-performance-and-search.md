@@ -1,9 +1,12 @@
 # OPDA static-site performance and search plan
 
 Date: 11 September 2026. Baseline: `main` at `2a4de949`.
-Status: proposed implementation plan, not a record of completed fixes.
+Status: implemented, deployed and validated live through normal CI.
 Scope: desktop first visits, progressive rendering, CDN delivery, fonts and Google discovery.
 Publication: local working document. Do not add it to website routes or navigation.
+
+Sections 1–8 retain the original plan and baseline evidence. Section 9 records the
+implementation, measured results and unresolved acceptance checks separately.
 
 ## 1. Outcome and boundaries
 
@@ -175,7 +178,7 @@ requirements are crawler access, a successful page response and indexable conten
 meeting them does not guarantee indexing.
 [Google Search technical requirements](https://developers.google.com/search/docs/essentials/technical).
 
-### Current audit
+### Baseline audit
 
 Parsed the 2,776 URLs in the locally built `sitemap-0.xml`, each with a corresponding
 HTML file. These raw counts include utility and legacy alias pages; classify those
@@ -348,3 +351,147 @@ Stop a proposed optimisation when repeatable evidence shows no useful benefit or
 creates more maintenance/visual risk than the saving justifies. Record investigated
 non-issues as well as wins. Keep an explicit measured-versus-unproven status for each
 finding; do not describe this plan itself as a deployed optimisation.
+
+## 9. Implementation and validation record
+
+### Delivered changes
+
+The tracked Ruflo swarm used three native executor lanes: rendering, delivery and
+search metadata, with the main agent integrating changes and operating the existing
+OPDA Chrome session. All work stayed in the existing `main` checkout.
+
+| Finding | Implementation / outcome |
+|---|---|
+| P1–P2, critical CSS | One generated campaign bundle excludes eight KB-only modules and is inlined through a shared component. KB pages retain their complete cascade. Campaign CSS is 98,601 bytes decoded / 14,474 Brotli, versus 152,361 / 20,650 for the complete new bundle. This is not a manually copied critical-style fragment. |
+| P3, fonts | Existing self-hosted WOFF2 faces, `swap` and justified preloads remain. Arial/Georgia fallback metrics are fitted. Roboto Mono has a real below-fold consumer in the homepage presentation feature, so its presence is not an unused-font defect. All font URLs are now filename-hashed. |
+| P4, method artwork | Removed immediate off-DOM image loading. The actual image source is selected near the viewport, with reserved dimensions, theme handling, small-screen/forced-colour text alternatives and teardown. Original illustrations remain. |
+| P5–P6, delivery | Content-addressed `/_ui/` CSS, JS, fonts and icons join the retained `/_astro/` and `/_images/` histories. Immutable objects publish first. Mutable-object hashes select uploads and targeted invalidations; unknown existing objects are not silently adopted for deletion. |
+| P7, comments | Explicit `public=1` reads contain only public comments/count and omit cookies. A separate shared in-memory identity view controls the composer. Writes retain credentials and current approval checks. A post ID keeps refresh/pagination clear of stale feed entries. |
+| P8, request lifecycle | Non-success identity-response streams are explicitly cancelled; signed-out responses do not schedule repeated polling. Tests verify closure, cancellation, outage handling and stale-response rejection. Live Programme Lighthouse now completes without warnings or unfinished requests; the signed-out identity request completed in 38.234 ms. |
+| P9, extension work | Injected 1Password work remains separately attributed. No extension was removed or disabled to improve the reported site score. |
+| Search head | Shared static descriptions, canonicals, Open Graph and appropriate Organization, WebSite and BreadcrumbList JSON-LD cover the page templates. No client runtime or ontology-identifier migration was introduced. |
+| Search utilities | Sitemap excludes 24 deliberate utility/alias entries. The three standalone header-control responses now have valid `noindex` document heads; only the controls are imported into configuration pages, never their metadata. |
+
+HTML and mutable originals use `public,max-age=0,s-maxage=86400,must-revalidate`.
+Hashed assets use `public,max-age=31536000,immutable`. Public comment feeds use
+`public,max-age=0,s-maxage=30,must-revalidate`; identity, legacy personalised reads,
+errors and writes remain private/non-cacheable. A proposed five-minute HTML shared
+TTL was rejected because it would cause unnecessary origin misses on a low-traffic site.
+
+ADRs 0040 and 0079 have dated amendments describing the changed release and comment
+contracts. Historical decision text and historical asset files were preserved.
+
+### Validation and defects caught
+
+- `make test`, `make build`, CloudFormation lint, ADR registry, design-system drift
+  and test-inventory checks passed for their changed slices.
+- Build-output SEO audit: 2,752 indexable pages, zero failures, one Organization,
+  one WebSite, 2,735 BreadcrumbLists and 58 valid local social-image references.
+- Chrome inspection covered home, join, marketing and both modelling tracks in
+  light/dark mode, plus a narrow join-page viewport. No horizontal overflow was
+  observed in those checks. Existing image proportions and reading widths remained.
+- With all local WOFF2 requests blocked, fallback text remained readable. The
+  sampled homepage heading retained identical bounds before/after font availability;
+  button heights were unchanged and width differences stayed below 2.2 CSS pixels.
+  This is bounded geometry evidence, not a universal delayed-font CLS claim.
+- A distant method image retained its placeholder until entering the 300-pixel
+  approach margin, then loaded the appropriate artwork. Small-screen text remained.
+- The first frontend CI run caught an obsolete browser test expecting cookies on
+  public reads. Its replacement verifies anonymous GETs, authenticated deliberate
+  POSTs and post-ID refresh. The following run passed all 36 browser journeys.
+- Deployment then correctly refused a manifest mismatch before mutable publication.
+  Exact artifact inspection found one added file: `artifact-size-report.json`,
+  written after manifest generation. Sealing now occurs after all artifact writers
+  and browser checks. The strict integrity check remains, with a regression test.
+- Independent review also fixed retry cache-key persistence, denied-composer state,
+  first-adoption inventory preservation and shared normal/emergency publication locking.
+
+Backend commit `3f87de9f` is live. Public comment GETs returned no viewer identity
+or Set-Cookie and produced London CloudFront hits of 8–100 ms after a 2.2-second
+uncached request. That origin cold-start cost remains; comments are deferred and
+do not hold up useful static content. Legacy personalised reads and `/_auth/me`
+retained their private/no-store responses.
+
+Frontend commits include `904fa225`, `03f5f10a`, `d33d6c24` and `69a8c0d0`.
+Normal releases `34603430574` and `34604326426` succeeded at `69a8c0d0`.
+
+### Repeatable desktop baseline
+
+Five homepage Lighthouse reports before frontend publication used Chrome 152,
+Lighthouse 13.4.1, a 3,200 × 1,332 CSS-pixel viewport at DPR 2, no added throttling,
+and Network **Disable cache** enabled. Account/session storage was not cleared.
+All OPDA requests were full network transfers, not disk-cache or 304 substitutes.
+DNS/connection reuse was not reset; these are cold-resource, not cold-DNS/TLS tests.
+
+Reports in `/Users/henrik/Downloads/`, named `opda.org.uk-20260911T<time>.json`:
+
+| Local report time | FCP = LCP | Navigation TTFB | Render delay | CLS / TBT |
+|---|---:|---:|---:|---:|
+| 14:05:17 | 328.903 ms | 95.506 ms | 233.397 ms | 0 / 0 |
+| 14:06:47 | 205.607 ms | 51.904 ms | 153.703 ms | 0 / 0 |
+| 14:08:02 | 124.868 ms | 24.505 ms | 100.363 ms | 0 / 0 |
+| 14:09:42 | 172.898 ms | 86.926 ms | 85.972 ms | 0 / 0 |
+| 14:11:00 | 140.940 ms | 43.632 ms | 97.308 ms | 0 / 0 |
+
+Median FCP/LCP is **172.898 ms**, range **124.868–328.903 ms**. Median render delay
+is **100.363 ms**. Each run fetched nine OPDA resources, approximately 268 KB total.
+All five completed without warnings. Runs at 13:51:39 and 13:52:53 were excluded
+after JSON inspection revealed cached/revalidated resources; their attractive
+108/150 ms results are not accepted first-visitor evidence.
+
+Five post-release reports used the same settings and width/DPR. Chrome's available
+viewport height was 1,348 rather than 1,332 pixels; the heading's bounds were identical.
+
+| Local report time | FCP = LCP | Navigation TTFB | Render delay | CLS / TBT |
+|---|---:|---:|---:|---:|
+| 14:26:05 | 164.535 ms | 29.464 ms | 135.071 ms | 0 / 0 |
+| 14:28:46 | 114.537 ms | 24.544 ms | 89.993 ms | 0 / 0 |
+| 14:30:07 | 125.875 ms | 40.018 ms | 85.857 ms | 0 / 0 |
+| 14:31:28 | 124.914 ms | 46.005 ms | 78.909 ms | 0 / 0 |
+| 14:32:48 | 196.664 ms | 39.509 ms | 157.155 ms | 0 / 0 |
+
+Median FCP/LCP fell from **172.898 to 125.875 ms**; render delay from **100.363 to
+89.993 ms**. Median transferred bytes fell from 268,243 to 258,332 and requests
+from nine to eight. Network timing also varied; the whole paint difference cannot
+be attributed to code. All resources transferred in full and all five runs were clean.
+Programme report `14:34:30`: FCP 127.876 ms, LCP 144.537 ms, CLS 0.000293, TBT zero,
+no warnings or unfinished requests. Its previous incomplete runs are not valid paired
+speed baselines. Browser diagnostics were restored; no extension or account was changed.
+
+### Font alternatives assessed, not deployed
+
+Installed FontTools 4.65 was used in memory; approved binaries were not overwritten.
+Restricting variable axes to the weights already declared by CSS could reduce the
+three Latin preload files from 96,976 to 71,232 bytes, saving 25,744 bytes. All
+original character mappings and required intermediate weights survived, but retained
+outlines changed by up to 1.43 font units and advances by up to two units. This is
+not lossless and has not passed visual/paint comparison as replacement font files.
+Keep the current files for this release. Static per-weight files cost more overall;
+further character subsetting saves only 208–720 bytes per face and risks combining marks.
+
+### Live delivery and remaining boundaries
+
+The first normal release invalidated 54 changed route paths in bounded batches,
+never `/*` or a hashed-asset prefix. The second uploaded only the search index and
+`release.json`: 4,849 mutable files stayed unchanged, zero deletions, two exact
+invalidation paths. London hits retained unchanged home/CSS/font/image ETags, origin
+dates and cache age. Published HTML matched the artifact manifest; old hashes remained
+accessible. The bootstrap inventory retained all 5,438 pre-existing keys.
+
+That second release exposed an unnecessary search-index build timestamp. Follow-up
+`1b70212d` removes it, retaining record dates, counts and schema version. A regression
+runs the actual build hook at two different dates and proves byte-identical output.
+Normal CI run `34606407041` passed and published `1b70212d`; live `release.json`
+confirms it. The timestamp-free live index matches the local 2,752-record payload.
+
+Public comments were also read in live Chrome; signed-out users see the sign-in action
+for posting. No test comment or membership change was created. The Schema.org URL
+validator reports zero errors/warnings for the homepage WebSite and linked Organization.
+Google's live Rich Results Test on `/semantic-modelling/method/languages-and-profiles`
+detected one valid BreadcrumbList at 14:49:47 BST. Homepage/Programme crawl successfully
+but report no eligible rich-result items; Programme has no multi-level breadcrumb.
+Site names are [not supported by Google's Rich Results Test](https://developers.google.com/search/docs/appearance/site-names#test-structured-data).
+Search Console ownership, URL Inspection, indexing and ranking are not verified.
+There are 104 repeated-title groups across resource/reference views and no newly supplied
+square favicon; neither is silently claimed fixed. The sub-50-ms end-to-end first-visit
+objective remains unachieved and unpromised; font-binary savings above are not live savings.
