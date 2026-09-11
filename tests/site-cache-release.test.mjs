@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { CACHE_MANIFEST, CACHE_BOOTSTRAP_BASELINE, createBootstrapBaseline, createCacheManifest, planCacheRelease, invalidationAliases, cachePolicyFor } from '../scripts/lib/site-cache-manifest.mjs';
-import { createInvalidationBatches, deployCacheRelease } from '../scripts/site-cache-release.mjs';
+import { createInvalidationBatches, deployCacheRelease, writeCacheManifest } from '../scripts/site-cache-release.mjs';
 
 async function put(root, name, value) {
   await mkdir(path.dirname(path.join(root, name)), { recursive: true });
@@ -75,6 +75,10 @@ test('release workflow keeps hash prefixes, stages changed mutable files and avo
   assert.match(workflow, /site-cache-release\.mjs manifest dist/);
   assert.match(workflow, /site-cache-release\.mjs deploy dist/);
   assert.doesNotMatch(workflow, /--paths ['"]\/\*/);
+  const manifest = workflow.indexOf('name: Record mutable-object hashes and cache policies');
+  assert.ok(manifest > workflow.indexOf('name: Enforce artifact budget'), 'the budget report writes a file and must precede the manifest');
+  assert.ok(manifest > workflow.indexOf('name: Focused application browser journeys'), 'record only the final validated artifact');
+  assert.ok(manifest < workflow.indexOf('name: Upload immutable validated site'), 'the final manifest must travel with its artifact');
 });
 
 test('invalidation identities include the exact batch and deployment execution', () => {
@@ -154,6 +158,21 @@ function fakeAws(initial = {}, before = () => {}) {
   };
   return { objects, calls, invalidations, runAws };
 }
+
+test('artifact writers precede the manifest; a later added report fails integrity before AWS calls', async () => {
+  const { root } = await releaseFixture();
+  const report = JSON.stringify({ schemaVersion: 1, withinBudget: true });
+  await put(root, 'artifact-size-report.json', report);
+  const remote = fakeAws();
+  const options = { runAws: remote.runAws, executionId: 'artifact-order-run' };
+  await assert.rejects(deployCacheRelease(root, 'test-site-bucket', 'E123456789', options), /Validated artifact does not match its cache manifest.*artifact-size-report\.json/);
+  assert.deepEqual(remote.calls, [], 'unrecorded files must not reach mutable publication');
+  const next = await writeCacheManifest(root);
+  assert.ok(next.files['artifact-size-report.json']);
+  await deployCacheRelease(root, 'test-site-bucket', 'E123456789', options);
+  assert.equal(remote.objects.get('artifact-size-report.json'), report);
+  assert.deepEqual(JSON.parse(remote.objects.get(CACHE_MANIFEST)), next);
+});
 
 test('an interrupted bootstrap persists its baseline before publication and safely retries', async () => {
   const { root, next } = await releaseFixture();

@@ -176,8 +176,6 @@ jobs:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
         run: pnpm run release:manifest
-      - name: Record mutable-object hashes and cache policies
-        run: node scripts/site-cache-release.mjs manifest dist
       - name: Enforce artifact budget
         env:
           MAX_ARTIFACT_MB: 500
@@ -200,6 +198,10 @@ jobs:
             playwright-report/
           if-no-files-found: ignore
           retention-days: 7
+      - name: Record mutable-object hashes and cache policies
+        # The budget reporter writes into dist; seal the final artifact only
+        # after all writers and browser validation, immediately before upload.
+        run: node scripts/site-cache-release.mjs manifest dist
       - name: Upload immutable validated site
         uses: actions/upload-artifact@v7
         with:

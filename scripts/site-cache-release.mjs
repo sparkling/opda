@@ -49,7 +49,13 @@ async function prepareRelease(directory, bucket, runAws) {
   const root = path.resolve(directory);
   const next = JSON.parse(await readFile(path.join(root, CACHE_MANIFEST), 'utf8'));
   const actual = await createCacheManifest(root);
-  if (JSON.stringify(next) !== JSON.stringify(actual)) throw new Error('Validated artifact does not match its cache manifest');
+  if (JSON.stringify(next) !== JSON.stringify(actual)) {
+    const expectedFiles = next?.files ?? {};
+    const differingKeys = [...new Set([...Object.keys(expectedFiles), ...Object.keys(actual.files)])]
+      .filter(key => JSON.stringify(expectedFiles[key]) !== JSON.stringify(actual.files[key]));
+    const detail = differingKeys.length ? `; differing keys: ${differingKeys.slice(0, 5).join(', ')}${differingKeys.length > 5 ? ' …' : ''}` : '';
+    throw new Error(`Validated artifact does not match its cache manifest${detail}`);
+  }
   const workspace = await mkdtemp(path.join(tmpdir(), 'opda-cache-release-'));
   // Missing permissions must fail, not masquerade as an absent baseline.
   const keys = JSON.parse(await runAws(['s3api', 'list-objects-v2', '--bucket', bucket, '--query', 'Contents[].Key', '--output', 'json'])) ?? [];
