@@ -17,6 +17,11 @@ on:
         required: false
         default: false
         type: boolean
+      force_site_build:
+        description: Rebuild and publish the committed static site without ontology regeneration
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -42,10 +47,13 @@ jobs:
         env:
           BASE_SHA: ${{ inputs.base_sha }}
           FORCE_MODEL: ${{ inputs.full_model_validation }}
+          FORCE_SITE: ${{ inputs.force_site_build }}
         run: |
           set -euo pipefail
           if [[ "$FORCE_MODEL" == "true" ]]; then
             echo 'source/03-standards/ontology/forced-validation.ttl' > /tmp/opda-changed-paths
+          elif [[ "$FORCE_SITE" == "true" ]]; then
+            echo 'src/pages/index.astro' > /tmp/opda-changed-paths
           elif [[ -n "$BASE_SHA" ]] && git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
             git diff --name-only "$BASE_SHA" "$GITHUB_SHA" > /tmp/opda-changed-paths
           else

@@ -42,6 +42,11 @@ on:
         required: true
         default: false
         type: boolean
+      force_site_build:
+        description: Rebuild and publish the committed static site only
+        required: true
+        default: false
+        type: boolean
 
 concurrency:
   group: opda-site-${{ github.ref }}
@@ -58,4 +63,5 @@ jobs:
       base_sha: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
       deploy: ${{ github.event_name != 'pull_request' }}
       full_model_validation: ${{ inputs.full_model_validation || false }}
+      force_site_build: ${{ inputs.force_site_build || false }}
     secrets: inherit

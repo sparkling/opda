@@ -53,6 +53,15 @@ test('release tooling changes validate contracts without rebuilding the site', (
   }
 });
 
+test('manual recovery can republish the static site without forcing ontology work', async () => {
+  const caller = await readFile(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
+  const release = await readFile(new URL('../.github/workflows/site-release.yml', import.meta.url), 'utf8');
+  assert.match(caller, /force_site_build:/u);
+  assert.match(caller, /force_site_build: \$\{\{ inputs\.force_site_build \|\| false \}\}/u);
+  assert.match(release, /FORCE_SITE: \$\{\{ inputs\.force_site_build \}\}/u);
+  assert.match(release, /echo 'src\/pages\/index\.astro'/u);
+});
+
 test('unknown and empty changes fail safe into application validation', () => {
   for (const paths of [[], ['unexpected/new-boundary.xyz']]) {
     const result = classifyPaths(paths);
