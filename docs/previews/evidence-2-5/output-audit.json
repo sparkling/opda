@@ -1,0 +1,452 @@
+[
+  {
+    "file": "01-property-technology-v2.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1300200,
+    "sha256": "a25252d61bc12defd3f8399c1c5b67e4dab0d7c2b9a5f8b510c664845093adb0",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "01-property-technology.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1300200,
+    "sha256": "a25252d61bc12defd3f8399c1c5b67e4dab0d7c2b9a5f8b510c664845093adb0",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "02-watercolour.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1486658,
+    "sha256": "9cc429ceb9d6ff42ff30d308ecaa8684dedba5984958d99de508c341b1325b75",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "03-gouache.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1052300,
+    "sha256": "a90b4d1c42964dd2c396fffaed78731bb8bf000631dd125a63690cbf0bb3fb7d",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "specVersion": "2.2.0",
+          "org.contentauth.c2pa_rs": "0.79.2"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "04-ink-pencil.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1488972,
+    "sha256": "d10093fc0efec524c950eaa217d47053c73a659a749e4352a76d2dab3daabd4f",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "specVersion": "2.2.0",
+          "org.contentauth.c2pa_rs": "0.79.2"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "05-brush-ink.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1167212,
+    "sha256": "b6329fde8c52755a3f179a1b51ff3d1489be1c0afb208c48e766fcc65d5a02f4",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "specVersion": "2.2.0",
+          "org.contentauth.c2pa_rs": "0.79.2"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "06-sequential-ink.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 987840,
+    "sha256": "0f78a5b793d909c764fd77aca608c7b0244293ce4b7653f0e56547b4be53e3e5",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "07-risograph.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1082768,
+    "sha256": "9e267e40e8e5063bbc17ee17bb0923e5ba03eb66705d32fa788a1577d5b5bd1d",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "specVersion": "2.2.0",
+          "org.contentauth.c2pa_rs": "0.79.2"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "08-linocut.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 958750,
+    "sha256": "9b24e04c6e64905a841bee84fcc276e9a1f4440dea970bd0b9365c44b73e945b",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "specVersion": "2.2.0",
+          "org.contentauth.c2pa_rs": "0.79.2"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "09-screenprint.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 993346,
+    "sha256": "522bf869088bf68f7f4ec404a949f75ebc41a658404d9b83245c0a28735b12a0",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "specVersion": "2.2.0",
+          "org.contentauth.c2pa_rs": "0.79.2"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "10-paper-cut.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1228180,
+    "sha256": "7817bdbdda2956c343578d4dbef228461bf9f01374d828a1e47d7f0dca8f80c7",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "11-folded-card.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1221100,
+    "sha256": "1c1bd50132c137bde8b66216518a46a4381eebad429858620157de88c1d8929d",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "12-photo-collage.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1267874,
+    "sha256": "de4e2fd187db4ea0031ae3538fc8d04f9ce1c0347980941c24d362fe959979a0",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "13-swiss-geometric.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 505710,
+    "sha256": "6f72d698e161e38ab7ccc69318cbfc0075b112485c2028252c6c445bc3e020e8",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "14-isometric.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 907112,
+    "sha256": "9685c738bf075b347118e4d64ab1e341939745ba616121901315e140f8b40dc3",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "15-cutaway.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 947316,
+    "sha256": "0031ffbdc4e6814fe31e71964403d0c2ffb57cd7402fc6661666454b1208e752",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "16-exploded-assembly.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 863162,
+    "sha256": "181d44c5fcd9197745073b9cc36449cdfe4b0608f3c65fa9840f9c5b06ea6452",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  },
+  {
+    "file": "17-cyanotype-acetate.webp",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "bytes": 1314218,
+    "sha256": "50ac8d29dc5125cc4d5e15f488072cf80c0e216963f6f00f9e742afa1ef258d3",
+    "recordedProvenance": [
+      {
+        "softwareAgent": {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      },
+      {
+        "claim_generator_info": {
+          "name": "OpenAI Media Service API",
+          "org.contentauth.c2pa_rs": "0.79.2",
+          "specVersion": "2.2.0"
+        }
+      }
+    ],
+    "signatureVerified": false
+  }
+]
