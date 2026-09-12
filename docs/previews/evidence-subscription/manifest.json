@@ -1,0 +1,331 @@
+{
+  "route": "built-in subscription image tool",
+  "generationState": "complete",
+  "modelSelectorExposed": false,
+  "effectiveModel": null,
+  "promptsSource": "../evidence-2-5/prompts.json",
+  "referenceForStyle01": "../../../public/images/marketing/2026-09/packs/property-technology-light.webp",
+  "generationAttemptsPerStyle": 1,
+  "images": [
+    {
+      "file": "01-property-technology.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "e89184657b1fa2a0783c3439e5ce1ed8c2649a59ab1e2d05bc52ecc289dc0dc5",
+      "promptSha256": "5eb96cd00416b02f2dbecdccc12b9fa8192716eb4e66f69cf525ea8613e6e3f4",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "02-watercolour.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "56723c5e897f7233fba440f94f47e2f8a8e508c7bbe25e913d4b56e963f95221",
+      "promptSha256": "f2df8b39e863273faee6de038e7adc28b49c0aa0672c52dfadfce48f78926c1c",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "03-gouache.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "b130275b7b961ee8cd891f7688772ef7b77558c059be233670263493d6c933f0",
+      "promptSha256": "9ae0d96d49c6fb4e00e81ac2eb98c91aba6078e7f2b28c451b51bb575c7bc9c9",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "04-ink-pencil.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "bb7028ea355b3f15710b9eb04c25ca23f14aa6baf17d2847d34e1c8391fc9a35",
+      "promptSha256": "4b3f92000bbbdf8f7823cc7b9743f59693b72eae7e491bfa32929aa070b67177",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "05-brush-ink.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "756dfd6364f1ddb96c5f6df64b1a35224132fc832c0459f38463c3823b660746",
+      "promptSha256": "ee88ca81e1d2d1cfb9d6e9254e8963fecf12cd01fcf48f95451ed7732011fc4f",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "06-sequential-ink.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "7244c0aba3ebab00d49159302a3793cc4df5687d66f82d45097c3b66569301f2",
+      "promptSha256": "69e68d2ad94761adc91cbf88d0857e6036eeb7baf86eca8d6e3550e860762dfa",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "07-risograph.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "097f29bc3341ce10af9adce007dbf81911e20e30e63d74e1ccf15ad5fbef69e5",
+      "promptSha256": "8e710d079895607676d5fe24f1309d7b5ba67bcbb8a0067794cd167be29402e4",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "08-linocut.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "73c7a2a875d57aef9a197674d7f17799ffc7edac62904114adff7d1de6e277c9",
+      "promptSha256": "e31cb3a574a94d645fcd907d39e4a2a5bb504431a51ea14eb91b09e658c4230c",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "09-screenprint.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "e7e468fb0fb2046e8d00533d7e66f4e3721aae8786e3e73810b2fca3e357c640",
+      "promptSha256": "68f202a2dadda0c100043d11d00015e782aa1d70b429be364a92afc9a0bed6c6",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "10-paper-cut.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "f46cf4668c0a6ed12a821494091badc63b16d2a1ef5640fb3f340a4810e6b145",
+      "promptSha256": "2586865fb3cf2364f44d7f227c95d443565b9d0207709019cd090303ea8cc009",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "11-folded-card.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "b08f384804f5de3aa314a59e57328b49eb96720b5ae97f6dd9f8e0c21e4c73c5",
+      "promptSha256": "52938a4ea3a0583bfb72c7957be73949149ea8dbcda8b393419d754bb59fe05e",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "12-photo-collage.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "946c58351df6ed68c29dac123df6a36a2c0f58ec941bd246ee12356ec8b4c035",
+      "promptSha256": "01a7c0d50e6140499f98ce00b213ba7394db806f000219ab8b785578de1b5175",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "13-swiss-geometric.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "8c64490de926bdeb2ad227002afa2fe441872ad05808e22751a8c26561563a05",
+      "promptSha256": "cccae0cf7aad0a6c37729a3c283dee6f7f7375e7e55f9f2ee12e7ea3756d64de",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "14-isometric.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "5e8300c96915c4ef4ede1a48903e134f1f69257400a2047b9c09a18453485646",
+      "promptSha256": "3554c930018fa0e314c5e3ded04d0252b3880aec0ad1e61ec28e5c2628e8ff8d",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "15-cutaway.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "b2e0b40532f75756000bbf048e00c5b312ed2053be365312e4b6dff0bbc5fbd6",
+      "promptSha256": "8468184d4edc9b396a853d9a2ec16ca0b0cb895409b08d3414446c7cfa650468",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "16-exploded-assembly.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "e1b8b3c97fddc78f42c6df30ba844612fa14b17d8aca53214fa521b32aa2af73",
+      "promptSha256": "4daa43850b71d7f70a2ac0b2f9156080fc10a67a40c0e0648ceaa35b1932c2da",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "17-cyanotype-acetate.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "8c8565620b37cf5658ec5986a7f3cd2cb3285869b50afa6f00cdafce2cff7ce9",
+      "promptSha256": "c3db354d08fd8fa976ef457fb1da2822aa1921013e59d3ea4d1e754a5bbd670a",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "18-letterpress.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "8422e4768448468c1105365f8176c43f3655bc7fcdfb314fc68ef14b2dcd31ca",
+      "promptSha256": "4b5d0ac5a7a93f9780839b1507088ddceeae3bfd7dc5f6f1a72918afd514b789",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "19-documentary-still-life.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "8c32ef69ec9a56dc671174abde372972b720e36e03fc8e5aaa1313f0630488ad",
+      "promptSha256": "2f4b442207fccae3791ccd75a74bd638ef027b9d7fca055b5e43359d777bde06",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    },
+    {
+      "file": "20-nocturne-pencil.png",
+      "dimensions": [
+        1983,
+        793
+      ],
+      "sha256": "9dc654e827e6ee47ef954414b88ba6a25a45360d1e2c3a1b03ea921045213410",
+      "promptSha256": "daddadd2bf265abf5c6ffda9045120426279b7ed1add340904fe6f15d2843e37",
+      "softwareAgents": [
+        {
+          "name": "gpt-image",
+          "version": "2.0"
+        }
+      ],
+      "signatureVerified": false
+    }
+  ]
+}

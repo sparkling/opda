@@ -216,21 +216,22 @@
     ],
     "causeBoundary": "The recorded metadata originates in returned image bytes, before gallery conversion. Stale server-side provenance labelling versus different backend routing remains unconfirmed. The assistant previously over-interpreted softwareAgent version as an authoritative API model ID.",
     "impact": [
-      "17 of 20 style outputs exist, plus one superseded pilot. Interrupted in-flight requests may also have completed or incurred charges server-side.",
+      "The API gallery now contains all 20 styles, plus archived earlier attempts. Interrupted requests may have incurred charges; actual billed usage is unavailable.",
       "Existing outputs cannot be certified as actual 2.5 executions from the retained evidence.",
       "The helper discarded request IDs and usage fields; actual costs cannot be reconstructed from its saved outputs.",
       "The earlier 1280x512 cost estimate does not apply to the returned larger images.",
-      "Preview comparison remains incomplete and is not a validated model benchmark."
+      "These previews compare API and subscription tool routes, not verified model versions."
     ],
-    "localCorrection": "Separate requested model, API catalogue availability, recorded softwareAgent and verified effective model. Preserve originals, hashes and uncertainty; pause batch rather than automatically retry or relabel metadata.",
+    "localCorrection": "Separate requested model, API catalogue availability, recorded softwareAgent and verified effective model. Preserve original output bytes. Generation resumed under explicit user instruction to compare both routes, with the provenance limitation visible.",
     "vendorFixStatus": "No verified upstream fix or maintainer explanation found. Exact Codex issue 44369 closed as duplicate of still-open 43965, not as fixed.",
-    "resumeRequirement": "Resolve the model-selection/provenance contract before further generation; preserve actual request/response IDs, settings and usage in future execution. Do not resume merely because a model lookup or image request succeeds.",
+    "resumeRequirement": "Superseded by explicit user authorization to finish both route previews; effective model identity remains unverified.",
     "sources": [
       "https://github.com/openai/codex/issues/44369",
       "https://github.com/openai/codex/issues/43965#issuecomment-5611510168",
       "https://github.com/openai/codex/issues/43965#issuecomment-5625357403",
       "https://note.com/tank_ai/n/n93fae12eb2be?hl=en",
       "https://spec.c2pa.org/specifications/specifications/2.4/specs/ContentCredentials.html"
-    ]
+    ],
+    "status": "Historical investigation at 17 images; user subsequently authorised completion and a subscription comparison despite unresolved provenance."
   }
 }

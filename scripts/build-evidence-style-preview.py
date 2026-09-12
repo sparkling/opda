@@ -30,11 +30,12 @@ for style in manifest['styles']:
     if image.exists():
         ready += 1
         with Image.open(image) as rendition:
+            dimensions = rendition.size
             rendition.thumbnail((1280, 1024))
             buffer = io.BytesIO()
             rendition.save(buffer, format='WEBP', quality=85)
         encoded = base64.b64encode(buffer.getvalue()).decode()
-        visual = f'<button class="preview" aria-label="Enlarge {esc(style["title"])}"><img loading="lazy" src="data:image/webp;base64,{encoded}" alt="{esc(style["title"])} treatment of the six-stage evidence and review process"></button>'
+        visual = f'<button class="preview" aria-label="Enlarge {esc(style["title"])}"><img loading="lazy" src="data:image/webp;base64,{encoded}" alt="{esc(style["title"])} treatment of the six-stage evidence and review process"></button><p class="risk">Original output: {dimensions[0]} × {dimensions[1]} pixels. Gallery rendition: at most 1280 pixels wide.</p>'
     else:
         visual = '<p class="pending">Preview pending</p>'
     prompt_html = esc(style['prompt']).replace('\n', '&#10;')
@@ -58,7 +59,7 @@ page = '''<!doctype html>
 '''
 page += f'<p class="eyebrow">{route_label} gallery · <a href="{other_page}">Open the other gallery</a></p>'
 settings = f'Requested model: {esc(manifest["model"])}; requested quality: high; size: auto.' if is_api else 'Built-in subscription image tool; no model, quality or resolution selector is exposed. Effective model is unverified.'
-page += f'<p><strong>{ready} / 20 images generated.</strong> {settings} Both routes receive the same twenty prompts, including a wide 1280 × 512 target. These are route comparisons, not a verified comparison of specific model versions.</p>'
+page += f'<p><strong>{ready} / 20 images generated.</strong> {settings} Both routes receive the same twenty base prompts, including a wide 1280 × 512 target. The API diorama includes one targeted arrow correction; its first attempt is retained. Subscription previews are fresh generations. These are route comparisons, not a verified comparison of specific model versions.</p>'
 page += '''<p><strong>Required process:</strong> Source material → Prepare candidate → Publish candidate → Working-group review → Collect feedback → Prepare candidate. A separate consensus exit runs from Working-group review → Draft standard. A draft is not ratified or adopted.</p>
 <details><summary>Adversarial prompt review and changes</summary>
 <table><tr><th>Failure in the earlier briefs</th><th>Why it matters</th><th>Revised prompt</th></tr>
@@ -71,7 +72,7 @@ page += '''<p><strong>Required process:</strong> Source material → Prepare can
 <tr><td>Texture or physical objects compete with text and arrows</td><td>Destinations become ambiguous</td><td>Clean label areas, reserved connector space and consistent arrow geometry</td></tr>
 </table><p>Acceptance checks: six unique headings; six correct directed edges; three exact arrow labels; no invented approval; readable text; unclipped wide composition; visible distinction between styles. The semantic layout is held constant; the material and representation vary.</p></details>
 '''
-page += '<details><summary>Model and output provenance</summary><p>For the API gallery, the native OpenAI API recognises the requested Sunburst model ID. Requests explicitly use that ID. The pilot image reports gpt-image version 2.0 in its C2PA softwareAgent field; the mapping of that field to the API model remains unresolved. Automatic sizing returned 1983 × 793 for the pilot; gallery renditions are reduced proportionally to at most 1280 pixels wide. Original outputs are retained.</p></details>'
+page += '<details><summary>Model and output provenance</summary><p>The native OpenAI API recognises the requested Sunburst model ID, and the API requests explicitly use it. The subscription tool exposes no model selector. Original files from both routes record gpt-image version 2.0 in C2PA softwareAgent; this has not been proven to identify the effective model. Metadata was parsed, not cryptographically verified. All 40 outputs are 1983 × 793; gallery renditions are reduced proportionally to 1280 pixels wide. Original output bytes and prompt hashes are retained. API quality was requested as high; subscription quality is automatic and unreported.</p></details>'
 if is_api and manifest.get('investigation'):
     investigation = manifest['investigation']
     page += '<details><summary>Source and impact of the mismatch</summary><p>' + esc(investigation['causeBoundary']) + '</p><ul>' + ''.join('<li>' + esc(item) + '</li>' for item in investigation['impact']) + '</ul><p>' + esc(investigation['vendorFixStatus']) + '</p><p>' + esc(investigation['localCorrection']) + '</p><ul>' + ''.join(f'<li><a href="{esc(url)}">{esc(url)}</a></li>' for url in investigation['sources']) + '</ul></details>'
@@ -84,5 +85,6 @@ document.querySelectorAll('.preview').forEach(button=>button.addEventListener('c
 dialog.querySelector('button').addEventListener('click',()=>dialog.close());
 dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});
 </script></html>'''
+page = page.replace("20 style previews</title>", f"20 {route_label} style previews</title>")
 TARGET.write_text(page)
 print(f'Built {TARGET}: {ready}/20 images; {len(page):,} characters')
