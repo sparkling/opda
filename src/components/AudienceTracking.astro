@@ -1,0 +1,39 @@
+---
+import { audienceTracking, validAccounts } from '../lib/audience-tracking.mjs';
+const ready = audienceTracking.providerSettingsVerified && validAccounts(audienceTracking);
+---
+{ready && <div data-audience-consent hidden>
+  <button type="button" data-consent-action="open" class="tracking-settings">Cookie settings</button>
+  <section data-consent-panel hidden aria-labelledby="audience-consent-title" class="tracking-panel">
+    <h2 id="audience-consent-title">Help us understand our audience</h2>
+    <p>Optional services measure visits and audience interests. Your choice does not affect your account or access. All are off until you choose.</p>
+    <div class="tracking-actions">
+      <button type="button" data-consent-action="reject">Reject optional</button>
+      <button type="button" data-consent-action="all">Accept all</button>
+    </div>
+    <details>
+      <summary>Choose services and read how they use data</summary>
+      <label><input type="checkbox" name="google" /> <span><strong>Google Analytics</strong> — traffic, usage and aggregate age, gender and interests. Google may link visits to eligible Google accounts and use advertising identifiers and personalisation signals. <a href="https://policies.google.com/privacy">Google privacy</a>.</span></label>
+      <label><input type="checkbox" name="linkedin" /> <span><strong>LinkedIn</strong> — professional audience reporting and advertising measurement. LinkedIn may match visits to member accounts and use them for advertising. <a href="https://www.linkedin.com/legal/privacy-policy">LinkedIn privacy</a>.</span></label>
+      <label><input type="checkbox" name="hubspot" /> <span><strong>HubSpot</strong> — website activity and repeat visits. HubSpot may associate activity with a contact when identified through its tracking mechanisms. <a href="https://legal.hubspot.com/privacy-policy">HubSpot privacy</a>.</span></label>
+      <p>These providers receive browsing and device information and may process it outside the UK. We remember this choice in this browser for 180 days. You can withdraw using Cookie settings; changing an active choice reloads this page to stop existing tracking scripts. Withdrawal does not delete earlier provider records.</p>
+      <p>OPDA is the controller for this website’s measurement. Contact <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a> about access or deletion requests. See the <a href="https://openpropdata.org.uk/privacy-policy/">OPDA privacy policy</a>.</p>
+      <button type="button" data-consent-action="save">Save selected services</button>
+    </details>
+  </section>
+</div>}
+<script>
+  import { initialiseAudienceTracking } from '../scripts/audience-tracking.mjs';
+  initialiseAudienceTracking();
+</script>
+<style>
+  [hidden] { display:none !important; }
+  .tracking-settings { background:transparent; color:inherit; text-decoration:underline; border:0; cursor:pointer; font:inherit; }
+  .tracking-panel { position:fixed; z-index:10000; inset:auto 16px 16px auto; width:min(540px,calc(100vw - 32px)); max-height:75vh; overflow:auto; padding:20px; background:#f9f9f9; color:#231f2f; border:2px solid #0e8478; border-radius:8px; box-shadow:0 4px 20px #231f2f26; font:15px/1.5 system-ui,sans-serif; }
+  h2 { font-size:20px; margin:0 0 10px; } p { margin:10px 0; }
+  .tracking-actions { display:flex; flex-wrap:wrap; gap:12px; margin:16px 0; }
+  .tracking-panel button { padding:10px 14px; background:#231f2f; color:#fff; border:1px solid #231f2f; border-radius:4px; cursor:pointer; font:inherit; }
+  label { display:flex; align-items:start; gap:10px; margin:16px 0; } input { margin-top:5px; }
+  a { color:#09695f; } summary { cursor:pointer; }
+  :focus-visible { outline:3px solid #6c5bd4; outline-offset:3px; }
+</style>

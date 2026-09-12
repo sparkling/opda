@@ -1,5 +1,8 @@
 ---
 import BrandHeading from '@/components/BrandHeading.astro';
+import AudienceTracking from '@/components/AudienceTracking.astro';
+import { audienceTracking, validAccounts } from '../lib/audience-tracking.mjs';
+const trackingReady = audienceTracking.providerSettingsVerified && validAccounts(audienceTracking);
 ---
 <footer class="public-footer">
   <p class="public-footer__credit">
@@ -12,5 +15,6 @@ import BrandHeading from '@/components/BrandHeading.astro';
   <nav class="public-footer__links" aria-label="Footer">
     <a href="/join/privacy">Privacy</a>
     <a href="/accessibility">Accessibility</a>
+    {trackingReady && <AudienceTracking />}
   </nav>
 </footer>
