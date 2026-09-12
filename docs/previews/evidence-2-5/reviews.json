@@ -8,5 +8,15 @@
   "risograph": "Six headings, three arrow labels and six directed edges checked. Grain and overprinted colour distinguish this treatment; the published portfolio became a screen.",
   "linocut": "Six headings, three arrow labels and six directed edges checked. Bold dark masses and cut highlights are visible; a thumbs-up on a feedback slip is an unnecessary positive-feedback cue.",
   "screenprint": "Six headings, three arrow labels and six directed edges checked. Clear flat shapes, but the finish is closer to generic digital illustration than a strongly tactile print.",
-  "paper-cut": "Six headings, three arrow labels and six directed edges checked. Cut edges, stacked depth and shadows are distinct; the gold arrow relies on shadow rather than the requested dark outline."
+  "paper-cut": "Six headings, three arrow labels and six directed edges checked. Cut edges, stacked depth and shadows are distinct; the gold arrow relies on shadow rather than the requested dark outline.",
+  "folded-card": "Six headings, six directed edges and three arrow labels checked; folded structures are visibly distinct.",
+  "photo-collage": "Six headings, six directed edges and three arrow labels checked; monochrome photographic cut-outs distinguish this treatment.",
+  "swiss-geometric": "Six headings, six directed edges and three arrow labels checked. Output has transparency and is displayed on white. Illustration is more generic flat vector than strict Swiss typography.",
+  "isometric": "Six headings, six directed edges and three arrow labels checked; consistent isometric stations.",
+  "cutaway": "Six headings, six directed edges and three arrow labels checked; rooms are cut away, with some extra decorative plants.",
+  "exploded-assembly": "Six headings, six directed edges and three arrow labels checked; separated document layers communicate assembly.",
+  "cyanotype-acetate": "Six headings, six directed edges and three arrow labels checked; translucent blue layers and photographic figures distinguish the treatment.",
+  "letterpress": "Six headings, six directed edges and three arrow labels checked. Embossed paper is visible, although figures resemble layered craft more than conventional letterpress.",
+  "documentary-still-life": "Six headings, six directed edges and three arrow labels checked. Overhead photographs and paper arrows are distinct; extra coffee and plants add visual clutter.",
+  "nocturne-pencil": "Six headings, six directed edges and three arrow labels checked. Dark paper and pencil texture are distinct; gold arrow lacks the requested dark outline."
 }
