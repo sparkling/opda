@@ -106,8 +106,15 @@ test('section rails, page navigation and content stay inside the shared containe
     const toc = page.locator('aside.toc');
     await expect(toc).toBeVisible();
     if (width <= 1280) {
-      await expect(toc.locator('#toc-collapse')).toHaveAttribute('aria-expanded', 'true');
-      expect(await toc.evaluate((node) => node.parentElement?.classList.contains('prose'))).toBe(true);
+      // Since 2026-09-11 the mobile contents start collapsed inside the reserved
+      // slot after the introduction, so the chapter title never shifts at startup.
+      const toggle = toc.locator('#toc-collapse');
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      expect(await toc.evaluate((node) => node.parentElement?.hasAttribute('data-inline-toc'))).toBe(true);
+      expect(await toc.evaluate((node) => Boolean(node.closest('.prose')))).toBe(true);
+      await toggle.click();
+      await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+      await expect(toc.locator('#toc-links a').first()).toBeVisible();
     } else {
       expect(await toc.evaluate((node) => node.parentElement?.classList.contains('app-body'))).toBe(true);
     }
@@ -116,7 +123,8 @@ test('section rails, page navigation and content stay inside the shared containe
   await page.setViewportSize({ width: 1281, height: 1000 });
   await visit(page, '/semantic-modelling');
   await assertNoBodyOverflow(page);
-  const gateway = await page.locator('.modelling-pathways').first().evaluate((node) => {
+  // The landing's task gateway is the field-guide card grid (2026-09-05 redesign).
+  const gateway = await page.locator('.modelling-subpages').first().evaluate((node) => {
     const container = node.getBoundingClientRect();
     const links = Array.from(node.querySelectorAll('a')).map((link) => link.getBoundingClientRect());
     return {
@@ -160,7 +168,7 @@ test('authored text uses the reading measure without constraining campaign and g
   const cases = [
     ['/programme', ['.prose.wide > .lead', '.prose.wide > h2 + p', '.callout--key p:last-child']],
     ['/', ['.home-campaign-hero h1', '.home-campaign-hero .wg-lead', '.public-overview > header']],
-    ['/join', ['.wg-campaign-hero h1', '.wg-campaign-hero .wg-lead', '.wg-section__heading p']],
+    ['/join', ['.wg-campaign-hero h1', '.wg-campaign-hero .wg-lead', '.campaign-section-heading__title', '.campaign-card__description']],
     ['/join/privacy', ['.public-statement__summary p', '.public-statement p', '.public-statement li']],
     [`${PDTF1_ROUTES.terms}/graph`, ['.term-comment', '.og-external']],
   ];

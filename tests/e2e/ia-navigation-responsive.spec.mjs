@@ -99,9 +99,14 @@ test('compact primary disclosure keeps all navigation items discoverable through
       icons: rect('.app-header .header-nav'),
       membership: rect('.app-header__utilities .header-actions > .header-membership'),
       navPanel: rect('.global-nav-panel'),
+      // The content column sits one --space-2 inside the header gutter
+      // (shell.css --page-content-inline-padding, pinned by the layout contract).
+      contentInset: Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--space-2'))
+        * Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
     };
   });
-  expect(alignment.utilities.right).toBeCloseTo(alignment.content.right, 1);
+  expect(alignment.contentInset).toBeGreaterThan(0);
+  expect(alignment.utilities.right).toBeCloseTo(alignment.content.right + alignment.contentInset, 1);
   expect(alignment.cta.right).toBeLessThanOrEqual(alignment.icons.left);
   expect((alignment.cta.top + alignment.cta.bottom) / 2)
     .toBeCloseTo((alignment.icons.top + alignment.icons.bottom) / 2, 1);

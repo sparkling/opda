@@ -166,6 +166,23 @@ test('major semantic pairs meet the AA contrast contract', () => {
   }
 });
 
+test('every light-theme status and callout tint pair meets AA from the token file itself', async () => {
+  // The scheduled axe lane found the previous warning/important pairs at 4.4:1; read the
+  // live tokens so a palette edit fails here rather than only in the browser lane.
+  const source = await readFile(file('public/ui/design-tokens.css'), 'utf8');
+  const light = source.slice(0, source.indexOf("[data-theme='dark']"));
+  const tokens = Object.fromEntries([...light.matchAll(/(--color-(?:status|callout)-[a-z-]+):\s*(#[0-9a-f]{6})/gu)]
+    .map(([, name, value]) => [name, value.toLowerCase()]));
+  const pairs = Object.keys(tokens).filter((name) => !name.endsWith('-surface'));
+  assert.ok(pairs.length >= 7, 'status and callout tokens are declared in the light theme');
+  for (const name of pairs) {
+    const surface = tokens[`${name}-surface`];
+    assert.ok(surface, `${name} declares a tint surface`);
+    assert.ok(contrast(tokens[name], surface) >= 4.5, `${name} on ${name}-surface is ${contrast(tokens[name], surface).toFixed(2)}:1`);
+    assert.ok(contrast(tokens[name], '#ffffff') >= 4.5, `${name} on white`);
+  }
+});
+
 test('visited prose links cannot override shared button foregrounds', async () => {
   const base = await readFile(file('public/ui/design/base.css'), 'utf8');
   const visited = base.match(/([^{}]+)\{\s*color:\s*var\(--color-link-visited\);\s*\}/u)?.[1].trim();

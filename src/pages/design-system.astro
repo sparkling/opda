@@ -152,10 +152,10 @@ const tokenSample = `:root {
   </div>
   <h3>Canonical subject-led brief</h3>
   <p>Replace every bracketed field. Existing images may guide palette and finish only; they are never content, composition or layout references.</p>
-  <pre><code set:text={editorialIllustrationPrompt} /></pre>
+  <pre class="prompt-text"><code set:text={editorialIllustrationPrompt} /></pre>
   <h3>Canonical dark-mode counterpart prompt</h3>
   <p>Use the approved light image as the edit target. Generate one asset per call and review the pair together at its intended size.</p>
-  <pre><code set:text={editorialIllustrationDarkPrompt} /></pre>
+  <pre class="prompt-text"><code set:text={editorialIllustrationDarkPrompt} /></pre>
   <p>
     Export campaign-card illustrations as 1200×300 WebP, below 150&nbsp;KB each.
     Store paired files as <code>{'{subject}-light.webp'}</code> and
@@ -339,6 +339,9 @@ const tokenSample = `:root {
   <p class="closing-rule">The system may evolve. Its evidence and consequences must remain visible.</p>
 
   <style>
+    /* Illustration prompts are prose, not code: wrap them so the block never
+       becomes a sideways-scrolling region without keyboard access. */
+    :global(.prose) pre.prompt-text { white-space: pre-wrap; overflow-wrap: anywhere; }
     .design-signoff { margin: var(--space-7) 0; padding: var(--space-5); display: flex; flex-direction: column; color: var(--brand-white); background: var(--brand-deep); border-bottom: 4px solid var(--brand-yellow); }
     .design-signoff span { color: var(--neutral-400); }
     .design-signoff strong { color: var(--brand-white); }

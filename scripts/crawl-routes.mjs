@@ -50,6 +50,9 @@ const bundlePrefixes = [
 ];
 const isBundle = (path) => bundlePrefixes.some((prefix) => path.startsWith(prefix));
 const isInternalFragment = (path) => path.startsWith('/ui/header-preview-controls/');
+// The edge gate serves the under-development holding page itself (see
+// config/aws/edge-gate); no navigable page links to it by design.
+const holdingRoutes = new Set(['/under-development']);
 // Ontospy's vendored Bootswatch source tree includes upstream theme demo HTML
 // whose relative examples were never part of the generated OPDA documentation.
 // Exclude those fixtures only; actual Ontospy/artefact pages and every emitted
@@ -179,6 +182,7 @@ const orphanRoutes = requestedRoutes ? [] : routeFiles
   .filter((file) => file !== join(DIST, 'index.html')
     && !isBundle(pageUrl(file))
     && !isInternalFragment(pageUrl(file))
+    && !holdingRoutes.has(pageUrl(file))
     && !isRedirect(readFileSync(file, 'utf8'))
     && !seenTargets.has(resolve(file)))
   .map(pageUrl);

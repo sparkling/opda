@@ -160,7 +160,7 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
     {STANDARDS_PROFILE.map((record) => <JudgementNote tone="method" title={record.name} id={standardAnchor(record)}>
       <dl>
         <dt>Purpose</dt><dd>{record.purpose}</dd>
-        <dt>Selected profile boundary</dt><dd>{decisionParts(record.versionBoundary).map(({ text, href }) => <a href={href ?? record.profileSource}>{text}</a>)}</dd>
+        <dt>Selected profile boundary</dt><dd>{decisionParts(record.versionBoundary).map(({ text, href }) => href ? <a href={href}>{text}</a> : text)} (<a href={record.profileSource}>profile source</a>)</dd>
         <dt>OPDA governance status</dt><dd>{record.governanceStatus}</dd>
         <dt>External specification maturity</dt><dd>{record.specificationMaturity} · {record.exactSnapshot}. <a href={record.source}>Primary specification or method source</a>.</dd>
         <dt>Actual implementation status</dt><dd>{record.implementationStatus}</dd>

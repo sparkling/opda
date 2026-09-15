@@ -187,20 +187,24 @@ test('semantic modelling exposes linked audience branches and one active page', 
   clean();
 });
 
-test('semantic teaching diagrams have names, descriptions and visible text equivalents', async ({ page }) => {
+test('semantic teaching diagrams have names, descriptions and text equivalents', async ({ page }) => {
+  // Field-guide diagram contract (2026-09-08): figure.learning-figure holds one
+  // svg.learning-drawing (role=img, labelled by its own title + desc), a hidden
+  // HTML equivalent list that replaces the drawing where it cannot render, and a
+  // captioned callout.
   test.setTimeout(120_000);
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
   let diagramCount = 0;
   for (const path of SEMANTIC_MODELLING_ROUTES) {
     await visit(page, path);
-    const figures = page.locator('figure:has(> svg.modelling-visual)');
+    const figures = page.locator('figure.learning-figure');
     diagramCount += await figures.count();
     for (const figure of await figures.all()) {
-      const svg = figure.locator(':scope > svg.modelling-visual');
+      const svg = figure.locator('.learning-image > svg.learning-drawing');
       await expect(svg).toBeVisible();
       await expect(svg).toHaveAttribute('role', 'img');
-      await expect(svg).toHaveAttribute('viewBox', '0 0 960 600');
+      await expect(svg).toHaveAttribute('viewBox', /^0 0 960 \d+$/u);
       const alternative = await svg.evaluate((node) => ({
         title: node.querySelector(':scope > title')?.textContent?.trim(),
         description: node.querySelector(':scope > desc')?.textContent?.trim(),
@@ -210,8 +214,9 @@ test('semantic teaching diagrams have names, descriptions and visible text equiv
       expect(alternative.title?.length).toBeGreaterThan(10);
       expect(alternative.description?.length).toBeGreaterThan(30);
       expect(alternative.labelledBy).toEqual(alternative.ids);
+      await expect(figure.locator('.learning-equivalent-wrap :is(p, dl, ol, ul, table)')).toHaveCount(1);
       await expect(figure.locator('figcaption')).toBeVisible();
-      await expect(figure.locator('p, dl, ol, ul, table, blockquote').first()).toBeVisible();
+      await expect(figure.locator('figcaption p').first()).toBeVisible();
     }
     await assertNoBodyOverflow(page);
   }
@@ -228,12 +233,14 @@ for (const mode of ['mobile', 'forced colours']) {
     let diagramCount = 0;
     for (const path of SEMANTIC_MODELLING_ROUTES) {
       await visit(page, path);
-      const figures = page.locator('figure:has(> svg.modelling-visual)');
+      const figures = page.locator('figure.learning-figure');
       diagramCount += await figures.count();
       for (const figure of await figures.all()) {
-        await expect(figure.locator(':scope > svg.modelling-visual')).toBeHidden();
+        await expect(figure.locator('.learning-image > svg.learning-drawing')).toBeHidden();
+        const equivalent = figure.locator('.learning-equivalent-wrap');
+        await expect(equivalent).toBeVisible();
+        expect((await equivalent.boundingBox())?.height ?? 0).toBeGreaterThan(24);
         await expect(figure.locator('figcaption')).toBeVisible();
-        await expect(figure.locator('p, dl, ol, ul, table, blockquote').first()).toBeVisible();
       }
       await assertNoBodyOverflow(page);
     }

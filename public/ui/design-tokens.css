@@ -78,7 +78,7 @@
   /* Semantic status: foreground + tint + strong border. */
   --color-status-success: #1e7b4d;
   --color-status-success-surface: #e7f4ed;
-  --color-status-warning: #b84a1e;
+  --color-status-warning: #ab441b;
   --color-status-warning-surface: #fce9e1;
   --color-status-danger: #b42318;
   --color-status-danger-surface: #fbeae8;
@@ -88,7 +88,7 @@
   --color-callout-method-surface: #e4f3f2;
   --color-callout-technical: #5b4bb3;
   --color-callout-technical-surface: #efedff;
-  --color-callout-important: #9a6500;
+  --color-callout-important: #8f5d00;
   --color-callout-important-surface: #fff1c5;
   /* Ordered categorical data palette; yellow is intentionally excluded. */
   --color-data-1: #6c5bd4;
