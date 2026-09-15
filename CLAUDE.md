@@ -26,14 +26,20 @@ The `Agent` tool and `SendMessage` are Claude Code features; Codex uses its own 
 ## Model routing
 
 Claude's model lineup, so it lives here and not in `AGENTS.md`. Route by complexity, not by habit:
-the cheapest tier that can do the job correctly.
+the cheapest tier that can do the job correctly. While Codex is unavailable (see `AGENTS.md`),
+every tier below is a Claude model; there is no Codex handoff.
 
-| Tier | Handler | Use cases |
-|------|---------|-----------|
-| 1 | Agent Booster (WASM) | Mechanical transforms; skip the LLM and use an edit directly |
-| 2 | Haiku | Simple, low-complexity tasks |
-| 3 | Sonnet | Everyday implementation, tests, refactors |
-| 4 | Opus | Architecture, security, the hardest reasoning |
+| Tier | Handler | Model ID | Use cases |
+|------|---------|----------|-----------|
+| 1 | Agent Booster (WASM) | none | Mechanical transforms; skip the LLM and use an edit directly |
+| 2 | Haiku 4.5 | `claude-haiku-4-5-20251001` | Simple, low-complexity tasks; ruflo routing decisions |
+| 3 | Sonnet 5 | `claude-sonnet-5` | Everyday implementation, tests, refactors, read-only exploration |
+| 4 | Opus 5 | `claude-opus-5` | Architecture, security review, adversarial verification |
+| 5 | Fable 5.1 | `claude-fable-5-1` | Main session, orchestration, the hardest reasoning |
+
+Subagents default to tier 3 unless the task needs tier 4 reasoning; reserve tier 5 for the lead
+session. `ruflo` model stats show 57/79 past decisions routed to opus at an average complexity of
+0.30: bias downward, not upward.
 
 ## Commit attribution
 

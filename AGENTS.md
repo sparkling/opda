@@ -210,6 +210,13 @@ Each JS target wraps a matching npm script (e.g. `npm run serve:data`, `npm run 
 
 ## Codex platform notes
 
+> **Executor availability (2026-09-15 to about 2026-09-20): Claude Code only.**
+> The Codex subscription has lapsed for roughly 4-5 days. Until it is restored, do
+> not hand work to Codex, `$skill-name` invocations or `.agents/config.toml`; every
+> role (planner, coder, reviewer, tester) runs on a Claude model per the routing
+> table in `CLAUDE.md`. Keep the Codex configuration in place; it is paused, not
+> retired. Remove this notice when the subscription is back.
+
 - **Skill syntax**: invoke skills with `$skill-name`. (Claude Code uses `/skill-name`; see `CLAUDE.md`.)
 - **Execution model**: `claude-flow` = LEDGER (coordinates memory, routing, swarm state); **Codex = EXECUTOR** (writes code, runs tests, creates files). Coordination commands return instantly, so DON'T STOP after them; continue immediately with the next implementation step.
 - Codex config lives in `.agents/config.toml` (project) and `.codex/config.toml` (local overrides, gitignored).
