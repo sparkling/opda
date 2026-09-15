@@ -1,5 +1,5 @@
 import { APP_SCOPES, verifyPrivateApp } from '../hubspot-participation/admin.mjs';
-import { WORKING_GROUP_LABELS } from '../hubspot-participation/properties.mjs';
+import { DOMAIN_REVIEW_PROPERTIES, WORKING_GROUP_LABELS } from '../hubspot-participation/properties.mjs';
 import { RetryLater, retryAfter } from './errors.mjs';
 
 const PORTAL_ID = 144765514;
@@ -8,9 +8,10 @@ const CONTACT_ID = /^[1-9][0-9]*$/;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 // HubSpot-defined association: task -> contact.
 const TASK_TO_CONTACT = 204;
+const DOMAIN_PROPERTY_TO_GROUP = new Map(Object.entries(DOMAIN_REVIEW_PROPERTIES).map(([group, property]) => [property, group]));
 const WRITABLE = new Set(['email', 'company', 'opda_full_name', 'opda_role_or_expertise',
   'opda_requested_working_groups', 'opda_contribution_preferences', 'opda_relevant_perspective',
-  'opda_review_status', 'opda_enrolment_status', 'opda_active']);
+  'opda_review_status', 'opda_enrolment_status', 'opda_active', ...DOMAIN_PROPERTY_TO_GROUP.keys()]);
 
 async function readSecret(secretArn) {
   const aws = await import('@aws-sdk/client-secrets-manager');
@@ -78,6 +79,12 @@ export function createHubSpotClient(overrides = {}) {
       if (!properties || Object.keys(properties).some(key => !WRITABLE.has(key))
         || properties.opda_review_status !== 'received' || properties.opda_enrolment_status !== 'not_invited'
         || properties.opda_active !== 'false') throw new TypeError('Only pending applicant creation is allowed');
+      // Domain dropdowns may only be marked Requested, and only for groups the applicant selected.
+      const requested = new Set(String(properties.opda_requested_working_groups ?? '').split(';').filter(Boolean));
+      for (const [property, group] of DOMAIN_PROPERTY_TO_GROUP) {
+        if (!Object.hasOwn(properties, property)) continue;
+        if (properties[property] !== 'received' || !requested.has(group)) throw new TypeError('Only pending applicant creation is allowed');
+      }
       const contact = await request(await verifiedCredential(), '/crm/v3/objects/contacts', {
         method: 'POST', body: { properties },
       });

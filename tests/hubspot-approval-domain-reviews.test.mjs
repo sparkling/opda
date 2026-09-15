@@ -176,3 +176,29 @@ test('invalid configuration and contact identifiers do not produce authority', (
   assert.deepEqual(decisions(null), []);
   assert.deepEqual(decisions({ ...contact(), archived: true }), []);
 });
+
+test('an integration-written Requested state is intake evidence, not a review decision', () => {
+  const property = DOMAIN_REVIEW_PROPERTIES[FINANCE];
+  const intake = { sourceType: 'INTEGRATION', sourceId: 'INTEGRATION:52397854', updatedByUserId: undefined };
+  // Exactly what the signup sync writes: no decision, the same as a blank domain.
+  const requested = contact({});
+  requested.properties[property] = 'received';
+  requested.propertiesWithHistory[property] = [history('received', NOW - 5000, intake)];
+  assert.deepEqual(decisions(requested), []);
+  // A later staff approval over that history is an ordinary trusted decision.
+  const approved = contact({});
+  approved.properties[property] = 'approved';
+  approved.propertiesWithHistory[property] = [history('approved', NOW - 1000), history('received', NOW - 5000, intake)];
+  const [result] = decisions(approved);
+  assert.equal(result.trusted, true);
+  assert.equal(result.status, 'approved');
+  // The exemption is narrow: an integration writing anything else, or Requested over a prior denial, still denies.
+  const forged = contact({});
+  forged.properties[property] = 'approved';
+  forged.propertiesWithHistory[property] = [history('approved', NOW - 1000, intake)];
+  denial(forged);
+  const overwritten = contact({});
+  overwritten.properties[property] = 'received';
+  overwritten.propertiesWithHistory[property] = [history('received', NOW - 1000, intake), history('rejected', NOW - 5000)];
+  denial(overwritten);
+});

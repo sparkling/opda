@@ -87,6 +87,7 @@ test('creates only a lossless pending contact and makes duplicate deliveries ine
     opda_role_or_expertise: 'Research and domain expertise', opda_requested_working_groups: 'finance-and-banking;conveyancing',
     opda_contribution_preferences: 'review-model-candidates', opda_relevant_perspective: 'Synthetic professional perspective',
     opda_review_status: 'received', opda_enrolment_status: 'not_invited', opda_active: 'false',
+    opda_review_conveyancing: 'received', opda_review_finance_and_banking: 'received',
   });
   assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).contactId, '123');
   assert.ok([...f.items.keys()].every(key => key.startsWith('SYNC#')));
@@ -385,5 +386,17 @@ test('API adapter creates one review task bound to the matched contacts and refu
   for (const bad of [{ contactIds: [] }, { contactIds: ['x'] }, { requestedGroups: ['administrator'] }, { registrationId: 'not-a-uuid' }]) {
     await assert.rejects(client.createReviewTask({ contactIds: ['345'], registrationId: id,
       requestedGroups: ['conveyancing'], dueAt: now, ...bad }), TypeError);
+  }
+});
+
+test('API adapter writes Requested only on the domains the applicant selected, never a decision', async () => {
+  const base = { email: 'synthetic@example.test', opda_requested_working_groups: 'conveyancing',
+    opda_review_status: 'received', opda_enrolment_status: 'not_invited', opda_active: 'false' };
+  const client = createHubSpotClient({ getSecret: async () => secret, fetch: async (url, options) => url.endsWith('access-token-info')
+    ? response(info) : response({ id: '321', properties: { email: 'synthetic@example.test' } }, 201) });
+  assert.deepEqual(await client.createContact({ ...base, opda_review_conveyancing: 'received' }), { id: '321', email: base.email });
+  for (const bad of [{ opda_review_conveyancing: 'approved' }, { opda_review_finance_and_banking: 'received' },
+    { opda_review_conveyancing: 'received', opda_review_finance_and_banking: 'received' }]) {
+    await assert.rejects(client.createContact({ ...base, ...bad }), TypeError);
   }
 });

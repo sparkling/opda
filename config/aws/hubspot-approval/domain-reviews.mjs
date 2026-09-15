@@ -90,6 +90,11 @@ export function domainReviewDecisions(contact, { cutover, now = Date.now() } = {
     const value = contact.properties?.[property], rawHistory = contact.propertiesWithHistory?.[property];
     if (blank(value) && (rawHistory === undefined || rawHistory === null
       || (Array.isArray(rawHistory) && rawHistory.length === 0))) continue;
+    // The website signup marks each requested domain Requested. That is intake
+    // evidence, not an administrator's decision: treat it exactly like a blank domain.
+    // Anything else an integration writes, or Requested over a prior review, still denies.
+    if (value === 'received' && Array.isArray(rawHistory) && rawHistory.length && rawHistory.length <= 2000
+      && rawHistory.every(item => item?.value === 'received' && item.sourceType === 'INTEGRATION')) continue;
     const history = readHistory(rawHistory, now);
     const deny = (reason, additionalEvidence = null) => ({ domainId,
       id: digest(JSON.stringify([contact.id, domainId, 'denied', reason, bounded(value),

@@ -82,9 +82,9 @@ export const PARTICIPATION_PROPERTIES = freeze([
   ...GROUP_CHOICES.map(([domainId, label]) => ({
     name: DOMAIN_REVIEW_PROPERTIES[domainId], label: `${label} review`,
     type: 'enumeration', fieldType: 'select',
-    description: `Staff approval for ${label} only, after reviewing this person's requested interest. Approved grants only this domain and sends its invitation. Pending, Under review, Rejected, Withdrawn or clearing the field removes this domain's access; other approved domains are unchanged.`,
+    description: `Staff approval for ${label} only, after reviewing this person's requested interest. Requested is set by the website signup and is not a decision. Approved grants only this domain and sends its invitation. Under review, Rejected, Withdrawn or clearing the field removes this domain's access; other approved domains are unchanged.`,
     options: choices([
-      ['received', 'Pending'], ['under_review', 'Under review'], ['approved', 'Approved'],
+      ['received', 'Requested'], ['under_review', 'Under review'], ['approved', 'Approved'],
       ['rejected', 'Rejected'], ['withdrawn', 'Withdrawn'],
     ]),
   })),

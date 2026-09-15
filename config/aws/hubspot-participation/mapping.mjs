@@ -1,4 +1,4 @@
-import { PARTICIPATION_PROPERTIES } from './properties.mjs';
+import { DOMAIN_REVIEW_PROPERTIES, PARTICIPATION_PROPERTIES } from './properties.mjs';
 
 const optionValues = (name) => PARTICIPATION_PROPERTIES.find((property) => property.name === name)
   .options.map((option) => option.value);
@@ -39,14 +39,18 @@ function validateSource(record, now) {
 
   const email = text(record.email, 'email', 3, 254).toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(email)) invalid('email');
+  const requested = selection(record.workingGroups, 'workingGroups', GROUPS);
   return {
     email, company: text(record.organisation, 'organisation', 2, 150),
     opda_full_name: text(record.fullName, 'fullName', 2, 100),
     opda_role_or_expertise: text(record.role, 'role', 2, 120),
-    opda_requested_working_groups: selection(record.workingGroups, 'workingGroups', GROUPS),
+    opda_requested_working_groups: requested,
     opda_contribution_preferences: selection(record.contributions, 'contributions', CONTRIBUTIONS),
     opda_relevant_perspective: text(record.relevantPerspective, 'relevantPerspective', 0, 600, true),
     opda_review_status: 'received', opda_enrolment_status: 'not_invited', opda_active: 'false',
+    // Mark each requested domain as Requested so staff see what awaits a decision.
+    // This is intake evidence: the approval worker treats it as no decision.
+    ...Object.fromEntries(requested.split(';').map((groupId) => [DOMAIN_REVIEW_PROPERTIES[groupId], 'received'])),
   };
 }
 

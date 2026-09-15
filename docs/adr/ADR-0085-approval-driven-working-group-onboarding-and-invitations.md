@@ -83,7 +83,7 @@ not change independent-domain approval: `contract.version=2` and its outbox sema
 | `property-data-services` | `opda_review_property_data_services` | `property-data-services-approval-invitation-v3` | `46456620` |
 | `property-technology` | `opda_review_property_technology` | `property-technology-approval-invitation-v3` | `46456621` |
 
-Each dropdown has Pending (`received`), Under review, Approved, Rejected and Withdrawn.
+Each dropdown has Requested (`received`), Under review, Approved, Rejected and Withdrawn. The website signup marks each requested domain Requested so staff can see what awaits a decision; the label was renamed from Pending on 2026-09-15 and the value is unchanged.
 Clearing it also removes that domain's approval. `opda_requested_working_groups` remains
 interests only. Global `opda_review_status=approved` can clear an account review hold but
 does not approve any domain. Global Under review, Rejected or Withdrawn blocks account access;

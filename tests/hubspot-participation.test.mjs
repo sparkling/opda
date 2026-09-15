@@ -68,6 +68,8 @@ test('new-contact mapping uses only the agreed fields and never grants access', 
     opda_contribution_preferences: 'review-model-candidates',
     opda_relevant_perspective: 'Practical inspection experience.',
     opda_review_status: 'received', opda_enrolment_status: 'not_invited', opda_active: 'false',
+    // Only the requested domain is marked Requested; the others stay blank.
+    opda_review_surveying_and_valuation: 'received',
   });
   assert.deepEqual(record, before);
 });
@@ -78,6 +80,15 @@ test('multi-select values have stable order, without append syntax', () => {
   }));
   assert.equal(plan.properties.opda_requested_working_groups, [...WORKING_GROUPS].join(';'));
   assert.equal(plan.properties.opda_contribution_preferences, [...CONTRIBUTIONS].join(';'));
+  for (const property of Object.values(DOMAIN_REVIEW_PROPERTIES)) assert.equal(plan.properties[property], 'received');
+});
+
+test('the Requested label names the intake state on every domain dropdown; the value is unchanged', () => {
+  for (const property of Object.values(DOMAIN_REVIEW_PROPERTIES)) {
+    const options = PARTICIPATION_PROPERTIES.find((item) => item.name === property).options;
+    assert.deepEqual(options.map(({ value, label }) => [value, label]), [['received', 'Requested'],
+      ['under_review', 'Under review'], ['approved', 'Approved'], ['rejected', 'Rejected'], ['withdrawn', 'Withdrawn']]);
+  }
 });
 
 test('historic notice evidence is retained in AWS, without inventing a form version', () => {
