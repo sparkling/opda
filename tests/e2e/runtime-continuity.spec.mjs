@@ -16,7 +16,7 @@ test.describe('runtime continuity boundaries', () => {
     await visit(page, '/marketing/operational-emails');
     await expect(page.locator('article.marketing > h1')).toHaveText('Operational emails');
     await expect(page.locator('article.marketing iframe')).toHaveCount(0);
-    await expect(page.locator('article.marketing .destination-card-grid a')).toHaveCount(19);
+    await expect(page.locator('article.marketing .destination-card-grid a')).toHaveCount(20);
     for (const id of ['conveyancing-invitation-company-folder', 'conveyancing-invitation-teams-only', 'website-login-disabled']) {
       await visit(page, `/marketing/operational-emails/${id}`);
       const preview = page.locator('iframe[data-email-preview]');
