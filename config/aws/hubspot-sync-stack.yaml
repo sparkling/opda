@@ -150,6 +150,12 @@ Resources:
                 Effect: Allow
                 Action: [secretsmanager:GetSecretValue]
                 Resource: !Ref BridgeSecretArn
+              # ADR-0084: applicant acknowledgement uses the same transactional Postmark
+              # server as approval onboarding. Read-only; template writes stay operator-side.
+              - Sid: AcknowledgementMailCredential
+                Effect: Allow
+                Action: [secretsmanager:GetSecretValue]
+                Resource: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/postmark/participation-onboarding-??????'
 
   Worker:
     Type: AWS::Serverless::Function
@@ -170,6 +176,7 @@ Resources:
           REGISTRATIONS_TABLE_NAME: !Ref RegistrationsTableName
           PARTICIPANTS_TABLE_NAME: !Ref ParticipantsTableName
           BRIDGE_SECRET_ARN: !Ref BridgeSecretArn
+          POSTMARK_SECRET_ARN: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/postmark/participation-onboarding-U02V9v'
           TRANSFER_NOTICE_VERSION: !Ref TransferNoticeVersion
           SYNC_QUEUE_ARN: !GetAtt SignupQueue.Arn
           SYNC_QUEUE_URL: !Ref SignupQueue

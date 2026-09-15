@@ -1,12 +1,22 @@
 import { createHash, randomUUID } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { planInitialContactSync } from '../hubspot-participation/mapping.mjs';
+import { buildAcknowledgementPayload } from '../hubspot-participation/acknowledgement.mjs';
+import { WORKING_GROUP_LABELS } from '../hubspot-participation/properties.mjs';
 import { createHubSpotClient } from './client.mjs';
+import { createPostmarkClient } from './postmark.mjs';
+import { ACKNOWLEDGEMENT_PIN } from './settings.mjs';
 import { createStore, emailDigest } from './store.mjs';
 import { RetryLater } from './errors.mjs';
 export { RetryLater } from './errors.mjs';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const FINAL = new Set(['synced', 'quarantined', 'suppressed']);
+// Only the first application per email is acknowledged; repeats and holds are AWS evidence.
+const ACKNOWLEDGED_REASONS = new Set(['pending-applicant-created', 'existing-contact', 'ambiguous-contacts', 'ambiguous-create']);
+const ACK_FINAL = new Set(['accepted', 'rejected', 'suppressed', 'unknown']);
+// Lambda execution is capped at 60s; a durable "in flight" marker outlives one attempt.
+const LEASE_MS = 120000;
 const exactKeys = (object, keys) => object && !Array.isArray(object)
   && Object.keys(object).length === keys.length && keys.every(key => Object.hasOwn(object, key));
 
@@ -32,37 +42,93 @@ function evidenceDigest(source) {
   return createHash('sha256').update(JSON.stringify(fields.map(key => [key, source[key] ?? null]))).digest('hex');
 }
 
+const liveSource = (source, registrationId, timestamp) => source && source.registrationId === registrationId
+  && !source.deletedAt && !source.erasedAt && Number.isSafeInteger(source.expiresAt)
+  && source.expiresAt > Math.floor(timestamp / 1000);
+
 /** Durable sync records are not participant accounts and carry no grants. */
-export function createWorker({ store, hubspot, now = Date.now, newId = randomUUID, transferNoticeVersion }) {
+export function createWorker({ store, hubspot, postmark, logoBase64, now = Date.now, newId = randomUUID, transferNoticeVersion }) {
+  /**
+   * ADR-0084: acknowledge receipt once per requested working group, for the first
+   * application per email, whether the CRM created a contact or quarantined for
+   * review. Each send has its own durable record, so a delivery that fails after the
+   * CRM outcome is final still completes the acknowledgements on redelivery. A send
+   * whose outcome is unknown is never repeated: a dispatched email cannot be recalled.
+   */
+  async function acknowledge(registrationId, operation, source, timestamp) {
+    if (!operation || !ACKNOWLEDGED_REASONS.has(operation.reason) || !FINAL.has(operation.state)) return;
+    if (!liveSource(source, registrationId, timestamp) || source.privacyNoticeVersion !== transferNoticeVersion) return;
+    if (await store.get(`SYNC#SUPPRESS#REGISTRATION#${registrationId}`)
+      || await store.get(`SYNC#SUPPRESS#EMAIL#${emailDigest(source.email)}`)) return;
+    const groups = Array.isArray(source.workingGroups) ? source.workingGroups : [];
+    if (!groups.length || groups.some(group => !Object.hasOwn(WORKING_GROUP_LABELS, group))) return;
+    for (const groupId of groups) {
+      const pk = `SYNC#ACK#${registrationId}#${groupId}`;
+      let record = await store.get(pk);
+      if (record && ACK_FINAL.has(record.state)) continue;
+      if (record?.state === 'sending') {
+        const leaseRemaining = (record.attemptedAt + LEASE_MS - timestamp) / 1000;
+        if (leaseRemaining > 0) throw new RetryLater(leaseRemaining);
+        await store.put({ ...record, state: 'unknown', reason: 'send-outcome-unknown', updatedAt: timestamp }, record);
+        continue;
+      }
+      if (record?.state === 'retry' && record.nextAttemptAt > timestamp) throw new RetryLater((record.nextAttemptAt - timestamp) / 1000);
+      let payload;
+      try {
+        payload = buildAcknowledgementPayload({ displayName: source.fullName, email: source.email, groupId }, { logoBase64 });
+      } catch {
+        await store.put({ ...record, pk, registrationId, groupId, state: 'rejected', reason: 'invalid-input',
+          createdAt: record?.createdAt ?? timestamp, updatedAt: timestamp }, record);
+        continue;
+      }
+      // Record "sending" BEFORE the POST so a crash cannot produce a second copy.
+      record = await store.put({ ...record, pk, registrationId, groupId, state: 'sending', attemptedAt: timestamp,
+        createdAt: record?.createdAt ?? timestamp, updatedAt: timestamp }, record);
+      let result;
+      try { result = await postmark.sendAcknowledgement(payload, { registrationId }); }
+      catch (error) {
+        if (error instanceof RetryLater) {
+          await store.put({ ...record, state: 'retry', nextAttemptAt: timestamp + error.seconds * 1000, updatedAt: timestamp }, record);
+        }
+        // Any other failure intentionally leaves "sending" for the lease to settle.
+        throw error;
+      }
+      await store.put({ ...record, state: result.status, updatedAt: timestamp,
+        ...(result.messageId ? { messageId: result.messageId, submittedAt: result.submittedAt } : {}),
+        ...(result.errorCode ? { errorCode: result.errorCode } : {}) }, record);
+    }
+  }
+
   return async function syncRegistration(registrationId) {
     if (!UUID.test(registrationId)) throw new TypeError('Invalid registration reference');
     const pk = `SYNC#APPLICATION#${registrationId}`;
-    let operation = await store.get(pk);
-    if (operation && FINAL.has(operation.state)) return;
     const timestamp = now();
     const source = await store.getRegistration(registrationId);
+    const operation = await syncContact(registrationId, pk, source, timestamp);
+    await acknowledge(registrationId, operation, source, timestamp);
+  };
+
+  async function syncContact(registrationId, pk, source, timestamp) {
+    let operation = await store.get(pk);
+    if (operation && FINAL.has(operation.state)) return operation;
     const finish = async (state, reason, extra = {}) => {
       operation = await store.put({ ...operation, pk, registrationId, state, reason,
         updatedAt: timestamp, ...extra }, operation);
+      return operation;
     };
-    if (!source || source.registrationId !== registrationId || source.deletedAt || source.erasedAt
-      || !Number.isSafeInteger(source.expiresAt) || source.expiresAt <= Math.floor(timestamp / 1000)) {
-      await finish('suppressed', 'missing-expired-or-erased'); return;
-    }
+    if (!liveSource(source, registrationId, timestamp)) return finish('suppressed', 'missing-expired-or-erased');
     let plan;
     try { plan = planInitialContactSync(source, { contactMatches: [], now: timestamp }); }
-    catch { await finish('quarantined', 'invalid-source'); return; }
+    catch { return finish('quarantined', 'invalid-source'); }
     if (!transferNoticeVersion || source.privacyNoticeVersion !== transferNoticeVersion) {
-      await finish('quarantined', 'privacy-review'); return;
+      return finish('quarantined', 'privacy-review');
     }
     const digest = evidenceDigest(source);
-    if (operation && operation.evidenceDigest !== digest) {
-      await finish('quarantined', 'source-changed'); return;
-    }
+    if (operation && operation.evidenceDigest !== digest) return finish('quarantined', 'source-changed');
     const emailHash = emailDigest(plan.properties.email);
     if (await store.get(`SYNC#SUPPRESS#REGISTRATION#${registrationId}`)
       || await store.get(`SYNC#SUPPRESS#EMAIL#${emailHash}`)) {
-      await finish('suppressed', 'suppression-record'); return;
+      return finish('suppressed', 'suppression-record');
     }
     if (!operation) operation = await store.put({ pk, registrationId, state: 'pending',
       participantId: newId(), emailHash, evidenceDigest: digest, createdAt: timestamp,
@@ -75,34 +141,46 @@ export function createWorker({ store, hubspot, now = Date.now, newId = randomUUI
     let claim = await store.get(claimKey);
     if (!claim) claim = await store.put({ pk: claimKey, registrationId,
       participantId: operation.participantId, state: 'held', createdAt: timestamp });
-    if (claim.registrationId !== registrationId) {
-      await finish('quarantined', 'repeat-application', { reviewKey: claimKey }); return;
-    }
+    if (claim.registrationId !== registrationId) return finish('quarantined', 'repeat-application', { reviewKey: claimKey });
     const settle = async (state, reason, extra = {}) => {
       claim = await store.put({ ...claim, state, reason, updatedAt: timestamp, ...extra }, claim);
-      await finish(state, reason, { reviewKey: claimKey, ...extra });
+      return finish(state, reason, { reviewKey: claimKey, ...extra });
     };
     if (FINAL.has(claim.state)) {
-      await finish(claim.state, claim.reason, { reviewKey: claimKey,
+      return finish(claim.state, claim.reason, { reviewKey: claimKey,
         ...(claim.contactId ? { contactId: claim.contactId } : {}),
-        ...(claim.candidateContactIds ? { candidateContactIds: claim.candidateContactIds } : {}) });
-      return;
+        ...(claim.candidateContactIds ? { candidateContactIds: claim.candidateContactIds } : {}),
+        ...(claim.reviewTaskId ? { reviewTaskId: claim.reviewTaskId } : {}) });
     }
     if (claim.state === 'creating') {
       // Lambda execution is capped at 60s; allow its write acknowledgement to
       // finish before another delivery attempts ambiguity reconciliation.
-      const leaseRemaining = (claim.attemptedAt + 120000 - timestamp) / 1000;
+      const leaseRemaining = (claim.attemptedAt + LEASE_MS - timestamp) / 1000;
       if (leaseRemaining > 0) throw new RetryLater(leaseRemaining);
       // This also covers success followed by a failed DynamoDB acknowledgement.
       // Even a matching email cannot prove that this operation made the contact.
       const matches = await hubspot.findContacts(plan.properties.email);
-      await settle('quarantined', 'ambiguous-create', { candidateContactIds: matches }); return;
+      return settle('quarantined', 'ambiguous-create', { candidateContactIds: matches });
     }
     if (claim.nextAttemptAt > timestamp) throw new RetryLater((claim.nextAttemptAt - timestamp) / 1000);
-    const matches = await hubspot.findContacts(plan.properties.email);
+    if (claim.state === 'reviewing') {
+      // A review task attempt is in flight or was interrupted. Unlike a contact, a
+      // second task is visible and harmless, while a missing one silently drops the
+      // applicant; after the lease, retry rather than reconcile.
+      const leaseRemaining = (claim.attemptedAt + LEASE_MS - timestamp) / 1000;
+      if (leaseRemaining > 0) throw new RetryLater(leaseRemaining);
+    }
+    const matches = claim.state === 'reviewing' ? claim.candidateContactIds : await hubspot.findContacts(plan.properties.email);
     if (matches.length) {
-      await settle('quarantined', matches.length === 1 ? 'existing-contact' : 'ambiguous-contacts',
-        { candidateContactIds: matches }); return;
+      // ADR-0084 §4: never update the existing contact from anonymous input; hand the
+      // application to a human as one open review task per normalised email.
+      if (claim.state !== 'reviewing') {
+        claim = await store.put({ ...claim, state: 'reviewing', attemptedAt: timestamp, candidateContactIds: matches }, claim);
+      }
+      const task = await hubspot.createReviewTask({ contactIds: matches, registrationId,
+        requestedGroups: source.workingGroups, dueAt: timestamp });
+      return settle('quarantined', matches.length === 1 ? 'existing-contact' : 'ambiguous-contacts',
+        { candidateContactIds: matches, reviewTaskId: task.id });
     }
     // This transaction rechecks source retention/deletion and both suppressions,
     // reserves a daily budget unit, and records "creating" BEFORE the HTTP POST.
@@ -121,8 +199,8 @@ export function createWorker({ store, hubspot, now = Date.now, newId = randomUUI
     if (!/^[1-9][0-9]*$/.test(contact?.id) || contact.email !== plan.properties.email) {
       throw new Error('Ambiguous HubSpot create result');
     }
-    await settle('synced', 'pending-applicant-created', { contactId: contact.id, lastSuccessfulSyncAt: timestamp });
-  };
+    return settle('synced', 'pending-applicant-created', { contactId: contact.id, lastSuccessfulSyncAt: timestamp });
+  }
 }
 
 let runtime;
@@ -132,6 +210,9 @@ function defaults() {
       store: createStore({ registrationsTableName: process.env.REGISTRATIONS_TABLE_NAME,
         participantsTableName: process.env.PARTICIPANTS_TABLE_NAME, maxCreatesPerDay: 100 }),
       hubspot: createHubSpotClient({ secretArn: process.env.BRIDGE_SECRET_ARN }),
+      postmark: createPostmarkClient({ secretArn: process.env.POSTMARK_SECRET_ARN, pin: ACKNOWLEDGEMENT_PIN }),
+      // Packaged beside this handler; tests assert it stays byte-identical to the reviewed asset.
+      logoBase64: readFileSync(new URL('./opda-email-logo.png', import.meta.url)).toString('base64'),
       transferNoticeVersion: process.env.TRANSFER_NOTICE_VERSION,
     }),
     async changeVisibility(record, seconds) {

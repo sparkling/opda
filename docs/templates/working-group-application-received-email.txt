@@ -1,0 +1,21 @@
+{{group_name}}
+
+[[NOTICE_TITLE]]
+
+Hello {{display_name}},
+
+[[NOTICE_LEAD]]
+
+WHAT HAPPENS NEXT
+
+[[REVIEW_DETAIL]]
+
+[[SEPARATE_DETAIL]]
+
+NEED HELP?
+
+If you have a question about your application, please reply to this email or
+contact smartdata@openpropdata.org.uk.
+
+Open Property Data Association · {{group_name}}
+[[FOOTER_PURPOSE]]

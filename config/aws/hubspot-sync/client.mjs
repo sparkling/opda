@@ -1,9 +1,13 @@
 import { APP_SCOPES, verifyPrivateApp } from '../hubspot-participation/admin.mjs';
+import { WORKING_GROUP_LABELS } from '../hubspot-participation/properties.mjs';
 import { RetryLater, retryAfter } from './errors.mjs';
 
 const PORTAL_ID = 144765514;
 const APP_ID = 52397854;
 const CONTACT_ID = /^[1-9][0-9]*$/;
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+// HubSpot-defined association: task -> contact.
+const TASK_TO_CONTACT = 204;
 const WRITABLE = new Set(['email', 'company', 'opda_full_name', 'opda_role_or_expertise',
   'opda_requested_working_groups', 'opda_contribution_preferences', 'opda_relevant_perspective',
   'opda_review_status', 'opda_enrolment_status', 'opda_active']);
@@ -82,6 +86,35 @@ export function createHubSpotClient(overrides = {}) {
         throw new Error('Ambiguous HubSpot create response');
       }
       return { id: contact.id, email: properties.email };
+    },
+    /**
+     * ADR-0084 §4: an existing contact is never updated from anonymous input, so a
+     * human review task carries the application to staff instead. The task holds only
+     * finite group labels and the registration reference: applicant free text stays
+     * in the AWS intake record. Task creation needs no scope beyond contacts.write.
+     */
+    async createReviewTask({ contactIds, registrationId, requestedGroups, dueAt } = {}) {
+      if (!Array.isArray(contactIds) || contactIds.length < 1 || contactIds.length > 5
+        || contactIds.some(id => typeof id !== 'string' || !CONTACT_ID.test(id))
+        || typeof registrationId !== 'string' || !UUID.test(registrationId)
+        || !Array.isArray(requestedGroups) || requestedGroups.length < 1
+        || requestedGroups.some(group => !Object.hasOwn(WORKING_GROUP_LABELS, group))
+        || !Number.isSafeInteger(dueAt)) throw new TypeError('Only a bounded review task is allowed');
+      const groups = requestedGroups.map(group => `${WORKING_GROUP_LABELS[group]} Working Group`).join('; ');
+      const task = await request(await verifiedCredential(), '/crm/v3/objects/tasks', { method: 'POST', body: {
+        properties: {
+          hs_task_subject: 'Review working-group application from an existing contact',
+          hs_task_body: `A website working-group application matched this existing contact. Requested: ${groups}. `
+            + `Review the application, then set the relevant working-group review dropdown(s) on the contact. `
+            + `AWS registration reference: ${registrationId}.`,
+          hs_task_status: 'NOT_STARTED', hs_task_priority: 'HIGH', hs_task_type: 'TODO',
+          hs_timestamp: new Date(dueAt).toISOString(),
+        },
+        associations: contactIds.map(id => ({ to: { id },
+          types: [{ associationCategory: 'HUBSPOT_DEFINED', associationTypeId: TASK_TO_CONTACT }] })),
+      } });
+      if (!CONTACT_ID.test(task?.id) || task.archived) throw new Error('Ambiguous HubSpot task response');
+      return { id: task.id };
     },
   };
 }

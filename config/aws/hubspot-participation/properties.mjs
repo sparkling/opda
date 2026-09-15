@@ -18,6 +18,8 @@ const GROUP_CHOICES = [
   ['estate-agency', 'Estate Agency'], ['surveying-and-valuation', 'Surveying and Valuation'],
   ['property-data-services', 'Property Data Services'], ['property-technology', 'Property Technology'],
 ];
+/** Display labels by domain ID, e.g. "Finance and Banking"; the working-group name appends " Working Group". */
+export const WORKING_GROUP_LABELS = Object.freeze(Object.fromEntries(GROUP_CHOICES));
 
 const choices = (entries) => entries.map(([value, label], displayOrder) => ({
   value, label, displayOrder, hidden: false,

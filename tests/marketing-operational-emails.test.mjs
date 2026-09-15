@@ -7,6 +7,7 @@ import { parse, serialize } from 'parse5';
 import { operationalEmails } from '../src/data/marketing/operational-emails.mjs';
 import { compileDomainInvitationTemplate } from '../src/approval-onboarding/domain-templates.mjs';
 import { compileWithdrawalNoticeTemplate } from '../src/approval-onboarding/withdrawal-notice.mjs';
+import { compileAcknowledgementTemplate, workingGroupName } from '../config/aws/hubspot-participation/acknowledgement.mjs';
 import { buildOperationalEmailPreviews, renderOperationalEmail } from '../scripts/marketing/operational-emails.mjs';
 
 const templates = new URL('../docs/templates/', import.meta.url);
@@ -18,11 +19,12 @@ const element = (document, tag) => nodes(document).find((node) => node.tagName =
 const attr = (node, name) => node.attrs?.find((item) => item.name === name)?.value;
 
 function compiled(record) {
-  const name = record.kind === 'invitation' ? 'domain-working-group-approval-invitation-email' : 'participation-access-change-email';
+  const name = record.kind === 'invitation' ? 'domain-working-group-approval-invitation-email'
+    : record.kind === 'application-received' ? 'working-group-application-received-email' : 'participation-access-change-email';
   const shells = { HtmlBody: read(`${name}.html`), TextBody: read(`${name}.txt`) };
-  return record.kind === 'invitation'
-    ? compileDomainInvitationTemplate(record.groupId, shells)
-    : compileWithdrawalNoticeTemplate(record.kind, record.groupId, shells);
+  return record.kind === 'invitation' ? compileDomainInvitationTemplate(record.groupId, shells)
+    : record.kind === 'application-received' ? compileAcknowledgementTemplate(shells)
+      : compileWithdrawalNoticeTemplate(record.kind, record.groupId, shells);
 }
 
 // Independent, deliberately finite oracle: no production renderer helpers are reused.
@@ -31,6 +33,7 @@ function expectedBody(record) {
     .replace(/\{\{#source_folder_url\}\}([\s\S]*?)\{\{\/source_folder_url\}\}/gu, (_, body) => record.access === 'company-folder' ? body : '')
     .replace(/\{\{#teams_only\}\}([\s\S]*?)\{\{\/teams_only\}\}/gu, (_, body) => record.access === 'teams-only' ? body : '')
     .replaceAll('{{display_name}}', 'Alex Morgan')
+    .replaceAll('{{group_name}}', record.kind === 'application-received' ? workingGroupName(record.groupId) : '{{group_name}}')
     .replace(/\{\{(?:group_entry_url|website_login_url|\.)\}\}|\{\{\{\s*pm:unsubscribe\s*\}\}\}/gu, '');
   const document = parse(html);
   for (const node of nodes(document)) {
@@ -40,8 +43,9 @@ function expectedBody(record) {
   return serialize(parse(`${serialize(document)}\n`));
 }
 
-test('the finite catalogue renders all nineteen original-layout operational email variants', () => {
-  assert.equal(operationalEmails.length, 19);
+test('the finite catalogue renders all twenty original-layout operational email variants', () => {
+  assert.equal(operationalEmails.length, 20);
+  assert.equal(operationalEmails.filter((record) => record.kind === 'application-received').length, 1);
   assert.deepEqual(new Set(operationalEmails.filter((record) => record.groupId).map((record) => record.groupId)), new Set(groups));
   assert.equal(operationalEmails.filter((record) => record.kind === 'invitation').length, 12);
   assert.equal(operationalEmails.filter((record) => record.kind === 'group-withdrawn').length, 6);
@@ -58,7 +62,7 @@ test('the finite catalogue renders all nineteen original-layout operational emai
     assert.equal(element(parse(html), 'title').childNodes[0].value, record.subject);
     rendered.add(html);
   }
-  assert.equal(rendered.size, 19);
+  assert.equal(rendered.size, 20);
 });
 
 test('all rendered copy and layout match the pure source compiler apart from the explicit sample treatment', () => {
@@ -86,8 +90,21 @@ test('company-folder and Teams-only samples preserve mutually exclusive authoris
   }
 });
 
+test('the acknowledgement names the group, confirms receipt and review, and promises no outcome or timescale', () => {
+  const [record] = operationalEmails.filter((item) => item.kind === 'application-received');
+  const html = renderOperationalEmail(record);
+  assert.match(html, /Finance and Banking Working Group/u);
+  assert.match(html, /We have received your application/u);
+  assert.match(html, /has been received and will be reviewed/u);
+  assert.match(html, /essential notice confirming that OPDA has received your working-group application/u);
+  // Approval may be mentioned only as a condition, never as an outcome; no timescale at all.
+  assert.match(html, /If your application is approved/u);
+  assert.doesNotMatch(html, /you (?:will be|are|have been) approved|has been approved|within \d|working days|business days|shortly|soon\b/iu);
+  assert.doesNotMatch(html, /Stop receiving Smart Property Data Trust Framework working-group emails/u);
+});
+
 test('group and website notices retain the distinct scope and essential-notice wording', () => {
-  for (const record of operationalEmails.filter((item) => item.kind !== 'invitation')) {
+  for (const record of operationalEmails.filter((item) => !['invitation', 'application-received'].includes(item.kind))) {
     const html = renderOperationalEmail(record);
     assert.match(html, /This is an essential notice about a change/u);
     assert.doesNotMatch(html, /Stop receiving Smart Property Data Trust Framework working-group emails/u);

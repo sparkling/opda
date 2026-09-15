@@ -164,7 +164,7 @@ test('identity exports and site nesting preserve signup without the retired S3 b
 
 test('focused approval tests gate infrastructure deployment and are in the repository inventory', () => {
   const workflow = read('.github/workflows/infra.yml');
-  assert.match(workflow, /node --test tests\/hubspot-approval-\*\.test\.mjs tests\/auth-session\.test\.mjs tests\/hubspot-sync\.test\.mjs/);
+  assert.match(workflow, /node --test tests\/hubspot-approval-\*\.test\.mjs tests\/auth-session\.test\.mjs tests\/hubspot-sync\*\.test\.mjs/);
   assert.ok(workflow.indexOf('node --test') < workflow.indexOf('name: Assume deploy role'));
   assert.match(workflow, /cfn-lint config\/aws\/\*\.yaml/);
   assert.match(workflow, /for t in config\/aws\/\*\.yaml; do/);

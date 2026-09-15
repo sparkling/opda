@@ -8,6 +8,7 @@ import { parse, parseFragment, serialize } from 'parse5';
 import { operationalEmails } from '../../src/data/marketing/operational-emails.mjs';
 import { DOMAIN_TEMPLATE_CONTRACTS, compileDomainInvitationTemplate } from '../../src/approval-onboarding/domain-templates.mjs';
 import { compileWithdrawalNoticeTemplate, withdrawalNoticeContract } from '../../src/approval-onboarding/withdrawal-notice.mjs';
+import { ACKNOWLEDGEMENT_CONTRACT, compileAcknowledgementTemplate, workingGroupName } from '../../config/aws/hubspot-participation/acknowledgement.mjs';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const TEMPLATE_DIR = new URL('../../docs/templates/', import.meta.url);
@@ -36,7 +37,9 @@ function catalogueSnapshot() {
   expected.push(...GROUPS.map((groupId) => ({ id: `${groupId}-approval-withdrawn`, kind: 'group-withdrawn', groupId,
     subject: withdrawalNoticeContract('group-withdrawn', groupId).subject })));
   expected.push({ id: 'website-login-disabled', kind: 'website-disabled', subject: withdrawalNoticeContract('website-disabled').subject });
-  requireSample(Array.isArray(operationalEmails) && operationalEmails.length === 19, 'catalogue must contain exactly nineteen samples');
+  expected.push({ id: 'working-group-application-received', kind: 'application-received', groupId: 'finance-and-banking',
+    subject: renderSubject(ACKNOWLEDGEMENT_CONTRACT.subject, 'finance-and-banking') });
+  requireSample(Array.isArray(operationalEmails) && operationalEmails.length === 20, 'catalogue must contain exactly twenty samples');
   const snapshot = new Map();
   for (const record of operationalEmails) {
     plainObject(record, RECORD_KEYS);
@@ -61,13 +64,17 @@ function knownRecord(record) {
   return canonical;
 }
 
+// The acknowledgement is one template whose subject and body name the group by variable.
+function renderSubject(subject, groupId) { return subject.replaceAll('{{group_name}}', workingGroupName(groupId)); }
+
 // Only the scalar slots and two non-nested sections in the exact reviewed shells.
 // Parse every token before applying visibility, including tokens in the unused branch.
 function renderSlots(source, record) {
   const invitation = record.kind === 'invitation';
+  const acknowledgement = record.kind === 'application-received';
   const expected = invitation
     ? ['display_name', 'group_entry_url', 'website_login_url', '.', 'pm:unsubscribe', '#source_folder_url', '/source_folder_url', '#teams_only', '/teams_only']
-    : ['display_name'];
+    : acknowledgement ? ['display_name', 'group_name'] : ['display_name'];
   const seen = new Map();
   let activeSection = null;
   let visible = true;
@@ -83,7 +90,8 @@ function renderSlots(source, record) {
     const key = match[0].slice(raw ? 3 : 2, raw ? -3 : -2).trim();
     requireSample(expected.includes(key) && raw === (key === 'pm:unsubscribe'), 'unsupported Mustachio slot');
     seen.set(key, (seen.get(key) ?? 0) + 1);
-    requireSample(seen.get(key) === 1, 'duplicate Mustachio slot');
+    // The group name legitimately repeats (eyebrow and footer); every other slot is single-use.
+    requireSample(seen.get(key) === 1 || key === 'group_name', 'duplicate Mustachio slot');
     if (key.startsWith('#')) {
       requireSample(activeSection === null, 'nested Mustachio sections are not supported');
       activeSection = key.slice(1);
@@ -95,13 +103,14 @@ function renderSlots(source, record) {
     } else {
       requireSample(key === '.' ? activeSection === 'source_folder_url' : activeSection === null, 'Mustachio slot has an unexpected scope');
       if (visible && key === 'display_name') result += 'Alex Morgan';
+      if (visible && key === 'group_name') result += workingGroupName(record.groupId);
       // All URL slots, including the provider unsubscribe slot, resolve to empty
       // inert values. Their attributes are removed by the HTML pass below.
     }
     cursor = match.index + match[0].length;
   }
   append(source.slice(cursor));
-  requireSample(activeSection === null && expected.every((key) => seen.get(key) === 1), 'incomplete Mustachio contract');
+  requireSample(activeSection === null && expected.every((key) => seen.get(key) >= 1), 'incomplete Mustachio contract');
   return result;
 }
 
@@ -166,7 +175,8 @@ function logoDataUri() {
 /** A known catalogue record produces a standalone, fictional, completely inert HTML sample. */
 export function renderOperationalEmail(input) {
   const record = knownRecord(input);
-  const name = record.kind === 'invitation' ? 'domain-working-group-approval-invitation-email' : 'participation-access-change-email';
+  const name = record.kind === 'invitation' ? 'domain-working-group-approval-invitation-email'
+    : record.kind === 'application-received' ? 'working-group-application-received-email' : 'participation-access-change-email';
   const shells = {
     HtmlBody: fs.readFileSync(new URL(`${name}.html`, TEMPLATE_DIR), 'utf8'),
     TextBody: fs.readFileSync(new URL(`${name}.txt`, TEMPLATE_DIR), 'utf8'),
@@ -174,11 +184,13 @@ export function renderOperationalEmail(input) {
   let compiled;
   try {
     compiled = record.kind === 'invitation' ? compileDomainInvitationTemplate(record.groupId, shells)
-      : compileWithdrawalNoticeTemplate(record.kind, record.groupId, shells);
+      : record.kind === 'application-received' ? compileAcknowledgementTemplate(shells)
+        : compileWithdrawalNoticeTemplate(record.kind, record.groupId, shells);
   } catch (error) {
     throw new TypeError(`Invalid operational email sample: source compiler rejected the template (${error.message})`);
   }
-  requireSample(compiled.Subject === record.subject, 'source subject differs from the catalogue');
+  const subject = record.kind === 'application-received' ? renderSubject(compiled.Subject, record.groupId) : compiled.Subject;
+  requireSample(subject === record.subject, 'source subject differs from the catalogue');
   checkedDocument(compiled.HtmlBody); // Validate unused conditional content as well.
   requireSample(!/[<>]/u.test(compiled.TextBody), 'active content in plain-text shell');
   renderSlots(compiled.TextBody, record); // Text remains a reviewed companion, not a public URL dump.

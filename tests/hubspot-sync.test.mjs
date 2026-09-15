@@ -5,6 +5,8 @@ import { createHandler, createWorker, parseSubmissionMessage, RetryLater } from 
 import { createHubSpotClient } from '../config/aws/hubspot-sync/client.mjs';
 import { createStore } from '../config/aws/hubspot-sync/store.mjs';
 
+const logoBase64 = readFileSync(new URL('../docs/templates/assets/opda-email-logo.png', import.meta.url)).toString('base64');
+
 const now = Date.parse('2026-09-08T20:00:00Z');
 const id = '00000000-0000-4000-8000-000000000001';
 const otherId = '00000000-0000-4000-8000-000000000002';
@@ -46,12 +48,22 @@ function setup(overrides = {}) {
   const hubspot = {
     async findContacts(email) { calls.push(['find', email]); return []; },
     async createContact(properties) { calls.push(['create', properties]); return { id: '123', email: properties.email }; },
+    async createReviewTask(task) { calls.push(['task', task]); return { id: '900' }; },
     ...overrides.hubspot,
   };
-  const worker = createWorker({ store, hubspot, now: () => now, newId: () => 'pending-random-id',
+  const postmark = {
+    async sendAcknowledgement(payload, context) {
+      calls.push(['ack', payload.TemplateModel.group_id, payload.To, context.registrationId]);
+      return { status: 'accepted', messageId: `msg-${payload.TemplateModel.group_id}`, submittedAt: new Date(now).toISOString() };
+    },
+    ...overrides.postmark,
+  };
+  const worker = createWorker({ store, hubspot, postmark, logoBase64, now: () => now, newId: () => 'pending-random-id',
     transferNoticeVersion: '2026-09-08', ...overrides.worker });
-  return { items, registrations, calls, store, hubspot, worker };
+  return { items, registrations, calls, store, hubspot, postmark, worker };
 }
+const acks = f => f.calls.filter(([action]) => action === 'ack');
+const ackRecords = f => [...f.items.values()].filter(item => item.pk.startsWith('SYNC#ACK#'));
 
 test('validates a reference-only event and rejects queue, kind, identifier and table injection', () => {
   assert.equal(parseSubmissionMessage(message(), queueArn), id);
@@ -81,15 +93,118 @@ test('creates only a lossless pending contact and makes duplicate deliveries ine
   assert.equal(f.registrations.get(id).fullName, registration().fullName);
 });
 
-test('existing contacts and repeated anonymous applications stay in one AWS review backlog without CRM writes', async () => {
+test('an existing contact gets one review task, never a contact update; repeats add no CRM objects', async () => {
   const f = setup({ hubspot: { async findContacts() { return ['345']; } } });
+  await f.worker(id);
   await f.worker(id);
   await f.worker(otherId);
   assert.equal(f.calls.filter(([action]) => action === 'create').length, 0);
-  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).reason, 'existing-contact');
+  const tasks = f.calls.filter(([action]) => action === 'task');
+  assert.equal(tasks.length, 1);
+  assert.deepEqual(tasks[0][1], { contactIds: ['345'], registrationId: id,
+    requestedGroups: ['conveyancing', 'finance-and-banking'], dueAt: now });
+  const application = f.items.get(`SYNC#APPLICATION#${id}`);
+  assert.equal(application.reason, 'existing-contact');
+  assert.equal(application.state, 'quarantined');
+  assert.deepEqual(application.candidateContactIds, ['345']);
+  assert.equal(application.reviewTaskId, '900');
   assert.equal(f.items.get(`SYNC#APPLICATION#${otherId}`).reason, 'repeat-application');
+  assert.equal(f.items.get(`SYNC#APPLICATION#${otherId}`).reviewTaskId, undefined);
   assert.equal([...f.items.keys()].filter(key => key.startsWith('SYNC#EMAIL#')).length, 1);
   assert.equal(f.registrations.size, 2);
+});
+
+test('a review task failure keeps a short lease, then retries; a duplicate task beats a silent drop', async () => {
+  let attempts = 0, timestamp = now;
+  const f = setup({ worker: { now: () => timestamp }, hubspot: {
+    async findContacts() { return ['345']; },
+    async createReviewTask() { attempts++; if (attempts === 1) throw new Error('transient'); return { id: '901' }; },
+  } });
+  await assert.rejects(f.worker(id), /transient/);
+  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).state, 'pending');
+  await assert.rejects(f.worker(id), RetryLater);
+  timestamp += 121000;
+  await f.worker(id);
+  assert.equal(attempts, 2);
+  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).reviewTaskId, '901');
+  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).state, 'quarantined');
+});
+
+test('every validated application is acknowledged once per requested group, created or quarantined', async () => {
+  const created = setup();
+  await created.worker(id);
+  await created.worker(id);
+  assert.deepEqual(acks(created).map(([, group, to]) => [group, to]),
+    [['conveyancing', 'synthetic@example.test'], ['finance-and-banking', 'synthetic@example.test']]);
+  assert.deepEqual(ackRecords(created).map(item => [item.pk, item.state, item.messageId]).sort(), [
+    [`SYNC#ACK#${id}#conveyancing`, 'accepted', 'msg-conveyancing'],
+    [`SYNC#ACK#${id}#finance-and-banking`, 'accepted', 'msg-finance-and-banking'],
+  ]);
+  const existing = setup({ hubspot: { async findContacts() { return ['345']; } } });
+  await existing.worker(id);
+  assert.equal(acks(existing).length, 2);
+  // A repeat from the same email is AWS evidence only: no second acknowledgement, no task.
+  await existing.worker(otherId);
+  assert.equal(acks(existing).length, 2);
+  assert.ok(!ackRecords(existing).some(item => item.pk.includes(otherId)));
+});
+
+test('suppressed, invalid or stale sources are never acknowledged', async () => {
+  for (const mutate of [r => { r.expiresAt = now / 1000; }, r => { r.erasedAt = now - 1; },
+    r => { r.workingGroups.push('administrator'); }, r => { r.privacyNoticeVersion = '2026-08-13'; }]) {
+    const f = setup(); mutate(f.registrations.get(id)); await f.worker(id);
+    assert.equal(acks(f).length, 0);
+  }
+  const suppressed = setup();
+  suppressed.items.set(`SYNC#SUPPRESS#REGISTRATION#${id}`, { pk: `SYNC#SUPPRESS#REGISTRATION#${id}`, revision: 1 });
+  await suppressed.worker(id);
+  assert.equal(acks(suppressed).length, 0);
+  // Acknowledgements already sent are not affected by a later erasure, and none are added.
+  const erased = setup();
+  await erased.worker(id);
+  erased.registrations.get(id).erasedAt = now;
+  await erased.worker(id);
+  assert.equal(acks(erased).length, 2);
+});
+
+test('acknowledgement outcomes are durable: rejection is final, throttling waits, an interrupted send is never resent', async () => {
+  let timestamp = now;
+  const rejected = setup({ worker: { now: () => timestamp }, postmark: { async sendAcknowledgement(payload) {
+    return payload.TemplateModel.group_id === 'conveyancing' ? { status: 'rejected', errorCode: 406 }
+      : { status: 'accepted', messageId: 'm', submittedAt: new Date(now).toISOString() };
+  } } });
+  await rejected.worker(id);
+  await rejected.worker(id);
+  const states = Object.fromEntries(ackRecords(rejected).map(item => [item.groupId, item.state]));
+  assert.deepEqual(states, { 'finance-and-banking': 'accepted', conveyancing: 'rejected' });
+
+  let sends = 0;
+  const throttled = setup({ worker: { now: () => timestamp }, postmark: { async sendAcknowledgement() {
+    sends++; if (sends === 1) throw new RetryLater(600); return { status: 'accepted', messageId: 'm', submittedAt: new Date(now).toISOString() };
+  } } });
+  // The first 429 propagates so SQS delays the message; the durable record holds the deadline.
+  await assert.rejects(throttled.worker(id), error => error instanceof RetryLater && error.seconds === 600);
+  assert.equal(sends, 1);
+  await assert.rejects(throttled.worker(id), error => error instanceof RetryLater);
+  assert.equal(sends, 1, 'no send inside the Retry-After window');
+  timestamp += 601000;
+  await throttled.worker(id);
+  assert.equal(sends, 3);
+  assert.ok(ackRecords(throttled).every(item => item.state === 'accepted'));
+
+  timestamp = now;
+  const interrupted = setup({ worker: { now: () => timestamp }, postmark: { async sendAcknowledgement() { throw new Error('socket closed'); } } });
+  // Each group's send is leased independently: a transport failure leaves "sending" for redelivery,
+  // and once the lease lapses the outcome is recorded as unknown rather than resent.
+  await assert.rejects(interrupted.worker(id), /socket closed/);
+  await assert.rejects(interrupted.worker(id), RetryLater);
+  timestamp += 121000;
+  await assert.rejects(interrupted.worker(id), /socket closed/);
+  timestamp += 121000;
+  await interrupted.worker(id);
+  await interrupted.worker(id);
+  assert.equal(ackRecords(interrupted).length, 2);
+  assert.ok(ackRecords(interrupted).every(item => item.state === 'unknown'), 'dispatch may have happened; never resend');
 });
 
 test('never updates an already-created contact from a resubmission', async () => {
@@ -216,6 +331,12 @@ test('DynamoDB adapter uses strong original reads, conditional sync writes and a
   assert.match(transaction[0].Update.ConditionExpression, /:limit/);
 });
 
+test('the packaged acknowledgement logo is byte-identical to the reviewed email asset', () => {
+  const reviewed = readFileSync(new URL('../docs/templates/assets/opda-email-logo.png', import.meta.url));
+  const packaged = readFileSync(new URL('../config/aws/hubspot-sync/opda-email-logo.png', import.meta.url));
+  assert.ok(reviewed.equals(packaged));
+});
+
 test('infrastructure uses a dedicated SNS-filtered queue and cannot write eligibility or call Cognito', () => {
   const template = readFileSync(new URL('../config/aws/hubspot-sync-stack.yaml', import.meta.url), 'utf8');
   assert.match(template, /eventType: \['working-group-interest\.received\.v1'\]/);
@@ -225,6 +346,11 @@ test('infrastructure uses a dedicated SNS-filtered queue and cannot write eligib
   assert.doesNotMatch(template, /cognito-idp:|opda-public-submission-events\n/);
   assert.match(template, /maxReceiveCount: 8/);
   assert.match(template, /BridgeSecretArn:/);
+  // The acknowledgement reads the shared Postmark credential; the sync role gets no other new grant.
+  assert.match(template, /secret:opda\/postmark\/participation-onboarding-\?\?\?\?\?\?'/);
+  assert.match(template, /POSTMARK_SECRET_ARN: !Sub 'arn:\$\{AWS::Partition\}:secretsmanager:\$\{AWS::Region\}:\$\{AWS::AccountId\}:secret:opda\/postmark\/participation-onboarding-U02V9v'/);
+  assert.equal((template.match(/secretsmanager:GetSecretValue/g) ?? []).length, 2);
+  assert.doesNotMatch(template, /ses:|sns:Publish|dynamodb:DeleteItem|dynamodb:Scan/);
   // SQS rejects multiple resource ARNs in a statement, even when the
   // CloudFormation QueuePolicy is attached to both queues.
   const queuePolicies = template.slice(template.indexOf('  QueuePolicy:'), template.indexOf('  SignupSubscription:'));
@@ -233,4 +359,31 @@ test('infrastructure uses a dedicated SNS-filtered queue and cannot write eligib
   assert.match(queuePolicies, /Queues: \[!Ref FailureQueue\]/);
   assert.equal((queuePolicies.match(/aws:SourceArn/g) ?? []).length, 2);
   assert.equal((queuePolicies.match(/aws:SecureTransport/g) ?? []).length, 2);
+});
+
+test('API adapter creates one review task bound to the matched contacts and refuses free text', async () => {
+  const calls = [];
+  const client = createHubSpotClient({ getSecret: async () => secret, fetch: async (url, options) => {
+    calls.push([url, options]);
+    return calls.length === 1 ? response(info) : response({ id: '519916213445', properties: { hs_task_subject: 'x' } }, 201);
+  } });
+  const task = await client.createReviewTask({ contactIds: ['345'], registrationId: id,
+    requestedGroups: ['conveyancing', 'finance-and-banking'], dueAt: now });
+  assert.deepEqual(task, { id: '519916213445' });
+  const [url, options] = calls[1];
+  assert.equal(url, 'https://api.hubapi.com/crm/v3/objects/tasks');
+  const body = JSON.parse(options.body);
+  assert.equal(body.properties.hs_task_status, 'NOT_STARTED');
+  assert.equal(body.properties.hs_task_type, 'TODO');
+  assert.equal(body.properties.hs_timestamp, new Date(now).toISOString());
+  assert.match(body.properties.hs_task_subject, /existing contact/i);
+  assert.match(body.properties.hs_task_body, /Finance and Banking/);
+  assert.match(body.properties.hs_task_body, new RegExp(id));
+  assert.deepEqual(body.associations, [{ to: { id: '345' }, types: [{ associationCategory: 'HUBSPOT_DEFINED', associationTypeId: 204 }] }]);
+  // Applicant free text never reaches the CRM task; only finite group labels and the reference.
+  assert.doesNotMatch(options.body, /Synthetic|Example organisation|perspective/);
+  for (const bad of [{ contactIds: [] }, { contactIds: ['x'] }, { requestedGroups: ['administrator'] }, { registrationId: 'not-a-uuid' }]) {
+    await assert.rejects(client.createReviewTask({ contactIds: ['345'], registrationId: id,
+      requestedGroups: ['conveyancing'], dueAt: now, ...bad }), TypeError);
+  }
 });

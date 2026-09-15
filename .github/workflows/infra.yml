@@ -30,7 +30,7 @@ on:
       - 'scripts/package-comments-api.mjs'
       - 'tests/comments-*.test.mjs'
       - 'tests/aws-working-group-interest-infrastructure.test.mjs'
-      - 'tests/hubspot-sync.test.mjs'
+      - 'tests/hubspot-sync*.test.mjs'
       - 'src/approval-onboarding/**'
       - 'src/agents/working-group-inbox/domain.mjs'
       - 'scripts/package-approval-onboarding.mjs'
@@ -69,7 +69,7 @@ jobs:
           esbuild@0.28.2 @aws-sdk/client-dynamodb@3.1127.0
 
       - name: Test participant approval boundary
-        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs tests/comments-*.test.mjs tests/auth-workspace*.test.mjs
+        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync*.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs tests/comments-*.test.mjs tests/auth-workspace*.test.mjs
 
       - name: Package bounded onboarding runtime locally
         run: node scripts/package-approval-onboarding.mjs
