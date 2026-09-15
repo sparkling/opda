@@ -106,11 +106,15 @@ export function fingerprintAcknowledgementTemplate(template) {
   return createHash('sha256').update(JSON.stringify([Alias, Subject, HtmlBody, TextBody, TemplateType, LayoutTemplate])).digest('hex');
 }
 
+/** Idempotent: accepts the raw pin or an already-built pin, but never a pin for another contract. */
 export function acknowledgementPin(pin) {
-  object(pin, ['serverId', 'templateId', 'fingerprint'], 'pin');
+  object(pin, ['serverId', 'templateId', 'fingerprint', ...Object.keys(ACKNOWLEDGEMENT_CONTRACT)], 'pin');
+  for (const key of Object.keys(ACKNOWLEDGEMENT_CONTRACT)) {
+    requireValue(!Object.hasOwn(pin, key) || pin[key] === ACKNOWLEDGEMENT_CONTRACT[key], 'pin belongs to another template contract');
+  }
   requireValue([pin.serverId, pin.templateId].every(value => Number.isSafeInteger(value) && value > 0), 'positive server and template IDs required');
   requireValue(typeof pin.fingerprint === 'string' && DIGEST.test(pin.fingerprint), 'SHA-256 template pin required');
-  return Object.freeze({ ...ACKNOWLEDGEMENT_CONTRACT, ...pin });
+  return Object.freeze({ ...ACKNOWLEDGEMENT_CONTRACT, serverId: pin.serverId, templateId: pin.templateId, fingerprint: pin.fingerprint });
 }
 
 /** input: { displayName, email, groupId }; options: { logoBase64 }. Never log. */

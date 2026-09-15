@@ -3,6 +3,8 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { createPostmarkClient } from '../config/aws/hubspot-sync/postmark.mjs';
 import { RetryLater } from '../config/aws/hubspot-sync/errors.mjs';
+import { ACKNOWLEDGEMENT_PIN } from '../config/aws/hubspot-sync/settings.mjs';
+import { acknowledgementPin } from '../config/aws/hubspot-participation/acknowledgement.mjs';
 import {
   buildAcknowledgementPayload, compileAcknowledgementTemplate, fingerprintAcknowledgementTemplate,
 } from '../config/aws/hubspot-participation/acknowledgement.mjs';
@@ -85,4 +87,18 @@ test('provider rejection is final; 429 waits for Retry-After; 5xx after dispatch
   const outage = client([['/templates/', response(templateRead)], [/suppressions/, response({ Suppressions: [] })],
     ['/email/withTemplate', response({ ErrorCode: 0 }, 503)]]);
   await assert.rejects(outage.client.sendAcknowledgement(payload(), { registrationId: '00000000-0000-4000-8000-000000000001' }), /outcome unknown/);
+});
+
+test('the production pin from settings.mjs constructs the client exactly as the Lambda does', async () => {
+  // Regression: the first live invocation failed because the already-built pin was re-validated as raw.
+  assert.deepEqual(acknowledgementPin(ACKNOWLEDGEMENT_PIN), ACKNOWLEDGEMENT_PIN);
+  assert.throws(() => acknowledgementPin({ ...ACKNOWLEDGEMENT_PIN, alias: 'other-template' }), /another template contract/);
+  const calls = [];
+  const live = createPostmarkClient({ secretArn: 'arn:example', pin: ACKNOWLEDGEMENT_PIN,
+    getSecret: async () => ({ ...secret, serverId: ACKNOWLEDGEMENT_PIN.serverId }),
+    fetch: async (url) => { calls.push(url); return response({ ...templateRead, TemplateId: ACKNOWLEDGEMENT_PIN.templateId,
+      AssociatedServerId: ACKNOWLEDGEMENT_PIN.serverId, HtmlBody: 'x' }); } });
+  // Content drift against the real pin must be refused, proving the pin values were actually applied.
+  await assert.rejects(live.sendAcknowledgement(payload(), { registrationId: '00000000-0000-4000-8000-000000000001' }), /template verification failed/);
+  assert.ok(calls[0].endsWith(`/templates/${ACKNOWLEDGEMENT_PIN.alias}`));
 });
