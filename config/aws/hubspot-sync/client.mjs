@@ -11,7 +11,7 @@ const TASK_TO_CONTACT = 204;
 const DOMAIN_PROPERTY_TO_GROUP = new Map(Object.entries(DOMAIN_REVIEW_PROPERTIES).map(([group, property]) => [property, group]));
 const WRITABLE = new Set(['email', 'company', 'opda_full_name', 'opda_role_or_expertise',
   'opda_requested_working_groups', 'opda_contribution_preferences', 'opda_relevant_perspective',
-  'opda_review_status', 'opda_enrolment_status', 'opda_active', ...DOMAIN_PROPERTY_TO_GROUP.keys()]);
+  'opda_enrolment_status', 'opda_active', ...DOMAIN_PROPERTY_TO_GROUP.keys()]);
 
 async function readSecret(secretArn) {
   const aws = await import('@aws-sdk/client-secrets-manager');
@@ -77,7 +77,7 @@ export function createHubSpotClient(overrides = {}) {
     },
     async createContact(properties) {
       if (!properties || Object.keys(properties).some(key => !WRITABLE.has(key))
-        || properties.opda_review_status !== 'received' || properties.opda_enrolment_status !== 'not_invited'
+        || properties.opda_enrolment_status !== 'not_invited'
         || properties.opda_active !== 'false') throw new TypeError('Only pending applicant creation is allowed');
       // Domain dropdowns may only be marked Requested, and only for groups the applicant selected.
       const requested = new Set(String(properties.opda_requested_working_groups ?? '').split(';').filter(Boolean));

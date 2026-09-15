@@ -11,7 +11,7 @@ export const CONTACT_PROPERTIES = Object.freeze([
   'email', 'firstname', 'lastname', 'company', 'jobtitle',
   'opda_full_name', 'opda_role_or_expertise', 'opda_requested_working_groups',
   'opda_contribution_preferences', 'opda_relevant_perspective',
-  'opda_review_status', 'opda_enrolment_status', 'opda_active',
+  'opda_enrolment_status', 'opda_active',
   ...Object.values(DOMAIN_REVIEW_PROPERTIES),
 ]);
 export const emailKey = email => `EMAIL#${createHash('sha256').update(email.trim().toLowerCase()).digest('hex')}`;

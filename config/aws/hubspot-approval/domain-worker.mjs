@@ -1,16 +1,12 @@
-import { CONTACT_ID, contactProfile, digest, ordinaryAccess, reviewDecision } from './domain.mjs';
+import { CONTACT_ID, contactProfile, digest, ordinaryAccess } from './domain.mjs';
 import { domainReviewDecisions } from './domain-reviews.mjs';
 import { DOMAIN_POLICY } from './domain-onboarding.mjs';
 import { onboardingHint } from './onboarding.mjs';
 import { FINANCE_DOMAIN_ID, financeImportDecisions } from './finance-import.mjs';
 
-const NEGATIVE = new Set(['under_review', 'rejected', 'withdrawn']);
 const approved = decision => decision?.trusted && decision.status === 'approved'
   && decision.groupSnapshot?.snapshotStatus === 'approved'
   && decision.groupSnapshot.groups.length === 1 && decision.groupSnapshot.groups[0] === decision.domainId;
-const globalDenial = decision => decision && (!decision.trusted || NEGATIVE.has(decision.status));
-const bounded = value => typeof value === 'string' ? value.slice(0, 2048)
-  : typeof value === 'number' || value === null ? value : typeof value;
 
 async function notifyReferences(operationIds, notify) {
   if (!notify) return { notified: 0 };
@@ -38,35 +34,9 @@ export async function relayPendingOnboarding(store, notify) {
   finally { if (!Array.isArray(page)) await store.advanceOnboardingRelay(page); }
 }
 
-function globalReview(contact, binding, cutover, now) {
-  if (!contact || contact.archived) return null;
-  const imported = financeImportDecisions(contact, binding, { now }).globalDecision;
-  if (imported) return imported;
-  const importedExpected = Object.hasOwn(binding ?? {}, 'financeRosterImport');
-  const value = contact.properties?.opda_review_status;
-  const history = contact.propertiesWithHistory?.opda_review_status;
-  const evidence = Array.isArray(history) ? [history.length, ...history.slice(0, 2001)
-    .map(item => ['value', 'timestamp', 'sourceType', 'sourceId', 'updatedByUserId'].map(key => bounded(item?.[key])))]
-    : bounded(history);
-  const deny = () => ({ id: digest(JSON.stringify([contact.id, 'global-review-denial', bounded(value), evidence])),
-    at: now, actor: null, trusted: false, status: 'under_review', reason: 'untrusted-global-review-change' });
-  let decision;
-  try { decision = reviewDecision(contact, { cutover, now }); } catch { return deny(); }
-  if (decision?.at > now) return deny(); // Never persist a future revocation/approval ordering watermark.
-  // The anonymous intake writes Received. It is not an administrator's hold and
-  // must not suppress an independently reviewed domain. It cannot clear a hold.
-  if (!importedExpected && value === 'received' && Array.isArray(history) && history.length && history.length <= 2000
-    && history.every(item => item?.value === 'received' && item.sourceType === 'INTEGRATION')) return null;
-  if (value === 'received' && Array.isArray(history) && history.some(item => NEGATIVE.has(item?.value))) return deny();
-  if (decision) return decision;
-  // A current explicit denial is not ignored just because its provenance or
-  // timestamp is missing/older than this deployment's activation boundary.
-  return NEGATIVE.has(value) || importedExpected ? deny() : null;
-}
-
 function domainDecisions(contact, binding, cutover, now) {
   const decisions = domainReviewDecisions(contact, { cutover, now });
-  const imported = financeImportDecisions(contact, binding, { now }).domainDecision;
+  const imported = financeImportDecisions(contact, binding, { now });
   if (imported) {
     const index = decisions.findIndex(decision => decision.domainId === FINANCE_DOMAIN_ID);
     if (index === -1) decisions.push(imported); else decisions[index] = imported;
@@ -121,9 +91,10 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
   async function processContact(contactId) {
     if (typeof contactId !== 'string' || !CONTACT_ID.test(contactId)) throw new Error('Invalid contact reference');
     let contact = await hubspot.getContact(contactId), binding = await store.binding(contactId);
-    let at = clock(), globalDecision = globalReview(contact, binding, domainCutover, at);
+    let at = clock();
     let decisions = domainDecisions(contact, binding, domainCutover, at);
-    const mayReserve = () => !globalDenial(globalDecision) && decisions.some(approved);
+    // Approval and revocation have exactly one control surface: the domain dropdowns.
+    const mayReserve = () => decisions.some(approved);
     if (!binding) {
       if (!mayReserve()) return;
       binding = await store.reserve(contactProfile(contact), at);
@@ -136,7 +107,6 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
       binding = await store.attach(binding, await identity.ensure(binding), clock());
       contact = await hubspot.getContact(contactId); // Creation never turns an earlier observation into a grant.
       at = clock();
-      globalDecision = globalReview(contact, binding, domainCutover, at);
       decisions = domainDecisions(contact, binding, domainCutover, at);
     }
     let account = await store.account(binding);
@@ -144,7 +114,7 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
     const newlyHeld = holdReason && (binding.holdReason !== holdReason || account.active
       || Object.values(account.domainApprovals ?? {}).some(state => state.status === 'approved'));
     ({ binding, account } = await store.applyDomains(binding, account, holdReason ? [] : decisions, at,
-      { globalDecision, ...(holdReason ? { holdReason } : {}) }));
+      holdReason ? { holdReason } : {}));
     const enabled = ordinaryAccess(account, clock());
     // External suspension may already make ordinaryAccess false before this
     // worker sees it. Still disable Cognito even if that did not advance a version.
@@ -175,15 +145,13 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
     for (const contact of contacts) {
       const binding = maps.get(contact.id), account = rows.get(contact.id);
       try {
-        const global = globalReview(contact, binding, domainCutover, at);
         const decisions = domainDecisions(contact, binding, domainCutover, at);
         if (!binding && !account) {
-          if (!globalDenial(global) && decisions.some(approved)) pending.add(contact.id);
+          if (decisions.some(approved)) pending.add(contact.id);
           continue;
         }
         if (!binding || !account || account.approvalPolicy !== DOMAIN_POLICY || binding.domainMigrationPending
-          || decisions.some(decision => changedDecision(decision, binding))
-          || global && global.id !== binding.domainGlobalDecisionId) pending.add(contact.id);
+          || decisions.some(decision => changedDecision(decision, binding))) pending.add(contact.id);
       } catch { pending.add(contact.id); } // One bad contact must not suppress other withdrawals.
     }
     for (const account of accounts) {

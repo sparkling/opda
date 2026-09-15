@@ -27,7 +27,7 @@ test('a complete inventory must contain valid distinct contact identifiers', () 
   assert.throws(() => planApprovedContacts(null), /Invalid/);
 });
 test('profile fields survive without converting requested groups or CRM statuses into grants', () => {
-  const c = contact(); c.properties.opda_active = 'true'; c.properties.opda_review_status = 'approved';
+  const c = contact(); c.properties.opda_active = 'true'; c.properties.opda_review_conveyancing = 'approved';
   const plan = planApprovedContacts([c]);
   const digest = snapshotDigest(plan);
   const p = initialParticipant(plan.approved[0], { participantId: 'participant', cognitoSub: 'subject', importedAt: 1788892000000, digest });

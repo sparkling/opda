@@ -47,7 +47,7 @@ function validateSource(record, now) {
     opda_requested_working_groups: requested,
     opda_contribution_preferences: selection(record.contributions, 'contributions', CONTRIBUTIONS),
     opda_relevant_perspective: text(record.relevantPerspective, 'relevantPerspective', 0, 600, true),
-    opda_review_status: 'received', opda_enrolment_status: 'not_invited', opda_active: 'false',
+    opda_enrolment_status: 'not_invited', opda_active: 'false',
     // Mark each requested domain as Requested so staff see what awaits a decision.
     // This is intake evidence: the approval worker treats it as no decision.
     ...Object.fromEntries(requested.split(';').map((groupId) => [DOMAIN_REVIEW_PROPERTIES[groupId], 'received'])),

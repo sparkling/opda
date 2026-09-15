@@ -24,63 +24,6 @@ export function contactProfile(contact) {
   };
 }
 
-function latest(history, before = Infinity) {
-  if (!Array.isArray(history) || !history.length || history.length > 2000
-    || history.some(item => !item || typeof item !== 'object' || Array.isArray(item)
-      || typeof item.timestamp !== 'string')) return null;
-  const sorted = history.map(item => ({ ...item, at: Date.parse(item.timestamp) })).sort((a, b) => b.at - a.at);
-  if (sorted.some(item => !Number.isSafeInteger(item.at) || item.at < 0)) return null;
-  const current = sorted.find(item => item.at <= before);
-  if (!current || sorted.some(item => item.at === current.at && ['value', 'sourceType', 'sourceId', 'updatedByUserId']
-    .some(key => item[key] !== current[key]))) return null;
-  return current;
-}
-
-/** A checkbox edit is evidence to review, not a later expansion of an approval. */
-export function approvedGroupSnapshot(contact, decision) {
-  const failed = reason => ({ snapshotStatus: 'review_required', groups: [],
-    groupDigest: digest('[]'), groupsAt: null, reason });
-  if (!decision?.trusted || decision.status !== 'approved' || !Number.isSafeInteger(decision.at)) {
-    return failed('manual-approval-required');
-  }
-  const history = contact?.propertiesWithHistory?.opda_requested_working_groups;
-  const current = latest(history), selected = latest(history, decision.at);
-  if (!current || !selected) return failed('group-history-missing-or-ambiguous');
-  if (current.value !== contact?.properties?.opda_requested_working_groups) return failed('group-history-inconsistent');
-  if (typeof selected.value !== 'string' || selected.value.length > 1024) return failed('group-selection-invalid');
-  const values = selected.value === '' ? [] : selected.value.split(';');
-  if (values.length > APPROVED_GROUPS.length || new Set(values).size !== values.length
-    || values.some(value => !APPROVED_GROUPS.includes(value))) return failed('group-selection-invalid');
-  const groups = APPROVED_GROUPS.filter(group => values.includes(group));
-  return { snapshotStatus: groups.length ? 'approved' : 'empty', groups,
-    groupDigest: digest(JSON.stringify(groups)), groupsAt: selected.at,
-    reason: groups.length ? 'reviewed-group-selection' : 'empty-group-selection' };
-}
-
-/** Only a current manual CRM edit is approval authority. Webhook values are not. */
-export function reviewDecision(contact, { cutover, now = Date.now() }) {
-  if (!Number.isFinite(cutover) || !Number.isSafeInteger(now)) throw new Error('Review policy unavailable');
-  if (!contact || contact.archived) return null;
-  const history = latest(contact.propertiesWithHistory?.opda_review_status);
-  if (!history || history.at < cutover) return null; // Preserve the frozen historical import.
-  if (history.at > now + 60000) throw new Error('Review clock mismatch');
-  const sourceActor = /^userId:(\d+)$/.exec(String(history.sourceId ?? ''))?.[1];
-  const actor = history.updatedByUserId ? String(history.updatedByUserId) : sourceActor;
-  const status = contact.properties?.opda_review_status;
-  const trusted = history.sourceType === 'CRM_UI' && CONTACT_ID.test(actor ?? '')
-    && (!sourceActor || sourceActor === actor) && REVIEW.has(status) && history.value === status;
-  const id = digest(JSON.stringify([contact.id, status, history.at, history.sourceType, actor ?? null]));
-  return { id, at: history.at, actor: actor ?? null, status: trusted ? status : 'under_review',
-    reason: trusted ? 'hubspot-manual-review' : 'untrusted-review-change', trusted,
-  };
-}
-
-export function emailPredatesApproval(contact, decision) {
-  const email = latest(contact.propertiesWithHistory?.email);
-  return Boolean(email && email.at <= decision.at
-    && String(email.value).trim().toLowerCase() === String(contact.properties?.email).trim().toLowerCase());
-}
-
 export function ordinaryAccess(account, now) {
   return account?.reviewStatus === 'approved' && account.active === true && account.suspended === false
     && !account.erasedAt && !account.deletedAt && (!account.expiresAt || account.expiresAt > Math.floor(now / 1000))

@@ -9,14 +9,15 @@ const NOW = Date.parse('2026-09-09T16:00:00Z'), CUTOVER = NOW - 600000;
 const A = 'finance-and-banking', B = 'conveyancing';
 const entry = (value, at = NOW - 1000, patch = {}) => ({ value,
   timestamp: new Date(at).toISOString(), sourceType: 'CRM_UI', sourceId: 'userId:42', updatedByUserId: 42, ...patch });
-function contact(reviews = { [A]: 'approved' }, global = 'received') {
+// `legacy` plants a value in the retired account-wide field, which some contacts
+// still carry; the worker must treat it as if it were not there.
+function contact(reviews = { [A]: 'approved' }, legacy = null) {
   const result = { id: '123', properties: { email: 'synthetic@example.test', opda_full_name: 'Synthetic Example',
-    opda_requested_working_groups: `${A};${B}`, opda_review_status: global,
+    opda_requested_working_groups: `${A};${B}`, ...(legacy ? { opda_review_status: legacy } : {}),
     opda_active: 'false', opda_enrolment_status: 'not_invited' }, propertiesWithHistory: {
     email: [entry('synthetic@example.test', NOW - 90000)],
     opda_requested_working_groups: [entry(`${A};${B}`, NOW - 80000)],
-    opda_review_status: [entry(global, NOW - 70000, global === 'received'
-      ? { sourceType: 'INTEGRATION', sourceId: 'app', updatedByUserId: undefined } : {})],
+    ...(legacy ? { opda_review_status: [entry(legacy, NOW - 70000)] } : {}),
   } };
   for (const [id, status] of Object.entries(reviews)) edit(result, DOMAIN_REVIEW_PROPERTIES[id], status);
   return result;
@@ -85,7 +86,7 @@ test('new domain approval reserves and attaches inactive, rereads CRM, and ignor
   assert.equal(f.notifications.length, 1);
 });
 
-test('global Approved or an untrusted domain property edit cannot reserve a new identity', async () => {
+test('a legacy account-wide Approved or an untrusted domain property edit cannot reserve a new identity', async () => {
   for (const value of [contact({}, 'approved'), contact()]) {
     if (value.properties[DOMAIN_REVIEW_PROPERTIES[A]]) {
       value.propertiesWithHistory[DOMAIN_REVIEW_PROPERTIES[A]][0].sourceType = 'INTEGRATION';
@@ -97,12 +98,15 @@ test('global Approved or an untrusted domain property edit cannot reserve a new 
   }
 });
 
-test('even slightly future global review evidence cannot provision or poison a later withdrawal', async () => {
-  const value = contact(); edit(value, 'opda_review_status', 'approved', NOW + 1);
-  const f = fixture({ existing: false, crm: value });
-  await f.worker.processContact('123');
-  assert.equal(f.calls.includes('reserve'), false);
-  assert.equal(f.calls.includes('create-suppressed'), false);
+test('a legacy account-wide value still on a contact neither grants nor blocks any domain', async () => {
+  // Withdrawn/Rejected there used to veto every group; Approved there used to be required. Neither holds now.
+  for (const legacy of ['withdrawn', 'rejected', 'under_review', 'approved', 'received']) {
+    const f = fixture({ existing: false, crm: contact({ [A]: 'approved' }, legacy) });
+    await f.worker.processContact('123');
+    assert.equal(f.row().active, true, legacy);
+    assert.equal(f.row().domainApprovals[A].status, 'approved', legacy);
+    assert.equal(f.calls.includes('enable'), true, legacy);
+  }
 });
 
 test('withdrawal during provisioning cannot turn a stale approval into access or an invitation', async () => {
@@ -177,31 +181,33 @@ test('clearing a previously managed field and losing its history denies only tha
   assert.deepEqual(f.row().approvedDomains, [B]);
 });
 
-test('current global negative status blocks all domains even with missing or pre-cutover history', async () => {
-  for (const mode of ['missing', 'old']) {
+test('a later edit to the retired account-wide field, trusted or not, changes nothing', async () => {
+  for (const mode of ['missing', 'old', 'current']) {
     const f = fixture(); await f.worker.processContact('123');
+    assert.equal(f.row().active, true);
     f.crm.properties.opda_review_status = 'withdrawn';
-    f.crm.propertiesWithHistory.opda_review_status = mode === 'missing' ? [] : [entry('withdrawn', CUTOVER - 1)];
+    f.crm.propertiesWithHistory.opda_review_status = mode === 'missing' ? [] : [entry('withdrawn', mode === 'old' ? CUTOVER - 1 : NOW + 500)];
+    const transactions = f.transactions?.length;
     f.time(NOW + 1000); await f.worker.processContact('123');
-    assert.equal(f.row().active, false);
-    assert.equal(f.row().domainApprovals[A].status, 'withdrawn');
-    assert.equal(f.calls.includes('disable'), true);
+    assert.equal(f.row().active, true, mode);
+    assert.equal(f.row().domainApprovals[A].status, 'approved', mode);
+    assert.equal(f.calls.includes('disable'), false, mode);
+    if (transactions !== undefined) assert.equal(f.transactions.length, transactions, 'no write for an inert field');
   }
 });
 
-test('Received is harmless initially but cannot clear a previous global hold', async () => {
+test('the domain dropdown is the only revocation surface: withdraw disables, re-approve restores', async () => {
   const f = fixture(); await f.worker.processContact('123');
-  edit(f.crm, 'opda_review_status', 'withdrawn', NOW + 1000); f.time(NOW + 2000);
-  await f.worker.processContact('123');
-  edit(f.crm, 'opda_review_status', 'received', NOW + 3000,
-    { sourceType: 'INTEGRATION', sourceId: 'app', updatedByUserId: undefined });
-  edit(f.crm, DOMAIN_REVIEW_PROPERTIES[A], 'approved', NOW + 4000); f.time(NOW + 5000);
+  assert.equal(f.row().active, true);
+  edit(f.crm, DOMAIN_REVIEW_PROPERTIES[A], 'withdrawn', NOW + 1000); f.time(NOW + 2000);
   await f.worker.processContact('123');
   assert.equal(f.row().active, false);
-  edit(f.crm, 'opda_review_status', 'approved', NOW + 6000);
-  edit(f.crm, DOMAIN_REVIEW_PROPERTIES[A], 'approved', NOW + 7000); f.time(NOW + 8000);
+  assert.equal(f.row().domainApprovals[A].status, 'withdrawn');
+  assert.equal(f.calls.includes('disable'), true);
+  edit(f.crm, DOMAIN_REVIEW_PROPERTIES[A], 'approved', NOW + 3000); f.time(NOW + 4000);
   await f.worker.processContact('123');
   assert.equal(f.row().active, true);
+  assert.equal(f.row().domainApprovals[A].status, 'approved');
 });
 
 test('historically approved website-only imports lose eligibility without receiving a domain invitation', async () => {
@@ -267,7 +273,9 @@ test('a failed Cognito disable after external suspension is durably retried with
 test('one failed queue notification does not hide another domain revocation', async () => {
   const f = fixture({ crm: contact({ [A]: 'approved', [B]: 'approved' }) });
   await f.worker.processContact('123');
-  edit(f.crm, 'opda_review_status', 'withdrawn', NOW + 1000);
+  // Two independent withdrawals, one per domain: there is no single field that revokes both.
+  edit(f.crm, DOMAIN_REVIEW_PROPERTIES[A], 'withdrawn', NOW + 1000);
+  edit(f.crm, DOMAIN_REVIEW_PROPERTIES[B], 'withdrawn', NOW + 1000);
   const attempted = [];
   const worker = createWorker({ store: f.store, hubspot: f.hubspot, identity: f.identity,
     domainCutover: CUTOVER, now: () => NOW + 2000,

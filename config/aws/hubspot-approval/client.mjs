@@ -21,17 +21,15 @@ function validateContact(contact, expectedId) {
     || (expectedId !== undefined && contact.id !== expectedId) || !object(contact.properties)) fail();
   if (contact.propertiesWithHistory !== undefined && !object(contact.propertiesWithHistory)) fail();
   // Domain and interest history is reviewed independently: a malformed domain
-  // must not hide another domain's withdrawal or an account-wide hold.
-  for (const name of ['opda_review_status', 'email']) {
-    const history = contact.propertiesWithHistory?.[name];
-    if (history !== undefined && !Array.isArray(history)) fail();
-  }
+  // must not hide another domain's withdrawal.
+  const emailHistory = contact.propertiesWithHistory?.email;
+  if (emailHistory !== undefined && !Array.isArray(emailHistory)) fail();
   return contact;
 }
 
 function readQuery() {
   return new URLSearchParams({ properties: CONTACT_PROPERTIES.join(','),
-    propertiesWithHistory: ['opda_review_status', 'email', 'opda_requested_working_groups',
+    propertiesWithHistory: ['email', 'opda_requested_working_groups',
       ...Object.values(DOMAIN_REVIEW_PROPERTIES)].join(','), archived: 'false' });
 }
 

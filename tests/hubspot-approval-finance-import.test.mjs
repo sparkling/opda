@@ -19,6 +19,8 @@ const MICROSOFT_ID = '20000000-0000-4000-8000-000000000001';
 const entry = (value, at, patch = {}) => ({ value, timestamp: new Date(at).toISOString(),
   sourceType: 'INTEGRATION', sourceId: 'integration:123', updatedByUserId: null, ...patch });
 
+// The 2026-09-10 receipts hashed the since-retired account-wide review property, so
+// capture still observes it; the live worker derives nothing from it.
 function contact(id = '123') {
   return { id, properties: { email: 'synthetic@example.test', opda_full_name: 'Synthetic Example',
     opda_requested_working_groups: FINANCE, opda_review_status: 'approved',
@@ -53,8 +55,7 @@ function importedState(crm = contact()) {
     domainApprovals: { [FINANCE]: domain }, approvedDomains: [FINANCE], legacyWebsiteApproved: false,
     approvedAt: receipt.domainDecisionAt, approvalId: receipt.domainDecisionId, createdAt: NOW };
   const binding = { ...initial, approvalPolicy: DOMAIN_POLICY, domainApprovals: { [FINANCE]: structuredClone(domain) },
-    domainGlobalDecisionId: receipt.globalDecisionId, holdReason: '', providerAccessVersion: 1,
-    financeRosterImport: receipt };
+    holdReason: '', providerAccessVersion: 1, financeRosterImport: receipt };
   return { receipt, row, binding };
 }
 
@@ -113,10 +114,10 @@ test('capture binds the exact ALL372 Finance observations and keeps Microsoft ev
   assert.equal(receipt.participantId, PARTICIPANT); assert.equal(receipt.cognitoSub, SUB);
   assert.deepEqual(receipt.microsoft, { userId: MICROSOFT_ID, state: 'Accepted', observedAt: NOW - 50000 });
   assert.equal(receipt.enrolmentStatus, undefined); assert.equal(receipt.onboarding, undefined);
-  const decisions = financeImportDecisions(crm, { ...binding, financeRosterImport: receipt }, { now: NOW + 1 });
-  assert.equal(decisions.globalDecision.id, receipt.globalDecisionId);
-  assert.equal(decisions.domainDecision.id, receipt.domainDecisionId);
-  assert.deepEqual(decisions.domainDecision.groupSnapshot.groups, [FINANCE]);
+  const decision = financeImportDecisions(crm, { ...binding, financeRosterImport: receipt }, { now: NOW + 1 });
+  assert.equal(decision.id, receipt.domainDecisionId);
+  assert.equal(decision.domainId, FINANCE);
+  assert.deepEqual(decision.groupSnapshot.groups, [FINANCE]);
 });
 
 test('capture canonicalizes safe HubSpot metadata and freezes a current selection made after the old review', () => {
@@ -137,15 +138,12 @@ test('stored receipts survive DynamoDB map-key reordering without accepting chan
     ? Object.fromEntries(Object.entries(value).reverse().map(([key, item]) => [key, reorder(item)])) : value;
   const f = fixture();
   f.binding().financeRosterImport = reorder(f.receipt);
-  const decisions = financeImportDecisions(f.crm, f.binding(), { now: NOW + 1 });
-  assert.equal(decisions.globalDecision?.id, f.receipt.globalDecisionId);
-  assert.equal(decisions.domainDecision?.id, f.receipt.domainDecisionId);
+  assert.equal(financeImportDecisions(f.crm, f.binding(), { now: NOW + 1 })?.id, f.receipt.domainDecisionId);
   await f.worker.processContact('123');
   assert.equal(f.operations.size, 0); assert.equal(f.notifications.length, 0);
   assert.ok(!f.calls.includes('disable'));
   f.binding().financeRosterImport.microsoft.state = 'PendingAcceptance';
-  assert.deepEqual(financeImportDecisions(f.crm, f.binding(), { now: NOW + 1 }),
-    { globalDecision: null, domainDecision: null });
+  assert.equal(financeImportDecisions(f.crm, f.binding(), { now: NOW + 1 }), null);
 });
 
 test('capture rejects ambiguity, missing authority, mutable identity and unsafe Microsoft data', () => {
@@ -186,7 +184,7 @@ test('changed API reapproval or denial is untrusted and withdraws only the impor
     const f = fixture();
     edit(f.crm, DOMAIN_REVIEW_PROPERTIES[FINANCE], status, NOW + 1000, 'INTEGRATION');
     f.time(NOW + 2000);
-    assert.equal(financeImportDecisions(f.crm, f.binding(), { now: NOW + 2000 }).domainDecision, null);
+    assert.equal(financeImportDecisions(f.crm, f.binding(), { now: NOW + 2000 }), null);
     await f.worker.processContact('123');
     assert.equal(f.row().active, false);
     assert.equal(f.row().domainApprovals[FINANCE].status, 'under_review');
@@ -195,15 +193,18 @@ test('changed API reapproval or denial is untrusted and withdraws only the impor
   }
 });
 
-test('a changed or missing imported global API observation fails closed', async () => {
-  for (const mode of ['reapproval', 'missing']) {
+test('the retired account-wide property, edited, cleared or archived, no longer touches an imported Finance decision', async () => {
+  for (const mode of ['reapproval', 'withdrawn', 'missing']) {
     const f = fixture();
-    if (mode === 'reapproval') edit(f.crm, 'opda_review_status', 'approved', NOW - 1000, 'INTEGRATION');
-    else delete f.crm.propertiesWithHistory.opda_review_status;
+    if (mode === 'missing') {
+      delete f.crm.properties.opda_review_status;
+      delete f.crm.propertiesWithHistory.opda_review_status;
+    } else edit(f.crm, 'opda_review_status', mode === 'reapproval' ? 'approved' : 'withdrawn', NOW + 500, 'CRM_UI');
     f.time(NOW + 1000); await f.worker.processContact('123');
-    assert.equal(f.row().active, false);
-    assert.equal(f.binding().domainGlobalState, 'held');
-    assert.equal(f.row().domainApprovals[FINANCE].status, 'withdrawn');
+    assert.equal(f.row().active, true, mode);
+    assert.equal(f.row().domainApprovals[FINANCE].status, 'approved', mode);
+    assert.equal(f.operations.size, 0, mode);
+    assert.equal(Object.hasOwn(f.binding(), 'domainGlobalState'), false, mode);
   }
 });
 
@@ -219,8 +220,7 @@ test('cleared Finance evidence and changed email fail closed without transferrin
   edit(changed.crm, 'email', 'different@example.test', NOW + 1000, 'INTEGRATION');
   changed.time(NOW + 2000); await changed.worker.processContact('123');
   assert.equal(changed.row().active, false); assert.equal(changed.binding().holdReason, 'identity-changed');
-  assert.deepEqual(financeImportDecisions(changed.crm, changed.binding(), { now: NOW + 2000 }),
-    { globalDecision: null, domainDecision: null });
+  assert.equal(financeImportDecisions(changed.crm, changed.binding(), { now: NOW + 2000 }), null);
   assert.equal(changed.calls.includes('reserve'), false); assert.equal(changed.calls.includes('ensure'), false);
 });
 
@@ -241,21 +241,17 @@ test('interest changes neither invalidate Finance nor grant another domain; manu
   assert.equal(f.row().active, true);
   assert.deepEqual(f.row().approvedDomains, [OTHER]);
   assert.deepEqual(f.row().domainApprovals[OTHER], otherSnapshot);
-  assert.equal(f.binding().domainGlobalDecisionId, f.receipt.globalDecisionId,
-    'Finance withdrawal does not invalidate the independently captured global observation');
+  assert.deepEqual(f.binding().financeRosterImport, f.receipt, 'Finance withdrawal leaves the frozen receipt intact');
 });
 
 test('receipt cannot grant another contact, identity or cohort and never implies completed enrolment', () => {
   const crm = contact(), seed = importedState(crm);
   const otherContact = contact('456'), otherBinding = { ...bareBinding('456'), financeRosterImport: seed.receipt };
-  assert.deepEqual(financeImportDecisions(otherContact, otherBinding, { now: NOW + 1 }),
-    { globalDecision: null, domainDecision: null });
+  assert.equal(financeImportDecisions(otherContact, otherBinding, { now: NOW + 1 }), null);
   const otherIdentity = { ...seed.binding, participantId: '00000000-0000-4000-8000-000000000099' };
-  assert.deepEqual(financeImportDecisions(crm, otherIdentity, { now: NOW + 1 }),
-    { globalDecision: null, domainDecision: null });
+  assert.equal(financeImportDecisions(crm, otherIdentity, { now: NOW + 1 }), null);
   const otherCohort = { ...seed.receipt, sourceDigest: '0'.repeat(64) };
-  assert.deepEqual(financeImportDecisions(crm, { ...seed.binding, financeRosterImport: otherCohort }, { now: NOW + 1 }),
-    { globalDecision: null, domainDecision: null });
+  assert.equal(financeImportDecisions(crm, { ...seed.binding, financeRosterImport: otherCohort }, { now: NOW + 1 }), null);
   assert.equal(seed.row.enrolmentStatus, 'not_invited');
   assert.equal(seed.receipt.microsoft.state, 'Accepted');
 });

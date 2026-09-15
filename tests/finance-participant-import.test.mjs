@@ -45,14 +45,15 @@ test('new contacts have approval metadata, not invented Microsoft acceptance or 
   const patch = financeProperties(roster, null);
   assert.equal(patch.email, roster.email);
   assert.equal(patch.opda_review_finance_and_banking, 'approved');
-  assert.equal(patch.opda_review_status, 'approved');
+  assert.equal(Object.hasOwn(patch, 'opda_review_status'), false, 'the retired account-wide field is never written');
   assert.equal(patch.opda_enrolment_status, undefined);
   assert.equal(patch.opda_active, undefined);
   assert.equal(Object.keys(patch).some(key => /marketing|subscription|consent|membership_type/.test(key)), false);
 });
 test('historical import cannot override holds, archives, identity changes or arbitrary groups', () => {
-  for (const p of [{ email: 'other@example.test' }, { email: roster.email, opda_review_status: 'withdrawn' },
+  for (const p of [{ email: 'other@example.test' },
     { email: roster.email, opda_review_finance_and_banking: 'rejected' },
+    { email: roster.email, opda_review_finance_and_banking: 'withdrawn' },
     { email: roster.email, opda_requested_working_groups: 'arbitrary' }]) {
     assert.throws(() => financeProperties(roster, { id: '1', properties: p }));
   }
@@ -105,8 +106,8 @@ test('seeding preserves another group and completed authentication, with no repl
   for (const key of ['enrolmentStatus', 'auth0BindingKey', 'verifiedEmail', 'accessVersion']) assert.equal(seeded.account[key], row[key]);
   assert.equal(seeded.audit.microsoft.state, 'PendingAcceptance');
   assert.equal(seeded.account.profile.company, 'Existing Company');
-  const decisions = financeImportDecisions(contact, seeded.binding, { now });
-  const replay = planDomainApprovals({ map: seeded.binding, row: seeded.account, decisions: [decisions.domainDecision], globalDecision: decisions.globalDecision, now, cutover });
+  const decision = financeImportDecisions(contact, seeded.binding, { now });
+  const replay = planDomainApprovals({ map: seeded.binding, row: seeded.account, decisions: [decision], now, cutover });
   assert.equal(replay.changed, false); assert.deepEqual(replay.operations, []);
   assert.throws(() => planFinanceSeed({ ...input, map: seeded.binding, row: seeded.account }));
 });
@@ -133,9 +134,9 @@ test('recovery only clears this importer verification hold with unchanged approv
   assert.equal(repaired.audit.verificationRecoveredAt, recovery.now);
   assert.deepEqual(repaired.binding.financeRosterImport, seeded.binding.financeRosterImport);
   assert.deepEqual(repaired.operations, []);
-  const decisions = financeImportDecisions(input.contact, repaired.binding, { now: recovery.now });
-  const replay = planDomainApprovals({ map: repaired.binding, row: repaired.account, decisions: [decisions.domainDecision],
-    globalDecision: decisions.globalDecision, now: recovery.now, cutover: input.cutover });
+  const decision = financeImportDecisions(input.contact, repaired.binding, { now: recovery.now });
+  const replay = planDomainApprovals({ map: repaired.binding, row: repaired.account, decisions: [decision],
+    now: recovery.now, cutover: input.cutover });
   assert.equal(replay.changed, false); assert.deepEqual(replay.operations, []);
   for (const patch of [{ status: 'withdrawn' }, { version: 4 }, { decisionId: 'f'.repeat(64) },
     { reason: 'staff-review' }, { onboarding: { operationId: 'real-work' } }]) {

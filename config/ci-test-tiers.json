@@ -24,7 +24,6 @@
     { "path": "tests/approval-onboarding-outbox.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-postmark.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-receipt-protection.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
-    { "path": "tests/approval-onboarding-snapshot.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/astro-content-runtime.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/client-lifecycle.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/auth-session.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },

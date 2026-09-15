@@ -66,16 +66,13 @@ export function readFinanceRoster() {
 export function financeProperties(roster, contact) {
   const p = contact?.properties ?? {};
   if (contact && (contact.archived || contactProfile(contact).email !== roster.email)) throw new Error('Contact identity mismatch');
-  for (const key of ['opda_review_status', REVIEW_PROPERTY]) {
-    if (p[key] && !['received', 'approved'].includes(p[key])) throw new Error('Contact has a newer review hold');
-  }
+  if (p[REVIEW_PROPERTY] && !['received', 'approved'].includes(p[REVIEW_PROPERTY])) throw new Error('Contact has a newer review hold');
   const selected = p.opda_requested_working_groups ? p.opda_requested_working_groups.split(';') : [];
   if (new Set(selected).size !== selected.length || selected.some(id => !APPROVED_GROUPS.includes(id))) throw new Error('Invalid existing interests');
   const properties = {};
   const groups = APPROVED_GROUPS.filter(id => id === FINANCE_DOMAIN_ID || selected.includes(id)).join(';');
   if (groups !== p.opda_requested_working_groups) properties.opda_requested_working_groups = groups;
   if (p[REVIEW_PROPERTY] !== 'approved') properties[REVIEW_PROPERTY] = 'approved';
-  if (p.opda_review_status !== 'approved') properties.opda_review_status = 'approved';
   if (!p.opda_full_name) properties.opda_full_name = roster.display_name;
   if (!contact) properties.email = roster.email;
   return properties;
@@ -109,9 +106,9 @@ export function planFinanceSeed({ contact, map, row, actorArn, microsoft, now, c
   if (map.domainApprovals?.[FINANCE_DOMAIN_ID]) throw new Error('Finance has an existing decision');
   const receipt = captureFinanceImport(contact, map, { actorArn, microsoft, now });
   const importedMap = { ...map, financeRosterImport: receipt };
-  const { globalDecision, domainDecision } = financeImportDecisions(contact, importedMap, { now });
-  if (!globalDecision || !domainDecision) throw new Error('Import evidence did not round trip');
-  const plan = planDomainApprovals({ map: importedMap, row, decisions: [domainDecision], globalDecision, now, cutover });
+  const domainDecision = financeImportDecisions(contact, importedMap, { now });
+  if (!domainDecision) throw new Error('Import evidence did not round trip');
+  const plan = planDomainApprovals({ map: importedMap, row, decisions: [domainDecision], now, cutover });
   if (!plan.fields.active || plan.fields.domainApprovals[FINANCE_DOMAIN_ID]?.status !== 'approved'
     || plan.operations.some(op => op.domainId !== FINANCE_DOMAIN_ID || op.action !== 'provision')) throw new Error('Unexpected import transition');
   plan.fields.domainApprovals[FINANCE_DOMAIN_ID].onboarding = null;
@@ -133,9 +130,9 @@ export function planFinanceSeed({ contact, map, row, actorArn, microsoft, now, c
 export function planFinanceRecovery({ contact, map, row, audit, actorArn, now }) {
   assertImportAccount(map, row, now);
   const receipt = map.financeRosterImport, state = row.domainApprovals?.[FINANCE_DOMAIN_ID];
-  const { globalDecision, domainDecision } = financeImportDecisions(contact, map, { now });
-  if (!globalDecision || !domainDecision || !isDeepStrictEqual(map.domainApprovals, row.domainApprovals)
-    || map.domainGlobalDecisionId !== receipt.globalDecisionId || row.updatedAt !== state?.holdAt
+  const domainDecision = financeImportDecisions(contact, map, { now });
+  if (!domainDecision || !isDeepStrictEqual(map.domainApprovals, row.domainApprovals)
+    || row.updatedAt !== state?.holdAt
     || state?.status !== 'under_review' || state.reason !== 'finance-import-verification-failed'
     || state.version !== 2 || state.decisionId !== digest(`${receipt.domainDecisionId}:import-verification-failed`)
     || state.actor !== receipt.actorArn || !Number.isSafeInteger(state.holdAt)

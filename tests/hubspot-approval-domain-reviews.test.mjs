@@ -58,7 +58,7 @@ test('simultaneous domain approvals have separate IDs and deterministic domain o
   assert.ok(result.every(item => item.trusted && item.groupSnapshot.groups.length === 1));
 });
 
-test('global approval and requested checkboxes alone are not domain decisions', () => {
+test('a legacy account-wide value and requested checkboxes alone are not domain decisions', () => {
   const value = contact({});
   value.propertiesWithHistory.opda_review_status = [history('approved')];
   assert.deepEqual(decisions(value), []);

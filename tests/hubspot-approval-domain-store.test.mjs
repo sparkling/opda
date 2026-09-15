@@ -303,8 +303,8 @@ test('additional and final domain denials continue during the migration hold, wi
   assert.equal(f.operations().filter(op => op.schemaVersion === 2 && op.action === 'revoke').length, 2);
 });
 
-test('global and account holds deny immediately and use the existing v1 receipt-owned cleanup path', async () => {
-  for (const options of [{ holdReason: 'contact-unavailable' }, { globalDecision: decision('global', 'withdrawn', NOW) }]) {
+test('account holds deny immediately and use the existing v1 receipt-owned cleanup path', async () => {
+  for (const options of [{ holdReason: 'contact-unavailable' }, { holdReason: 'account-unavailable' }]) {
     const f = fixture(), old = historical(f, 'attention'), result = await apply(f, [], options);
     assert.equal(result.account.active, false); assert.equal(result.account.suspended, true);
     assert.equal(result.account.accessVersion, 2); assert.equal(result.account.approvalPolicy, undefined);
@@ -312,7 +312,7 @@ test('global and account holds deny immediately and use the existing v1 receipt-
     assert.equal(result.binding.domainMigrationPending.operationId, old.operationId);
     assert.equal(f.gets.length, 0, 'A denial cannot depend on reading an old send outcome');
     const revoke = f.operations().find(op => op.action === 'revoke'); assert.ok(revoke); assert.equal(revoke.schemaVersion, 1);
-    if (options.globalDecision) assert.equal(result.binding.domainGlobalState, 'held');
+    assert.equal(result.binding.domainGlobalState, undefined, 'no account-wide CRM review state remains');
     const transactionCount = f.transactions.length;
     await apply(f, [], options, NOW + 1000); assert.equal(f.transactions.length, transactionCount);
   }
@@ -327,11 +327,10 @@ test('invalid frozen legacy scope fails closed into account hold and owned clean
   assert.equal(result.account.onboarding.action, 'revoke'); assert.equal(f.operations().some(op => op.schemaVersion === 2), false);
 });
 
-test('a fresh global denial during legacy cleanup advances the domain hold watermark, but replay does not', async () => {
+test('an account hold during legacy cleanup sets the domain hold watermark once, and replay does not move it', async () => {
   const f = fixture(); historical(f, 'attention');
-  await apply(f, [], { globalDecision: decision('global', 'withdrawn', NOW) });
-  const options = { globalDecision: decision('global', 'withdrawn', NOW + 1000) };
-  await apply(f, [], options, NOW + 2000);
+  const options = { holdReason: 'account-unavailable' };
+  await apply(f, [], options, NOW + 1000);
   assert.equal(f.current().map.domainHoldAt, NOW + 1000);
   const before = f.current(); await apply(f, [], options, NOW + 3000); assert.deepEqual(f.current(), before);
 });

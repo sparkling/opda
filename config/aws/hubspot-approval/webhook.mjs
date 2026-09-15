@@ -10,7 +10,7 @@ const MAX_CONTACTS = 100;
 const MAX_SIGNATURE_AGE_MS = 300000;
 const MAX_SIGNATURE_FUTURE_MS = 60000;
 const CONTACT_ID = /^[1-9][0-9]{0,19}$/;
-const PROPERTIES = new Set(['opda_review_status', 'email', ...Object.values(DOMAIN_REVIEW_PROPERTIES)]);
+const PROPERTIES = new Set(['email', ...Object.values(DOMAIN_REVIEW_PROPERTIES)]);
 const OBJECT_EVENTS = new Set(['contact.deletion', 'contact.privacyDeletion', 'contact.restore']);
 const utf8 = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
 

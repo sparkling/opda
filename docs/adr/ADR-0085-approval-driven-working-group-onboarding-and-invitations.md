@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-09-09
-updated: 2026-09-10
+updated: 2026-09-15
 tags: [hubspot, participants, working-groups, postmark, email, microsoft-365, teams, sharepoint, approval]
 supersedes: []
 amends: [ADR-0070, ADR-0071, ADR-0084]
@@ -85,9 +85,11 @@ not change independent-domain approval: `contract.version=2` and its outbox sema
 
 Each dropdown has Requested (`received`), Under review, Approved, Rejected and Withdrawn. The website signup marks each requested domain Requested so staff can see what awaits a decision; the label was renamed from Pending on 2026-09-15 and the value is unchanged.
 Clearing it also removes that domain's approval. `opda_requested_working_groups` remains
-interests only. Global `opda_review_status=approved` can clear an account review hold but
-does not approve any domain. Global Under review, Rejected or Withdrawn blocks account access;
-the integration's initial Received marker neither approves a domain nor places a review hold.
+interests only. The account-wide `opda_review_status` field was removed on 2026-09-15: the
+domain dropdowns are the single control surface for approval and revocation, and no field
+vetoes every group at once. The integration's initial Requested marker neither approves a
+domain nor places a review hold. The frozen 2026-09-10 Finance import receipts still hash the
+retired field's observation so they stay verifiable; nothing derives a decision from it.
 
 Record actor/time, immutable participant binding, decision ID, **domain version** and reviewed scope.
 Normal approvals require current, attributable `CRM_UI` history after `DOMAIN_REVIEW_CUTOVER`, with that domain requested at review. Forms and later interest edits cannot grant access.
@@ -306,7 +308,7 @@ The withdrawal path is:
    Under review, Rejected or clearing the domain field also removes that domain's approval.
 2. AWS records its decision/domain version first and recomputes website eligibility. Only loss
    of website eligibility increments the session access version and disables/signs out Cognito.
-   Global review holds, contact removal, erasure, expiry and independent security holds deny all.
+   Contact removal, identity change, erasure, expiry and independent security holds deny all.
 3. The committed domain decision creates an opaque withdrawal operation. Cancel only that
    domain's unsent invitations before cleanup; dispatched email cannot be recalled.
 4. Read the participant-bound ownership receipts. Remove owned SharePoint contributor and index

@@ -19,7 +19,7 @@ const signV3 = (raw, timestamp = String(now), url = config.publicWebhookUrl, met
   createHmac('sha256', clientSecret).update(method + url).update(raw).update(timestamp).digest('base64');
 const hint = (patch = {}) => ({
   portalId: secret.portalId, appId: secret.appId, objectId: 123,
-  subscriptionType: 'contact.propertyChange', propertyName: 'opda_review_status',
+  subscriptionType: 'contact.propertyChange', propertyName: 'opda_review_conveyancing',
   propertyValue: 'approved', occurredAt: now - 1000, eventId: 5, ...patch,
 });
 function request(payload = [hint()], { base64 = false, headers = {} } = {}) {

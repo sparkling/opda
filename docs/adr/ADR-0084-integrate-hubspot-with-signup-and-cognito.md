@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-09-08
-updated: 2026-09-09
+updated: 2026-09-15
 tags: [aws, hubspot, cognito, identity, participants, recruitment, crm, privacy, proportionality]
 supersedes: []
 amends: [ADR-0038, ADR-0069, ADR-0079]
@@ -122,7 +122,7 @@ properties. An initially created contact is an unverified applicant, not an appr
 | `workingGroups` | `opda_requested_working_groups` | `enumeration` / `checkbox`; requested interests only. Each domain needs its own trusted approval under ADR-0085; this field never grants access. |
 | `contributions` | Existing `opda_contribution_preferences` | `enumeration` / `checkbox`; all six current choices. |
 | `relevantPerspective` | Existing `opda_relevant_perspective` | `string` / `textarea`; retain the 600-character limit and existing privacy warning. |
-| Account-wide review | `opda_review_status` | `enumeration` / `select`; `received`, `under_review`, `approved`, `rejected`, `withdrawn`. Approved can clear a review hold but never approves domains; Under review, Rejected and Withdrawn block account access. |
+| Account-wide review | *(removed 2026-09-15)* | `opda_review_status` was retired: the six domain dropdowns are the only approval and revocation surface. Staff cannot veto every group with one field; each group is approved or withdrawn in its own dropdown. Archive the CRM property; a stale value left on a contact has no effect. |
 | Individual domain review | Six configured `opda_review_*` fields in ADR-0085 | `enumeration` / `select`; Requested (`received`), Under review, Approved, Rejected, Withdrawn. The signup sync marks each requested domain Requested (2026-09-15); that integration-owned value is intake evidence, never a decision or a hold. Once v2 is activated, a trusted manual approval grants only that domain; clearing it removes that domain's approval. |
 | Account setup | Existing `opda_enrolment_status` | `enumeration` / `select`; AWS-owned snapshot: `not_invited`, `invited`, `complete`, `expired`. |
 | Enabled flag | Existing `opda_active` | `bool` / `booleancheckbox`; AWS-owned snapshot; pending applicants are disabled, the approved migration is enabled but unenrolled. Not sufficient for login by itself. |
@@ -222,14 +222,15 @@ AWS-owned status mirrors; editing those mirrors does not change access.
 
 Staff use the **individual domain's review dropdown → Approved** after reviewing that
 requested interest. One approved domain enables ordinary email-code sign-in; another domain
-is not implied. Global Approved alone grants none. A domain withdrawal leaves other approved
+is not implied. There is no account-wide approval field (removed 2026-09-15). A domain withdrawal leaves other approved
 domains intact; loss of the last domain removes website access. Historical website-only
-import approval is no exception to this rule. Global holds override domain approvals. Initial integration-owned
+import approval is no exception to this rule. Only worker-detected account holds (identity change,
+contact unavailable, erasure, expiry, security suspension) override domain approvals. Initial integration-owned
 Received is neither approval nor a hold. Enrolment still requires mailbox proof at sign-in.
 
 The existing legacy private app supports property-change webhooks. Configure its
 HTTPS target and subscriptions in HubSpot's private-app UI, not the public-app API.
-Watch all six domain-review properties, global review, email, deletion/privacy deletion, merge and restore events.
+Watch all six domain-review properties, email, deletion/privacy deletion, merge and restore events.
 The receiver prefers v3 HMAC over the pinned HTTPS URL, method, raw body and fresh
 timestamp; an invalid v3 never falls back to v1. Legacy-only v1 remains supported.
 It pins portal/app IDs and durably enqueues bounded contact-ID hints before replying.

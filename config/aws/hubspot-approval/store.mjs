@@ -212,23 +212,18 @@ export function createStore(config, overrides = {}) {
     await send('TransactWriteItemsCommand', { TransactItems: [put({ pk: relayKey,
       revision: page.revision + 1, cursor: page.cursor }, page.revision ? { revision: page.revision } : undefined)] });
   }
-  async function applyDomains(map, row, decisions, now, { globalDecision, holdReason } = {}) {
+  async function applyDomains(map, row, decisions, now, { holdReason } = {}) {
     if (!Number.isSafeInteger(config.domainReviewCutover)) throw new Error('Domain approval policy is not activated');
     const legacy = row.approvalPolicy !== DOMAIN_POLICY;
-    const negative = globalDecision && (!globalDecision.trusted || ['under_review', 'rejected', 'withdrawn'].includes(globalDecision.status));
-    const globalHold = holdReason || (negative || map.domainGlobalState === 'held'
-      && !(globalDecision?.trusted && globalDecision.status === 'approved' && globalDecision.at > (map.domainHoldAt ?? 0))
-      ? 'account-review-withdrawn' : null);
+    // The only account-wide holds are the caller's (identity or account state).
+    const globalHold = holdReason || null;
     const historicalId = legacy ? row.onboarding?.operationId ?? map.onboarding?.operationId : null;
     const marker = map.domainMigrationPending ?? row.domainMigrationPending;
     async function legacyHold(reason) {
-      const freshGlobalAt = negative && globalDecision.id !== map.domainGlobalDecisionId
-        ? Number.isSafeInteger(globalDecision.at) && globalDecision.at <= now ? globalDecision.at : now : 0;
       const domainHoldAt = Math.max(map.domainHoldAt ?? 0, map.holdReason === reason
-        ? map.domainHoldAt ?? map.holdAt ?? now : now, freshGlobalAt);
+        ? map.domainHoldAt ?? map.holdAt ?? now : now);
       return change(map, row, null, now, reason, { domainHoldAt,
-        ...(marker || historicalId ? { domainMigrationPending: marker ?? { operationId: historicalId } } : {}),
-        ...(negative ? { domainGlobalState: 'held', domainGlobalDecisionId: globalDecision.id } : {}) });
+        ...(marker || historicalId ? { domainMigrationPending: marker ?? { operationId: historicalId } } : {}) });
     }
     // Access and receipt-owned cleanup cannot wait for an ambiguous old email.
     // Keep v1 until its account-wide revoke has completed, preserving its guard.
@@ -259,7 +254,7 @@ export function createStore(config, overrides = {}) {
       }
       if (!decisions.length && !globalHold) return { binding: map, account: row };
     }
-    const plan = planDomainApprovals({ map, row, decisions, globalDecision, holdReason,
+    const plan = planDomainApprovals({ map, row, decisions, holdReason,
       now, cutover: config.domainReviewCutover });
     if (unresolved) {
       plan.mapFields.domainMigrationPending = marker ?? { operationId: historicalId };
@@ -313,8 +308,6 @@ export function createStore(config, overrides = {}) {
   }
   return { binding, reserve, attach, account, inventory, checkPending, pendingOnboarding, advanceOnboardingRelay, applyDomains,
     onboardingOperation: id => get(onboardingKey(id)),
-    apply: (map, row, decision, now) => change(map, row, decision, now),
-    hold: (map, row, reason, now) => change(map, row, null, now, reason),
     async markEffects(map, row) {
       await send('TransactWriteItemsCommand', { TransactItems: [{ Update: {
         TableName: table, Key: { pk: { S: map.pk } }, UpdateExpression: 'SET providerAccessVersion = :version',

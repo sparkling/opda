@@ -60,14 +60,6 @@ export const PARTICIPATION_PROPERTIES = freeze([
     description: 'Optional professional perspective, limited to 600 characters by the intake and bridge.',
   },
   {
-    name: 'opda_review_status', label: 'Application review status', type: 'enumeration', fieldType: 'select',
-    description: 'Account-wide review or access hold. Approved clears this review hold; it no longer approves all selected groups. Review each domain separately. Under review, Rejected or Withdrawn blocks account access. This field never grants administrator access.',
-    options: choices([
-      ['received', 'Received'], ['under_review', 'Under review'], ['approved', 'Approved'],
-      ['rejected', 'Rejected'], ['withdrawn', 'Withdrawn'],
-    ]),
-  },
-  {
     name: 'opda_enrolment_status', label: 'Account enrolment status', type: 'enumeration', fieldType: 'select',
     description: 'AWS-owned enrolment snapshot. Editing this CRM property never completes enrolment.',
     options: choices([

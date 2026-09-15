@@ -86,7 +86,7 @@ test('creates only a lossless pending contact and makes duplicate deliveries ine
     email: 'synthetic@example.test', company: 'Example organisation', opda_full_name: 'Synthetic Example Person',
     opda_role_or_expertise: 'Research and domain expertise', opda_requested_working_groups: 'finance-and-banking;conveyancing',
     opda_contribution_preferences: 'review-model-candidates', opda_relevant_perspective: 'Synthetic professional perspective',
-    opda_review_status: 'received', opda_enrolment_status: 'not_invited', opda_active: 'false',
+    opda_enrolment_status: 'not_invited', opda_active: 'false',
     opda_review_conveyancing: 'received', opda_review_finance_and_banking: 'received',
   });
   assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).contactId, '123');
@@ -307,7 +307,7 @@ test('API adapter observes numeric and HTTP-date Retry-After without blindly ret
     const client = createHubSpotClient({ getSecret: async () => secret, fetch: async () => ++count === 1
       ? response(info) : response({}, 429, { 'Retry-After': value }) });
     await assert.rejects(client.createContact({ email: 'synthetic@example.test',
-      opda_review_status: 'received', opda_enrolment_status: 'not_invited', opda_active: 'false' }),
+      opda_enrolment_status: 'not_invited', opda_active: 'false' }),
     error => error instanceof RetryLater && error.seconds >= 119);
     assert.equal(count, 2);
   }
@@ -391,7 +391,7 @@ test('API adapter creates one review task bound to the matched contacts and refu
 
 test('API adapter writes Requested only on the domains the applicant selected, never a decision', async () => {
   const base = { email: 'synthetic@example.test', opda_requested_working_groups: 'conveyancing',
-    opda_review_status: 'received', opda_enrolment_status: 'not_invited', opda_active: 'false' };
+    opda_enrolment_status: 'not_invited', opda_active: 'false' };
   const client = createHubSpotClient({ getSecret: async () => secret, fetch: async (url, options) => url.endsWith('access-token-info')
     ? response(info) : response({ id: '321', properties: { email: 'synthetic@example.test' } }, 201) });
   assert.deepEqual(await client.createContact({ ...base, opda_review_conveyancing: 'received' }), { id: '321', email: base.email });

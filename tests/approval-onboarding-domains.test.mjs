@@ -76,24 +76,25 @@ test('denied status changes retain the original withdrawal notice snapshot until
   assert.notEqual(final.operations[0].operationId, snapshot.operationId);
   assert.equal(final.fields.domainApprovals.conveyancing.onboarding.notifyWithdrawal, true);
 });
-test('interests, untrusted edits and global Approved never create domain grants', () => {
-  assert.equal(run(base(), [], { globalDecision: { ...decision('conveyancing'), domainId: undefined } }).fields.active, false);
+test('interests and untrusted edits never create domain grants; there is no account-wide approval input', () => {
+  assert.equal(run(base(), []).fields.active, false);
   for (const patch of [{ trusted: false }, { groupSnapshot: undefined }, { groupSnapshot: {
     snapshotStatus: 'approved', groups: ['conveyancing', 'finance-and-banking'], groupsAt: cutover } }]) {
     const result = run(base(), [{ ...decision('conveyancing'), ...patch }]);
     assert.equal(result.fields.active, false); assert.equal(result.operations.length, 0);
   }
 });
-test('current global withdrawal overrides per-domain approvals and requires fresh evidence after clearing the hold', () => {
+test('an account hold set by the worker overrides per-domain approvals and needs fresh evidence once it clears', () => {
+  // The only account-wide input left is the worker's own hold (identity change, contact
+  // unavailable); staff have no dropdown that vetoes every group at once.
   const initial = base(), first = run(initial, [decision('conveyancing'), decision('finance-and-banking')]);
-  const globalDecision = { ...decision('global', 'withdrawn', now), id: digest('global-withdrawal') };
-  const denied = run(next(initial, first), [], { globalDecision });
+  const denied = run(next(initial, first), [], { holdReason: 'identity-changed' });
   assert.equal(denied.operations.length, 2); assert.equal(denied.fields.active, false);
+  assert.equal(denied.mapFields.holdReason, 'identity-changed');
   const state = next(next(initial, first), denied);
-  assert.equal(run(state, [decision('conveyancing', 'approved', now + 10)], { globalDecision }).fields.active, false);
-  const cleared = { ...globalDecision, status: 'approved', id: digest('global-clear'), at: now + 5 };
-  assert.equal(run(state, [decision('conveyancing')], { globalDecision: cleared }).fields.active, false);
-  assert.equal(run(state, [decision('conveyancing', 'approved', now + 10)], { globalDecision: cleared }).fields.active, true);
+  assert.equal(run(state, [decision('conveyancing', 'approved', now + 10)], { holdReason: 'identity-changed' }).fields.active, false);
+  assert.equal(run(state, [decision('conveyancing')]).fields.active, false, 'a pre-hold approval cannot lift the hold');
+  assert.equal(run(state, [decision('conveyancing', 'approved', now + 10)]).fields.active, true);
 });
 test('historical website-only import loses eligibility without receiving domain invitations', () => {
   const input = base(); input.map.imported = true;

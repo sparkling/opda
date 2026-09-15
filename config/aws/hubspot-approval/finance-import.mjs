@@ -7,6 +7,11 @@ export const FINANCE_ROSTER_COUNT = 372;
 export const FINANCE_DOMAIN_ID = 'finance-and-banking';
 
 const FINANCE_PROPERTY = DOMAIN_REVIEW_PROPERTIES[FINANCE_DOMAIN_ID];
+// The 2026-09-10 receipts were captured while the retired account-wide review
+// property existed; its observation is part of each stored receipt digest. It is
+// read only to keep those frozen receipts verifiable. The live worker derives no
+// decision from it: Finance authority rests on the domain dropdown alone.
+const RETIRED_GLOBAL_PROPERTY = 'opda_review_status';
 const UUID = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
 const SHA256 = /^[a-f0-9]{64}$/;
 const STS_ACTOR = /^arn:aws:sts::355653384628:assumed-role\/[A-Za-z0-9+=,.@_/-]{1,256}\/[A-Za-z0-9+=,.@_-]{1,128}$/;
@@ -120,13 +125,12 @@ function validReceipt(receipt, binding, now) {
 export function captureFinanceImport(contact, binding, { actorArn, now, microsoft } = {}) {
   if (!Number.isSafeInteger(now) || now < 0 || !STS_ACTOR.test(actorArn ?? '')
     || Object.hasOwn(binding ?? {}, 'financeRosterImport') || !identity(contact, binding, now)) fail();
-  const global = observation(contact, 'opda_review_status', now);
+  const global = observation(contact, RETIRED_GLOBAL_PROPERTY, now);
   const domain = observation(contact, FINANCE_PROPERTY, now);
   const email = observation(contact, 'email', now);
   const selected = observation(contact, 'opda_requested_working_groups', now);
   const selectedGroups = contact.properties.opda_requested_working_groups.split(';');
-  if (contact.properties.opda_review_status !== 'approved'
-    || contact.properties[FINANCE_PROPERTY] !== 'approved' || !global || !domain || !email || !selected
+  if (contact.properties[FINANCE_PROPERTY] !== 'approved' || !global || !domain || !email || !selected
     || selectedGroups.length > APPROVED_GROUPS.length || new Set(selectedGroups).size !== selectedGroups.length
     || selectedGroups.some(group => !APPROVED_GROUPS.includes(group))
     || !selectedGroups.includes(FINANCE_DOMAIN_ID)) fail();
@@ -144,26 +148,22 @@ export function captureFinanceImport(contact, binding, { actorArn, now, microsof
   return receipt;
 }
 
-/** Reconstitute authority only while the exact stored identity and captured observations remain current. */
+/**
+ * Reconstitute the Finance domain authority only while the exact stored identity
+ * and captured domain observation remain current. Returns null when it does not.
+ */
 export function financeImportDecisions(contact, binding, { now } = {}) {
-  const missing = { globalDecision: null, domainDecision: null };
-  if (!Number.isSafeInteger(now) || now < 0 || !identity(contact, binding, now)) return missing;
+  if (!Number.isSafeInteger(now) || now < 0 || !identity(contact, binding, now)) return null;
   const receipt = binding.financeRosterImport;
-  if (!validReceipt(receipt, binding, now)) return missing;
+  if (!validReceipt(receipt, binding, now)) return null;
   const email = observation(contact, 'email', now);
-  if (!email || email.hash !== receipt.emailObservationHash || email.at !== receipt.emailObservedAt) return missing;
-  const global = observation(contact, 'opda_review_status', now);
+  if (!email || email.hash !== receipt.emailObservationHash || email.at !== receipt.emailObservedAt) return null;
   const domain = observation(contact, FINANCE_PROPERTY, now);
-  const globalDecision = contact.properties.opda_review_status === 'approved' && global
-    && global.hash === receipt.globalObservationHash && global.at === receipt.globalReviewedAt
-    ? { id: receipt.globalDecisionId, at: receipt.globalReviewedAt, actor: receipt.actorArn,
-      trusted: true, status: 'approved', reason: 'operator-finance-roster-import' } : null;
-  const domainDecision = contact.properties[FINANCE_PROPERTY] === 'approved' && domain
+  return contact.properties[FINANCE_PROPERTY] === 'approved' && domain
     && domain.hash === receipt.domainObservationHash && domain.at === receipt.domainReviewedAt
     ? { domainId: FINANCE_DOMAIN_ID, id: receipt.domainDecisionId, at: receipt.domainDecisionAt,
       actor: receipt.actorArn, trusted: true, status: 'approved', reason: 'operator-finance-roster-import',
       groupSnapshot: { snapshotStatus: 'approved', groups: [FINANCE_DOMAIN_ID],
         groupDigest: digest(JSON.stringify([FINANCE_DOMAIN_ID])), groupsAt: receipt.selectedFinanceAt,
         reason: 'operator-finance-roster-selection' } } : null;
-  return { globalDecision, domainDecision };
 }

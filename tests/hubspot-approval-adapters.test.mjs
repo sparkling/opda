@@ -44,7 +44,7 @@ test('approval CRM reader pins the app and requests all fields and independent d
   assert.equal(read.url.pathname, '/crm/v3/objects/contacts/123');
   assert.deepEqual(read.url.searchParams.get('properties').split(','), CONTACT_PROPERTIES);
   assert.deepEqual(read.url.searchParams.get('propertiesWithHistory').split(','),
-    ['opda_review_status', 'email', 'opda_requested_working_groups', ...Object.values(DOMAIN_REVIEW_PROPERTIES)]);
+    ['email', 'opda_requested_working_groups', ...Object.values(DOMAIN_REVIEW_PROPERTIES)]);
   assert.ok(f.calls.every(({ init }) => init.redirect === 'error'));
   assert.ok(f.calls.every(({ init }) => init.signal instanceof AbortSignal));
 });
@@ -110,7 +110,7 @@ test('approval CRM inventory consumes bounded pages, preserves histories and ign
     assert.equal(url.searchParams.get('archived'), 'false');
     assert.deepEqual(url.searchParams.get('properties').split(','), CONTACT_PROPERTIES);
     assert.deepEqual(url.searchParams.get('propertiesWithHistory').split(','),
-      ['opda_review_status', 'email', 'opda_requested_working_groups', ...Object.values(DOMAIN_REVIEW_PROPERTIES)]);
+      ['email', 'opda_requested_working_groups', ...Object.values(DOMAIN_REVIEW_PROPERTIES)]);
   }
   assert.equal(requests[1].searchParams.get('after'), 'cursor-2');
 });
@@ -168,7 +168,6 @@ test('approval CRM projection can write only active/enrolment snapshots, never r
   for (const value of [null, { active: 'true', enrolmentStatus: 'complete' },
     { active: true, enrolmentStatus: 'unknown' }, { active: true },
     { active: true, enrolmentStatus: 'complete', reviewStatus: 'approved' },
-    { active: true, enrolmentStatus: 'complete', opda_review_status: 'approved' },
     { active: true, enrolmentStatus: 'complete', opda_review_finance_and_banking: 'approved' },
     Object.assign(Object.create({ active: true }), { enrolmentStatus: 'complete', reviewStatus: 'approved' })]) {
     const before = f.calls.length;

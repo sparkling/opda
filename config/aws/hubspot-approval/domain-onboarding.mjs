@@ -2,7 +2,6 @@ import { isDeepStrictEqual } from 'node:util';
 import { APPROVED_GROUPS, digest, mayApprove, ordinaryAccess } from './domain.mjs';
 
 export const DOMAIN_POLICY = 'individual-domains-v1';
-const denied = new Set(['under_review', 'rejected', 'withdrawn']);
 const hash = value => digest(JSON.stringify(value));
 
 function initialDomains(map, row, cutover, now) {
@@ -29,7 +28,7 @@ function initialDomains(map, row, cutover, now) {
 }
 
 /** Pure per-domain state transition. It never derives a grant from application interests. */
-export function planDomainApprovals({ map, row, decisions = [], globalDecision, holdReason, now, cutover }) {
+export function planDomainApprovals({ map, row, decisions = [], holdReason, now, cutover }) {
   if (!Number.isSafeInteger(now) || !Number.isSafeInteger(cutover) || cutover < 0
     || !Array.isArray(decisions) || decisions.length > APPROVED_GROUPS.length
     || new Set(decisions.map(d => d.domainId)).size !== decisions.length) throw new Error('Invalid domain approval transition');
@@ -37,18 +36,16 @@ export function planDomainApprovals({ map, row, decisions = [], globalDecision, 
   const migrated = row.approvalPolicy === DOMAIN_POLICY;
   // Retire old website-only flags without inventing or discarding frozen domain approvals.
   const legacyWebsiteApproved = false;
-  const globalChanged = globalDecision && globalDecision.id !== map.domainGlobalDecisionId;
-  const globalDenial = globalDecision && (!globalDecision.trusted || denied.has(globalDecision.status));
-  const clearsGlobalHold = globalChanged && globalDecision.trusted && globalDecision.status === 'approved'
-    && globalDecision.at > (map.domainHoldAt ?? 0);
-  const globalHeld = globalDenial || map.domainGlobalState === 'held' && !clearsGlobalHold;
+  // Holds come only from the account itself (identity change, suspension, erasure,
+  // expiry, enrolment state). There is no account-wide CRM review field: the six
+  // domain dropdowns are the only approval and revocation surface.
   const externalHold = row.suspended && row.suspensionSource !== 'hubspot-review';
   const unavailable = row.erasedAt || row.deletedAt || row.expiresAt && row.expiresAt <= Math.floor(now / 1000)
     || !['not_invited', 'complete'].includes(row.enrolmentStatus);
-  const globalReason = holdReason || (globalHeld ? 'account-review-withdrawn' : externalHold || unavailable ? 'account-unavailable' : null);
+  const globalReason = holdReason || (externalHold || unavailable ? 'account-unavailable' : null);
   const holdChanged = (map.holdReason || null) !== globalReason;
-  const globalAt = globalReason ? Math.max(map.domainHoldAt ?? 0, globalDenial && globalChanged ? globalDecision.at
-    : map.holdReason === globalReason ? map.domainHoldAt ?? now : now) : map.domainHoldAt ?? 0;
+  const globalAt = globalReason ? Math.max(map.domainHoldAt ?? 0, map.holdReason === globalReason ? map.domainHoldAt ?? now : now)
+    : map.domainHoldAt ?? 0;
   const changes = [];
   for (const decision of decisions) {
     const id = decision.domainId, before = domains[id];
@@ -75,8 +72,8 @@ export function planDomainApprovals({ map, row, decisions = [], globalDecision, 
     for (const id of APPROVED_GROUPS) {
       const before = domains[id];
       if (before?.status !== 'approved') continue;
-      const decision = { id: hash(['domain-hold', map.contactId, id, before.decisionId, globalReason, globalDecision?.id ?? null]),
-        at: globalAt, actor: globalDecision?.actor ?? null, reason: globalReason };
+      const decision = { id: hash(['domain-hold', map.contactId, id, before.decisionId, globalReason, null]),
+        at: globalAt, actor: null, reason: globalReason };
       const next = { ...before, status: 'withdrawn', version: before.version + 1, decisionId: decision.id,
         decisionAt: globalAt, actor: decision.actor, holdAt: globalAt, reason: globalReason, legacy: false };
       domains[id] = next;
@@ -129,10 +126,8 @@ export function planDomainApprovals({ map, row, decisions = [], globalDecision, 
   const mapFields = { approvalPolicy: DOMAIN_POLICY, domainApprovals: domains,
     holdReason: globalReason ?? '',
     ...(globalReason && (holdChanged || eligibilityChanged) ? { providerAccessVersion: null } : {}),
-    ...(globalChanged ? { domainGlobalDecisionId: globalDecision.id } : {}),
-    ...(globalHeld || clearsGlobalHold ? { domainGlobalState: globalHeld ? 'held' : 'clear' } : {}),
     ...(globalReason ? { domainHoldAt: globalAt, holdReason: globalReason } : {}) };
-  const changed = !migrated || !isDeepStrictEqual(domains, previousDomains) || globalChanged
+  const changed = !migrated || !isDeepStrictEqual(domains, previousDomains)
     || holdChanged || eligibilityChanged || legacyWebsiteApproved !== row.legacyWebsiteApproved;
   return { changed: Boolean(changed), fields, mapFields, operations, audits };
 }
