@@ -113,7 +113,9 @@ jobs:
             --stack-name opda-operations \
             --template-file config/aws/operations-stack.yaml \
             --no-fail-on-empty-changeset \
-            --parameter-overrides AlarmEmail="${{ vars.OPDA_OPERATIONS_ALARM_EMAIL || '' }}"
+            --parameter-overrides \
+              AlarmEmail="${{ vars.OPDA_OPERATIONS_ALARM_EMAIL || '' }}" \
+              AlarmSmsNumber="${{ vars.OPDA_OPERATIONS_ALARM_SMS || '' }}"
 
       - name: Deploy participant identity stores (eu-west-2)
         run: |

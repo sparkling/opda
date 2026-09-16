@@ -13,8 +13,23 @@ Parameters:
       subscription by email before any alarm can reach them; until then the topic
       exists and the alarms are wired, but nobody is notified.
 
+  AlarmSmsNumber:
+    Type: String
+    Default: ''
+    AllowedPattern: '^$|^\+[1-9][0-9]{7,14}$'
+    Description: >-
+      Optional E.164 mobile number for operational alarms, e.g. +447700900123.
+      LEAVE EMPTY until the account can actually send SMS, or this creates a
+      subscription that silently discards every message — the same defect
+      ADR-0087 removed for email. As at 2026-09-16 this account has
+      ACCOUNT_TIER=SANDBOX, no origination identity and a $1 monthly cap, so it
+      cannot send even the sandbox verification code. Enabling it needs, in
+      order: a registered UK sender ID or origination number, production SMS
+      access, and a spend-limit increase (the last two are support cases).
+
 Conditions:
   HasAlarmEmail: !Not [!Equals [!Ref AlarmEmail, '']]
+  HasAlarmSmsNumber: !Not [!Equals [!Ref AlarmSmsNumber, '']]
 
 Resources:
   AlarmTopic:
@@ -30,6 +45,16 @@ Resources:
       TopicArn: !Ref AlarmTopic
       Protocol: email
       Endpoint: !Ref AlarmEmail
+
+  # An alarm that only reaches a mailbox is not read at 03:00. SMS carries the
+  # same payload, so the alarm text stays free of personal data by design.
+  AlarmSmsSubscription:
+    Type: AWS::SNS::Subscription
+    Condition: HasAlarmSmsNumber
+    Properties:
+      TopicArn: !Ref AlarmTopic
+      Protocol: sms
+      Endpoint: !Ref AlarmSmsNumber
 
 Outputs:
   AlarmTopicArn:
