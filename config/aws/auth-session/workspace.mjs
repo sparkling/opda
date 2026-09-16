@@ -125,5 +125,10 @@ export function renderWorkspacePage({ groups, mode = 'initial', phase, selectedG
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="same-origin"><title>${escapeHtml(title)}</title><style>:root{color-scheme:light dark;--bg:#fff;--fg:#141413;--muted:#555;--link:#a9583e}*{box-sizing:border-box}body{margin:0;padding:clamp(24px,6vw,72px);background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif}main{max-width:680px;margin:auto}a,button{font:inherit}a{color:var(--link)}button{padding:.65rem 1rem;cursor:pointer}li{margin:.8rem 0}@media(prefers-color-scheme:dark){:root{--bg:#141413;--fg:#f5f1e8;--muted:#c9c1b4;--link:#e5b632}}</style></head><body><main><h1>${escapeHtml(title)}</h1>${notice}<p>Choose an approved working group. OPDA checks current access before opening Teams.</p><ul>${list}</ul>${form}</main><script nonce="${escapeHtml(nonce)}">${script}</script></body></html>`;
 }
 
-// Chromium also checks form redirects: permit only our server-vetted hand-off origins.
-export const workspaceCsp = nonce => `default-src 'none'; script-src 'nonce-${nonce}'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'self' https://login.microsoftonline.com https://teams.microsoft.com https://teams.cloud.microsoft; frame-ancestors 'none'`;
+// Chromium checks form-action on EVERY redirect of a form submission, so the list must cover the
+// whole Microsoft redemption chain, not just its first hop: login.microsoftonline.com/redeem →
+// invitations.microsoft.com → login.microsoftonline.com (→ login.live.com for personal-account
+// invitees) before a page renders. Verified live 2026-09-16; a missing hop blocks every applicant.
+export const MICROSOFT_HANDOFF_ORIGINS = Object.freeze(['https://login.microsoftonline.com', 'https://invitations.microsoft.com',
+  'https://login.live.com', 'https://teams.microsoft.com', 'https://teams.cloud.microsoft']);
+export const workspaceCsp = nonce => `default-src 'none'; script-src 'nonce-${nonce}'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'self' ${MICROSOFT_HANDOFF_ORIGINS.join(' ')}; frame-ancestors 'none'`;

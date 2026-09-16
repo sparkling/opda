@@ -152,3 +152,16 @@ test('workspace page and auth responses never use no-referrer, which would null 
   assert.equal(page.statusCode, 200);
   assert.equal(page.headers['referrer-policy'], 'same-origin');
 });
+
+test('form-action covers every redirect hop of the Microsoft redemption chain, not only its first', async () => {
+  // Chrome enforces form-action across redirects; the hand-off 303s to login.microsoftonline.com/redeem,
+  // which redirects through invitations.microsoft.com (and login.live.com for personal-account invitees).
+  const { MICROSOFT_HANDOFF_ORIGINS, workspaceCsp } = await import('../config/aws/auth-session/workspace.mjs');
+  const formAction = workspaceCsp('n').split(';').map(s => s.trim()).find(s => s.startsWith('form-action '));
+  for (const origin of ['https://login.microsoftonline.com', 'https://invitations.microsoft.com', 'https://login.live.com', 'https://teams.microsoft.com', 'https://teams.cloud.microsoft']) {
+    assert.ok(MICROSOFT_HANDOFF_ORIGINS.includes(origin), origin);
+    assert.ok(formAction.split(' ').includes(origin), `${origin} missing from ${formAction}`);
+  }
+  assert.ok(formAction.split(' ').includes("'self'"));
+  assert.doesNotMatch(formAction, /\*|http:/);
+});
