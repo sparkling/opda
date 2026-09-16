@@ -23,7 +23,9 @@ const COOKIE = Object.freeze({
 });
 const TRANSIENT_PREFIX = '__Host-opda_oauth_';
 const NO_STORE_HEADERS = Object.freeze({
-  'cache-control': 'no-store', 'referrer-policy': 'no-referrer', 'x-content-type-options': 'nosniff', 'x-robots-tag': 'noindex, noarchive',
+  // same-origin, not no-referrer: no-referrer makes browsers send `Origin: null` on the workspace page's
+  // own POST, which the same-origin check must refuse. Cross-origin hops still receive no referrer.
+  'cache-control': 'no-store', 'referrer-policy': 'same-origin', 'x-content-type-options': 'nosniff', 'x-robots-tag': 'noindex, noarchive',
 });
 const base64url = (value) => Buffer.from(value).toString('base64url');
 

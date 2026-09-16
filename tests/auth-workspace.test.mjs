@@ -140,3 +140,15 @@ test('access result validation only accepts exact Team destinations or tenant-pi
   assert.throws(() => validateAccessResult({ status: 'redeem', location: 'https://login.microsoftonline.com/redeem/?rd=https%3A%2F%2Fevil.example%2Fredeem%3Fticket%3Dx' }, 'conveyancing'));
   assert.throws(() => validateAccessResult({ status: 'redeem', location: 'https://login.microsoftonline.com/redeem/?rd=' + encodeURIComponent('https://invitations.microsoft.com/redeem?tenant=143540d4-4fbc-4005-882a-29656cd01a36&ticket=x&user=not-a-guid') }, 'conveyancing'));
 });
+
+test('workspace page and auth responses never use no-referrer, which would null the Origin header on the page POST', async () => {
+  // Fetch: a non-GET request under referrer policy "no-referrer" carries `Origin: null`, so the page's own
+  // form submission could never pass workspacePost's same-origin check (found live 2026-09-16).
+  const html = renderWorkspacePage({ groups: ['conveyancing'], mode: 'initial', selectedGroup: 'conveyancing', nonce: 'test' });
+  assert.match(html, /<meta name="referrer" content="same-origin">/);
+  assert.doesNotMatch(html, /no-referrer/);
+  const f = await fixture();
+  const page = await f.handler(event('/_auth/workspace', { query: { group: 'conveyancing' } }));
+  assert.equal(page.statusCode, 200);
+  assert.equal(page.headers['referrer-policy'], 'same-origin');
+});
