@@ -156,7 +156,8 @@ Two destinations, both operator-owned repository variables, both confirmed once 
   mobile pushes it, which is what reaches a person at 03:00. Verified the same day: a test
   notification published to the topic appeared in the channel **6 seconds** later.
 - **`OPDA_OPERATIONS_ALARM_EMAIL`** — `smartdata@openpropdata.org.uk`, for the record and for
-  anyone not in Teams.
+  anyone not in Teams. Confirmed and verified the same day: a test notification reached the
+  mailbox **4 seconds** after publication.
 
 SMS was considered and rejected on 2026-09-16, not on cost but on capability: the account is
 in the SNS SMS sandbox with no origination identity, so it cannot deliver an SMS at all —
