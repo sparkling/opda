@@ -193,10 +193,19 @@ writes. Until the flag is on, the buttons are a promise, and the card says so wh
 
 ## Confirmation
 
-Not yet confirmed. This record is proposed: the notification path is deployed but cannot post
-until the bot registration in §6 exists, and the approval path is flagged off. Acceptance
-requires a live card for a synthetic signup, a refused unauthenticated request at the endpoint,
-a refused click by a non-member, and one approval whose three audit records agree.
+Partly confirmed (2026-09-16). The bot exists (`68ec240d-d059-4300-92dd-20931c7b000c`,
+registered in the Teams Developer Portal, `GroupMember.Read.All` consented), the app is in the
+organisation catalogue and installed in the OPDA management team, the secret is stored, the
+stack carries the bot id and the flag is on. The first real connector request exposed a
+protocol detail the synthetic tests could not: the Bot Framework key document lists 219 keys
+and the validator capped it at 200, so every request was answered 500 before the signature was
+checked (commit `dc83b267` raised the cap and added a stage-only failure trace). After the fix
+the installation event was accepted and recorded `serviceUrl =
+https://smba.trafficmanager.net/uk/<tenant>/` — the tenant's own region, not the EMEA default —
+which is why the notifier posts from the recorded value and the default is not a production
+path. An unauthenticated request is refused (`400 Request rejected`). Still outstanding: a live
+card for a real signup, a refused click by a non-member, and one approval whose three audit
+records agree.
 
 ## More Information
 
