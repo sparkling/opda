@@ -28,14 +28,15 @@ test('the Teams stack is a top-level consumer of the submission topic with its o
     assert.match(resource(template, alarm), /AlarmActions: \[\{'Fn::ImportValue': !Sub '\$\{OperationsStackName\}-AlarmTopicArn'\}\]/);
   }
   assert.match(template, /Conditions:\n  HasBot: !Not \[!Equals \[!Ref BotAppId, ''\]\]\n  ApprovalsOn: !And \[!Condition HasBot, !Equals \[!Ref ApprovalsEnabled, 'true'\]\]/);
-  assert.match(resource(template, 'BotSecret'), /Name: opda\/teams\/signups-bot[\s\S]*GenerateStringKey: clientSecret/);
+  assert.doesNotMatch(template, /AWS::SecretsManager::Secret/, 'the deploy role holds no Secrets Manager rights; containers are created out of band');
+  assert.match(template, /BotSecretArn:\n    Type: String\n    Default: arn:aws:secretsmanager:eu-west-2:355653384628:secret:opda\/teams\/signups-bot-/);
 });
 
 test('the notifier can post cards and record them, and nothing else', () => {
   const role = resource(template, 'NotifierRole');
   assert.match(statement(role, 'SignupCardLogOnly'), /dynamodb:LeadingKeys: \['TEAMS#SIGNUP#\*'\]/);
   assert.match(statement(role, 'LinkAndInstallReadOnly'), /Action: \[dynamodb:GetItem\][\s\S]*\['SYNC#EMAIL#\*', 'TEAMS#BOT#\*'\]/);
-  assert.match(statement(role, 'BotCredential'), /Resource: !Ref BotSecret/);
+  assert.match(statement(role, 'BotCredential'), /Resource: !Ref BotSecretArn/);
   assert.doesNotMatch(role, /BridgeSecretArn|sqs:SendMessage|TEAMS#REVIEW/);
   const notifier = resource(template, 'Notifier');
   assert.match(notifier, /Handler: teams-approvals\/notifier\.handler/);

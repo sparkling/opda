@@ -145,7 +145,10 @@ so no message can queue, age or alarm before the bot exists.
 ### 6. What only the operator can do
 
 The tenant has no Azure subscription, so no Azure Bot resource can be created from the CLI,
-and the Teams Developer Portal API refuses tokens from the Azure CLI. These steps are manual:
+and the Teams Developer Portal API refuses tokens from the Azure CLI. The secret container
+`opda/teams/signups-bot` was created out of band on 2026-09-16 with a placeholder, as every
+other credential container is: the deploy role deliberately holds no Secrets Manager rights.
+These steps are manual:
 
 1. In the Teams Developer Portal, Tools, Bot management, New bot: name it `OPDA Signups`.
    Copy the bot id. Under Configure, set the endpoint address to the stack output
