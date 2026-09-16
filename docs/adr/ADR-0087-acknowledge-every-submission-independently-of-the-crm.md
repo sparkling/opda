@@ -148,9 +148,22 @@ record is not worth the migration risk for one redundant attribute.
 
 `config/aws/operations-stack.yaml` creates `opda-operations-alarms` and exports its ARN. Every
 service stack imports it, so no stack may declare an alarm destination that nothing supplies.
-The subscription is operator-owned: set `OPDA_OPERATIONS_ALARM_EMAIL` and confirm the
-subscription by email. Until that is done the topic exists and the alarms are wired, but
-nobody is notified — which is the pre-existing state, now visible instead of hidden.
+
+Two destinations, both operator-owned repository variables, both confirmed once by SNS email:
+
+- **`OPDA_OPERATIONS_ALARM_TEAMS_CHANNEL`** — the email address of the **Incidents** channel in
+  the private *OPDA management team*, created 2026-09-16. Every alarm posts there and Teams
+  mobile pushes it, which is what reaches a person at 03:00. Verified the same day: a test
+  notification published to the topic appeared in the channel **6 seconds** later.
+- **`OPDA_OPERATIONS_ALARM_EMAIL`** — `smartdata@openpropdata.org.uk`, for the record and for
+  anyone not in Teams.
+
+SMS was considered and rejected on 2026-09-16, not on cost but on capability: the account is
+in the SNS SMS sandbox with no origination identity, so it cannot deliver an SMS at all —
+`CreateSMSSandboxPhoneNumber` fails with "No origination entities available to send". A
+subscription would have been a destination that discards every message, the defect this ADR
+exists to remove. Enabling it would need a registered UK sender ID, production SMS access
+and a spend-limit increase; a Teams channel needs none of that and pushes to the same phone.
 
 The unconsumed `opda-public-submission-events` queue and its subscription are removed. The
 boundary publishes; consumers own their queues. The publisher keeps its own failure queue for
