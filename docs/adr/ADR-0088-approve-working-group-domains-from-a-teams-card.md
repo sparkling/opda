@@ -152,9 +152,20 @@ These steps are manual:
 
 1. In the Teams Developer Portal, Tools, Bot management, New bot: name it `OPDA Signups`.
    Copy the bot id. Under Configure, set the endpoint address to the stack output
-   `MessagingEndpoint`. Under Client secrets, add one and copy it.
+   `MessagingEndpoint`, deployed on 2026-09-16 as
+   `https://vokiymmp7h.execute-api.eu-west-2.amazonaws.com/teams/messages`. Under Client
+   secrets, add one and copy it.
 2. Grant the bot's app registration the Graph application permission `GroupMember.Read.All`
-   with admin consent (`az ad app permission add`, then `az ad app permission admin-consent`).
+   (role id `98830695-27a2-44f7-8c18-0c3ebc9698f6` on the Graph API
+   `00000003-0000-0000-c000-000000000000`) with admin consent:
+
+   ```bash
+   az ad app permission add --id <bot id> --api 00000003-0000-0000-c000-000000000000 \
+     --api-permissions 98830695-27a2-44f7-8c18-0c3ebc9698f6=Role
+   az ad sp create --id <bot id>
+   az ad app permission admin-consent --id <bot id>
+   ```
+
 3. Store the credential, without writing it to disk:
 
    ```bash
