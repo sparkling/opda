@@ -12,6 +12,8 @@ const BOT_FRAMEWORK_ISSUER = 'https://api.botframework.com';
 const BOT_FRAMEWORK_KEYS = 'https://login.botframework.com/v1/.well-known/keys';
 const CLOCK_SKEW_MS = 300000;
 const KEYS_TTL_MS = 24 * 60 * 60 * 1000;
+// The Bot Framework document listed 219 keys on 2026-09-16; the cap only bounds a hostile response.
+const MAX_KEYS = 2000;
 const GUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 
@@ -60,7 +62,7 @@ export function createTokenValidator({ botAppId, tenantId, fetch = globalThis.fe
       if (!response.ok) throw new Error('keys');
       body = await response.json();
     } catch { throw new Error('Signing keys unavailable'); }
-    if (!object(body) || !Array.isArray(body.keys) || body.keys.length > 200) throw new Error('Signing keys unavailable');
+    if (!object(body) || !Array.isArray(body.keys) || body.keys.length > MAX_KEYS) throw new Error('Signing keys unavailable');
     cache.set(url, { at: now(), keys: body.keys });
     return body.keys;
   }

@@ -20,6 +20,8 @@ class Rejected extends Error {
   constructor(statusCode) { super('Request rejected'); this.statusCode = statusCode; }
 }
 const reject = (statusCode = 400) => { throw new Rejected(statusCode); };
+// Failures surface by stage and error class only; activities, tokens and messages never reach the log.
+const trace = (stage, error) => { try { console.error(JSON.stringify({ event: 'teams_messages_failed', stage, error: error?.name ?? 'Error' })); } catch {} };
 
 export function response(statusCode, body = {}) {
   return { statusCode, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' }, body: JSON.stringify(body) };
@@ -76,6 +78,7 @@ export function createMessagesHandler(config, deps) {
       await validate(header(event.headers, 'authorization'), activity);
     } catch (error) {
       if (error instanceof Unauthorized) return response(401, { error: 'Unauthorized' });
+      if (!(error instanceof Rejected)) trace('authenticate', error);
       return response(error instanceof Rejected ? error.statusCode : 500, { error: 'Request rejected' });
     }
     try {
@@ -85,8 +88,9 @@ export function createMessagesHandler(config, deps) {
       }
       if (activity.type === 'conversationUpdate') await installed(activity);
       return response(200);
-    } catch {
+    } catch (error) {
       // Never log or return raw errors, activities or credentials.
+      trace(activity.type === 'invoke' ? 'decide' : 'install', error);
       return response(500, { error: 'Service unavailable' });
     }
   };
@@ -109,7 +113,8 @@ export async function handler(event) {
         crm: env.BRIDGE_SECRET_ARN ? createCrmClient({ secretArn: env.BRIDGE_SECRET_ARN }) : null, sendHint });
     }
     return await runtime(event);
-  } catch {
+  } catch (error) {
+    trace('runtime', error);
     return response(503, { error: 'Service unavailable' });
   }
 }

@@ -75,6 +75,14 @@ test('a key endorsed for another channel cannot authenticate a Teams activity; a
   await assert.rejects(down(sign({}), activity), /Signing keys unavailable/);
 });
 
+test('a key document the size the Bot Framework really publishes is accepted; an absurd one is not', async () => {
+  const padding = n => Array.from({ length: n }, (_, i) => jwk(otherKey, `pad-${i}`, ['telephony']));
+  const { validate } = setup([...padding(250), jwk(publicKey, 'k1')]);
+  assert.deepEqual((await validate(sign({}), activity)).appId, BOT);
+  const { validate: refuse } = setup([...padding(2001), jwk(publicKey, 'k1')]);
+  await assert.rejects(refuse(sign({}), activity), /Signing keys unavailable/);
+});
+
 test('service URLs compare case-insensitively without a trailing slash', () => {
   assert.equal(normalizeServiceUrl('https://smba.trafficmanager.net/EMEA/'), 'https://smba.trafficmanager.net/emea');
   assert.equal(normalizeServiceUrl(undefined), '');
