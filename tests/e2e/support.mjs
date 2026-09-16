@@ -169,6 +169,15 @@ export async function visit(page, path) {
 export async function settleVisualState(page) {
   await page.waitForLoadState('load');
   await page.evaluate(() => document.fonts?.ready);
+  // The header sign-in control resolves its session probe asynchronously and
+  // relabels itself; settle it so the receipt does not race that relabel.
+  if (await page.locator('[data-auth-button]').count()) {
+    await page.waitForSelector('[data-auth-button][data-auth-state]', { state: 'attached', timeout: 15_000 });
+  }
+  // Below-the-fold illustrations load lazily; a full-page receipt needs their final height.
+  await page.evaluate(() => Promise.all([...document.images]
+    .filter((image) => !image.complete)
+    .map((image) => { image.loading = 'eager'; return new Promise((resolve) => { image.onload = resolve; image.onerror = resolve; }); })));
 
   // GraphDiagram boots lazily near the viewport. Visit every visible diagram
   // before a full-page screenshot so the receipt cannot race between a loading
