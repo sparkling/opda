@@ -181,7 +181,7 @@ Resources:
                 Resource: !Ref ParticipantsTableArn
                 Condition:
                   ForAllValues:StringLike:
-                    dynamodb:LeadingKeys: ['CRM#*', 'USER#*', 'EMAIL#*', 'SYNC#*', 'IMPORT#*']
+                    dynamodb:LeadingKeys: ['CRM#*', 'USER#*', 'EMAIL#*', 'SYNC#*', 'IMPORT#*', 'TEAMS#*']
                   'Null': { 'dynamodb:LeadingKeys': 'false' }
               - Sid: RecoveryScanOnly
                 Effect: Allow

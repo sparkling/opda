@@ -4,13 +4,14 @@ import { createStore } from './store.mjs';
 import { createOnboardingNotifier } from './onboarding.mjs';
 import { parseHints } from './domain.mjs';
 import { createDomainWorker } from './domain-worker.mjs';
+import { createTeamsDecisionSource } from '../teams-approvals/decisions.mjs';
 
 /**
  * Approval and revocation have one control surface: the six domain review
  * dropdowns. The v1 account-wide worker was removed with `opda_review_status`.
  */
-export function createWorker({ store, hubspot, identity, domainCutover, notifyOnboarding, now = Date.now }) {
-  return createDomainWorker({ store, hubspot, identity, domainCutover, notifyOnboarding, now });
+export function createWorker({ store, hubspot, identity, domainCutover, notifyOnboarding, externalDecisions, now = Date.now }) {
+  return createDomainWorker({ store, hubspot, identity, domainCutover, notifyOnboarding, externalDecisions, now });
 }
 
 let runtime;
@@ -24,6 +25,8 @@ function defaults() {
     identity: createIdentity({ poolId: process.env.USER_POOL_ID }),
     domainCutover: Date.parse(process.env.DOMAIN_REVIEW_CUTOVER),
     notifyOnboarding: process.env.ONBOARDING_QUEUE_URL ? createOnboardingNotifier(process.env.ONBOARDING_QUEUE_URL) : undefined,
+    // ADR-0088: Teams decisions are durable records only the Teams bot role can write.
+    externalDecisions: createTeamsDecisionSource({ participantsTableName: process.env.PARTICIPANTS_TABLE_NAME }),
   });
   return runtime;
 }

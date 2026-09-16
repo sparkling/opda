@@ -1,0 +1,432 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >-
+  Teams signup notifications and flagged Teams approvals (ADR-0088). A second
+  consumer of the submission topic posts one Adaptive Card per signup into the
+  Signups channel; a bot messaging endpoint verifies Bot Framework identity,
+  authorises approvers and records decisions the approval worker corroborates.
+  Approval actions stay inert until ApprovalsEnabled is true.
+
+Parameters:
+  SourceTopicArn:
+    Type: String
+    Description: The shared post-persistence submission topic (site stack output).
+  RegistrationsTableName:
+    Type: String
+  IdentityStackName:
+    Type: String
+    Default: opda-participant-identity
+  OperationsStackName:
+    Type: String
+    Default: opda-operations
+  TenantId:
+    Type: String
+    Default: 143540d4-4fbc-4005-882a-29656cd01a36
+    AllowedPattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+  BotAppId:
+    Type: String
+    Default: ''
+    AllowedPattern: '^$|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+    Description: The bot's Entra app id from the Teams Developer Portal registration; empty until registered.
+  SignupsChannelId:
+    Type: String
+    Default: '19:bd69ce445a4a4493854168e8e2c9ffc7@thread.tacv2'
+    Description: The Signups channel in the OPDA management team, created 2026-09-16.
+  BotServiceUrl:
+    Type: String
+    Default: https://smba.trafficmanager.net/emea/
+    Description: Fallback connector URL until the installation event records the real one.
+  ApproverGroupId:
+    Type: String
+    Default: 11be8af8-bb86-4258-bd73-fb3dd3db2654
+    AllowedPattern: '^$|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+    Description: Entra group whose transitive members may decide; defaults to the OPDA management team.
+  ApprovalsEnabled:
+    Type: String
+    Default: 'false'
+    AllowedValues: ['false', 'true']
+    Description: ADR-0088 flag. Off, buttons answer that Teams approval is not enabled and the role cannot reach the CRM.
+  BridgeSecretArn:
+    Type: String
+    Default: arn:aws:secretsmanager:eu-west-2:355653384628:secret:opda/hubspot/participant-crm-bridge-IOhsJX
+  ApprovalQueueName:
+    Type: String
+    Default: opda-hubspot-approvals
+    Description: The approval worker's hint queue; a Teams decision enters by the same door as the webhook.
+
+Conditions:
+  HasBot: !Not [!Equals [!Ref BotAppId, '']]
+  ApprovalsOn: !And [!Condition HasBot, !Equals [!Ref ApprovalsEnabled, 'true']]
+
+Resources:
+  # The value is set out of band (see ADR-0088); this placeholder never authenticates.
+  BotSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: opda/teams/signups-bot
+      Description: Teams bot app credential {appId, tenantId, clientSecret}; set with put-secret-value, never in git.
+      GenerateSecretString:
+        SecretStringTemplate: '{"appId": "", "tenantId": ""}'
+        GenerateStringKey: clientSecret
+        PasswordLength: 32
+        ExcludePunctuation: true
+
+  FailureQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: opda-teams-signup-failures
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+
+  SignupQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: opda-teams-signups
+      MessageRetentionPeriod: 1209600
+      VisibilityTimeout: 360
+      ReceiveMessageWaitTimeSeconds: 20
+      SqsManagedSseEnabled: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt FailureQueue.Arn
+        maxReceiveCount: 8
+
+  QueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref SignupQueue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: DedicatedTopicDelivery
+            Effect: Allow
+            Principal: { Service: sns.amazonaws.com }
+            Action: sqs:SendMessage
+            Resource: !GetAtt SignupQueue.Arn
+            Condition:
+              ArnEquals: { 'aws:SourceArn': !Ref SourceTopicArn }
+              StringEquals: { 'aws:SourceAccount': !Ref AWS::AccountId }
+          - Sid: RequireTransportEncryption
+            Effect: Deny
+            Principal: '*'
+            Action: sqs:*
+            Resource: !GetAtt SignupQueue.Arn
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } }
+
+  FailureQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues: [!Ref FailureQueue]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: DedicatedTopicRedrive
+            Effect: Allow
+            Principal: { Service: sns.amazonaws.com }
+            Action: sqs:SendMessage
+            Resource: !GetAtt FailureQueue.Arn
+            Condition:
+              ArnEquals: { 'aws:SourceArn': !Ref SourceTopicArn }
+              StringEquals: { 'aws:SourceAccount': !Ref AWS::AccountId }
+          - Sid: RequireTransportEncryption
+            Effect: Deny
+            Principal: '*'
+            Action: sqs:*
+            Resource: !GetAtt FailureQueue.Arn
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } }
+
+  # Subscribed only once a bot exists: before that, nothing can post, so nothing
+  # should queue, age and alarm. Signups before registration get no card.
+  SignupSubscription:
+    Type: AWS::SNS::Subscription
+    Condition: HasBot
+    DependsOn: [QueuePolicy, FailureQueuePolicy]
+    Properties:
+      TopicArn: !Ref SourceTopicArn
+      Protocol: sqs
+      Endpoint: !GetAtt SignupQueue.Arn
+      RawMessageDelivery: true
+      FilterPolicyScope: MessageAttributes
+      FilterPolicy:
+        eventType: ['working-group-interest.received.v1']
+        recordKind: ['working-group-interest']
+        schemaVersion: ['1']
+      RedrivePolicy: { deadLetterTargetArn: !GetAtt FailureQueue.Arn }
+
+  NotifierLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/opda-teams-signup-notifier
+      RetentionInDays: 14
+
+  MessagesLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/opda-teams-messages
+      RetentionInDays: 14
+
+  NotifierRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: teams-signup-card-only
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-teams-signup-notifier:*'
+              - Sid: ConsumeDedicatedQueueOnly
+                Effect: Allow
+                Action: [sqs:ReceiveMessage, sqs:DeleteMessage, sqs:GetQueueAttributes, sqs:ChangeMessageVisibility]
+                Resource: !GetAtt SignupQueue.Arn
+              - Sid: OriginalIntakeReadOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem]
+                Resource: !Sub 'arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RegistrationsTableName}'
+              - Sid: SignupCardLogOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:PutItem]
+                Resource: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableArn'}
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['TEAMS#SIGNUP#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              # The CRM link and the recorded connector URL; this role writes neither.
+              - Sid: LinkAndInstallReadOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem]
+                Resource: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableArn'}
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['SYNC#EMAIL#*', 'TEAMS#BOT#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              - Sid: BotCredential
+                Effect: Allow
+                Action: [secretsmanager:GetSecretValue]
+                Resource: !Ref BotSecret
+
+  MessagesRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: teams-decision-only
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-teams-messages:*'
+              - Sid: OriginalIntakeReadOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem]
+                Resource: !Sub 'arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${RegistrationsTableName}'
+              # The only principal that may write a Teams decision record: that is
+              # what makes TEAMS#REVIEW evidence of a verified, authorised click.
+              - Sid: TeamsDecisionRecordsOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:PutItem]
+                Resource: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableArn'}
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['TEAMS#REVIEW#*', 'TEAMS#BOT#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              - Sid: LinkReadOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem]
+                Resource: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableArn'}
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['SYNC#EMAIL#*', 'TEAMS#SIGNUP#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              - Sid: BotCredential
+                Effect: Allow
+                Action: [secretsmanager:GetSecretValue]
+                Resource: !Ref BotSecret
+              # With the flag off this role physically cannot mirror to the CRM or hint the worker.
+              - !If
+                - ApprovalsOn
+                - Sid: BridgeCredentialWhileEnabled
+                  Effect: Allow
+                  Action: [secretsmanager:GetSecretValue]
+                  Resource: !Ref BridgeSecretArn
+                - !Ref AWS::NoValue
+              - !If
+                - ApprovalsOn
+                - Sid: HintApprovalWorkerWhileEnabled
+                  Effect: Allow
+                  Action: [sqs:SendMessage]
+                  Resource: !Sub 'arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${ApprovalQueueName}'
+                - !Ref AWS::NoValue
+
+  Notifier:
+    Type: AWS::Serverless::Function
+    DependsOn: NotifierLogGroup
+    Properties:
+      FunctionName: opda-teams-signup-notifier
+      CodeUri: ./
+      Handler: teams-approvals/notifier.handler
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      MemorySize: 128
+      Timeout: 60
+      ReservedConcurrentExecutions: 2
+      Role: !GetAtt NotifierRole.Arn
+      Environment:
+        Variables:
+          REGISTRATIONS_TABLE_NAME: !Ref RegistrationsTableName
+          PARTICIPANTS_TABLE_NAME: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableName'}
+          BOT_SECRET_ARN: !Ref BotSecret
+          SIGNUPS_CHANNEL_ID: !Ref SignupsChannelId
+          TENANT_ID: !Ref TenantId
+          BOT_SERVICE_URL: !Ref BotServiceUrl
+          SIGNUP_QUEUE_ARN: !GetAtt SignupQueue.Arn
+          SIGNUP_QUEUE_URL: !Ref SignupQueue
+
+  NotifierMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !GetAtt SignupQueue.Arn
+      FunctionName: !Ref Notifier
+      BatchSize: 1
+      FunctionResponseTypes: [ReportBatchItemFailures]
+      ScalingConfig: { MaximumConcurrency: 2 }
+
+  Messages:
+    Type: AWS::Serverless::Function
+    DependsOn: MessagesLogGroup
+    Properties:
+      FunctionName: opda-teams-messages
+      CodeUri: ./
+      Handler: teams-approvals/messages.handler
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      MemorySize: 256
+      Timeout: 15
+      ReservedConcurrentExecutions: 5
+      Role: !GetAtt MessagesRole.Arn
+      Environment:
+        Variables:
+          REGISTRATIONS_TABLE_NAME: !Ref RegistrationsTableName
+          PARTICIPANTS_TABLE_NAME: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableName'}
+          BOT_SECRET_ARN: !Ref BotSecret
+          BOT_APP_ID: !Ref BotAppId
+          TENANT_ID: !Ref TenantId
+          APPROVER_GROUP_ID: !Ref ApproverGroupId
+          APPROVALS_ENABLED: !If [ApprovalsOn, 'true', 'false']
+          BRIDGE_SECRET_ARN: !If [ApprovalsOn, !Ref BridgeSecretArn, '']
+          APPROVAL_QUEUE_URL: !If [ApprovalsOn, !Sub 'https://sqs.${AWS::Region}.${AWS::URLSuffix}/${AWS::AccountId}/${ApprovalQueueName}', '']
+
+  Api:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: opda-teams-messages
+      ProtocolType: HTTP
+      DisableExecuteApiEndpoint: false
+
+  Integration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref Api
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt Messages.Arn
+      PayloadFormatVersion: '2.0'
+      TimeoutInMillis: 15000
+
+  MessagesRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref Api
+      RouteKey: POST /teams/messages
+      Target: !Sub 'integrations/${Integration}'
+
+  Stage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref Api
+      StageName: $default
+      AutoDeploy: true
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 5
+
+  MessagesInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Messages
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/POST/teams/messages'
+
+  DeadLetterAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: A signup card could not be posted to Teams and needs operator replay.
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions: [{ Name: QueueName, Value: !GetAtt FailureQueue.QueueName }]
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [{'Fn::ImportValue': !Sub '${OperationsStackName}-AlarmTopicArn'}]
+
+  PendingAgeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: A signup has waited over 20 minutes for its Teams card.
+      Namespace: AWS/SQS
+      MetricName: ApproximateAgeOfOldestMessage
+      Dimensions: [{ Name: QueueName, Value: !GetAtt SignupQueue.QueueName }]
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1200
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [{'Fn::ImportValue': !Sub '${OperationsStackName}-AlarmTopicArn'}]
+
+  MessagesErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: The Teams bot endpoint is failing; approvers' clicks may not be recorded.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions: [{ Name: FunctionName, Value: !Ref Messages }]
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [{'Fn::ImportValue': !Sub '${OperationsStackName}-AlarmTopicArn'}]
+
+Outputs:
+  MessagingEndpoint:
+    Description: Register this as the bot's messaging endpoint in the Teams Developer Portal.
+    Value: !Sub 'https://${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}/teams/messages'
+  BotSecretArn:
+    Value: !Ref BotSecret
+  SignupQueueUrl:
+    Value: !Ref SignupQueue
+  FailureQueueUrl:
+    Value: !Ref FailureQueue
+  NotifierFunctionName:
+    Value: !Ref Notifier
+  MessagesFunctionName:
+    Value: !Ref Messages

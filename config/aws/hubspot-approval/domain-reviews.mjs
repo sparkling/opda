@@ -47,7 +47,8 @@ function reviewer(history) {
   return actor;
 }
 
-function approvalEvidence(contact, decision, now) {
+/** Shared by every trusted approval source: the Teams bot (ADR-0088) reuses it unchanged. */
+export function approvalEvidence(contact, decision, now) {
   const histories = contact.propertiesWithHistory ?? {}, properties = contact.properties ?? {};
   try { contactProfile(contact); }
   catch { return { reason: 'email-not-established-before-domain-review' }; }

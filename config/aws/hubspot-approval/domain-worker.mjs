@@ -34,12 +34,15 @@ export async function relayPendingOnboarding(store, notify) {
   finally { if (!Array.isArray(page)) await store.advanceOnboardingRelay(page); }
 }
 
-function domainDecisions(contact, binding, cutover, now) {
+async function domainDecisions(contact, binding, cutover, now, externalDecisions) {
   const decisions = domainReviewDecisions(contact, { cutover, now });
+  // A second trusted authority (ADR-0088 Teams decisions) overrides per domain,
+  // exactly as the Finance import does; the import keeps precedence.
+  const external = externalDecisions ? await externalDecisions(contact, binding, { now }) : [];
   const imported = financeImportDecisions(contact, binding, { now });
-  if (imported) {
-    const index = decisions.findIndex(decision => decision.domainId === FINANCE_DOMAIN_ID);
-    if (index === -1) decisions.push(imported); else decisions[index] = imported;
+  for (const override of [...external, ...(imported ? [imported] : [])]) {
+    const index = decisions.findIndex(decision => decision.domainId === override.domainId);
+    if (index === -1) decisions.push(override); else decisions[index] = override;
   }
   const present = new Set(decisions.map(decision => decision.domainId));
   for (const [domainId, state] of Object.entries(binding?.domainApprovals ?? {})) {
@@ -77,7 +80,7 @@ function changedDecision(decision, binding) {
 }
 
 /** Activated explicitly; v1 remains available only while rollout is disabled. */
-export function createDomainWorker({ store, hubspot, identity, domainCutover, notifyOnboarding, now = Date.now }) {
+export function createDomainWorker({ store, hubspot, identity, domainCutover, notifyOnboarding, externalDecisions, now = Date.now }) {
   if (!Number.isSafeInteger(domainCutover) || domainCutover < 0) throw new Error('Domain approval cutover required');
   const clock = () => {
     const at = now();
@@ -92,7 +95,7 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
     if (typeof contactId !== 'string' || !CONTACT_ID.test(contactId)) throw new Error('Invalid contact reference');
     let contact = await hubspot.getContact(contactId), binding = await store.binding(contactId);
     let at = clock();
-    let decisions = domainDecisions(contact, binding, domainCutover, at);
+    let decisions = await domainDecisions(contact, binding, domainCutover, at, externalDecisions);
     // Approval and revocation have exactly one control surface: the domain dropdowns.
     const mayReserve = () => decisions.some(approved);
     if (!binding) {
@@ -107,7 +110,7 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
       binding = await store.attach(binding, await identity.ensure(binding), clock());
       contact = await hubspot.getContact(contactId); // Creation never turns an earlier observation into a grant.
       at = clock();
-      decisions = domainDecisions(contact, binding, domainCutover, at);
+      decisions = await domainDecisions(contact, binding, domainCutover, at, externalDecisions);
     }
     let account = await store.account(binding);
     const holdReason = contactHold(contact, binding) || accountHold(account, at);
@@ -145,7 +148,7 @@ export function createDomainWorker({ store, hubspot, identity, domainCutover, no
     for (const contact of contacts) {
       const binding = maps.get(contact.id), account = rows.get(contact.id);
       try {
-        const decisions = domainDecisions(contact, binding, domainCutover, at);
+        const decisions = await domainDecisions(contact, binding, domainCutover, at, externalDecisions);
         if (!binding && !account) {
           if (decisions.some(approved)) pending.add(contact.id);
           continue;
