@@ -69,6 +69,24 @@ test('registration validation normalises valid input and rejects unknown, HTML a
   }
 });
 
+test('plus-addressed applicants are refused at intake, because Entra cannot invite them', () => {
+  // ADR-0085: an approved domain is followed by a Microsoft invitation. A plus-addressed
+  // applicant would be acknowledged and approved, then dead-end at microsoft-identity-review.
+  for (const email of ['ada+wg@example.com', 'ADA+WG@Example.COM', 'a+@example.com', 'a+b+c@example.com']) {
+    const result = validateRegistration(payload({ email }));
+    assert.equal(result.ok, false, email);
+    assert.deepEqual(Object.keys(result.errors), ['emailAlias']);
+    // The generic "invalid address" error must not be reused: the address IS valid.
+    assert.equal(result.errors.email, undefined);
+  }
+  for (const email of ['ada@example.com', 'ada.lovelace@sub.example.co.uk', "o'hara@example.com"]) {
+    assert.equal(validateRegistration(payload({ email })).ok, true, email);
+  }
+  // A malformed address still reports the generic error, never the alias one.
+  const malformed = validateRegistration(payload({ email: 'not-an-address' }));
+  assert.deepEqual(Object.keys(malformed.errors), ['email']);
+});
+
 test('registration accepts commercial and public-interest contributions independently or together', () => {
   for (const contributions of [
     ['represent-commercial-interests'],

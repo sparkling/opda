@@ -23,6 +23,10 @@ const CONTRIBUTIONS = new Set([
 ]);
 
 const CONTROL_CHARACTERS = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u;
+// Matches the server rule in config/aws/working-group-interest/domain.mjs: an
+// approved domain is followed by a Microsoft invitation, and Entra will not invite
+// a plus-addressed mailbox. Caught here so it never reaches a submission.
+const PLUS_ADDRESSED = /\+/u;
 const HTML_MARKUP = /[<>]/u;
 const SUBMISSION_TIMEOUT_MS = 15_000;
 
@@ -151,6 +155,12 @@ function initWorkingGroupForm(): void {
     const email = emailControl?.value.trim() ?? '';
     if (!email || email.length > 254 || !emailControl?.checkValidity()) {
       addError(emailControl, 'email-error', 'Enter a valid email address.');
+    } else if (PLUS_ADDRESSED.test(email)) {
+      addError(
+        emailControl,
+        'email-error',
+        'Enter an address without a plus sign. Working-group invitations are issued through Microsoft, which cannot invite a plus-addressed mailbox.',
+      );
     }
     const organisation = validateText('#organisation', 'organisation-error', 'Organisation', 2, 150);
     const role = validateText('#role', 'role-error', 'Role or area of expertise', 2, 120);

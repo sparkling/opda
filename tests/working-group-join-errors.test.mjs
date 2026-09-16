@@ -25,6 +25,19 @@ test('registration errors use fixed client copy for allowlisted fields', () => {
   ]);
 });
 
+test('a plus-addressed refusal gets its own copy, not the generic invalid-address one', () => {
+  // The address is valid; it simply cannot be onboarded, so reusing the `email`
+  // key would tell the applicant something untrue about what they typed.
+  assert.deepEqual(registrationErrorIssues({ ok: false, errors: { emailAlias: 'server text ignored' } }), [{
+    selector: '#email',
+    errorId: 'email-error',
+    message: 'Enter an address without a plus sign. Working-group invitations are issued through '
+      + 'Microsoft, which cannot invite a plus-addressed mailbox.',
+  }]);
+  const [issue] = registrationErrorIssues({ ok: false, errors: { email: 'x' } });
+  assert.equal(issue.message, 'Enter a valid email address.');
+});
+
 test('stale privacy errors get local reload guidance without a field link', () => {
   assert.deepEqual(registrationErrorIssues({
     ok: false,

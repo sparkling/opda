@@ -36,6 +36,11 @@ const REGISTRATION_FIELDS = new Set([
 const INVALID_CONTROL = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u;
 const HTML_MARKER = /[<>]/u;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
+// ADR-0085: an approved domain is followed by a Microsoft invitation, and Entra
+// refuses to invite an address containing "+". A plus-addressed applicant can be
+// acknowledged and approved but never onboarded — the operation dead-ends at
+// `microsoft-identity-review` for a human to unpick. Refuse it at intake instead.
+const PLUS_ADDRESSED = /\+/u;
 
 function text(value, minimum, maximum, options = {}) {
   if (typeof value !== 'string') return null;
@@ -81,6 +86,8 @@ export function validateRegistration(payload) {
   if (!fullName) errors.fullName = 'Enter your full name.';
   if (!EMAIL.test(email) || email.length > 254 || INVALID_CONTROL.test(email) || HTML_MARKER.test(email)) {
     errors.email = 'Enter a valid email address.';
+  } else if (PLUS_ADDRESSED.test(email)) {
+    errors.emailAlias = 'Enter an address without a plus sign.';
   }
   if (!organisation) errors.organisation = 'Enter your organisation.';
   if (!role) errors.role = 'Enter your role or area of expertise.';

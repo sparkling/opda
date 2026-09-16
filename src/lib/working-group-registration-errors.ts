@@ -15,6 +15,12 @@ const FIELD_ISSUES: Record<string, RegistrationErrorIssue> = {
     errorId: 'email-error',
     message: 'Enter a valid email address.',
   },
+  emailAlias: {
+    selector: '#email',
+    errorId: 'email-error',
+    message:
+      'Enter an address without a plus sign. Working-group invitations are issued through Microsoft, which cannot invite a plus-addressed mailbox.',
+  },
   organisation: {
     selector: '#organisation',
     errorId: 'organisation-error',

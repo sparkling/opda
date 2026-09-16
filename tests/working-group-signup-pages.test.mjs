@@ -85,6 +85,27 @@ test('public sign-up form exposes only the accepted working-group and contributi
   assert.match(form, /name="startedAt"/u);
   assert.match(form, /data-privacy-notice-version=\{privacyNoticeVersion\}/u);
 });
+test('the plus-address refusal is stated in the hint and enforced identically in both layers', async () => {
+  const [form, client, contract, server] = await Promise.all([
+    readFile(paths.form, 'utf8'),
+    readFile(paths.registration, 'utf8'),
+    readFile(new URL('../src/lib/working-group-registration-errors.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../config/aws/working-group-interest/domain.mjs', import.meta.url), 'utf8'),
+  ]);
+  // Told before they type it, not only after they submit.
+  assert.match(form, /cannot contain a plus sign/iu);
+  // Enforced in the browser and again at the API; neither layer may be dropped.
+  for (const source of [client, server]) {
+    assert.ok(source.includes('const PLUS_ADDRESSED = /\\+/u;'), 'rule missing');
+    assert.ok(source.includes('} else if (PLUS_ADDRESSED.test(email)) {'), 'rule not applied to the address');
+  }
+  assert.ok(server.includes('errors.emailAlias ='), 'server must use its own error key, not the generic email one');
+  // One reason, three places: the hint, the client error and the server-mapped copy.
+  // The hint leads with "because", so anchor on the clause they must all share.
+  const reason = 'invitations are issued through Microsoft, which cannot invite a plus-addressed mailbox';
+  for (const source of [form, client, contract]) assert.ok(source.includes(reason), 'copy drifted');
+});
+
 test('global header promotes the canonical working-group sign-up route', async () => {
   const [header, themeToggle, baseCss, contentCss] = await Promise.all([
     readFile(paths.header, 'utf8'),
