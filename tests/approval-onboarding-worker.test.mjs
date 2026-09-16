@@ -91,7 +91,7 @@ function ownedAccess(h, ids = APPROVAL_GROUP_IDS) {
 
 test('all frozen selected groups become verified access before one guarded invitation', async () => {
   const h = harness();
-  assert.deepEqual(await h.worker.process(ID), { status: 'complete', stage: 'invitation-accepted' });
+  assert.deepEqual(await h.worker.process(ID), { status: 'complete', stage: 'invitation-sent' });
   assert.equal(h.state.initialGraphReceipt, undefined);
   assert.equal(h.state.sends, 1); assert.equal(h.state.released, 1);
   assert.deepEqual(h.state.sentInput.groups.map(group => group.groupId), APPROVAL_GROUP_IDS);
@@ -103,7 +103,7 @@ test('individual approval provisions and emails only its domain without removing
   const h = harness({ domainId: 'conveyancing', groups: ['conveyancing'] });
   ownedAccess(h, ['finance-and-banking']);
   const retained = copy(h.context.receipts.graph.memberships[WORKSPACES['finance-and-banking'].teamId]);
-  assert.deepEqual(await h.worker.process(ID), { status: 'complete', stage: 'invitation-accepted' });
+  assert.deepEqual(await h.worker.process(ID), { status: 'complete', stage: 'invitation-sent' });
   assert.deepEqual(h.state.sentInput.groups.map(group => group.groupId), ['conveyancing']);
   assert.equal(h.context.receipts.mail[ID].domainId, 'conveyancing');
   assert.deepEqual(h.context.receipts.graph.memberships[WORKSPACES['finance-and-banking'].teamId], retained);
@@ -154,7 +154,7 @@ test('activation gate leaves new provisioning pending without any provider effec
 
 test('matching recipient canary provisions while global activation remains disabled', async () => {
   const h = harness({ enabled: false, canaryEmailHash: CANARY, email: ' Test@Example.ORG ' });
-  assert.deepEqual(await h.worker.process(ID), { status: 'complete', stage: 'invitation-accepted' });
+  assert.deepEqual(await h.worker.process(ID), { status: 'complete', stage: 'invitation-sent' });
   assert.equal(h.state.sends, 1); assert.ok(h.state.calls.includes('identity'));
 });
 

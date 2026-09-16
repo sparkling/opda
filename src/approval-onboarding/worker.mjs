@@ -134,14 +134,15 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
       if (!await guard(true)) return await finish('cancelled', 'superseded');
       if (attention) return await finish('attention', 'microsoft-access-review');
       if (pending) return await finish('pending', 'microsoft-propagating');
+      // 'invitation-sent' is Postmark accepting the email; the applicant's acceptance is the guest's externalUserState.
       const previousMail = context.receipts.mail[operationId];
-      if (previousMail?.status === 'accepted') return await finish('complete', 'invitation-accepted');
+      if (previousMail?.status === 'accepted') return await finish('complete', 'invitation-sent');
       if (previousMail && previousMail.fingerprint !== pin.fingerprint) return await finish('attention', 'historical-template-review');
       if (['attempting', 'unknown'].includes(previousMail?.status)) {
         const result = await postmark.reconcile({ operationKey: operationId, ...(domainId ? { groupId: domainId } : {}) });
         await save(next => { next.mail[operationId] = { ...previousMail, ...result, checkedAt: now() }; });
         if (!await guard(true)) return await finish('cancelled', 'superseded');
-        return await finish(result.status === 'accepted' ? 'complete' : 'attention', result.status === 'accepted' ? 'invitation-accepted' : 'invitation-outcome-unknown');
+        return await finish(result.status === 'accepted' ? 'complete' : 'attention', result.status === 'accepted' ? 'invitation-sent' : 'invitation-outcome-unknown');
       }
       if (previousMail) return await finish('attention', 'invitation-review'); // No automatic retries of failed/cancelled mail.
       const result = await postmark.send({ input: { displayName: context.account.name, email: context.account.email,
@@ -160,7 +161,7 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
         next.mail[operationId] = { ...next.mail[operationId], ...result, updatedAt: now() };
       });
       if (!await guard(true)) return await finish('cancelled', 'superseded');
-      if (result.status === 'accepted') return await finish('complete', 'invitation-accepted');
+      if (result.status === 'accepted') return await finish('complete', 'invitation-sent');
       if (!result.attempted && !context.receipts.mail[operationId]
         && ['preflight-unavailable', 'suppression-check-unavailable', 'approval-guard-unavailable'].includes(result.reason)) {
         return await finish('pending', 'invitation-preflight-pending');
