@@ -17,7 +17,7 @@ const registration = (registrationId = id) => ({
   workingGroups: ['conveyancing', 'finance-and-banking'], contributions: ['review-model-candidates'],
   relevantPerspective: 'Synthetic professional perspective', acknowledgement: true,
   privacyNoticeVersion: '2026-09-08', status: 'received', createdAt: now - 10000,
-  expiresAt: Math.floor(now / 1000) + 10000,
+  expiresAt: Math.floor(now / 1000) + 2 * 24 * 60 * 60,
 });
 const message = (registrationId = id) => ({
   messageId: 'message-1', eventSource: 'aws:sqs', eventSourceARN: queueArn, receiptHandle: 'opaque',
@@ -58,9 +58,11 @@ function setup(overrides = {}) {
     },
     ...overrides.postmark,
   };
-  const worker = createWorker({ store, hubspot, postmark, logoBase64, now: () => now, newId: () => 'pending-random-id',
+  let clock = now;
+  const worker = createWorker({ store, hubspot, postmark, logoBase64, now: () => clock, newId: () => 'pending-random-id',
     transferNoticeVersion: '2026-09-08', ...overrides.worker });
-  return { items, registrations, calls, store, hubspot, postmark, worker };
+  const tick = (ms) => { clock = now + ms; };
+  return { items, registrations, calls, store, hubspot, postmark, worker, tick };
 }
 const acks = f => f.calls.filter(([action]) => action === 'ack');
 const ackRecords = f => [...f.items.values()].filter(item => item.pk.startsWith('SYNC#ACK#'));
@@ -94,13 +96,14 @@ test('creates only a lossless pending contact and makes duplicate deliveries ine
   assert.equal(f.registrations.get(id).fullName, registration().fullName);
 });
 
-test('an existing contact gets one review task, never a contact update; repeats add no CRM objects', async () => {
+test('an existing contact gets one review task, never a contact update; a repeat waits a day, then gets its own task', async () => {
   const f = setup({ hubspot: { async findContacts() { return ['345']; } } });
   await f.worker(id);
   await f.worker(id);
-  await f.worker(otherId);
+  // ADR-0084 §4: at most one task per email per day, so the repeat is queued, not dropped.
+  await assert.rejects(f.worker(otherId), error => error instanceof RetryLater && error.seconds > 0 && error.seconds <= 43200);
   assert.equal(f.calls.filter(([action]) => action === 'create').length, 0);
-  const tasks = f.calls.filter(([action]) => action === 'task');
+  let tasks = f.calls.filter(([action]) => action === 'task');
   assert.equal(tasks.length, 1);
   assert.deepEqual(tasks[0][1], { contactIds: ['345'], registrationId: id,
     requestedGroups: ['conveyancing', 'finance-and-banking'], dueAt: now });
@@ -109,8 +112,17 @@ test('an existing contact gets one review task, never a contact update; repeats 
   assert.equal(application.state, 'quarantined');
   assert.deepEqual(application.candidateContactIds, ['345']);
   assert.equal(application.reviewTaskId, '900');
-  assert.equal(f.items.get(`SYNC#APPLICATION#${otherId}`).reason, 'repeat-application');
-  assert.equal(f.items.get(`SYNC#APPLICATION#${otherId}`).reviewTaskId, undefined);
+  assert.equal(f.items.get(`SYNC#APPLICATION#${otherId}`).state, 'pending');
+  f.tick(24 * 60 * 60 * 1000 + 1);
+  await f.worker(otherId);
+  await f.worker(otherId);
+  tasks = f.calls.filter(([action]) => action === 'task');
+  assert.equal(tasks.length, 2);
+  assert.equal(tasks[1][1].registrationId, otherId);
+  assert.deepEqual(tasks[1][1].contactIds, ['345']);
+  const repeat = f.items.get(`SYNC#APPLICATION#${otherId}`);
+  assert.equal(repeat.reason, 'repeat-application-reviewed');
+  assert.equal(repeat.reviewTaskId, '900');
   assert.equal([...f.items.keys()].filter(key => key.startsWith('SYNC#EMAIL#')).length, 1);
   assert.equal(f.registrations.size, 2);
 });
@@ -144,10 +156,15 @@ test('every validated application is acknowledged once per requested group, crea
   const existing = setup({ hubspot: { async findContacts() { return ['345']; } } });
   await existing.worker(id);
   assert.equal(acks(existing).length, 2);
-  // A repeat from the same email is AWS evidence only: no second acknowledgement, no task.
-  await existing.worker(otherId);
+  // A repeat is acknowledged only once staff can see it, i.e. with its own review task.
+  await assert.rejects(existing.worker(otherId), RetryLater);
   assert.equal(acks(existing).length, 2);
   assert.ok(!ackRecords(existing).some(item => item.pk.includes(otherId)));
+  existing.tick(24 * 60 * 60 * 1000 + 1);
+  await existing.worker(otherId);
+  assert.equal(acks(existing).length, 4);
+  assert.deepEqual(acks(existing).slice(2).map(([, group, , registrationId]) => [group, registrationId]),
+    [['conveyancing', otherId], ['finance-and-banking', otherId]]);
 });
 
 test('suppressed, invalid or stale sources are never acknowledged', async () => {
@@ -208,13 +225,23 @@ test('acknowledgement outcomes are durable: rejection is final, throttling waits
   assert.ok(ackRecords(interrupted).every(item => item.state === 'unknown'), 'dispatch may have happened; never resend');
 });
 
-test('never updates an already-created contact from a resubmission', async () => {
+test('never updates or recreates an already-created contact from a resubmission; it is reviewed instead', async () => {
   const f = setup();
   await f.worker(id);
   f.registrations.get(otherId).fullName = 'Anonymous replacement name';
+  await assert.rejects(f.worker(otherId), RetryLater);
+  f.tick(24 * 60 * 60 * 1000 + 1);
   await f.worker(otherId);
   assert.equal(f.calls.filter(([action]) => action === 'create').length, 1);
-  assert.equal(f.items.get(`SYNC#APPLICATION#${otherId}`).state, 'quarantined');
+  const task = f.calls.find(([action, input]) => action === 'task' && input.registrationId === otherId);
+  assert.deepEqual(task[1].contactIds, ['123'], 'the task hangs off the contact this email created');
+  const repeat = f.items.get(`SYNC#APPLICATION#${otherId}`);
+  assert.equal(repeat.state, 'quarantined');
+  assert.equal(repeat.reason, 'repeat-application-reviewed');
+  // A crash between the durable attempt marker and the task response replays without a second task.
+  f.items.get(`SYNC#APPLICATION#${otherId}`).state = 'pending';
+  await f.worker(otherId);
+  assert.equal(f.calls.filter(([action, input]) => action === 'task' && input.registrationId === otherId).length, 2);
 });
 
 test('expired, erased, invalid and old-notice sources cause no CRM calls', async () => {

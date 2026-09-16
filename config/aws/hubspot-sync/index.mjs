@@ -12,8 +12,11 @@ export { RetryLater } from './errors.mjs';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const FINAL = new Set(['synced', 'quarantined', 'suppressed']);
-// Only the first application per email is acknowledged; repeats and holds are AWS evidence.
-const ACKNOWLEDGED_REASONS = new Set(['pending-applicant-created', 'existing-contact', 'ambiguous-contacts', 'ambiguous-create']);
+// An application is acknowledged once staff can see it: a created contact, or a review task.
+const ACKNOWLEDGED_REASONS = new Set(['pending-applicant-created', 'existing-contact', 'ambiguous-contacts',
+  'ambiguous-create', 'repeat-application-reviewed']);
+// ADR-0084 §4: at most one automatic CRM creation or task per email in 24 hours.
+const EMAIL_TASK_INTERVAL_MS = 24 * 60 * 60 * 1000;
 const ACK_FINAL = new Set(['accepted', 'rejected', 'suppressed', 'unknown']);
 // Lambda execution is capped at 60s; a durable "in flight" marker outlives one attempt.
 const LEASE_MS = 120000;
@@ -108,6 +111,32 @@ export function createWorker({ store, hubspot, postmark, logoBase64, now = Date.
     await acknowledge(registrationId, operation, source, timestamp);
   };
 
+  /**
+   * A later application from an email the CRM already knows. Staff must still see
+   * it: the applicant may have requested a new working group. It becomes one review
+   * task on the known contact and is acknowledged, at most once per email per day;
+   * a repeat inside that window waits in the queue rather than vanishing. Without a
+   * known contact there is nothing to attach the task to, so it stays AWS evidence.
+   */
+  async function repeat(claim, claimKey, registrationId, source, finish, timestamp) {
+    if (!FINAL.has(claim.state)) throw new RetryLater(60);
+    const contactIds = claim.contactId ? [claim.contactId] : claim.candidateContactIds ?? [];
+    if (!contactIds.length || claim.state === 'suppressed') return finish('quarantined', 'repeat-application', { reviewKey: claimKey });
+    if (claim.repeatRegistrationId !== registrationId) {
+      // A replay of this registration after a crash proceeds; any other repeat waits
+      // for the email's daily window measured from its last creation or task.
+      const lastTaskAt = claim.lastTaskAt ?? claim.updatedAt ?? claim.createdAt;
+      const wait = (lastTaskAt + EMAIL_TASK_INTERVAL_MS - timestamp) / 1000;
+      if (wait > 0) throw new RetryLater(Math.min(wait, 43200));
+    }
+    // Record the attempt BEFORE the POST so a crash cannot create a second task.
+    claim = await store.put({ ...claim, repeatRegistrationId: registrationId, lastTaskAt: timestamp }, claim);
+    const task = await hubspot.createReviewTask({ contactIds, registrationId,
+      requestedGroups: source.workingGroups, dueAt: timestamp });
+    return finish('quarantined', 'repeat-application-reviewed',
+      { reviewKey: claimKey, candidateContactIds: contactIds, reviewTaskId: task.id });
+  }
+
   async function syncContact(registrationId, pk, source, timestamp) {
     let operation = await store.get(pk);
     if (operation && FINAL.has(operation.state)) return operation;
@@ -141,7 +170,7 @@ export function createWorker({ store, hubspot, postmark, logoBase64, now = Date.
     let claim = await store.get(claimKey);
     if (!claim) claim = await store.put({ pk: claimKey, registrationId,
       participantId: operation.participantId, state: 'held', createdAt: timestamp });
-    if (claim.registrationId !== registrationId) return finish('quarantined', 'repeat-application', { reviewKey: claimKey });
+    if (claim.registrationId !== registrationId) return repeat(claim, claimKey, registrationId, source, finish, timestamp);
     const settle = async (state, reason, extra = {}) => {
       claim = await store.put({ ...claim, state, reason, updatedAt: timestamp, ...extra }, claim);
       return finish(state, reason, { reviewKey: claimKey, ...extra });

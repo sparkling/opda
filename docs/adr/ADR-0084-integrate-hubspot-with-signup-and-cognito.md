@@ -188,10 +188,14 @@ Recheck before further additions. [Limits API](https://developers.hubspot.com/do
 4. For an existing contact, maintain one open review task per normalised email;
    do not overwrite its name, email, preferences, status, identity or permissions
    from anonymous input. Human resolution may associate the application and
-   adopt selected profile values. Repeats remain AWS evidence under that task,
-   not additional CRM objects. Permit at most one automatic CRM creation/task
-   per email in 24 hours and 100 new contacts/day. Excess stays in the AWS review
-   backlog; operators may adjust the limit without losing intake or auto-approving.
+   adopt selected profile values. A later application from a known email (a
+   contact this integration created, or one already matched for review) is not
+   silent: it becomes its own review task on that contact and is acknowledged,
+   because the applicant may have requested a new working group (2026-09-16;
+   before this, repeats were AWS evidence only and staff never saw them). Permit
+   at most one automatic CRM creation/task per email in 24 hours and 100 new
+   contacts/day. Excess waits in the queue or the AWS review backlog; operators
+   may adjust the limit without losing intake or auto-approving.
 5. Staff approve each requested domain independently in HubSpot. The separate approval
    worker atomically records its scope, actor, domain version and follow-up, recomputes
    website eligibility, then projects active/enrolment. External effects have durable
