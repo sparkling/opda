@@ -11,6 +11,11 @@ Parameters:
     Type: String
 
 Resources:
+  # Batches this publisher could not place on the topic, kept for operator replay.
+  # It is not a fan-out queue: each consumer owns a filtered queue and dead-letter
+  # queue subscribed to the topic below (ADR-0087). The previous shared fan-out
+  # queue had no consumer at all, so every submission event accumulated in it
+  # unread until retention dropped it.
   SubmissionEventsFailureQueue:
     Type: AWS::SQS::Queue
     Properties:
@@ -18,52 +23,11 @@ Resources:
       MessageRetentionPeriod: 1209600
       SqsManagedSseEnabled: true
 
-  SubmissionEventsQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      QueueName: opda-public-submission-events
-      MessageRetentionPeriod: 345600
-      ReceiveMessageWaitTimeSeconds: 20
-      SqsManagedSseEnabled: true
-
   SubmissionEventsTopic:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: opda-public-submission-events
       KmsMasterKeyId: alias/aws/sns
-
-  SubmissionEventsQueuePolicy:
-    Type: AWS::SQS::QueuePolicy
-    Properties:
-      Queues:
-        - !Ref SubmissionEventsQueue
-        - !Ref SubmissionEventsFailureQueue
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Sid: SubmissionTopicDelivery
-            Effect: Allow
-            Principal: { Service: sns.amazonaws.com }
-            Action: sqs:SendMessage
-            Resource:
-              - !GetAtt SubmissionEventsQueue.Arn
-              - !GetAtt SubmissionEventsFailureQueue.Arn
-            Condition:
-              ArnEquals:
-                aws:SourceArn: !Ref SubmissionEventsTopic
-              StringEquals:
-                aws:SourceAccount: !Ref AWS::AccountId
-
-  SubmissionEventsSubscription:
-    Type: AWS::SNS::Subscription
-    DependsOn: SubmissionEventsQueuePolicy
-    Properties:
-      TopicArn: !Ref SubmissionEventsTopic
-      Protocol: sqs
-      Endpoint: !GetAtt SubmissionEventsQueue.Arn
-      RawMessageDelivery: true
-      RedrivePolicy:
-        deadLetterTargetArn: !GetAtt SubmissionEventsFailureQueue.Arn
 
   PublisherLogGroup:
     Type: AWS::Logs::LogGroup
@@ -178,10 +142,6 @@ Resources:
 Outputs:
   SubmissionEventsTopicArn:
     Value: !Ref SubmissionEventsTopic
-  SubmissionEventsQueueArn:
-    Value: !GetAtt SubmissionEventsQueue.Arn
-  SubmissionEventsQueueUrl:
-    Value: !Ref SubmissionEventsQueue
   SubmissionEventsFailureQueueUrl:
     Value: !Ref SubmissionEventsFailureQueue
   PublisherFunctionName:

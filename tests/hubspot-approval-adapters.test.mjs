@@ -5,7 +5,7 @@ import { createIdentity } from '../config/aws/hubspot-approval/identity.mjs';
 import { CONTACT_PROPERTIES } from '../config/aws/hubspot-participation/import.mjs';
 import { DOMAIN_REVIEW_PROPERTIES } from '../config/aws/hubspot-participation/properties.mjs';
 import { APP_SCOPES } from '../config/aws/hubspot-participation/admin.mjs';
-import { RetryLater } from '../config/aws/hubspot-sync/errors.mjs';
+import { RetryLater } from '../config/aws/shared/http-retry.mjs';
 
 const NOW = Date.parse('2026-09-08T21:00:00Z');
 const SECRET = { portalId: 144765514, appId: 52397854, role: 'bridge', accessToken: `pat-${'x'.repeat(30)}` };

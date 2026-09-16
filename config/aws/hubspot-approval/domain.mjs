@@ -44,7 +44,7 @@ export function parseHints(record, queueArn) {
   try { value = JSON.parse(record.body); } catch { throw new Error('Invalid approval message'); }
   if (value?.schemaVersion !== 1 || !Array.isArray(value.contactIds) || !value.contactIds.length
     || value.contactIds.length > 100 || value.contactIds.some(id => typeof id !== 'string' || !CONTACT_ID.test(id))
-    || !Number.isSafeInteger(value.receivedAt) || !/^[a-f0-9]{64}$/.test(value.receiptId ?? '')) {
+    || !Number.isSafeInteger(value.receivedAt)) {
     throw new Error('Invalid approval message');
   }
   return [...new Set(value.contactIds)];

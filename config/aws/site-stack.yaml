@@ -7,6 +7,12 @@ Description: >-
   post-persistence event boundary
   (ADR-0038/ADR-0040/ADR-0069/ADR-0079).
 
+Metadata:
+  # Nested templates are packaged by the deploy workflow, not referenced by URL.
+  cfn-lint:
+    config:
+      ignore_checks: [W3002]
+
 Parameters:
   DomainName:
     Type: String
@@ -26,13 +32,14 @@ Parameters:
   DomainReviewCutover: { Type: String, Default: '' }
   OnboardingEnabled: { Type: String, Default: 'false', AllowedValues: ['false', 'true'] }
   OnboardingCanaryEmailHash: { Type: String, Default: '', AllowedPattern: '^$|^[a-f0-9]{64}$' }
+  OperationsStackName:
+    Type: String
+    Default: opda-operations
+    Description: Account-level alerting stack, deployed first in this region.
 
 Resources:
   AuthSessionApplication:
     Type: AWS::CloudFormation::Stack
-    Metadata:
-      cfn-lint:
-        config: { ignore_checks: [W3002] }
     Properties:
       TemplateURL: auth-session-stack.yaml
       Parameters:
@@ -41,25 +48,16 @@ Resources:
 
   WorkingGroupInterestApplication:
     Type: AWS::CloudFormation::Stack
-    Metadata:
-      cfn-lint:
-        config: { ignore_checks: [W3002] }
     Properties:
       TemplateURL: working-group-interest-stack.yaml
 
   NewsletterSubscriptionApplication:
     Type: AWS::CloudFormation::Stack
-    Metadata:
-      cfn-lint:
-        config: { ignore_checks: [W3002] }
     Properties:
       TemplateURL: newsletter-subscription-stack.yaml
 
   SubmissionEventsApplication:
     Type: AWS::CloudFormation::Stack
-    Metadata:
-      cfn-lint:
-        config: { ignore_checks: [W3002] }
     Properties:
       TemplateURL: submission-events-stack.yaml
       Parameters:
@@ -68,26 +66,33 @@ Resources:
 
   HubSpotSignupSyncApplication:
     Type: AWS::CloudFormation::Stack
-    Metadata:
-      cfn-lint:
-        config: { ignore_checks: [W3002] }
     Properties:
       TemplateURL: hubspot-sync-stack.yaml
       Parameters:
         SourceTopicArn: !GetAtt SubmissionEventsApplication.Outputs.SubmissionEventsTopicArn
         RegistrationsTableName: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName
         RegistrationsTableArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableArn
-        ParticipantsTableName:
-          Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableName'
-        ParticipantsTableArn:
-          Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableArn'
+        ParticipantsTableName: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableName'}
+        ParticipantsTableArn: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableArn'}
         BridgeSecretArn: !Ref HubSpotBridgeSecretArn
+        AlarmTopicArn: {'Fn::ImportValue': !Sub '${OperationsStackName}-AlarmTopicArn'}
+
+  # ADR-0087: the applicant receipt is a property of the submission, so it consumes
+  # the submission topic directly and shares no failure domain with the CRM bridge.
+  AcknowledgementApplication:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: acknowledgement-stack.yaml
+      Parameters:
+        SourceTopicArn: !GetAtt SubmissionEventsApplication.Outputs.SubmissionEventsTopicArn
+        RegistrationsTableName: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName
+        RegistrationsTableArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableArn
+        ParticipantsTableName: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableName'}
+        ParticipantsTableArn: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableArn'}
+        AlarmTopicArn: {'Fn::ImportValue': !Sub '${OperationsStackName}-AlarmTopicArn'}
 
   HubSpotApprovalApplication:
     Type: AWS::CloudFormation::Stack
-    Metadata:
-      cfn-lint:
-        config: { ignore_checks: [W3002] }
     Properties:
       TemplateURL: hubspot-approval-stack.yaml
       Parameters:
@@ -97,15 +102,12 @@ Resources:
         OnboardingCanaryEmailHash: !Ref OnboardingCanaryEmailHash
         RegistrationsTableName: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName
         RegistrationsTableArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableArn
-        ParticipantsTableName:
-          Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableName'
-        ParticipantsTableArn:
-          Fn::ImportValue: !Sub '${IdentityStackName}-ParticipantsTableArn'
-        UserPoolId:
-          Fn::ImportValue: !Sub '${IdentityStackName}-UserPoolId'
-        UserPoolArn:
-          Fn::ImportValue: !Sub '${IdentityStackName}-UserPoolArn'
+        ParticipantsTableName: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableName'}
+        ParticipantsTableArn: {'Fn::ImportValue': !Sub '${IdentityStackName}-ParticipantsTableArn'}
+        UserPoolId: {'Fn::ImportValue': !Sub '${IdentityStackName}-UserPoolId'}
+        UserPoolArn: {'Fn::ImportValue': !Sub '${IdentityStackName}-UserPoolArn'}
         BridgeSecretArn: !Ref HubSpotBridgeSecretArn
+        AlarmTopicArn: {'Fn::ImportValue': !Sub '${OperationsStackName}-AlarmTopicArn'}
 
   # ---------------- Static site: S3 + CloudFront ----------------
 
@@ -491,9 +493,6 @@ Outputs:
     Value: !GetAtt NewsletterSubscriptionApplication.Outputs.SubscriptionsTableName
   SubmissionEventsTopicArn:
     Value: !GetAtt SubmissionEventsApplication.Outputs.SubmissionEventsTopicArn
-  SubmissionEventsQueueUrl:
-    Description: Durable reference-only handoff for future submission-event consumers.
-    Value: !GetAtt SubmissionEventsApplication.Outputs.SubmissionEventsQueueUrl
   SubmissionEventsFailureQueueUrl:
     Description: Exhausted stream batches and failed SNS-to-SQS deliveries.
     Value: !GetAtt SubmissionEventsApplication.Outputs.SubmissionEventsFailureQueueUrl

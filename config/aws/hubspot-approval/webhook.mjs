@@ -185,10 +185,11 @@ export function createWebhookHandler(config, deps = {}) {
       if (!timingSafeEqual(expected, supplied.digest)) reject(401);
       const contactIds = contactHints(raw);
       // Deliberately exclude raw payloads, property values, emails and event IDs.
-      // v1 has no timestamp binding: duplicate/replayed hints must be safe downstream.
-      await send({ QueueUrl: config.queueUrl, MessageBody: JSON.stringify({
-        schemaVersion: 1, contactIds, receivedAt, receiptId: createHash('sha256').update(raw).digest('hex'),
-      }) });
+      // v1 has no timestamp binding, so duplicate and replayed hints must be safe
+      // downstream. They are: the worker re-reads live state for every contact.
+      // Nothing therefore deduplicates, and no digest of the body is carried.
+      await send({ QueueUrl: config.queueUrl,
+        MessageBody: JSON.stringify({ schemaVersion: 1, contactIds, receivedAt }) });
       return response(202);
     } catch (error) {
       // Never log or return raw errors, bodies, signatures or signing secrets.

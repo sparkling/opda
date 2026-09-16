@@ -1,27 +1,25 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >-
-  Isolated pending-applicant HubSpot CRM bridge; never grants website access and
-  never emails the applicant (ADR-0084, ADR-0087).
+  Applicant acknowledgement for working-group submissions (ADR-0087). Its own
+  queue, function, credential and failure domain: it cannot reach the CRM, so no
+  CRM match, throttle or outage can delay or withhold a receipt.
 
 Parameters:
   SourceTopicArn:
     Type: String
-  RegistrationsTableName:
-    Type: String
   RegistrationsTableArn:
     Type: String
-  ParticipantsTableName:
+  RegistrationsTableName:
     Type: String
   ParticipantsTableArn:
     Type: String
-  BridgeSecretArn:
+  ParticipantsTableName:
     Type: String
-    AllowedPattern: 'arn:aws:secretsmanager:eu-west-2:[0-9]{12}:secret:opda/hubspot/participant-crm-bridge-[A-Za-z0-9]{6}'
   TransferNoticeVersion:
     Type: String
     Default: '2026-09-08'
-    Description: Exact reviewed HubSpot transfer notice; historic versions are quarantined, never silently migrated.
+    Description: Exact reviewed transfer notice; a historic version is never silently migrated.
   AlarmTopicArn:
     Type: String
     Default: ''
@@ -33,14 +31,14 @@ Resources:
   FailureQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: opda-hubspot-signup-failures
+      QueueName: opda-application-acknowledgement-failures
       MessageRetentionPeriod: 1209600
       SqsManagedSseEnabled: true
 
-  SignupQueue:
+  AcknowledgementQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: opda-hubspot-signups
+      QueueName: opda-application-acknowledgements
       MessageRetentionPeriod: 1209600
       VisibilityTimeout: 360
       ReceiveMessageWaitTimeSeconds: 20
@@ -52,7 +50,7 @@ Resources:
   QueuePolicy:
     Type: AWS::SQS::QueuePolicy
     Properties:
-      Queues: [!Ref SignupQueue]
+      Queues: [!Ref AcknowledgementQueue]
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -60,7 +58,7 @@ Resources:
             Effect: Allow
             Principal: { Service: sns.amazonaws.com }
             Action: sqs:SendMessage
-            Resource: !GetAtt SignupQueue.Arn
+            Resource: !GetAtt AcknowledgementQueue.Arn
             Condition:
               ArnEquals: { 'aws:SourceArn': !Ref SourceTopicArn }
               StringEquals: { 'aws:SourceAccount': !Ref AWS::AccountId }
@@ -68,7 +66,7 @@ Resources:
             Effect: Deny
             Principal: '*'
             Action: sqs:*
-            Resource: !GetAtt SignupQueue.Arn
+            Resource: !GetAtt AcknowledgementQueue.Arn
             Condition: { Bool: { 'aws:SecureTransport': 'false' } }
 
   FailureQueuePolicy:
@@ -93,13 +91,13 @@ Resources:
             Resource: !GetAtt FailureQueue.Arn
             Condition: { Bool: { 'aws:SecureTransport': 'false' } }
 
-  SignupSubscription:
+  AcknowledgementSubscription:
     Type: AWS::SNS::Subscription
     DependsOn: [QueuePolicy, FailureQueuePolicy]
     Properties:
       TopicArn: !Ref SourceTopicArn
       Protocol: sqs
-      Endpoint: !GetAtt SignupQueue.Arn
+      Endpoint: !GetAtt AcknowledgementQueue.Arn
       RawMessageDelivery: true
       FilterPolicyScope: MessageAttributes
       FilterPolicy:
@@ -111,7 +109,7 @@ Resources:
   LogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: /aws/lambda/opda-hubspot-signup-sync
+      LogGroupName: /aws/lambda/opda-application-acknowledgement
       RetentionInDays: 14
 
   WorkerRole:
@@ -124,45 +122,55 @@ Resources:
             Principal: { Service: lambda.amazonaws.com }
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: isolated-pending-applicant-sync
+        - PolicyName: applicant-acknowledgement-only
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Sid: Logs
                 Effect: Allow
                 Action: [logs:CreateLogStream, logs:PutLogEvents]
-                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-hubspot-signup-sync:*'
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-application-acknowledgement:*'
               - Sid: ConsumeDedicatedQueueOnly
                 Effect: Allow
                 Action: [sqs:ReceiveMessage, sqs:DeleteMessage, sqs:GetQueueAttributes, sqs:ChangeMessageVisibility]
-                Resource: !GetAtt SignupQueue.Arn
+                Resource: !GetAtt AcknowledgementQueue.Arn
               - Sid: OriginalIntakeReadOnly
                 Effect: Allow
-                Action: [dynamodb:GetItem, dynamodb:ConditionCheckItem]
+                Action: [dynamodb:GetItem]
                 Resource: !Ref RegistrationsTableArn
-              - Sid: SyncStateOnlyNeverEligibility
+              # Send records only. Suppression records are read through the same
+              # condition; this role can write nothing outside its own send log.
+              - Sid: AcknowledgementSendLogOnly
                 Effect: Allow
-                Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:UpdateItem, dynamodb:ConditionCheckItem]
+                Action: [dynamodb:GetItem, dynamodb:PutItem]
                 Resource: !Ref ParticipantsTableArn
                 Condition:
                   ForAllValues:StringLike:
-                    dynamodb:LeadingKeys: ['SYNC#*']
+                    dynamodb:LeadingKeys: ['SYNC#ACK#*']
                   'Null': { 'dynamodb:LeadingKeys': 'false' }
-              # The CRM bridge, and nothing else. ADR-0087 moved the applicant
-              # acknowledgement to its own function, so this role holds no mail credential.
-              - Sid: ExactRuntimeCredential
+              - Sid: SuppressionReadOnly
+                Effect: Allow
+                Action: [dynamodb:GetItem]
+                Resource: !Ref ParticipantsTableArn
+                Condition:
+                  ForAllValues:StringLike:
+                    dynamodb:LeadingKeys: ['SYNC#SUPPRESS#*']
+                  'Null': { 'dynamodb:LeadingKeys': 'false' }
+              # The shared transactional Postmark server, read-only. Template
+              # authoring stays operator-side; this role can only send the pinned one.
+              - Sid: AcknowledgementMailCredential
                 Effect: Allow
                 Action: [secretsmanager:GetSecretValue]
-                Resource: !Ref BridgeSecretArn
+                Resource: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/postmark/participation-onboarding-??????'
 
   Worker:
     Type: AWS::Serverless::Function
     DependsOn: LogGroup
     Properties:
-      FunctionName: opda-hubspot-signup-sync
-      # Package the shared mapper/property contract without duplicating it.
+      FunctionName: opda-application-acknowledgement
+      # Package the shared template and property contracts without duplicating them.
       CodeUri: ./
-      Handler: hubspot-sync/index.handler
+      Handler: acknowledgement/index.handler
       Runtime: nodejs22.x
       Architectures: [arm64]
       MemorySize: 128
@@ -173,15 +181,15 @@ Resources:
         Variables:
           REGISTRATIONS_TABLE_NAME: !Ref RegistrationsTableName
           PARTICIPANTS_TABLE_NAME: !Ref ParticipantsTableName
-          BRIDGE_SECRET_ARN: !Ref BridgeSecretArn
+          POSTMARK_SECRET_ARN: !Sub 'arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:opda/postmark/participation-onboarding-U02V9v'
           TRANSFER_NOTICE_VERSION: !Ref TransferNoticeVersion
-          SYNC_QUEUE_ARN: !GetAtt SignupQueue.Arn
-          SYNC_QUEUE_URL: !Ref SignupQueue
+          ACKNOWLEDGEMENT_QUEUE_ARN: !GetAtt AcknowledgementQueue.Arn
+          ACKNOWLEDGEMENT_QUEUE_URL: !Ref AcknowledgementQueue
 
-  SignupMapping:
+  AcknowledgementMapping:
     Type: AWS::Lambda::EventSourceMapping
     Properties:
-      EventSourceArn: !GetAtt SignupQueue.Arn
+      EventSourceArn: !GetAtt AcknowledgementQueue.Arn
       FunctionName: !Ref Worker
       BatchSize: 1
       FunctionResponseTypes: [ReportBatchItemFailures]
@@ -190,7 +198,7 @@ Resources:
   DeadLetterAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: HubSpot signup work needs safe operator replay or credential/configuration repair.
+      AlarmDescription: An applicant acknowledgement could not be sent and needs operator replay.
       Namespace: AWS/SQS
       MetricName: ApproximateNumberOfMessagesVisible
       Dimensions: [{ Name: QueueName, Value: !GetAtt FailureQueue.QueueName }]
@@ -205,14 +213,29 @@ Resources:
   PendingAgeAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: HubSpot signup delivery has been pending over a day; intake remains safely persisted.
+      AlarmDescription: An applicant has been waiting over 15 minutes for an acknowledgement.
       Namespace: AWS/SQS
       MetricName: ApproximateAgeOfOldestMessage
-      Dimensions: [{ Name: QueueName, Value: !GetAtt SignupQueue.QueueName }]
+      Dimensions: [{ Name: QueueName, Value: !GetAtt AcknowledgementQueue.QueueName }]
       Statistic: Maximum
       Period: 300
       EvaluationPeriods: 1
-      Threshold: 86400
+      Threshold: 900
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: !If [HasAlarmTopic, [!Ref AlarmTopicArn], !Ref AWS::NoValue]
+
+  WorkerErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: The acknowledgement worker is failing; applicants may not be hearing back.
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions: [{ Name: FunctionName, Value: !Ref Worker }]
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 0
       ComparisonOperator: GreaterThanThreshold
       TreatMissingData: notBreaching
       AlarmActions: !If [HasAlarmTopic, [!Ref AlarmTopicArn], !Ref AWS::NoValue]
@@ -220,9 +243,5 @@ Resources:
 Outputs:
   WorkerFunctionName:
     Value: !Ref Worker
-  SignupQueueArn:
-    Value: !GetAtt SignupQueue.Arn
-  SignupQueueUrl:
-    Value: !Ref SignupQueue
-  FailureQueueUrl:
-    Value: !Ref FailureQueue
+  AcknowledgementQueueArn:
+    Value: !GetAtt AcknowledgementQueue.Arn

@@ -1,7 +1,7 @@
 import { APP_SCOPES, verifyPrivateApp } from '../hubspot-participation/admin.mjs';
 import { CONTACT_PROPERTIES } from '../hubspot-participation/import.mjs';
 import { DOMAIN_REVIEW_PROPERTIES } from '../hubspot-participation/properties.mjs';
-import { RetryLater, retryAfter } from '../hubspot-sync/errors.mjs';
+import { RetryLater, retryAfter } from '../shared/http-retry.mjs';
 
 const PORTAL_ID = 144765514;
 const APP_ID = 52397854;

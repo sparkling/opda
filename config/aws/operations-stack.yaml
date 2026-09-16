@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Account-level operational alerting for eu-west-2 (ADR-0087). Every service stack
+  declared an AlarmTopicArn that nothing supplied, so every alarm was inert. This
+  is the destination they import.
+
+Parameters:
+  AlarmEmail:
+    Type: String
+    Default: ''
+    Description: >-
+      Optional address for operational alarms. The recipient must confirm the SNS
+      subscription by email before any alarm can reach them; until then the topic
+      exists and the alarms are wired, but nobody is notified.
+
+Conditions:
+  HasAlarmEmail: !Not [!Equals [!Ref AlarmEmail, '']]
+
+Resources:
+  AlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: opda-operations-alarms
+      DisplayName: OPDA operations
+
+  AlarmSubscription:
+    Type: AWS::SNS::Subscription
+    Condition: HasAlarmEmail
+    Properties:
+      TopicArn: !Ref AlarmTopic
+      Protocol: email
+      Endpoint: !Ref AlarmEmail
+
+Outputs:
+  AlarmTopicArn:
+    Value: !Ref AlarmTopic
+    Export: { Name: !Sub '${AWS::StackName}-AlarmTopicArn' }

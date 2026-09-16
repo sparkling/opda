@@ -5,8 +5,6 @@ import { createHandler, createWorker, parseSubmissionMessage, RetryLater } from 
 import { createHubSpotClient } from '../config/aws/hubspot-sync/client.mjs';
 import { createStore } from '../config/aws/hubspot-sync/store.mjs';
 
-const logoBase64 = readFileSync(new URL('../docs/templates/assets/opda-email-logo.png', import.meta.url)).toString('base64');
-
 const now = Date.parse('2026-09-08T20:00:00Z');
 const id = '00000000-0000-4000-8000-000000000001';
 const otherId = '00000000-0000-4000-8000-000000000002';
@@ -51,21 +49,13 @@ function setup(overrides = {}) {
     async createReviewTask(task) { calls.push(['task', task]); return { id: '900' }; },
     ...overrides.hubspot,
   };
-  const postmark = {
-    async sendAcknowledgement(payload, context) {
-      calls.push(['ack', payload.TemplateModel.group_id, payload.To, context.registrationId]);
-      return { status: 'accepted', messageId: `msg-${payload.TemplateModel.group_id}`, submittedAt: new Date(now).toISOString() };
-    },
-    ...overrides.postmark,
-  };
   let clock = now;
-  const worker = createWorker({ store, hubspot, postmark, logoBase64, now: () => clock, newId: () => 'pending-random-id',
+  const worker = createWorker({ store, hubspot, now: () => clock, newId: () => 'pending-random-id',
     transferNoticeVersion: '2026-09-08', ...overrides.worker });
   const tick = (ms) => { clock = now + ms; };
-  return { items, registrations, calls, store, hubspot, postmark, worker, tick };
+  return { items, registrations, calls, store, hubspot, worker, tick };
 }
-const acks = f => f.calls.filter(([action]) => action === 'ack');
-const ackRecords = f => [...f.items.values()].filter(item => item.pk.startsWith('SYNC#ACK#'));
+const application = (f, registrationId = id) => f.items.get(`SYNC#APPLICATION#${registrationId}`);
 
 test('validates a reference-only event and rejects queue, kind, identifier and table injection', () => {
   assert.equal(parseSubmissionMessage(message(), queueArn), id);
@@ -91,7 +81,9 @@ test('creates only a lossless pending contact and makes duplicate deliveries ine
     opda_enrolment_status: 'not_invited', opda_active: 'false',
     opda_review_conveyancing: 'received', opda_review_finance_and_banking: 'received',
   });
-  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).contactId, '123');
+  assert.equal(application(f).contactId, '123');
+  assert.equal(application(f).state, 'synced');
+  assert.equal(application(f).reason, 'contact-created');
   assert.ok([...f.items.keys()].every(key => key.startsWith('SYNC#')));
   assert.equal(f.registrations.get(id).fullName, registration().fullName);
 });
@@ -107,12 +99,12 @@ test('an existing contact gets one review task, never a contact update; a repeat
   assert.equal(tasks.length, 1);
   assert.deepEqual(tasks[0][1], { contactIds: ['345'], registrationId: id,
     requestedGroups: ['conveyancing', 'finance-and-banking'], dueAt: now });
-  const application = f.items.get(`SYNC#APPLICATION#${id}`);
-  assert.equal(application.reason, 'existing-contact');
-  assert.equal(application.state, 'quarantined');
-  assert.deepEqual(application.candidateContactIds, ['345']);
-  assert.equal(application.reviewTaskId, '900');
-  assert.equal(f.items.get(`SYNC#APPLICATION#${otherId}`).state, 'pending');
+  assert.equal(application(f).reason, 'existing-contact');
+  assert.equal(application(f).state, 'closed');
+  assert.deepEqual(application(f).candidateContactIds, ['345']);
+  assert.equal(application(f).reviewTaskId, '900');
+  // No decision yet for the repeat: a record exists only once there is one.
+  assert.equal(application(f, otherId), undefined);
   f.tick(24 * 60 * 60 * 1000 + 1);
   await f.worker(otherId);
   await f.worker(otherId);
@@ -120,11 +112,38 @@ test('an existing contact gets one review task, never a contact update; a repeat
   assert.equal(tasks.length, 2);
   assert.equal(tasks[1][1].registrationId, otherId);
   assert.deepEqual(tasks[1][1].contactIds, ['345']);
-  const repeat = f.items.get(`SYNC#APPLICATION#${otherId}`);
-  assert.equal(repeat.reason, 'repeat-application-reviewed');
-  assert.equal(repeat.reviewTaskId, '900');
+  assert.equal(application(f, otherId).reason, 'repeat-application-reviewed');
+  assert.equal(application(f, otherId).state, 'closed');
+  assert.equal(application(f, otherId).reviewTaskId, '900');
   assert.equal([...f.items.keys()].filter(key => key.startsWith('SYNC#EMAIL#')).length, 1);
   assert.equal(f.registrations.size, 2);
+});
+
+test('claims settled under the pre-ADR-0087 vocabulary stay settled and read forward', async () => {
+  // A deploy must not reopen a decided claim, nor create a second contact for it.
+  for (const [state, expected] of [['quarantined', 'closed'], ['suppressed', 'closed'], ['synced', 'synced']]) {
+    const f = setup();
+    const claimKey = [...f.items.keys()].find(key => key.startsWith('SYNC#EMAIL#'))
+      ?? `SYNC#EMAIL#${'a'.repeat(64)}`;
+    await f.worker(id);
+    const claim = f.items.get([...f.items.keys()].find(key => key.startsWith('SYNC#EMAIL#')));
+    // Rewind both records to the shape this email would have had before the refactor.
+    f.items.set(claim.pk, { ...claim, state, reason: 'existing-contact', revision: 1 });
+    f.items.delete(`SYNC#APPLICATION#${id}`);
+    f.calls.length = 0;
+    await f.worker(id);
+    assert.equal(application(f).state, expected, `${state} reads forward as ${expected}`);
+    assert.equal(f.calls.filter(([action]) => action === 'create').length, 0, 'no second contact');
+    assert.ok(claimKey);
+  }
+  // A repeat from another registration against an old terminal claim is reviewed, not stalled.
+  const f = setup({ hubspot: { async findContacts() { return ['345']; } } });
+  await f.worker(id);
+  const claim = f.items.get([...f.items.keys()].find(key => key.startsWith('SYNC#EMAIL#')));
+  f.items.set(claim.pk, { ...claim, state: 'quarantined', lastTaskAt: now - 25 * 60 * 60 * 1000, revision: 1 });
+  await f.worker(otherId);
+  assert.equal(application(f, otherId).state, 'closed');
+  assert.equal(application(f, otherId).reason, 'repeat-application-reviewed');
 });
 
 test('a review task failure keeps a short lease, then retries; a duplicate task beats a silent drop', async () => {
@@ -134,95 +153,13 @@ test('a review task failure keeps a short lease, then retries; a duplicate task 
     async createReviewTask() { attempts++; if (attempts === 1) throw new Error('transient'); return { id: '901' }; },
   } });
   await assert.rejects(f.worker(id), /transient/);
-  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).state, 'pending');
+  assert.equal(application(f), undefined, 'an unfinished attempt records no decision');
   await assert.rejects(f.worker(id), RetryLater);
   timestamp += 121000;
   await f.worker(id);
   assert.equal(attempts, 2);
-  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).reviewTaskId, '901');
-  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).state, 'quarantined');
-});
-
-test('every validated application is acknowledged once per requested group, created or quarantined', async () => {
-  const created = setup();
-  await created.worker(id);
-  await created.worker(id);
-  assert.deepEqual(acks(created).map(([, group, to]) => [group, to]),
-    [['conveyancing', 'synthetic@example.test'], ['finance-and-banking', 'synthetic@example.test']]);
-  assert.deepEqual(ackRecords(created).map(item => [item.pk, item.state, item.messageId]).sort(), [
-    [`SYNC#ACK#${id}#conveyancing`, 'accepted', 'msg-conveyancing'],
-    [`SYNC#ACK#${id}#finance-and-banking`, 'accepted', 'msg-finance-and-banking'],
-  ]);
-  const existing = setup({ hubspot: { async findContacts() { return ['345']; } } });
-  await existing.worker(id);
-  assert.equal(acks(existing).length, 2);
-  // A repeat is acknowledged only once staff can see it, i.e. with its own review task.
-  await assert.rejects(existing.worker(otherId), RetryLater);
-  assert.equal(acks(existing).length, 2);
-  assert.ok(!ackRecords(existing).some(item => item.pk.includes(otherId)));
-  existing.tick(24 * 60 * 60 * 1000 + 1);
-  await existing.worker(otherId);
-  assert.equal(acks(existing).length, 4);
-  assert.deepEqual(acks(existing).slice(2).map(([, group, , registrationId]) => [group, registrationId]),
-    [['conveyancing', otherId], ['finance-and-banking', otherId]]);
-});
-
-test('suppressed, invalid or stale sources are never acknowledged', async () => {
-  for (const mutate of [r => { r.expiresAt = now / 1000; }, r => { r.erasedAt = now - 1; },
-    r => { r.workingGroups.push('administrator'); }, r => { r.privacyNoticeVersion = '2026-08-13'; }]) {
-    const f = setup(); mutate(f.registrations.get(id)); await f.worker(id);
-    assert.equal(acks(f).length, 0);
-  }
-  const suppressed = setup();
-  suppressed.items.set(`SYNC#SUPPRESS#REGISTRATION#${id}`, { pk: `SYNC#SUPPRESS#REGISTRATION#${id}`, revision: 1 });
-  await suppressed.worker(id);
-  assert.equal(acks(suppressed).length, 0);
-  // Acknowledgements already sent are not affected by a later erasure, and none are added.
-  const erased = setup();
-  await erased.worker(id);
-  erased.registrations.get(id).erasedAt = now;
-  await erased.worker(id);
-  assert.equal(acks(erased).length, 2);
-});
-
-test('acknowledgement outcomes are durable: rejection is final, throttling waits, an interrupted send is never resent', async () => {
-  let timestamp = now;
-  const rejected = setup({ worker: { now: () => timestamp }, postmark: { async sendAcknowledgement(payload) {
-    return payload.TemplateModel.group_id === 'conveyancing' ? { status: 'rejected', errorCode: 406 }
-      : { status: 'accepted', messageId: 'm', submittedAt: new Date(now).toISOString() };
-  } } });
-  await rejected.worker(id);
-  await rejected.worker(id);
-  const states = Object.fromEntries(ackRecords(rejected).map(item => [item.groupId, item.state]));
-  assert.deepEqual(states, { 'finance-and-banking': 'accepted', conveyancing: 'rejected' });
-
-  let sends = 0;
-  const throttled = setup({ worker: { now: () => timestamp }, postmark: { async sendAcknowledgement() {
-    sends++; if (sends === 1) throw new RetryLater(600); return { status: 'accepted', messageId: 'm', submittedAt: new Date(now).toISOString() };
-  } } });
-  // The first 429 propagates so SQS delays the message; the durable record holds the deadline.
-  await assert.rejects(throttled.worker(id), error => error instanceof RetryLater && error.seconds === 600);
-  assert.equal(sends, 1);
-  await assert.rejects(throttled.worker(id), error => error instanceof RetryLater);
-  assert.equal(sends, 1, 'no send inside the Retry-After window');
-  timestamp += 601000;
-  await throttled.worker(id);
-  assert.equal(sends, 3);
-  assert.ok(ackRecords(throttled).every(item => item.state === 'accepted'));
-
-  timestamp = now;
-  const interrupted = setup({ worker: { now: () => timestamp }, postmark: { async sendAcknowledgement() { throw new Error('socket closed'); } } });
-  // Each group's send is leased independently: a transport failure leaves "sending" for redelivery,
-  // and once the lease lapses the outcome is recorded as unknown rather than resent.
-  await assert.rejects(interrupted.worker(id), /socket closed/);
-  await assert.rejects(interrupted.worker(id), RetryLater);
-  timestamp += 121000;
-  await assert.rejects(interrupted.worker(id), /socket closed/);
-  timestamp += 121000;
-  await interrupted.worker(id);
-  await interrupted.worker(id);
-  assert.equal(ackRecords(interrupted).length, 2);
-  assert.ok(ackRecords(interrupted).every(item => item.state === 'unknown'), 'dispatch may have happened; never resend');
+  assert.equal(application(f).reviewTaskId, '901');
+  assert.equal(application(f).state, 'closed');
 });
 
 test('never updates or recreates an already-created contact from a resubmission; it is reviewed instead', async () => {
@@ -235,11 +172,10 @@ test('never updates or recreates an already-created contact from a resubmission;
   assert.equal(f.calls.filter(([action]) => action === 'create').length, 1);
   const task = f.calls.find(([action, input]) => action === 'task' && input.registrationId === otherId);
   assert.deepEqual(task[1].contactIds, ['123'], 'the task hangs off the contact this email created');
-  const repeat = f.items.get(`SYNC#APPLICATION#${otherId}`);
-  assert.equal(repeat.state, 'quarantined');
-  assert.equal(repeat.reason, 'repeat-application-reviewed');
+  assert.equal(application(f, otherId).state, 'closed');
+  assert.equal(application(f, otherId).reason, 'repeat-application-reviewed');
   // A crash between the durable attempt marker and the task response replays without a second task.
-  f.items.get(`SYNC#APPLICATION#${otherId}`).state = 'pending';
+  f.items.delete(`SYNC#APPLICATION#${otherId}`);
   await f.worker(otherId);
   assert.equal(f.calls.filter(([action, input]) => action === 'task' && input.registrationId === otherId).length, 2);
 });
@@ -251,7 +187,8 @@ test('expired, erased, invalid and old-notice sources cause no CRM calls', async
     assert.equal(f.calls.length, 0);
   }
   const f = setup(); f.registrations.delete(id); await f.worker(id);
-  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).state, 'suppressed');
+  assert.equal(application(f).state, 'closed');
+  assert.equal(application(f).reason, 'missing-expired-or-erased');
 });
 
 test('checks durable source and email suppression before every create', async () => {
@@ -275,8 +212,9 @@ test('ambiguous create outcome reconciles to review and is never retried or adop
   await f.worker(id);
   await f.worker(id);
   assert.equal(creates, 1);
-  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).reason, 'ambiguous-create');
-  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).contactId, undefined);
+  assert.equal(application(f).reason, 'ambiguous-create');
+  assert.equal(application(f).state, 'closed');
+  assert.equal(application(f).contactId, undefined);
 });
 
 test('long Retry-After is persisted even when a single SQS visibility period is shorter', async () => {
@@ -293,14 +231,15 @@ test('known 429 waits for Retry-After, but retry expiry cannot resurrect an appl
   assert.equal(f.calls.filter(([action]) => action === 'authorize').length, 1);
   f.registrations.get(id).expiresAt = now / 1000;
   await f.worker(id);
-  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).state, 'suppressed');
+  assert.equal(application(f).state, 'closed');
+  assert.equal(application(f).reason, 'missing-expired-or-erased');
 });
 
 test('daily create budget failures preserve the source and retryable operation', async () => {
   const f = setup({ store: { async authorizeCreation() { return null; } } });
   await assert.rejects(f.worker(id), RetryLater);
   assert.equal(f.calls.filter(([action]) => action === 'create').length, 0);
-  assert.equal(f.items.get(`SYNC#APPLICATION#${id}`).state, 'pending');
+  assert.equal(application(f), undefined, 'the application stays undecided and replayable');
 });
 
 test('SQS batch failures are partial, bounded and omit errors and personal data', async () => {
@@ -359,12 +298,6 @@ test('DynamoDB adapter uses strong original reads, conditional sync writes and a
   assert.match(transaction[0].Update.ConditionExpression, /:limit/);
 });
 
-test('the packaged acknowledgement logo is byte-identical to the reviewed email asset', () => {
-  const reviewed = readFileSync(new URL('../docs/templates/assets/opda-email-logo.png', import.meta.url));
-  const packaged = readFileSync(new URL('../config/aws/hubspot-sync/opda-email-logo.png', import.meta.url));
-  assert.ok(reviewed.equals(packaged));
-});
-
 test('infrastructure uses a dedicated SNS-filtered queue and cannot write eligibility or call Cognito', () => {
   const template = readFileSync(new URL('../config/aws/hubspot-sync-stack.yaml', import.meta.url), 'utf8');
   assert.match(template, /eventType: \['working-group-interest\.received\.v1'\]/);
@@ -374,11 +307,13 @@ test('infrastructure uses a dedicated SNS-filtered queue and cannot write eligib
   assert.doesNotMatch(template, /cognito-idp:|opda-public-submission-events\n/);
   assert.match(template, /maxReceiveCount: 8/);
   assert.match(template, /BridgeSecretArn:/);
-  // The acknowledgement reads the shared Postmark credential; the sync role gets no other new grant.
-  assert.match(template, /secret:opda\/postmark\/participation-onboarding-\?\?\?\?\?\?'/);
-  assert.match(template, /POSTMARK_SECRET_ARN: !Sub 'arn:\$\{AWS::Partition\}:secretsmanager:\$\{AWS::Region\}:\$\{AWS::AccountId\}:secret:opda\/postmark\/participation-onboarding-U02V9v'/);
-  assert.equal((template.match(/secretsmanager:GetSecretValue/g) ?? []).length, 2);
+  // ADR-0087: this role is the CRM bridge and only that. It holds one credential
+  // and cannot send mail, so an email defect can no longer stop a CRM write.
+  assert.doesNotMatch(template, /postmark|POSTMARK/i);
+  assert.equal((template.match(/secretsmanager:GetSecretValue/g) ?? []).length, 1);
   assert.doesNotMatch(template, /ses:|sns:Publish|dynamodb:DeleteItem|dynamodb:Scan/);
+  // Its alarms must reach somewhere; an unwired AlarmTopicArn made them decorative.
+  assert.equal((template.match(/AlarmActions: !If \[HasAlarmTopic/g) ?? []).length, 2);
   // SQS rejects multiple resource ARNs in a statement, even when the
   // CloudFormation QueuePolicy is attached to both queues.
   const queuePolicies = template.slice(template.indexOf('  QueuePolicy:'), template.indexOf('  SignupSubscription:'));

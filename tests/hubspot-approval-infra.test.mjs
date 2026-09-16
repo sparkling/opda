@@ -139,7 +139,7 @@ test('identity exports and site nesting preserve signup without the retired S3 b
   const application = resource(site, 'HubSpotApprovalApplication');
   assert.match(application, /TemplateURL: hubspot-approval-stack\.yaml/);
   for (const output of ['ParticipantsTableName', 'ParticipantsTableArn', 'UserPoolId', 'UserPoolArn']) {
-    assert.match(application, new RegExp(`Fn::ImportValue: !Sub '\\$\\{IdentityStackName\\}-${output}'`));
+    assert.match(application, new RegExp(`'Fn::ImportValue': !Sub '\\$\\{IdentityStackName\\}-${output}'`));
   }
   assert.match(application, /BridgeSecretArn: !Ref HubSpotBridgeSecretArn/);
   assert.match(resource(site, 'HubSpotSignupSyncApplication'), /TemplateURL: hubspot-sync-stack\.yaml/);

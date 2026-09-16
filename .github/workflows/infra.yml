@@ -69,7 +69,7 @@ jobs:
           esbuild@0.28.2 @aws-sdk/client-dynamodb@3.1127.0
 
       - name: Test participant approval boundary
-        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync*.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs tests/comments-*.test.mjs tests/auth-workspace*.test.mjs
+        run: node --test tests/hubspot-approval-*.test.mjs tests/auth-session.test.mjs tests/hubspot-sync*.test.mjs tests/acknowledgement-*.test.mjs tests/approval-onboarding-*.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/auth0-session.test.mjs tests/edge-gate.test.mjs tests/comments-*.test.mjs tests/auth-workspace*.test.mjs
 
       - name: Package bounded onboarding runtime locally
         run: node scripts/package-approval-onboarding.mjs
@@ -105,6 +105,15 @@ jobs:
             --stack-name opda-artifacts \
             --template-file config/aws/artifacts-stack.yaml \
             --no-fail-on-empty-changeset
+
+      # ---- eu-west-2: alarm destination, exported to every service stack ----
+      - name: Deploy operations alerting (eu-west-2)
+        run: |
+          aws cloudformation deploy --region eu-west-2 \
+            --stack-name opda-operations \
+            --template-file config/aws/operations-stack.yaml \
+            --no-fail-on-empty-changeset \
+            --parameter-overrides AlarmEmail="${{ vars.OPDA_OPERATIONS_ALARM_EMAIL || '' }}"
 
       - name: Deploy participant identity stores (eu-west-2)
         run: |

@@ -57,7 +57,7 @@ test('authenticates v1 raw bytes and queues exactly one reference-only receipt',
   assert.deepEqual(f.calls, [['secret', config.signingSecretArn]]);
   assert.equal(f.sent.length, 1);
   assert.deepEqual(f.sent[0], { QueueUrl: config.queueUrl, MessageBody: JSON.stringify({
-    schemaVersion: 1, contactIds: ['123'], receivedAt: now, receiptId: hash(event.body),
+    schemaVersion: 1, contactIds: ['123'], receivedAt: now,
   }) });
 });
 
@@ -68,7 +68,7 @@ test('every individual domain review produces an authenticated contact hint, nev
   const event = v3Request(events);
   assert.equal((await f.handler(event)).statusCode, 202);
   assert.deepEqual(JSON.parse(f.sent[0].MessageBody), {
-    schemaVersion: 1, contactIds: ['123'], receivedAt: now, receiptId: hash(event.body),
+    schemaVersion: 1, contactIds: ['123'], receivedAt: now,
   });
   assert.doesNotMatch(f.sent[0].MessageBody, /approved|withdrawn|propertyName|opda_review_/);
   const unsigned = request(events);
@@ -121,7 +121,7 @@ test('valid v3 works with HubSpot dual headers and prefers v3 over the legacy di
     assert.equal((await f.handler(event)).statusCode, 202);
     assert.equal(f.sent.length, 1);
     assert.deepEqual(JSON.parse(f.sent[0].MessageBody), {
-      schemaVersion: 1, contactIds: ['123'], receivedAt: now, receiptId: hash(event.body),
+      schemaVersion: 1, contactIds: ['123'], receivedAt: now,
     });
   }
 });
@@ -201,7 +201,6 @@ test('v3 preserves base64 raw Unicode and whitespace with case-insensitive heade
   event.headers = { 'X-HubSpot-Signature-V3': event.headers['x-hubspot-signature-v3'],
     'X-HubSpot-Request-Timestamp': String(now) };
   assert.equal((await f.handler(event)).statusCode, 202);
-  assert.equal(JSON.parse(f.sent[0].MessageBody).receiptId, hash(raw));
   event.headers['X-HubSpot-Signature-V3'] = signV3(JSON.stringify(JSON.parse(raw)));
   assert.equal((await f.handler(event)).statusCode, 401);
 });
@@ -252,7 +251,7 @@ test('duplicates, old event timestamps and approval or email values remain only 
   assert.equal(f.sent.length, 2);
   for (const sent of f.sent) {
     assert.deepEqual(JSON.parse(sent.MessageBody), {
-      schemaVersion: 1, contactIds: ['123', '456'], receivedAt: now, receiptId: hash(event.body),
+      schemaVersion: 1, contactIds: ['123', '456'], receivedAt: now,
     });
     assert.doesNotMatch(sent.MessageBody, /approved|received"|rejected|email|synthetic|occurredAt|eventId/);
   }
@@ -288,7 +287,6 @@ test('uses decoded base64 raw bytes, retaining whitespace and non-ASCII signatur
   const f = setup();
   const raw = `\n ${JSON.stringify([hint({ propertyValue: 'synthetic-é-🏡' })], null, 2)}\n`;
   assert.equal((await f.handler(request(raw, { base64: true }))).statusCode, 202);
-  assert.equal(JSON.parse(f.sent[0].MessageBody).receiptId, hash(raw));
   const changed = request(raw, { base64: true });
   changed.headers['x-hubspot-signature'] = sign(JSON.stringify(JSON.parse(raw)));
   assert.equal((await f.handler(changed)).statusCode, 401);

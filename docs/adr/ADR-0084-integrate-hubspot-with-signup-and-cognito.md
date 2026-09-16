@@ -1,7 +1,8 @@
 ---
 status: accepted
 date: 2026-09-08
-updated: 2026-09-15
+updated: 2026-09-16
+amended-by: [ADR-0087]
 tags: [aws, hubspot, cognito, identity, participants, recruitment, crm, privacy, proportionality]
 supersedes: []
 amends: [ADR-0038, ADR-0069, ADR-0079]
@@ -175,6 +176,12 @@ Recheck before further additions. [Limits API](https://developers.hubspot.com/do
 
 ### 4. Reliable signup synchronisation without changing the receipt contract
 
+> **Amended by ADR-0087 (2026-09-16).** The applicant acknowledgement described in
+> §4.4 below is no longer an outcome of this CRM sync. It is a separate worker on
+> its own queue: every submission is acknowledged once per requested working group,
+> whatever the CRM makes of it, and the throttles here govern CRM writes alone.
+> ADR-0087 also records the state, digest and alerting simplifications that followed.
+
 1. The existing public Lambda validates and stores the application in AWS. It
    returns the existing generic `received` receipt after persistence, including
    the existing honeypot decoy. HubSpot availability is not in this request path.
@@ -190,9 +197,10 @@ Recheck before further additions. [Limits API](https://developers.hubspot.com/do
    from anonymous input. Human resolution may associate the application and
    adopt selected profile values. A later application from a known email (a
    contact this integration created, or one already matched for review) is not
-   silent: it becomes its own review task on that contact and is acknowledged,
-   because the applicant may have requested a new working group (2026-09-16;
-   before this, repeats were AWS evidence only and staff never saw them). Permit
+   silent: it becomes its own review task on that contact, because the applicant
+   may have requested a new working group (2026-09-16; before this, repeats were
+   AWS evidence only and staff never saw them). Its acknowledgement does not wait
+   for that task (ADR-0087). Permit
    at most one automatic CRM creation/task per email in 24 hours and 100 new
    contacts/day. Excess waits in the queue or the AWS review backlog; operators
    may adjust the limit without losing intake or auto-approving.
@@ -214,7 +222,8 @@ automatic alias transfer, identity re-binding or invitation resend.
 Run approval/profile reconciliation every 15 minutes as recovery for missed webhooks.
 Event-driven changes normally arrive sooner; latency is not guaranteed during an
 outage. The separate daily intake completeness/retention sweep remains a delivery item.
-Alert on dead letters, credential/configuration failures and work pending over a day.
+Alert on dead letters, credential/configuration failures and work pending over a day,
+to the shared operations topic ADR-0087 introduced; an alarm with no destination is not alerting.
 Respect `429` and `Retry-After`, back off with jitter, and retain failed work for
 safe replay. Expired/erased records must not be recreated by replay or backfill.
 

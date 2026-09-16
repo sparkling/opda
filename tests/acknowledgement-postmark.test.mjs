@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
-import { createPostmarkClient } from '../config/aws/hubspot-sync/postmark.mjs';
-import { RetryLater } from '../config/aws/hubspot-sync/errors.mjs';
-import { ACKNOWLEDGEMENT_PIN } from '../config/aws/hubspot-sync/settings.mjs';
+import { createPostmarkClient } from '../config/aws/acknowledgement/postmark.mjs';
+import { RetryLater } from '../config/aws/shared/http-retry.mjs';
+import { ACKNOWLEDGEMENT_PIN } from '../config/aws/acknowledgement/settings.mjs';
 import { acknowledgementPin } from '../config/aws/hubspot-participation/acknowledgement.mjs';
 import {
   buildAcknowledgementPayload, compileAcknowledgementTemplate, fingerprintAcknowledgementTemplate,

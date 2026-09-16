@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { isDeepStrictEqual } from 'node:util';
 import { setTimeout as pause } from 'node:timers/promises';
-import { retryAfter } from '../../config/aws/hubspot-sync/errors.mjs';
+import { retryAfter } from '../../config/aws/shared/http-retry.mjs';
 import { readCsv } from './csv.mjs';
 import { APPROVED_GROUPS, contactProfile, digest, mayApprove } from '../../config/aws/hubspot-approval/domain.mjs';
 import { planDomainApprovals } from '../../config/aws/hubspot-approval/domain-onboarding.mjs';

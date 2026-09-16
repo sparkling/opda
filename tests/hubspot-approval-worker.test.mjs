@@ -41,7 +41,7 @@ test('ordinary access requires the derived approved state, an active account and
 
 test('queue accepts contact hints only from its dedicated queue', () => {
   const r = { eventSource: 'aws:sqs', eventSourceARN: 'queue', body: JSON.stringify({ schemaVersion: 1,
-    contactIds: ['123'], receivedAt: now, receiptId: 'a'.repeat(64) }) };
+    contactIds: ['123'], receivedAt: now }) };
   assert.deepEqual(parseHints(r, 'queue'), ['123']);
   assert.throws(() => parseHints(r, 'another'));
 });

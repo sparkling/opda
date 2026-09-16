@@ -209,11 +209,18 @@ test('stored public submissions share one reference-only SNS and SQS event bound
   assert.match(newsletter, /StreamViewType: KEYS_ONLY/u);
   assert.match(events, /Type: AWS::SNS::Topic[\s\S]*KmsMasterKeyId: alias\/aws\/sns/u);
   assert.equal((events.match(/Type: AWS::SNS::Topic\n/gu) ?? []).length, 1);
-  assert.equal((events.match(/Type: AWS::SQS::Queue\n/gu) ?? []).length, 2);
+  // ADR-0087: one queue only, for stream batches this publisher could not place on
+  // the topic. Each consumer owns its own filtered queue; there is no fan-out queue.
+  assert.equal((events.match(/Type: AWS::SQS::Queue\n/gu) ?? []).length, 1);
+  assert.match(events, /QueueName: opda-public-submission-events-failures/u);
+  assert.doesNotMatch(events, /Type: AWS::SNS::Subscription/u);
   assert.match(events, /SqsManagedSseEnabled: true/u);
-  assert.match(events, /RawMessageDelivery: true/u);
-  assert.match(events, /aws:SourceArn: !Ref SubmissionEventsTopic/u);
-  assert.match(events, /aws:SourceAccount: !Ref AWS::AccountId/u);
+  for (const consumer of ['acknowledgement-stack.yaml', 'hubspot-sync-stack.yaml']) {
+    const template = await read(`config/aws/${consumer}`);
+    assert.match(template, /RawMessageDelivery: true/u);
+    assert.match(template, /ArnEquals: \{ 'aws:SourceArn': !Ref SourceTopicArn \}/u);
+    assert.match(template, /StringEquals: \{ 'aws:SourceAccount': !Ref AWS::AccountId \}/u);
+  }
   assert.match(events, /CodeUri: submission-events\//u);
   assert.match(events, /MemorySize: 128/u);
   assert.match(events, /FunctionResponseTypes: \[ReportBatchItemFailures\]/u);

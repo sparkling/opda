@@ -1,5 +1,5 @@
 import { ACKNOWLEDGEMENT_CONTRACT, acknowledgementPin, fingerprintAcknowledgementTemplate } from '../hubspot-participation/acknowledgement.mjs';
-import { RetryLater, retryAfter } from './errors.mjs';
+import { RetryLater, retryAfter } from '../shared/http-retry.mjs';
 
 const ORIGIN = 'https://api.postmarkapp.com';
 const STREAM = 'outbound';
