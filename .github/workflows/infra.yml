@@ -115,7 +115,7 @@ jobs:
             --no-fail-on-empty-changeset \
             --parameter-overrides \
               AlarmEmail="${{ vars.OPDA_OPERATIONS_ALARM_EMAIL || '' }}" \
-              AlarmSmsNumber="${{ vars.OPDA_OPERATIONS_ALARM_SMS || '' }}"
+              AlarmTeamsChannelEmail="${{ vars.OPDA_OPERATIONS_ALARM_TEAMS_CHANNEL || '' }}"
 
       - name: Deploy participant identity stores (eu-west-2)
         run: |
