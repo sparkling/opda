@@ -478,3 +478,59 @@ test('reapproval cannot clear pending or unknown removal intents', async () => {
     assert.equal(f.calls.length, before);
   }
 });
+
+test('a throttled grant is cancelled rather than unknown, and the retry completes it', async () => {
+  let throttle = true;
+  const f = fixture({ intercept(call) {
+    if (throttle && call.method === 'POST' && call.path === '/_api/web/sitegroups/getbyid(10)/users') {
+      throttle = false; return Promise.reject(Object.assign(new Error('private provider detail'), { status: 429 }));
+    }
+  } });
+  await assert.rejects(f.adapter.ensure(f.input), error => error.code === 'sharepoint-throttled' && error.status === 'pending'
+    && error.effect === 'grant-index' && error.providerStatus === 429);
+  assert.equal(f.receipt.effects['grant-index'], 'cancelled');
+  assert.deepEqual(f.receipt.memberships.index, { groupId: 10, userId: 55, owned: null, status: 'pending' });
+  assert.equal(f.receipt.memberships.contributor.status, 'granted');
+  assert.equal(f.state.members.get(10).has(55), false);
+  const before = f.calls.length, result = await f.adapter.ensure({ ...f.input, receipt: f.receipt });
+  assert.equal(result.status, 'ready');
+  assert.deepEqual(result.receipt.memberships.index, { groupId: 10, userId: 55, owned: true, status: 'granted' });
+  assert.equal(result.receipt.effects['grant-index'], 'confirmed');
+  assert.deepEqual(f.calls.slice(before).filter(x => x.method === 'POST').map(x => x.path), ['/_api/web/sitegroups/getbyid(10)/users']);
+  assert.equal((await f.adapter.revoke({ ...f.input, receipt: result.receipt })).status, 'revoked');
+});
+
+test('a refused grant needs review, and a later reapproval may retry it without adopting a manual add', async () => {
+  for (const manual of [false, true]) {
+    let refuse = true;
+    const f = fixture({ intercept(call, state) {
+      if (refuse && call.method === 'POST' && call.path === '/_api/web/sitegroups/getbyid(20)/users') {
+        refuse = false; return Promise.reject(Object.assign(new Error('private provider detail'), { status: 403 }));
+      }
+    } });
+    await assert.rejects(f.adapter.ensure(f.input), error => error.code === 'sharepoint-request-rejected'
+      && error.status === 'manual-review' && error.effect === 'grant-contributor' && error.providerStatus === 403);
+    assert.equal(f.receipt.effects['grant-contributor'], 'cancelled');
+    assert.equal(f.receipt.memberships.contributor.status, 'pending');
+    if (manual) f.state.members.get(20).add(55);
+    const result = await f.adapter.ensure({ ...f.input, receipt: f.receipt });
+    assert.equal(result.status, 'ready');
+    assert.deepEqual(result.receipt.memberships.contributor, manual
+      ? { groupId: 20, userId: 55, owned: false, status: 'existing' } : { groupId: 20, userId: 55, owned: true, status: 'granted' });
+    assert.equal(result.receipt.effects['grant-contributor'], manual ? undefined : 'confirmed');
+  }
+});
+
+test('a 5xx or silent failure on a grant stays unknown and is still never blindly retried', async () => {
+  for (const status of [500, 503, undefined]) {
+    const f = fixture({ intercept(call) {
+      if (call.method === 'POST' && call.path === '/_api/web/sitegroups/getbyid(20)/users') {
+        return Promise.reject(Object.assign(new Error('private provider detail'), status === undefined ? {} : { status }));
+      }
+    } });
+    await assert.rejects(f.adapter.ensure(f.input), error => error.code === 'sharepoint-effect-unknown'
+      && error.status === 'manual-review' && error.effect === 'grant-contributor' && error.providerStatus === (status ?? null));
+    assert.equal(f.receipt.effects['grant-contributor'], 'unknown');
+    await assert.rejects(f.adapter.ensure({ ...f.input, receipt: f.receipt }), /sharepoint-effect-unknown/);
+  }
+});

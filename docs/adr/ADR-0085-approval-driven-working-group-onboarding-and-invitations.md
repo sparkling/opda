@@ -317,6 +317,16 @@ The withdrawal path is:
 5. Read back removal. Keep Microsoft propagation pending and retry through the existing
    15-minute outbox relay; do not exhaust short queue retries while waiting for normal Teams
    synchronisation. Ambiguous writes, manual grants and policy drift require explicit review.
+   *Amended 2026-09-16.* A write is ambiguous only when the provider gave no answer (timeout,
+   5xx). A 4xx response proves it was refused without effect: the grant is recorded `cancelled`,
+   429 is retried through the relay and other refusals wait for review; a cancelled grant may be
+   retried by a later current approval. The review itself is `scripts/onboarding-review.mjs`,
+   which compares an uncertain grant with the live site and records the reviewer's verdict
+   (`absent` → retry, `owned` → ours, `manual` → retained) before re-queuing the operation. The
+   worker now traces `onboarding_source_effect_failed` (effect key, provider HTTP status) and
+   `onboarding_operation_parked` (stage, reason) so an alarm names its cause. Live evidence: a
+   transient SharePoint failure on `grant-index` at 20:05:14Z parked op `2daff653…` with no
+   invitation sent and no diagnosable reason.
 6. Send one domain-specific withdrawal notice only after its managed Microsoft removals are
    verified. An initial rejection, historical unmarked cleanup or another denied status does
    not create a new notice. Pending propagation or retained manual grants must not produce a

@@ -75,7 +75,9 @@ function harness({ action = 'provision', enabled = true, canaryEmailHash = '', g
   const worker = createOnboardingWorker({ store, graph, sharepoint, postmark, enabled, canaryEmailHash, now: () => 1000,
     workspaces: WORKSPACES, invitationRegistry: INVITATION_REGISTRY, templatePin: TEMPLATE_PIN,
     templatePins: domainId ? { [domainId]: { ...TEMPLATE_PIN, version: 2 } } : {},
-    noticePins: { website: TEMPLATE_PIN, groups: Object.fromEntries(APPROVAL_GROUP_IDS.map(id => [id, TEMPLATE_PIN])) }, logoBase64: 'test' });
+    noticePins: { website: TEMPLATE_PIN, groups: Object.fromEntries(APPROVAL_GROUP_IDS.map(id => [id, TEMPLATE_PIN])) }, logoBase64: 'test',
+    log: entry => state.logs.push(entry) });
+  state.logs = [];
   return { state, context, store, graph, sharepoint, postmark, worker };
 }
 
@@ -324,4 +326,23 @@ test('only opaque operation references are accepted', async () => {
   const h = harness();
   for (const id of [null, '', 'test@example.org', ID + 'x']) await assert.rejects(h.worker.process(id), TypeError);
   assert.deepEqual(h.state.calls, []);
+});
+
+test('a failed source effect and a parked operation are traced with static detail only', async () => {
+  const h = harness({ domainId: 'conveyancing', groups: ['conveyancing'] });
+  h.sharepoint.ensure = async () => { throw Object.assign(new Error('private details'), { code: 'sharepoint-effect-unknown',
+    status: 'manual-review', effect: 'grant-index', providerStatus: 503, loginName: 'must-not-leak' }); };
+  assert.deepEqual(await h.worker.process(ID), { status: 'attention', stage: 'microsoft-access-review' });
+  assert.deepEqual(h.state.logs, [
+    { event: 'onboarding_source_effect_failed', operationId: ID, method: 'ensure', code: 'sharepoint-effect-unknown',
+      outcome: 'manual-review', effect: 'grant-index', providerStatus: 503 },
+    { event: 'onboarding_operation_parked', operationId: ID, stage: 'microsoft-access-review', reason: null },
+  ]);
+  assert.equal(JSON.stringify(h.state.logs).includes('must-not-leak'), false);
+  const throttled = harness({ domainId: 'conveyancing', groups: ['conveyancing'] });
+  throttled.sharepoint.ensure = async () => { throw Object.assign(new Error('x'), { code: 'sharepoint-throttled', status: 'pending', effect: 'grant-index', providerStatus: 429 }); };
+  assert.equal((await throttled.worker.process(ID)).status, 'pending');
+  assert.equal(throttled.state.logs.length, 1);
+  assert.equal(throttled.state.logs[0].providerStatus, 429);
+  assert.throws(() => createOnboardingWorker({ log: 'nope' }), /Invalid onboarding logger/);
 });

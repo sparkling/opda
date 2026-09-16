@@ -110,7 +110,7 @@ export function createSecrets(config, { now, getSecretValue, loadAws = () => imp
 
 /** Assembly is inert: credentials load only when a claimed operation needs an effect or receipt. */
 export async function createProductionWorker(config, { now = Date.now, getSecretValue, loadAws,
-  readLogo = readFile, factories: overrides = {} } = {}) {
+  readLogo = readFile, factories: overrides = {}, log = () => {} } = {}) {
   validateConfig(config);
   requireConfig(typeof now === 'function' && typeof readLogo === 'function'
     && (getSecretValue === undefined || typeof getSecretValue === 'function'));
@@ -156,7 +156,7 @@ export async function createProductionWorker(config, { now = Date.now, getSecret
     postmark: { send: async ({ groupId, kind, ...input }) => (await postmark(groupId, kind)).send(input),
       reconcile: async ({ groupId, kind, ...input }) => (await postmark(groupId, kind)).reconcile(input) },
     workspaces: WORKSPACES, invitationRegistry: INVITATION_REGISTRY, templatePin: TEMPLATE_PIN, templatePins: TEMPLATE_PINS,
-    noticePins: NOTICE_PINS, logoBase64: logo.toString('base64'), enabled: config.enabled, canaryEmailHash: config.canaryEmailHash ?? '', now });
+    noticePins: NOTICE_PINS, logoBase64: logo.toString('base64'), enabled: config.enabled, canaryEmailHash: config.canaryEmailHash ?? '', now, log });
 }
 
 function operationReference(record, queueArn) {
@@ -184,7 +184,7 @@ export function createHandler({ worker, queueArn, env = process.env, changeVisib
   });
   const active = async () => {
     if (worker) return worker;
-    runtime ??= createProductionWorker(fromEnvironment(env), dependencies).catch(error => { runtime = undefined; throw error; });
+    runtime ??= createProductionWorker(fromEnvironment(env), { ...dependencies, log }).catch(error => { runtime = undefined; throw error; });
     return runtime;
   };
   return async event => {

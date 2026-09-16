@@ -10,10 +10,14 @@ const emailHash = value => createHash('sha256').update(String(value).trim().toLo
 
 /** Deterministic effects; provider receipts are private, reference-only jobs are not authority. */
 export function createOnboardingWorker({ store, graph, sharepoint, postmark, workspaces, invitationRegistry,
-  templatePin, templatePins = {}, noticePins = {}, logoBase64, enabled = false, canaryEmailHash = '', now = Date.now }) {
+  templatePin, templatePins = {}, noticePins = {}, logoBase64, enabled = false, canaryEmailHash = '', now = Date.now,
+  log = () => {} }) {
   if (typeof canaryEmailHash !== 'string' || canaryEmailHash !== '' && !EMAIL_HASH.test(canaryEmailHash)) {
     throw new TypeError('Invalid onboarding canary configuration');
   }
+  if (typeof log !== 'function') throw new TypeError('Invalid onboarding logger');
+  // Static classifications only: never identities, addresses, receipts or provider bodies.
+  const trace = entry => { try { log(entry); } catch { /* Logging never changes an outcome. */ } };
   async function process(operationId) {
     if (!OPERATION_ID.test(operationId ?? '')) throw new TypeError('Invalid onboarding operation reference');
     const context = await store.claim(operationId);
@@ -23,6 +27,7 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
       if (await store.finish(context, { status, stage, ...(reason ? { reason } : {}) }) !== true) {
         throw new Error('Onboarding completion lease unavailable');
       }
+      if (status === 'attention') trace({ event: 'onboarding_operation_parked', operationId, stage, reason: reason ?? null });
       return { status, stage, ...(reason ? { reason } : {}) };
     };
     async function save(change, options) {
@@ -38,6 +43,9 @@ export function createOnboardingWorker({ store, graph, sharepoint, postmark, wor
       try { return await sharepoint[method](args); }
       catch (error) {
         if (/^sharepoint-[a-z-]+$/.test(error?.code ?? '') && ['pending', 'manual-review'].includes(error.status)) {
+          trace({ event: 'onboarding_source_effect_failed', operationId, method, code: error.code, outcome: error.status,
+            effect: typeof error.effect === 'string' ? error.effect : null,
+            providerStatus: Number.isInteger(error.providerStatus) ? error.providerStatus : null });
           return { status: error.status }; // Only static classifications cross this boundary.
         }
         throw new Error('Onboarding source access unavailable');

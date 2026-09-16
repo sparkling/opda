@@ -19,10 +19,13 @@ const ACL_QUERY = '?$select=Id,HasUniqueRoleAssignments,RoleAssignments/Member/I
 const quote = value => `'${encodeURIComponent(value.replaceAll("'", "''"))}'`;
 const positive = value => Number.isSafeInteger(value) && value > 0;
 const clone = value => structuredClone(value);
-const TRANSIENT = new Set(['read-failed', 'guard-rejected', 'receipt-save-failed', 'membership-unverified', 'operation-in-progress']);
-const failure = code => Object.assign(new Error(`sharepoint-${code}`), {
-  code: `sharepoint-${code}`, status: TRANSIENT.has(code) ? 'pending' : 'manual-review',
+const TRANSIENT = new Set(['read-failed', 'guard-rejected', 'receipt-save-failed', 'membership-unverified', 'operation-in-progress', 'throttled']);
+const failure = (code, detail) => Object.assign(new Error(`sharepoint-${code}`), {
+  code: `sharepoint-${code}`, status: TRANSIENT.has(code) ? 'pending' : 'manual-review', ...detail,
 });
+// A 4xx response proves the provider refused the write without applying it. 429 is throttling
+// and may be retried; the rest need a person. Timeouts and 5xx are genuinely unknown.
+const rejection = status => status === 429 ? 'throttled' : Number.isInteger(status) && status >= 400 && status < 500 ? 'request-rejected' : null;
 function requireValue(condition, code = 'invalid-input') { if (!condition) throw failure(code); }
 function plain(value) {
   return value && typeof value === 'object' && !Array.isArray(value)
@@ -149,9 +152,12 @@ export function createSharePointAdapter({ request, workspaces } = {}) {
     try { await guard(ctx); } catch (error) { ctx.receipt.effects[key] = 'cancelled'; await save(ctx); throw error; }
     let response;
     try { response = await request(ctx.workspace.siteUrl, route, { method: 'POST', ...(body === undefined ? {} : { body }) }); }
-    catch {
+    catch (error) {
       try { await guard(ctx); } catch { /* Record uncertainty even when withdrawal won the race. */ }
-      ctx.receipt.effects[key] = 'unknown'; uncertain?.(); await save(ctx); throw failure('effect-unknown');
+      const detail = { effect: key, providerStatus: Number.isInteger(error?.status) ? error.status : null };
+      const rejected = rejection(error?.status);
+      if (rejected) { ctx.receipt.effects[key] = 'cancelled'; await save(ctx); throw failure(rejected, detail); }
+      ctx.receipt.effects[key] = 'unknown'; uncertain?.(); await save(ctx); throw failure('effect-unknown', detail);
     }
     let stale; try { await guard(ctx); } catch (error) { stale = error; }
     ctx.receipt.effects[key] = 'confirmed';
@@ -275,7 +281,11 @@ export function createSharePointAdapter({ request, workspaces } = {}) {
   async function ensureMembership(ctx, key, groupId, userId) {
     const old = ctx.receipt.memberships[key];
     if (old) requireValue(old.groupId === groupId && old.userId === userId, 'receipt-mismatch');
-    requireValue(!old || !['pending', 'unknown'].includes(old.status), 'effect-unknown');
+    // A cancelled grant never reached the provider (guard refusal or a 4xx), so it may be retried.
+    // A pending or unknown one may have landed; only explicit review can settle that.
+    requireValue(!old || old.status === 'pending' && ctx.receipt.effects[`grant-${key}`] === 'cancelled'
+      || !['pending', 'unknown'].includes(old.status), 'effect-unknown');
+    if (old?.status === 'pending') delete ctx.receipt.effects[`grant-${key}`];
     const present = await membership(ctx, groupId, userId);
     const renewed = old?.status === 'removed';
     if (renewed) {
