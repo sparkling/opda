@@ -211,8 +211,18 @@ the approval worker created the provisioning operation 16 s after the click, wit
 updated in place ("Approved by …"). The onboarding worker then refused that operation for 46
 minutes: it validated the audit actor as a HubSpot user id, and a Teams decision records
 `teams:<Entra object id>` (commit `c849919b` admits the Teams shape and logs a refused
-record's class instead of a bare retry count). Still outstanding: a refused click by a
-non-member, and a Teams-approved applicant walked through to Teams membership.
+record's class instead of a bare retry count).
+
+2026-09-17, second run, after the fix: form submit 08:36:27 UTC; card 08:37:26; Approve
+clicked from the Teams web client 09:17:18; review record 09:17:37; provisioning operation
+09:17:43; invitation e-mail 09:27:04 and operation complete 09:27:06; Microsoft consent
+09:28:08; guest `Accepted` 09:28:16; the continue page first showed "Access is still being
+prepared" and its Try again reached the Teams launcher for the Conveyancing team at 09:29:58,
+with both SharePoint site groups holding the guest. Withdrawal from the HubSpot record
+09:35:07 created both revoke operations; the account notice was accepted at 09:35:12 and the
+domain notice at 09:36:26, after which the Cognito user was disabled, the guest held no group,
+the team listed no member and neither site group held the user. The card is not touched by a
+withdrawal. Still outstanding: a refused click by a non-member.
 
 ## More Information
 
