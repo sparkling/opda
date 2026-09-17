@@ -15,7 +15,7 @@ const entry = (value, at, patch = {}) => ({ value, timestamp: new Date(at).toISO
 const integration = (value, at) => entry(value, at, { sourceType: 'INTEGRATION', sourceId: 'app:52397854', updatedByUserId: null });
 
 function contact(history = { [A]: [integration('approved', MIRRORED_AT)] }) {
-  const result = { id: '123', properties: { email: 'synthetic@example.test', opda_full_name: 'Synthetic Example',
+  const result = { id: '123', properties: { email: 'synthetic@example.test', firstname: 'Synthetic', lastname: 'Example',
     opda_requested_working_groups: `${A};${B}`, opda_active: 'false', opda_enrolment_status: 'not_invited' },
   propertiesWithHistory: { email: [entry('synthetic@example.test', NOW - 90000)],
     opda_requested_working_groups: [entry(`${A};${B}`, NOW - 80000)] } };

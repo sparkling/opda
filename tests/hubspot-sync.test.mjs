@@ -10,9 +10,10 @@ const id = '00000000-0000-4000-8000-000000000001';
 const otherId = '00000000-0000-4000-8000-000000000002';
 const queueArn = 'arn:aws:sqs:eu-west-2:123456789012:opda-hubspot-signups';
 const registration = (registrationId = id) => ({
-  registrationId, fullName: 'Synthetic Example Person', email: 'synthetic@example.test',
+  registrationId, firstName: 'Synthetic', lastName: 'Example Person', email: 'synthetic@example.test',
   organisation: 'Example organisation', role: 'Research and domain expertise',
   workingGroups: ['conveyancing', 'finance-and-banking'], contributions: ['review-model-candidates'],
+  referralSources: ['linkedin'], referralOther: '',
   relevantPerspective: 'Synthetic professional perspective', acknowledgement: true,
   privacyNoticeVersion: '2026-09-08', status: 'received', createdAt: now - 10000,
   expiresAt: Math.floor(now / 1000) + 2 * 24 * 60 * 60,
@@ -75,17 +76,17 @@ test('creates only a lossless pending contact and makes duplicate deliveries ine
   const writes = f.calls.filter(([action]) => action === 'create');
   assert.equal(writes.length, 1);
   assert.deepEqual(writes[0][1], {
-    email: 'synthetic@example.test', company: 'Example organisation', opda_full_name: 'Synthetic Example Person',
+    email: 'synthetic@example.test', company: 'Example organisation', firstname: 'Synthetic', lastname: 'Example Person',
     opda_role_or_expertise: 'Research and domain expertise', opda_requested_working_groups: 'finance-and-banking;conveyancing',
     opda_contribution_preferences: 'review-model-candidates', opda_relevant_perspective: 'Synthetic professional perspective',
-    opda_enrolment_status: 'not_invited', opda_active: 'false',
+    opda_referral_sources: 'linkedin', opda_enrolment_status: 'not_invited', opda_active: 'false',
     opda_review_conveyancing: 'received', opda_review_finance_and_banking: 'received',
   });
   assert.equal(application(f).contactId, '123');
   assert.equal(application(f).state, 'synced');
   assert.equal(application(f).reason, 'contact-created');
   assert.ok([...f.items.keys()].every(key => key.startsWith('SYNC#')));
-  assert.equal(f.registrations.get(id).fullName, registration().fullName);
+  assert.equal(f.registrations.get(id).lastName, registration().lastName);
 });
 
 test('an existing contact gets one review task, never a contact update; a repeat waits a day, then gets its own task', async () => {
@@ -165,7 +166,7 @@ test('a review task failure keeps a short lease, then retries; a duplicate task 
 test('never updates or recreates an already-created contact from a resubmission; it is reviewed instead', async () => {
   const f = setup();
   await f.worker(id);
-  f.registrations.get(otherId).fullName = 'Anonymous replacement name';
+  f.registrations.get(otherId).lastName = 'Anonymous replacement name';
   await assert.rejects(f.worker(otherId), RetryLater);
   f.tick(24 * 60 * 60 * 1000 + 1);
   await f.worker(otherId);

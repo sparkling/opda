@@ -5,10 +5,25 @@ export interface RegistrationErrorIssue {
 }
 
 const FIELD_ISSUES: Record<string, RegistrationErrorIssue> = {
-  fullName: {
-    selector: '#full-name',
-    errorId: 'full-name-error',
-    message: 'Full name must be between 2 and 100 characters.',
+  firstName: {
+    selector: '#first-name',
+    errorId: 'first-name-error',
+    message: 'First name must be between 1 and 60 characters.',
+  },
+  lastName: {
+    selector: '#last-name',
+    errorId: 'last-name-error',
+    message: 'Last name must be between 1 and 60 characters.',
+  },
+  referralSources: {
+    selector: 'input[name="referralSources"]',
+    errorId: 'referral-sources-error',
+    message: 'Select where you heard about us.',
+  },
+  referralOther: {
+    selector: '#referral-other',
+    errorId: 'referral-other-error',
+    message: 'Tell us where you heard about us, in 120 characters or fewer.',
   },
   email: {
     selector: '#email',

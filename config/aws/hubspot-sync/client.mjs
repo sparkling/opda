@@ -9,8 +9,9 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 // HubSpot-defined association: task -> contact.
 const TASK_TO_CONTACT = 204;
 const DOMAIN_PROPERTY_TO_GROUP = new Map(Object.entries(DOMAIN_REVIEW_PROPERTIES).map(([group, property]) => [property, group]));
-const WRITABLE = new Set(['email', 'company', 'opda_full_name', 'opda_role_or_expertise',
+const WRITABLE = new Set(['email', 'firstname', 'lastname', 'company', 'opda_role_or_expertise',
   'opda_requested_working_groups', 'opda_contribution_preferences', 'opda_relevant_perspective',
+  'opda_referral_sources', 'opda_referral_other',
   'opda_enrolment_status', 'opda_active', ...DOMAIN_PROPERTY_TO_GROUP.keys()]);
 
 async function readSecret(secretArn) {

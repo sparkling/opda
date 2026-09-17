@@ -12,7 +12,7 @@ const entry = (value, at = NOW - 1000, patch = {}) => ({ value,
 // `legacy` plants a value in the retired account-wide field, which some contacts
 // still carry; the worker must treat it as if it were not there.
 function contact(reviews = { [A]: 'approved' }, legacy = null) {
-  const result = { id: '123', properties: { email: 'synthetic@example.test', opda_full_name: 'Synthetic Example',
+  const result = { id: '123', properties: { email: 'synthetic@example.test', firstname: 'Synthetic', lastname: 'Example',
     opda_requested_working_groups: `${A};${B}`, ...(legacy ? { opda_review_status: legacy } : {}),
     opda_active: 'false', opda_enrolment_status: 'not_invited' }, propertiesWithHistory: {
     email: [entry('synthetic@example.test', NOW - 90000)],

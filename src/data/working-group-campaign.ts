@@ -107,6 +107,21 @@ export const workingGroupContexts: WorkingGroupContext[] = [
   },
 ];
 
+export interface ReferralSourceOption {
+  value: string;
+  label: string;
+}
+
+/** Mirrors REFERRAL_CHOICES in config/aws/hubspot-participation/properties.mjs. */
+export const referralSourceOptions: ReferralSourceOption[] = [
+  { value: 'linkedin', label: 'LinkedIn' },
+  { value: 'interest-group', label: 'Interest group' },
+  { value: 'colleague', label: 'Colleague' },
+  { value: 'friend', label: 'Friend' },
+  { value: 'search-engine', label: 'Search engine' },
+  { value: 'other', label: 'Other' },
+];
+
 export const contributionOptions: ContributionOption[] = [
   {
     value: 'share-source-material',

@@ -383,12 +383,14 @@ test.describe('runtime continuity boundaries', () => {
     await visit(page, '/join');
     const privacyLinks = page.locator('a[href="/join/privacy"]');
     expect(await privacyLinks.count()).toBeGreaterThan(0);
-    await page.locator('#full-name').fill('Test Participant');
+    await page.locator('#first-name').fill('Test');
+    await page.locator('#last-name').fill('Participant');
     await page.locator('#email').fill('participant@example.test');
     await page.locator('#organisation').fill('Example Organisation');
     await page.locator('#role').fill('Property data analyst');
     await page.locator('input[name="workingGroups"][value="estate-agency"]').check();
     await page.locator('input[name="contributions"][value="review-model-candidates"]').check();
+    await page.locator('input[name="referralSources"][value="linkedin"]').check();
     await page.locator('#acknowledgement').check();
     await page.getByRole('button', { name: 'Register my interest' }).click();
 
@@ -396,12 +398,14 @@ test.describe('runtime continuity boundaries', () => {
     await expect(page.locator('#working-group-interest-form')).toBeHidden();
     expect(submissions).toHaveLength(1);
     expect(submissions[0]).toMatchObject({
-      fullName: 'Test Participant',
+      firstName: 'Test',
+      lastName: 'Participant',
       email: 'participant@example.test',
       organisation: 'Example Organisation',
       role: 'Property data analyst',
       workingGroups: ['estate-agency'],
       contributions: ['review-model-candidates'],
+      referralSources: ['linkedin'],
       acknowledgement: true,
       privacyNoticeVersion: PRIVACY_NOTICE_VERSION,
     });
@@ -417,12 +421,14 @@ test.describe('runtime continuity boundaries', () => {
     }));
 
     await visit(page, '/join');
-    await page.locator('#full-name').fill('Test Participant');
+    await page.locator('#first-name').fill('Test');
+    await page.locator('#last-name').fill('Participant');
     await page.locator('#email').fill('participant@example.test');
     await page.locator('#organisation').fill('Example Organisation');
     await page.locator('#role').fill('Property data analyst');
     await page.locator('input[name="workingGroups"][value="estate-agency"]').check();
     await page.locator('input[name="contributions"][value="review-model-candidates"]').check();
+    await page.locator('input[name="referralSources"][value="linkedin"]').check();
     await page.locator('#acknowledgement').check();
     await page.getByRole('button', { name: 'Register my interest' }).click();
 

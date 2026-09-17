@@ -271,8 +271,8 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   assert.deepEqual(extractSetValues(source, 'WORKING_GROUPS'), expectedGroups);
   assert.deepEqual(extractSetValues(source, 'CONTRIBUTIONS'), expectedContributions);
   for (const field of [
-    'fullName', 'email', 'organisation', 'role', 'workingGroups', 'contributions',
-    'relevantPerspective', 'acknowledgement', 'privacyNoticeVersion',
+    'firstName', 'lastName', 'email', 'organisation', 'role', 'workingGroups', 'contributions',
+    'referralSources', 'referralOther', 'relevantPerspective', 'acknowledgement', 'privacyNoticeVersion',
     'website', 'startedAt',
   ]) {
     assert.match(source, new RegExp(`\\b${field}\\b`, 'u'));
@@ -428,7 +428,9 @@ test('campaign styles remain split below the project file limit', async () => {
 test('form errors are associated with every control and group', async () => {
   const source = await readFile(paths.form, 'utf8');
   for (const [id, description] of [
-    ['full-name', 'full-name-error'],
+    ['first-name', 'first-name-error'],
+    ['last-name', 'last-name-error'],
+    ['referral-other', 'referral-other-error'],
     ['email', 'email-hint email-error'],
     ['organisation', 'organisation-error'],
     ['role', 'role-error'],

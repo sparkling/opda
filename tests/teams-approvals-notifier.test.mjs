@@ -8,7 +8,7 @@ const id = '00000000-0000-4000-8000-000000000001';
 const queueArn = 'arn:aws:sqs:eu-west-2:123456789012:opda-teams-signups';
 const CHANNEL = '19:bd69ce445a4a4493854168e8e2c9ffc7@thread.tacv2';
 const TENANT = '143540d4-4fbc-4005-882a-29656cd01a36';
-const registration = (patch = {}) => ({ registrationId: id, fullName: 'Synthetic Example Person', email: 'synthetic@example.test',
+const registration = (patch = {}) => ({ registrationId: id, firstName: 'Synthetic', lastName: 'Example Person', email: 'synthetic@example.test',
   organisation: 'Example organisation', role: 'Research', workingGroups: ['conveyancing'], relevantPerspective: '',
   privacyNoticeVersion: '2026-09-08', status: 'received', createdAt: NOW - 10000, expiresAt: Math.floor(NOW / 1000) + 86400, ...patch });
 const message = () => ({ messageId: 'message-1', eventSource: 'aws:sqs', eventSourceARN: queueArn, receiptHandle: 'opaque',

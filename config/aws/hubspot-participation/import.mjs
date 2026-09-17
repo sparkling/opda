@@ -9,8 +9,8 @@ export const APPROVAL = Object.freeze({
 });
 export const CONTACT_PROPERTIES = Object.freeze([
   'email', 'firstname', 'lastname', 'company', 'jobtitle',
-  'opda_full_name', 'opda_role_or_expertise', 'opda_requested_working_groups',
-  'opda_contribution_preferences', 'opda_relevant_perspective',
+  'opda_role_or_expertise', 'opda_requested_working_groups',
+  'opda_contribution_preferences', 'opda_relevant_perspective', 'opda_referral_sources', 'opda_referral_other',
   'opda_enrolment_status', 'opda_active',
   ...Object.values(DOMAIN_REVIEW_PROPERTIES),
 ]);
@@ -38,7 +38,7 @@ export function planApprovedContacts(contacts) {
     }
     const name = [p.firstname, p.lastname].filter(Boolean).join(' ').trim();
     eligible.push({
-      contactId: contact.id, email, name: String(p.opda_full_name || name || email).slice(0, 256),
+      contactId: contact.id, email, name: String(name || email).slice(0, 256),
       profile: Object.fromEntries(CONTACT_PROPERTIES.map(key => [key, typeof p[key] === 'string' ? p[key] : null])),
       sourceCreatedAt: contact.createdAt, sourceUpdatedAt: contact.updatedAt ?? null,
     });

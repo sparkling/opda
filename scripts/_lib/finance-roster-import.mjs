@@ -53,7 +53,7 @@ export function readFinanceRoster() {
   const rows = readCsv(ROSTER_FILE);
   const emails = new Set();
   for (const row of rows) {
-    const profile = contactProfile({ id: '1', properties: { email: row.email, opda_full_name: row.display_name } });
+    const profile = contactProfile({ id: '1', properties: { email: row.email, firstname: row.display_name } });
     if (!row.display_name?.trim() || row.display_name.length > 256 || /[\u0000-\u001f\u007f<>]/u.test(row.display_name)
       || emails.has(profile.email)) throw new Error('Invalid roster identity');
     emails.add(profile.email); row.email = profile.email;
@@ -73,7 +73,6 @@ export function financeProperties(roster, contact) {
   const groups = APPROVED_GROUPS.filter(id => id === FINANCE_DOMAIN_ID || selected.includes(id)).join(';');
   if (groups !== p.opda_requested_working_groups) properties.opda_requested_working_groups = groups;
   if (p[REVIEW_PROPERTY] !== 'approved') properties[REVIEW_PROPERTY] = 'approved';
-  if (!p.opda_full_name) properties.opda_full_name = roster.display_name;
   if (!contact) properties.email = roster.email;
   return properties;
 }

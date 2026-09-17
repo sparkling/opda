@@ -51,7 +51,7 @@ export function createWorker({ store, postmark, logoBase64, now = Date.now, tran
     const base = { ...record, pk, registrationId, groupId, createdAt: record?.createdAt ?? timestamp };
     let payload;
     try {
-      payload = buildAcknowledgementPayload({ displayName: source.fullName, email: source.email, groupId }, { logoBase64 });
+      payload = buildAcknowledgementPayload({ displayName: `${source.firstName} ${source.lastName}`, email: source.email, groupId }, { logoBase64 });
     } catch {
       // Permanently unsendable input, e.g. an address this contract will not accept.
       await store.put({ ...base, state: 'done', reason: 'invalid-input', updatedAt: timestamp }, record);

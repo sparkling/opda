@@ -8,7 +8,7 @@ const now = Date.parse('2026-09-16T09:00:00Z');
 const id = '00000000-0000-4000-8000-000000000001';
 const queueArn = 'arn:aws:sqs:eu-west-2:123456789012:opda-application-acknowledgements';
 const registration = (registrationId = id) => ({
-  registrationId, fullName: 'Synthetic Example Person', email: 'synthetic@example.test',
+  registrationId, firstName: 'Synthetic', lastName: 'Example Person', email: 'synthetic@example.test',
   organisation: 'Example organisation', role: 'Research and domain expertise',
   workingGroups: ['conveyancing', 'finance-and-banking'], contributions: ['review-model-candidates'],
   relevantPerspective: 'Synthetic professional perspective', acknowledgement: true,
@@ -164,7 +164,7 @@ test('a rejected or suppressed address is settled once, with the provider reason
 
 test('input the reviewed template cannot carry is settled permanently, never retried', async () => {
   const f = setup();
-  f.registrations.get(id).fullName = 'Unsafe <b>name</b>';
+  f.registrations.get(id).lastName = 'Unsafe <b>name</b>';
   await f.worker(id);
   await f.worker(id);
   assert.deepEqual(f.sent, []);

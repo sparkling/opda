@@ -22,7 +22,7 @@ const entry = (value, at, patch = {}) => ({ value, timestamp: new Date(at).toISO
 // The 2026-09-10 receipts hashed the since-retired account-wide review property, so
 // capture still observes it; the live worker derives nothing from it.
 function contact(id = '123') {
-  return { id, properties: { email: 'synthetic@example.test', opda_full_name: 'Synthetic Example',
+  return { id, properties: { email: 'synthetic@example.test', firstname: 'Synthetic', lastname: 'Example',
     opda_requested_working_groups: FINANCE, opda_review_status: 'approved',
     [DOMAIN_REVIEW_PROPERTIES[FINANCE]]: 'approved', opda_active: 'true',
     opda_enrolment_status: 'not_invited' }, propertiesWithHistory: {

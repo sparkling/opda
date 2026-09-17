@@ -1,7 +1,7 @@
 // ADR-0084: an offline schema contract, not a provisioner or an access-control source.
 // Keep the versioned choices self-contained for a future isolated Lambda package.
 // Tests compare their IDs with the public intake contract.
-export const OPTION_SET_VERSION = 1;
+export const OPTION_SET_VERSION = 2;
 export const PARTICIPATION_GROUP = Object.freeze({
   name: 'opda_participation', label: 'OPDA participation', displayOrder: -1,
 });
@@ -20,6 +20,11 @@ const GROUP_CHOICES = [
 ];
 /** Display labels by domain ID, e.g. "Finance and Banking"; the working-group name appends " Working Group". */
 export const WORKING_GROUP_LABELS = Object.freeze(Object.fromEntries(GROUP_CHOICES));
+export const REFERRAL_CHOICES = [
+  ['linkedin', 'LinkedIn'], ['interest-group', 'Interest group'], ['colleague', 'Colleague'],
+  ['friend', 'Friend'], ['search-engine', 'Search engine'], ['other', 'Other'],
+];
+export const REFERRAL_LABELS = Object.freeze(Object.fromEntries(REFERRAL_CHOICES));
 
 const choices = (entries) => entries.map(([value, label], displayOrder) => ({
   value, label, displayOrder, hidden: false,
@@ -30,10 +35,6 @@ function freeze(value) {
 }
 
 export const PARTICIPATION_PROPERTIES = freeze([
-  {
-    name: 'opda_full_name', label: 'Full name', type: 'string', fieldType: 'text',
-    description: 'Complete applicant name, without an inferred first-name/last-name split.',
-  },
   {
     name: 'opda_role_or_expertise', label: 'Role or area of expertise', type: 'string', fieldType: 'text',
     description: 'Professional role or expertise supplied on the join form. Not an application permission.',
@@ -60,6 +61,15 @@ export const PARTICIPATION_PROPERTIES = freeze([
     description: 'Optional professional perspective, limited to 600 characters by the intake and bridge.',
   },
   {
+    name: 'opda_referral_sources', label: 'Where they heard about us', type: 'enumeration', fieldType: 'checkbox',
+    description: 'How the applicant heard about the working groups, as chosen on the join form.',
+    options: choices(REFERRAL_CHOICES),
+  },
+  {
+    name: 'opda_referral_other', label: 'Where they heard about us (other)', type: 'string', fieldType: 'text',
+    description: 'Free-text detail when "Other" is chosen, limited to 120 characters by the intake and bridge.',
+  },
+  {
     name: 'opda_enrolment_status', label: 'Account enrolment status', type: 'enumeration', fieldType: 'select',
     description: 'AWS-owned enrolment snapshot. Editing this CRM property never completes enrolment.',
     options: choices([
@@ -84,6 +94,8 @@ export const PARTICIPATION_PROPERTIES = freeze([
 
 const STANDARD_PROPERTIES = [
   { name: 'email', type: 'string', fieldType: 'text' },
+  { name: 'firstname', type: 'string', fieldType: 'text' },
+  { name: 'lastname', type: 'string', fieldType: 'text' },
   { name: 'company', type: 'string', fieldType: 'text' },
 ];
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);

@@ -61,12 +61,14 @@ test('form, unknown and malformed errors fall back to the retryable service mess
 
 test('every field error emitted by the server has a safe client-side issue', () => {
   const result = validateRegistration({
-    fullName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     organisation: '',
     role: '',
     workingGroups: [],
     contributions: [],
+    referralSources: [],
     relevantPerspective: '<invalid>',
     acknowledgement: false,
     privacyNoticeVersion: 'outdated',
@@ -79,12 +81,14 @@ test('every field error emitted by the server has a safe client-side issue', () 
     'acknowledgement',
     'contributions',
     'email',
-    'fullName',
+    'firstName',
+    'lastName',
     'organisation',
     'privacyNoticeVersion',
+    'referralSources',
     'relevantPerspective',
     'role',
     'workingGroups',
   ]);
-  assert.equal(registrationErrorIssues(result).length, 9);
+  assert.equal(registrationErrorIssues(result).length, 11);
 });

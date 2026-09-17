@@ -65,12 +65,15 @@ function stringList(values) {
 function itemFromRegistration(record) {
   return {
     registrationId: { S: record.registrationId },
-    fullName: { S: record.fullName },
+    firstName: { S: record.firstName },
+    lastName: { S: record.lastName },
     email: { S: record.email },
     organisation: { S: record.organisation },
     role: { S: record.role },
     workingGroups: stringList(record.workingGroups),
     contributions: stringList(record.contributions),
+    referralSources: stringList(record.referralSources),
+    referralOther: { S: record.referralOther },
     relevantPerspective: { S: record.relevantPerspective },
     acknowledgement: { BOOL: true },
     privacyNoticeVersion: { S: record.privacyNoticeVersion },
@@ -121,12 +124,15 @@ export function createHandler(overrides = {}) {
     const now = dependencies.now();
     const record = {
       registrationId: dependencies.newId(),
-      fullName: validation.value.fullName,
+      firstName: validation.value.firstName,
+      lastName: validation.value.lastName,
       email: validation.value.email,
       organisation: validation.value.organisation,
       role: validation.value.role,
       workingGroups: validation.value.workingGroups,
       contributions: validation.value.contributions,
+      referralSources: validation.value.referralSources,
+      referralOther: validation.value.referralOther,
       relevantPerspective: validation.value.relevantPerspective,
       privacyNoticeVersion: validation.value.privacyNoticeVersion,
       createdAt: now,

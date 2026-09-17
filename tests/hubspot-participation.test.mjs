@@ -15,9 +15,10 @@ import {
 const now = Date.parse('2026-09-08T12:00:00Z');
 const registration = (changes = {}) => ({
   registrationId: '4aa91913-382a-46f8-8eb6-4341b2c6d0c7',
-  fullName: 'Ada van Example', email: 'ada@example.com', organisation: 'Example Ltd',
+  firstName: 'Ada', lastName: 'van Example', email: 'ada@example.com', organisation: 'Example Ltd',
   role: 'Surveyor and data reviewer', workingGroups: ['surveying-and-valuation'],
-  contributions: ['review-model-candidates'], relevantPerspective: 'Practical inspection experience.',
+  contributions: ['review-model-candidates'], referralSources: ['linkedin'], referralOther: '',
+  relevantPerspective: 'Practical inspection experience.',
   acknowledgement: true, privacyNoticeVersion: '2026-08-13', status: 'received',
   createdAt: now - 1000, expiresAt: Math.floor(now / 1000) + 86400,
   ...changes,
@@ -25,6 +26,8 @@ const registration = (changes = {}) => ({
 const property = (name) => PARTICIPATION_PROPERTIES.find((item) => item.name === name);
 const standardProperties = [
   { name: 'email', type: 'string', fieldType: 'text', hubspotDefined: true },
+  { name: 'firstname', type: 'string', fieldType: 'text', hubspotDefined: true },
+  { name: 'lastname', type: 'string', fieldType: 'text', hubspotDefined: true },
   { name: 'company', type: 'string', fieldType: 'text', hubspotDefined: true },
 ];
 const inventory = (properties = standardProperties) => ({ complete: true, properties });
@@ -32,10 +35,13 @@ const allProperties = () => structuredClone([...standardProperties, ...PARTICIPA
 const sync = (record = registration(), contactMatches = []) =>
   planInitialContactSync(record, { now, contactMatches });
 
-test('the thirteen-property manifest preserves signup choices and adds six independent domain reviews', () => {
-  assert.equal(OPTION_SET_VERSION, 1);
-  assert.equal(PARTICIPATION_PROPERTIES.length, 13);
-  assert.equal(new Set(PARTICIPATION_PROPERTIES.map((item) => item.name)).size, 13);
+test('the fourteen-property manifest preserves signup choices and adds six independent domain reviews', () => {
+  assert.equal(OPTION_SET_VERSION, 2);
+  assert.equal(PARTICIPATION_PROPERTIES.length, 14);
+  assert.equal(new Set(PARTICIPATION_PROPERTIES.map((item) => item.name)).size, 14);
+  assert.equal(PARTICIPATION_PROPERTIES.some((item) => item.name === 'opda_full_name'), false, 'the name lives in firstname/lastname');
+  assert.deepEqual(property('opda_referral_sources').options.map((item) => item.value),
+    ['linkedin', 'interest-group', 'colleague', 'friend', 'search-engine', 'other']);
   assert.deepEqual(property('opda_requested_working_groups').options.map((item) => item.value), [...WORKING_GROUPS]);
   assert.deepEqual(property('opda_contribution_preferences').options.map((item) => item.value), [...CONTRIBUTIONS]);
   assert.ok(PARTICIPATION_PROPERTIES.every((item) => item.groupName === 'opda_participation'));
@@ -53,7 +59,7 @@ test('the thirteen-property manifest preserves signup choices and adds six indep
 
 test('new-contact mapping uses only the agreed fields and never grants access', () => {
   const record = registration({
-    email: ' ADA@EXAMPLE.COM ', fullName: ' Ada van Example ',
+    email: ' ADA@EXAMPLE.COM ', firstName: ' Ada ', lastName: ' van Example ', referralSources: ['other', 'friend'], referralOther: ' A friend at a conference ',
     website: 'https://example.com', startedAt: 123, membership_type: 'Member',
     opda_active: true, approvedGroups: ['finance-and-banking'], marketingConsent: true,
   });
@@ -62,11 +68,12 @@ test('new-contact mapping uses only the agreed fields and never grants access', 
   assert.equal(plan.action, 'create-contact');
   assert.equal(plan.registrationId, record.registrationId);
   assert.deepEqual(plan.properties, {
-    email: 'ada@example.com', company: 'Example Ltd', opda_full_name: 'Ada van Example',
+    email: 'ada@example.com', company: 'Example Ltd', firstname: 'Ada', lastname: 'van Example',
     opda_role_or_expertise: 'Surveyor and data reviewer',
     opda_requested_working_groups: 'surveying-and-valuation',
     opda_contribution_preferences: 'review-model-candidates',
     opda_relevant_perspective: 'Practical inspection experience.',
+    opda_referral_sources: 'friend;other', opda_referral_other: 'A friend at a conference',
     opda_enrolment_status: 'not_invited', opda_active: 'false',
     // Only the requested domain is marked Requested; the others stay blank.
     opda_review_surveying_and_valuation: 'received',
@@ -115,7 +122,8 @@ test('a current or ambiguous contact match produces review only, with no contact
 
 test('invalid persisted fields fail without including personal values in errors', () => {
   for (const changes of [
-    { fullName: 'X' }, { email: 'private-invalid-email' }, { organisation: '<script>' },
+    { firstName: '' }, { lastName: 'x'.repeat(61) }, { email: 'private-invalid-email' }, { organisation: '<script>' },
+    { referralSources: [] }, { referralSources: ['other'], referralOther: '' }, { referralSources: ['unknown'] },
     { role: 'Line\nbreak' }, { relevantPerspective: 'x'.repeat(601) },
     { workingGroups: [] }, { workingGroups: ['unknown'] },
     { contributions: ['review-model-candidates', 'review-model-candidates'] },
@@ -136,14 +144,14 @@ test('invalid persisted fields fail without including personal values in errors'
 });
 
 test('complete inventory and verified capacity are needed before proposing field creation', () => {
-  const assessment = assessContactPropertySchema({ inventory: inventory(), remainingCustomPropertySlots: 13 });
+  const assessment = assessContactPropertySchema({ inventory: inventory(), remainingCustomPropertySlots: 14 });
   assert.equal(assessment.ready, true);
-  assert.equal(assessment.propertiesToCreate.length, 13);
+  assert.equal(assessment.propertiesToCreate.length, 14);
   assert.deepEqual(assessment.blockers, []);
   for (const options of [
-    {}, { inventory: { complete: false, properties: standardProperties }, remainingCustomPropertySlots: 13 },
-    { inventory: inventory() }, { inventory: inventory(), remainingCustomPropertySlots: 12 },
-    { inventory: inventory(), remainingCustomPropertySlots: '13' },
+    {}, { inventory: { complete: false, properties: standardProperties }, remainingCustomPropertySlots: 14 },
+    { inventory: inventory() }, { inventory: inventory(), remainingCustomPropertySlots: 13 },
+    { inventory: inventory(), remainingCustomPropertySlots: '14' },
   ]) {
     const blocked = assessContactPropertySchema(options);
     assert.equal(blocked.ready, false);
@@ -173,8 +181,8 @@ test('only missing fields consume capacity on a partially completed setup', () =
   assert.deepEqual(assessment.propertiesToCreate.map((item) => item.name), ['opda_active']);
 });
 
-test('an existing seven-field setup needs only the six verified domain-review slots', () => {
-  const properties = [...standardProperties, ...PARTICIPATION_PROPERTIES.slice(0, 7)];
+test('an existing eight-field setup needs only the six verified domain-review slots', () => {
+  const properties = [...standardProperties, ...PARTICIPATION_PROPERTIES.slice(0, 8)];
   const result = assessContactPropertySchema({ inventory: inventory(properties), remainingCustomPropertySlots: 6 });
   assert.equal(result.ready, true);
   assert.deepEqual(result.missingProperties, Object.values(DOMAIN_REVIEW_PROPERTIES));
@@ -189,11 +197,11 @@ test('conflicting, archived, calculated or read-only fields block setup without 
     { hasUniqueValue: true },
   ]) {
     const properties = allProperties();
-    Object.assign(properties.find((item) => item.name === 'opda_full_name'), change);
+    Object.assign(properties.find((item) => item.name === 'opda_role_or_expertise'), change);
     const assessment = assessContactPropertySchema({ inventory: inventory(properties) });
     assert.equal(assessment.ready, false);
     assert.deepEqual(assessment.propertiesToCreate, []);
-    assert.ok(assessment.blockers.some((item) => item.property === 'opda_full_name'));
+    assert.ok(assessment.blockers.some((item) => item.property === 'opda_role_or_expertise'));
   }
 });
 
@@ -227,7 +235,7 @@ test('missing default fields, duplicate names and malformed inventory are never 
 
 const bridgeScopes = ['oauth', 'crm.objects.contacts.read', 'crm.objects.contacts.write', 'crm.schemas.contacts.read'];
 const expectedApp = { portalId: 123, appId: 456, scopes: bridgeScopes };
-const limits = (overall = 13, contacts = 13) => ({
+const limits = (overall = 14, contacts = 14) => ({
   overallLimit: overall + 2, overallUsage: 2,
   byObjectType: [{ objectTypeId: '0-1', limit: contacts + 2, usage: 2 }],
 });
@@ -264,11 +272,11 @@ test('private app identity and exact scopes must match before credential use', a
 });
 
 test('live schema preflight uses the smaller of account-wide and contact capacity', async () => {
-  for (const capacity of [limits(12, 14), limits(14, 12)]) {
+  for (const capacity of [limits(13, 15), limits(15, 13)]) {
     const { api, calls } = mockApi({ capacity });
     const result = await readSchemaPreflight(api);
     assert.equal(result.ready, false);
-    assert.equal(result.remainingCustomPropertySlots, 12);
+    assert.equal(result.remainingCustomPropertySlots, 13);
     assert.ok(calls.every((call) => !call.method));
   }
   assert.equal((await readSchemaPreflight(mockApi().api)).ready, true);
@@ -294,13 +302,13 @@ test('incomplete inventory and incompatible groups fail closed', async () => {
 test('provisioning only creates missing OPDA definitions and is an idempotent no-op on rerun', async () => {
   const { api, calls } = mockApi({ properties: structuredClone(standardProperties) });
   const first = await createMissingProperties(api);
-  assert.equal(first.createdProperties.length, 13);
+  assert.equal(first.createdProperties.length, 14);
   assert.equal(first.verified, true);
   const writes = calls.filter(({ method }) => method === 'POST');
-  assert.equal(writes.length, 14);
+  assert.equal(writes.length, 15);
   assert.ok(writes.every(({ path }) => path.startsWith('/crm/v3/properties/contacts')));
   assert.equal((await createMissingProperties(api)).createdProperties.length, 0);
-  assert.equal(calls.filter(({ method }) => method === 'POST').length, 14);
+  assert.equal(calls.filter(({ method }) => method === 'POST').length, 15);
 });
 
 test('provisioning cannot write anything when preflight has a blocker', async () => {

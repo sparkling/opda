@@ -19,13 +19,25 @@ export const CONTRIBUTIONS = new Set([
   'represent-public-interests',
 ]);
 
+export const REFERRAL_SOURCES = new Set([
+  'linkedin',
+  'interest-group',
+  'colleague',
+  'friend',
+  'search-engine',
+  'other',
+]);
+
 const REGISTRATION_FIELDS = new Set([
-  'fullName',
+  'firstName',
+  'lastName',
   'email',
   'organisation',
   'role',
   'workingGroups',
   'contributions',
+  'referralSources',
+  'referralOther',
   'relevantPerspective',
   'acknowledgement',
   'privacyNoticeVersion',
@@ -73,17 +85,21 @@ export function validateRegistration(payload) {
     errors.form = 'The submission contains an unexpected field.';
   }
 
-  const fullName = text(payload.fullName, 2, 100);
+  const firstName = text(payload.firstName, 1, 60);
+  const lastName = text(payload.lastName, 1, 60);
   const email = normalizeEmail(payload.email);
   const organisation = text(payload.organisation, 2, 150);
   const role = text(payload.role, 2, 120);
   const workingGroups = selection(payload.workingGroups, WORKING_GROUPS);
   const contributions = selection(payload.contributions, CONTRIBUTIONS);
+  const referralSources = selection(payload.referralSources, REFERRAL_SOURCES);
+  const referralOther = text(payload.referralOther ?? '', 0, 120);
   const relevantPerspective = text(payload.relevantPerspective ?? '', 0, 600, { multiline: true });
   const website = typeof payload.website === 'string' ? payload.website.trim() : null;
   const startedAt = Number(payload.startedAt);
 
-  if (!fullName) errors.fullName = 'Enter your full name.';
+  if (!firstName) errors.firstName = 'Enter your first name.';
+  if (!lastName) errors.lastName = 'Enter your last name.';
   if (!EMAIL.test(email) || email.length > 254 || INVALID_CONTROL.test(email) || HTML_MARKER.test(email)) {
     errors.email = 'Enter a valid email address.';
   } else if (PLUS_ADDRESSED.test(email)) {
@@ -93,6 +109,10 @@ export function validateRegistration(payload) {
   if (!role) errors.role = 'Enter your role or area of expertise.';
   if (!workingGroups) errors.workingGroups = 'Select at least one working group.';
   if (!contributions) errors.contributions = 'Select at least one way to contribute.';
+  if (!referralSources) errors.referralSources = 'Select where you heard about us.';
+  else if (referralSources.includes('other') ? !referralOther : referralOther !== '') {
+    errors.referralOther = referralSources.includes('other') ? 'Tell us where you heard about us.' : 'The submission is invalid.';
+  }
   if (relevantPerspective === null) errors.relevantPerspective = 'Use 600 characters or fewer and do not include HTML.';
   if (payload.acknowledgement !== true) errors.acknowledgement = 'Confirm that this is an expression of interest.';
   if (payload.privacyNoticeVersion !== PRIVACY_NOTICE_VERSION) {
@@ -105,12 +125,15 @@ export function validateRegistration(payload) {
   return {
     ok: true,
     value: {
-      fullName,
+      firstName,
+      lastName,
       email,
       organisation,
       role,
       workingGroups,
       contributions,
+      referralSources,
+      referralOther,
       relevantPerspective,
       acknowledgement: true,
       privacyNoticeVersion: PRIVACY_NOTICE_VERSION,

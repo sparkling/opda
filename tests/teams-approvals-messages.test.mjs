@@ -13,7 +13,7 @@ const APPROVER = '7eaf4499-4442-4133-b685-ca6197084f79';
 const NOW = Date.parse('2026-09-16T09:00:00Z');
 const id = '00000000-0000-4000-8000-000000000001';
 const serviceUrl = 'https://smba.trafficmanager.net/emea/';
-const registration = () => ({ registrationId: id, fullName: 'Synthetic Example Person', email: 'synthetic@example.test',
+const registration = () => ({ registrationId: id, firstName: 'Synthetic', lastName: 'Example Person', email: 'synthetic@example.test',
   organisation: 'Example organisation', role: 'Research', workingGroups: ['conveyancing', 'finance-and-banking'],
   relevantPerspective: '', createdAt: NOW - 10000, expiresAt: Math.floor(NOW / 1000) + 86400 });
 

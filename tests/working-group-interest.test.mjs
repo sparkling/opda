@@ -14,12 +14,14 @@ const NOW = Date.UTC(2026, 7, 13, 12);
 
 function payload(overrides = {}) {
   return {
-    fullName: 'Ada Lovelace',
+    firstName: 'Ada',
+    lastName: 'Lovelace',
     email: 'Ada@example.com',
     organisation: 'Example Property Ltd',
     role: 'Property data specialist',
     workingGroups: ['property-technology'],
     contributions: ['review-model-candidates'],
+    referralSources: ['linkedin'],
     relevantPerspective: 'I work with property integrations.',
     acknowledgement: true,
     privacyNoticeVersion: PRIVACY_NOTICE_VERSION,
@@ -58,7 +60,12 @@ test('registration validation normalises valid input and rejects unknown, HTML a
 
   for (const invalid of [
     payload({ unexpected: 'field' }),
-    payload({ fullName: '<b>Ada</b>' }),
+    payload({ firstName: '<b>Ada</b>' }),
+    payload({ lastName: '' }),
+    payload({ referralSources: [] }),
+    payload({ referralSources: ['other'] }),
+    payload({ referralSources: ['linkedin'], referralOther: 'unexpected detail' }),
+    payload({ referralSources: ['other'], referralOther: 'x'.repeat(121) }),
     payload({ workingGroups: ['unknown'] }),
     payload({ workingGroups: ['not-sure'] }),
     payload({ contributions: ['contribute-consumer-accessibility-regulatory-public-interest-experience'] }),
@@ -187,12 +194,15 @@ test('a valid expression of interest is stored once and acknowledged', async () 
   assert.equal(deps.calls.length, 1);
   assert.deepEqual(deps.calls[0], {
     registrationId: 'registration-id',
-    fullName: 'Ada Lovelace',
+    firstName: 'Ada',
+    lastName: 'Lovelace',
     email: 'ada@example.com',
     organisation: 'Example Property Ltd',
     role: 'Property data specialist',
     workingGroups: ['property-technology'],
     contributions: ['review-model-candidates'],
+    referralSources: ['linkedin'],
+    referralOther: '',
     relevantPerspective: 'I work with property integrations.',
     privacyNoticeVersion: PRIVACY_NOTICE_VERSION,
     createdAt: NOW,
@@ -224,12 +234,15 @@ test('a clock-skewed registration is acknowledged only after storage completes',
 test('DynamoDB input contains the registration and uses an idempotent generated key', () => {
   const request = registrationPutInput({
     registrationId: 'registration-id',
-    fullName: 'Ada Lovelace',
+    firstName: 'Ada',
+    lastName: 'Lovelace',
     email: 'ada@example.com',
     organisation: 'Example',
     role: 'Specialist',
     workingGroups: ['conveyancing'],
     contributions: ['review-model-candidates'],
+    referralSources: ['other'],
+    referralOther: 'A conference talk',
     relevantPerspective: '',
     privacyNoticeVersion: PRIVACY_NOTICE_VERSION,
     createdAt: NOW,
@@ -239,6 +252,9 @@ test('DynamoDB input contains the registration and uses an idempotent generated 
   assert.equal(request.Item.registrationId.S, 'registration-id');
   assert.equal(request.Item.status.S, 'received');
   assert.equal(request.Item.email.S, 'ada@example.com');
+  assert.equal(request.Item.firstName.S, 'Ada');
+  assert.deepEqual(request.Item.referralSources.L, [{ S: 'other' }]);
+  assert.equal(request.Item.referralOther.S, 'A conference talk');
   assert.equal(request.ConditionExpression, 'attribute_not_exists(registrationId)');
 });
 

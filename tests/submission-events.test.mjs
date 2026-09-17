@@ -52,7 +52,7 @@ test('join and newsletter stream records become versioned reference-only events'
   });
   assert.equal(newsletter.payload.eventType, 'newsletter-subscription.received.v1');
   assert.equal(refreshed.payload.eventType, 'newsletter-subscription.refreshed.v1');
-  assert.doesNotMatch(JSON.stringify([join, newsletter, refreshed]), /fullName|email|organisation|role|workingGroups|consent/u);
+  assert.doesNotMatch(JSON.stringify([join, newsletter, refreshed]), /firstName|lastName|email|organisation|role|workingGroups|referral|consent/u);
 });
 
 test('join updates and all removal records do not emit signup events', () => {

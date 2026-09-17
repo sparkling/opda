@@ -22,6 +22,8 @@ const CONTRIBUTIONS = new Set([
   'represent-public-interests',
 ]);
 
+const REFERRAL_SOURCES = new Set(['linkedin', 'interest-group', 'colleague', 'friend', 'search-engine', 'other']);
+
 const CONTROL_CHARACTERS = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u;
 // Matches the server rule in config/aws/working-group-interest/domain.mjs: an
 // approved domain is followed by a Microsoft invitation, and Entra will not invite
@@ -33,12 +35,15 @@ const SUBMISSION_TIMEOUT_MS = 15_000;
 type TextInput = HTMLInputElement | HTMLTextAreaElement;
 
 interface RegistrationPayload {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   organisation: string;
   role: string;
   workingGroups: string[];
   contributions: string[];
+  referralSources: string[];
+  referralOther?: string;
   relevantPerspective?: string;
   acknowledgement: true;
   privacyNoticeVersion: '2026-09-08';
@@ -78,7 +83,18 @@ function initWorkingGroupForm(): void {
   submitButton.disabled = false;
   if (availability) availability.hidden = true;
 
-  function selected(name: 'workingGroups' | 'contributions'): string[] {
+  const referralOtherField = form.querySelector<HTMLElement>('[data-referral-other]');
+  const referralOtherInput = form.querySelector<HTMLInputElement>('#referral-other');
+  function syncReferralOther(): void {
+    const other = selected('referralSources').includes('other');
+    if (referralOtherField) referralOtherField.hidden = !other;
+    if (referralOtherInput) referralOtherInput.required = other;
+  }
+  form.querySelectorAll<HTMLInputElement>('input[name="referralSources"]')
+    .forEach((input) => input.addEventListener('change', syncReferralOther));
+  syncReferralOther();
+
+  function selected(name: 'workingGroups' | 'contributions' | 'referralSources'): string[] {
     return [...form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`)]
       .map((input) => input.value);
   }
@@ -150,7 +166,8 @@ function initWorkingGroupForm(): void {
   function validate(): RegistrationPayload | null {
     clearErrors();
 
-    const fullName = validateText('#full-name', 'full-name-error', 'Full name', 2, 100);
+    const firstName = validateText('#first-name', 'first-name-error', 'First name', 1, 60);
+    const lastName = validateText('#last-name', 'last-name-error', 'Last name', 1, 60);
     const emailControl = form.querySelector<HTMLInputElement>('#email');
     const email = emailControl?.value.trim() ?? '';
     if (!email || email.length > 254 || !emailControl?.checkValidity()) {
@@ -178,6 +195,16 @@ function initWorkingGroupForm(): void {
       contributionControls.forEach((control) => control.setAttribute('aria-invalid', 'true'));
       addError(contributionControls[0] ?? null, 'contributions-error', 'Select at least one way you might contribute.');
     }
+
+    const referralSources = selected('referralSources');
+    const referralControls = [...form.querySelectorAll<HTMLInputElement>('input[name="referralSources"]')];
+    if (referralSources.length === 0 || referralSources.some((value) => !REFERRAL_SOURCES.has(value))) {
+      referralControls.forEach((control) => control.setAttribute('aria-invalid', 'true'));
+      addError(referralControls[0] ?? null, 'referral-sources-error', 'Select where you heard about us.');
+    }
+    const referralOther = referralSources.includes('other')
+      ? validateText('#referral-other', 'referral-other-error', 'Where you heard about us', 1, 120)
+      : '';
 
     const relevantPerspective = perspective?.value.trim() ?? '';
     if (
@@ -210,12 +237,15 @@ function initWorkingGroupForm(): void {
     if (!Number.isInteger(beganAt)) return null;
 
     const payload: RegistrationPayload = {
-      fullName,
+      firstName,
+      lastName,
       email,
       organisation,
       role,
       workingGroups,
       contributions,
+      referralSources,
+      ...(referralOther ? { referralOther } : {}),
       acknowledgement: true,
       privacyNoticeVersion: '2026-09-08',
       website,

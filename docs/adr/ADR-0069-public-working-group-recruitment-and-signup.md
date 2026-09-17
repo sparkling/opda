@@ -183,12 +183,14 @@ sequence:
 
 The form collects only:
 
-- full name;
+- first name and last name (a single "full name" field until 2026-09-17);
 - email address;
 - organisation;
 - role or area of expertise;
 - one or more of the six groups;
-- one or more contribution preferences; and
+- one or more contribution preferences;
+- where the person heard about OPDA (LinkedIn, interest group, colleague, friend, search
+  engine or other, with a short free-text detail for "other"; added 2026-09-17); and
 - an optional, length-limited note about relevant experience or perspective.
 
 It does not collect telephone numbers, addresses, social profiles, demographic or special-

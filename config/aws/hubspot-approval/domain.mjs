@@ -19,7 +19,7 @@ export function contactProfile(contact) {
     throw new Error('Contact email requires review');
   }
   return { contactId: contact.id, email,
-    name: String(p.opda_full_name || [p.firstname, p.lastname].filter(Boolean).join(' ') || email).slice(0, 256),
+    name: String([p.firstname, p.lastname].filter(Boolean).join(' ').trim() || email).slice(0, 256),
     profile: Object.fromEntries(CONTACT_PROPERTIES.map(key => [key, typeof p[key] === 'string' ? p[key] : null])),
   };
 }

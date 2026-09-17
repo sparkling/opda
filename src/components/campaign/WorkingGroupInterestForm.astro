@@ -1,5 +1,5 @@
 ---
-import type { ContributionOption, WorkingGroupContext } from '@/data/working-group-campaign';
+import { referralSourceOptions, type ContributionOption, type WorkingGroupContext } from '@/data/working-group-campaign';
 import CampaignSectionHeading from '@/components/campaign/CampaignSectionHeading.astro';
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
 }
 
 const { contexts, contributions, privacyNoticeVersion } = Astro.props;
+const referralSources = referralSourceOptions;
 ---
 <section id="register" class="wg-section wg-form-shell" aria-labelledby="register-title">
   <div class="wg-form-intro">
@@ -69,9 +70,14 @@ const { contexts, contributions, privacyNoticeVersion } = Astro.props;
         <p>Fields marked <span class="wg-required">*</span> are required.</p>
         <div class="wg-fields">
           <div class="wg-field">
-            <label for="full-name">Full name <span class="wg-required">*</span></label>
-            <input id="full-name" name="fullName" type="text" autocomplete="name" minlength="2" maxlength="100" aria-describedby="full-name-error" required />
-            <p id="full-name-error" class="wg-field-error"></p>
+            <label for="first-name">First name <span class="wg-required">*</span></label>
+            <input id="first-name" name="firstName" type="text" autocomplete="given-name" minlength="1" maxlength="60" aria-describedby="first-name-error" required />
+            <p id="first-name-error" class="wg-field-error"></p>
+          </div>
+          <div class="wg-field">
+            <label for="last-name">Last name <span class="wg-required">*</span></label>
+            <input id="last-name" name="lastName" type="text" autocomplete="family-name" minlength="1" maxlength="60" aria-describedby="last-name-error" required />
+            <p id="last-name-error" class="wg-field-error"></p>
           </div>
           <div class="wg-field">
             <label for="email">Email address <span class="wg-required">*</span></label>
@@ -118,6 +124,25 @@ const { contexts, contributions, privacyNoticeVersion } = Astro.props;
           ))}
         </div>
         <p id="contributions-error" class="wg-field-error"></p>
+      </fieldset>
+
+      <fieldset class="wg-form-section" data-group="referral-sources" aria-describedby="referral-sources-hint referral-sources-error">
+        <legend>Where did you hear about us?</legend>
+        <p id="referral-sources-hint">Select all that apply. <span class="wg-required">*</span></p>
+        <div class="wg-choice-grid">
+          {referralSources.map((source) => (
+            <label class="wg-choice">
+              <input id={`referral-source-${source.value}`} type="checkbox" name="referralSources" value={source.value} />
+              <span><strong>{source.label}</strong></span>
+            </label>
+          ))}
+        </div>
+        <p id="referral-sources-error" class="wg-field-error"></p>
+        <div class="wg-field" data-referral-other hidden>
+          <label for="referral-other">Tell us where</label>
+          <input id="referral-other" name="referralOther" type="text" maxlength="120" aria-describedby="referral-other-error" />
+          <p id="referral-other-error" class="wg-field-error"></p>
+        </div>
       </fieldset>
 
       <section class="wg-form-section" aria-labelledby="perspective-title">

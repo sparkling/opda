@@ -33,7 +33,7 @@ test('CRM lookup rejects duplicate, archived and secondary-email identity collis
   assert.throws(() => indexFinanceContacts([roster], [{ id: '2', properties: { email: 'different@example.test', hs_additional_emails: `first@example.test;${roster.email}` } }]));
 });
 test('historical Finance import writes only its approved domain and preserves interests/profile', () => {
-  const contact = { id: '1', properties: { email: roster.email, opda_full_name: 'Existing Name',
+  const contact = { id: '1', properties: { email: roster.email, firstname: 'Existing', lastname: 'Name',
     opda_review_status: 'approved', opda_requested_working_groups: 'conveyancing',
     opda_review_conveyancing: 'approved', opda_enrolment_status: 'complete' } };
   const patch = financeProperties(roster, contact);
@@ -79,7 +79,7 @@ test('operator tooling contains no mail sender or Microsoft write capability', (
 function seedFixture() {
   const now = Date.parse('2026-09-10T12:00:00Z'), cutover = now - 60000;
   const observed = value => [{ value, timestamp: new Date(now - 5000).toISOString(), sourceType: 'INTEGRATION', sourceId: 'integration:123' }];
-  const properties = { email: roster.email, opda_full_name: roster.display_name, opda_requested_working_groups: 'finance-and-banking;conveyancing',
+  const properties = { email: roster.email, firstname: roster.display_name, opda_requested_working_groups: 'finance-and-banking;conveyancing',
     opda_review_status: 'approved', opda_review_finance_and_banking: 'approved' };
   const contact = { id: '123', properties, propertiesWithHistory: Object.fromEntries(Object.entries(properties).map(([key, value]) => [key, observed(value)])) };
   const other = { status: 'approved', version: 4, decisionId: 'a'.repeat(64), decisionAt: now - 10000,

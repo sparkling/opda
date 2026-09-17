@@ -4,6 +4,7 @@ const optionValues = (name) => PARTICIPATION_PROPERTIES.find((property) => prope
   .options.map((option) => option.value);
 const GROUPS = optionValues('opda_requested_working_groups');
 const CONTRIBUTIONS = optionValues('opda_contribution_preferences');
+const REFERRALS = optionValues('opda_referral_sources');
 const INVALID_CONTROL = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu;
 
@@ -40,13 +41,18 @@ function validateSource(record, now) {
   const email = text(record.email, 'email', 3, 254).toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(email)) invalid('email');
   const requested = selection(record.workingGroups, 'workingGroups', GROUPS);
+  const referrals = selection(record.referralSources, 'referralSources', REFERRALS);
   return {
     email, company: text(record.organisation, 'organisation', 2, 150),
-    opda_full_name: text(record.fullName, 'fullName', 2, 100),
+    firstname: text(record.firstName, 'firstName', 1, 60),
+    lastname: text(record.lastName, 'lastName', 1, 60),
     opda_role_or_expertise: text(record.role, 'role', 2, 120),
     opda_requested_working_groups: requested,
     opda_contribution_preferences: selection(record.contributions, 'contributions', CONTRIBUTIONS),
     opda_relevant_perspective: text(record.relevantPerspective, 'relevantPerspective', 0, 600, true),
+    opda_referral_sources: referrals,
+    // The free text exists only alongside "Other"; the intake enforces the same rule.
+    ...(referrals.split(';').includes('other') ? { opda_referral_other: text(record.referralOther, 'referralOther', 1, 120) } : {}),
     opda_enrolment_status: 'not_invited', opda_active: 'false',
     // Mark each requested domain as Requested so staff see what awaits a decision.
     // This is intake evidence: the approval worker treats it as no decision.

@@ -116,13 +116,14 @@ properties. An initially created contact is an unverified applicant, not an appr
 
 | Join input / record | HubSpot destination | Type and ownership |
 |---|---|---|
-| `fullName` | Existing `opda_full_name` | `string` / `text`; preserve the complete name without guessing a first/last-name split. Staff may maintain it after review. |
+| `firstName`, `lastName` | Standard `firstname`, `lastname` | `string` / `text`. Until 2026-09-17 the form asked for one full name kept verbatim in a custom `opda_full_name`; HubSpot's own Name, greetings and name search read `firstname`/`lastname`, so form-created contacts showed as their email address. The form now asks for the two names and the custom property is archived. |
 | `email` | Existing `email` | Contact address; changes are not changes to the verified Cognito binding. |
 | `organisation` | Existing `company` | Contact-level company name; do not create/merge Company records by name alone. |
 | `role` | Existing `opda_role_or_expertise` | `string` / `text`; broader than Job title, preserving the form's professional-role/expertise meaning; never an application permission. |
 | `workingGroups` | `opda_requested_working_groups` | `enumeration` / `checkbox`; requested interests only. Each domain needs its own trusted approval under ADR-0085; this field never grants access. |
 | `contributions` | Existing `opda_contribution_preferences` | `enumeration` / `checkbox`; all six current choices. |
 | `relevantPerspective` | Existing `opda_relevant_perspective` | `string` / `textarea`; retain the 600-character limit and existing privacy warning. |
+| `referralSources`, `referralOther` | `opda_referral_sources`, `opda_referral_other` (added 2026-09-17) | `enumeration` / `checkbox` (LinkedIn, interest group, colleague, friend, search engine, other) and `string` / `text` (≤120 characters, only with "other"); how the applicant heard about OPDA. Never an approval input. |
 | Account-wide review | *(removed 2026-09-15)* | `opda_review_status` was retired: the six domain dropdowns are the only approval and revocation surface. Staff cannot veto every group with one field; each group is approved or withdrawn in its own dropdown. Archive the CRM property; a stale value left on a contact has no effect. |
 | Individual domain review | Six configured `opda_review_*` fields in ADR-0085 | `enumeration` / `select`; Requested (`received`), Under review, Approved, Rejected, Withdrawn. The signup sync marks each requested domain Requested (2026-09-15); that integration-owned value is intake evidence, never a decision or a hold. Once v2 is activated, a trusted manual approval grants only that domain; clearing it removes that domain's approval. |
 | Account setup | Existing `opda_enrolment_status` | `enumeration` / `select`; AWS-owned snapshot: `not_invited`, `invited`, `complete`, `expired`. |
