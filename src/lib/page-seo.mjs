@@ -2,6 +2,9 @@ import { parseFragment } from 'parse5';
 
 export const SITE_NAME = 'Open Property Data Association';
 export const SITE_URL = 'https://opda.org.uk/';
+/** Brand card shared by every page without artwork of its own (scripts/render-social-preview.mjs). */
+export const SITE_SOCIAL_IMAGE = '/images/social/opda-site-preview.png';
+const SITE_SOCIAL_IMAGE_ALT = 'Open Property Data Association. A shared language for property data. Smart Property Data Trust Framework.';
 const DESCRIPTION_LIMIT = 240;
 const PRESENTATION_PARAMETERS = /^(?:config|theme|utm_.+|gclid|fbclid|msclkid)$/iu;
 const OMIT_TAGS = new Set(['script', 'style', 'template', 'noscript', 'nav', 'footer', 'form', 'button', 'svg', 'aside', 'dialog']);
@@ -132,7 +135,8 @@ export function createPageMetadata({ title, description, contentHtml = '', url, 
   // A resource viewer's query selects the document. Do not claim all viewer
   // requests are equivalent to the empty /resource shell in static HTML.
   const canonicalUrl = canonical === null || utility ? undefined : canonicalPageUrl(canonical ?? url, site);
-  const image = publicImage(socialImage ?? content.image?.src, site);
+  const ownImage = socialImage ?? content.image?.src;
+  const image = publicImage(ownImage ?? SITE_SOCIAL_IMAGE, site);
   const directives = clean(robots).toLowerCase() || (utility ? 'noindex,follow' : undefined);
   const structuredData = [];
   if (!directives?.split(/[\s,]+/u).some((token) => ['noindex', 'none'].includes(token))) {
@@ -158,7 +162,8 @@ export function createPageMetadata({ title, description, contentHtml = '', url, 
     }
   }
   return { title: pageTitle, description: summary, canonical: canonicalUrl, image,
-    imageAlt: socialImage ? undefined : content.image?.alt, robots: directives, structuredData };
+    imageAlt: socialImage ? undefined : content.image?.alt ?? (ownImage ? undefined : SITE_SOCIAL_IMAGE_ALT),
+    robots: directives, structuredData };
 }
 
 /** JSON inside HTML raw-text scripts must not be able to terminate the script. */

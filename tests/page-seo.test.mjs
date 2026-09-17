@@ -70,11 +70,14 @@ test('breadcrumbs use supplied real navigation hierarchy, not URL segment labels
   assert.deepEqual(navigationBreadcrumbs({ pathname: '/unknown', title: 'Unknown' }), []);
 });
 
-test('social cards use artwork from their own placement and a public URL', () => {
+test('social cards use artwork from their own placement, else the site card, at a public URL', () => {
   const result = createPageMetadata({ title: 'Meaning', url: '/meaning', contentHtml: '<img data-campaign-image-light="/images/meaning-light.webp" data-campaign-image-dark="/images/meaning-dark.webp" alt="A specific comparison of meanings">' });
   assert.equal(result.image, 'https://opda.org.uk/images/meaning-light.webp');
   assert.equal(result.imageAlt, 'A specific comparison of meanings');
-  assert.equal(createPageMetadata({ title: 'Nothing', url: '/nothing' }).image, undefined);
+  const fallback = createPageMetadata({ title: 'Nothing', url: '/nothing' });
+  assert.equal(fallback.image, 'https://opda.org.uk/images/social/opda-site-preview.png');
+  assert.match(fallback.imageAlt, /Open Property Data Association/u);
+  assert.ok(existsSync(new URL('../public/images/social/opda-site-preview.png', import.meta.url)));
 });
 
 test('JSON-LD escapes script terminators while retaining exact parsed data', () => {
