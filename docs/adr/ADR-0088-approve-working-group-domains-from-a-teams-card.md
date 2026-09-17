@@ -203,9 +203,16 @@ checked (commit `dc83b267` raised the cap and added a stage-only failure trace).
 the installation event was accepted and recorded `serviceUrl =
 https://smba.trafficmanager.net/uk/<tenant>/` — the tenant's own region, not the EMEA default —
 which is why the notifier posts from the recorded value and the default is not a production
-path. An unauthenticated request is refused (`400 Request rejected`). Still outstanding: a live
-card for a real signup, a refused click by a non-member, and one approval whose three audit
-records agree.
+path. An unauthenticated request is refused (`400 Request rejected`).
+
+2026-09-17: a real signup posted its card 45 s after the form submit; a click on Approve
+reached the endpoint in 6 s, wrote the `TEAMS#REVIEW` record and the CRM mirror in 10 s, and
+the approval worker created the provisioning operation 16 s after the click, with the card
+updated in place ("Approved by …"). The onboarding worker then refused that operation for 46
+minutes: it validated the audit actor as a HubSpot user id, and a Teams decision records
+`teams:<Entra object id>` (commit `c849919b` admits the Teams shape and logs a refused
+record's class instead of a bare retry count). Still outstanding: a refused click by a
+non-member, and a Teams-approved applicant walked through to Teams membership.
 
 ## More Information
 
