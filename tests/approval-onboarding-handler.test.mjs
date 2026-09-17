@@ -132,8 +132,14 @@ test('one failure retries only its record and logs aggregate static signals with
     return { status: 'attention', reason: 'synthetic@example.test', operationId };
   } } });
   assert.deepEqual(await handler(invocation(message('first'), message('second'))), { batchItemFailures: [{ itemIdentifier: 'first' }] });
-  assert.deepEqual(logs, [{ event: 'onboarding_attention', count: 1 }, { event: 'onboarding_batch_retry', count: 1 }]);
+  assert.deepEqual(logs, [{ event: 'onboarding_record_failed', error: 'Error', reason: 'unclassified' },
+    { event: 'onboarding_attention', count: 1 }, { event: 'onboarding_batch_retry', count: 1 }]);
   assert.doesNotMatch(JSON.stringify(logs), /synthetic|ticket|first|second|aaaa/);
+  const named = [];
+  const refusing = createHandler({ queueArn, log: entry => named.push(entry),
+    worker: { process: async () => { throw new TypeError('Invalid onboarding record'); } } });
+  await refusing(invocation(message('first')));
+  assert.deepEqual(named[0], { event: 'onboarding_record_failed', error: 'TypeError', reason: 'Invalid onboarding record' });
 });
 
 test('wrong source, queue, region and malformed or expanded messages never reach a worker', async () => {

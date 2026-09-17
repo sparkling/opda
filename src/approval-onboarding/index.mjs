@@ -213,7 +213,15 @@ export function createHandler({ worker, queueArn, env = process.env, changeVisib
           // After three short retries acknowledge this hint. Durable pending
           // state remains available to the normal outbox repair, not the DLQ.
         }
-      } catch { failures.push({ itemIdentifier: record.messageId }); }
+      } catch (error) {
+        failures.push({ itemIdentifier: record.messageId });
+        // Only the store's fixed, personal-data-free messages are logged; provider errors are
+        // reported by class alone, so a silent retry loop still names its cause (2026-09-17: a
+        // Teams actor was refused as an invalid onboarding record for 46 minutes).
+        const message = String(error?.message ?? '');
+        try { log({ event: 'onboarding_record_failed', error: error?.name ?? 'Error',
+          reason: /^(?:Invalid onboarding|Onboarding )/.test(message) ? message.slice(0, 60) : 'unclassified' }); } catch {}
+      }
     }
     const retries = [];
     // Set visibility only after effects and leases have settled for the batch.

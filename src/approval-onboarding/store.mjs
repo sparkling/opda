@@ -82,6 +82,8 @@ function validOperation(op) {
       : [op.schemaVersion, op.participantId, op.decisionId, op.accessVersion]))
     && Object.keys(op).every(key => [...keysOf(op), 'status', 'stage', 'reason'].includes(key)));
 }
+const ACTOR = /^(?:[1-9][0-9]{0,19}|teams:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i;
+
 function validAudit(op, audit) {
   const snap = audit?.onboarding;
   requireValue(audit?.pk === op.auditKey && audit.participantId === op.participantId
@@ -93,7 +95,8 @@ function validAudit(op, audit) {
     && (op.schemaVersion !== 3 || snap.noticeKind === op.noticeKind)
     && (snap.notifyWithdrawal === undefined || op.schemaVersion === 2 && op.action === 'revoke' && snap.notifyWithdrawal === true)
     && Number.isSafeInteger(snap.decisionAt) && snap.decisionAt >= 0 && snap.decisionAt <= audit.at + 60000
-    && (snap.actor === null || typeof snap.actor === 'string' && /^[1-9][0-9]{0,19}$/.test(snap.actor))
+    // A HubSpot user id, or a Teams approver's Entra object id from ADR-0088.
+    && (snap.actor === null || typeof snap.actor === 'string' && ACTOR.test(snap.actor))
     && snap.actor === audit.actor && Array.isArray(snap.groups) && snap.groups.length <= APPROVAL_GROUP_IDS.length
     && isDeepStrictEqual(snap.groups, APPROVAL_GROUP_IDS.filter(group => snap.groups.includes(group)))
     && snap.groupDigest === hash(JSON.stringify(snap.groups))

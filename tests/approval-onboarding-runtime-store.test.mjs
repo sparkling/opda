@@ -239,6 +239,18 @@ test('immutable identity, operation digest and audit snapshot corruption fail cl
   }
 });
 
+test('a Teams approver (ADR-0088) is a valid actor; any other prefix or shape is not', async () => {
+  const teams = 'teams:7eaf4499-4442-4133-b685-ca6197084f79';
+  const f = fixture();
+  for (const row of [f.audit, f.binding, f.account]) f.seed({ ...row, actor: teams, onboarding: { ...row.onboarding, actor: teams } });
+  assert.ok(await f.store.claim(f.operation.operationId));
+  for (const actor of ['teams:not-a-guid', 'slack:7eaf4499-4442-4133-b685-ca6197084f79', 'teams:', '0']) {
+    const g = fixture();
+    for (const row of [g.audit, g.binding, g.account]) g.seed({ ...row, actor, onboarding: { ...row.onboarding, actor } });
+    await assert.rejects(g.store.claim(g.operation.operationId), /Invalid onboarding/);
+  }
+});
+
 test('audit timestamps match the approval writer bounded future-clock tolerance', async () => {
   for (const offset of [60000, 60001]) {
     const f = fixture(), onboarding = { ...f.audit.onboarding, decisionAt: instant + offset };
