@@ -5,7 +5,7 @@ import { getWorkspaceRecord } from '@/lib/spdtf-workspace.mjs';
 const rows = WORKING_GROUPS.map((group) => ({ group, workspace: getWorkspaceRecord(group.slug) }));
 ---
 
-<Layout title="SPDTF candidate register" description="Canonical register of context-owned SPDTF candidates and their authority status.">
+<Layout title="SPDTF candidate register" description="Canonical register of context-owned SPDTF candidates and their authority status." reserveTableOfContentsRail>
   <h1>SPDTF candidate register</h1>
   <p class="lead">A candidate appears here only with a convened group, accountable decision owner, evidence closure, competency questions, coverage receipt, semantic-package version and immutable diff.</p>
   <table>
