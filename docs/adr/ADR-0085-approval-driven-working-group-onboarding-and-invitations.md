@@ -292,8 +292,13 @@ must not falsely claim an AI agent wrote or reviewed the invitation.
 Withdrawing a domain removes only that person's approval, owned Microsoft grants and unsent
 mail for that domain. Other approved domains retain access and pending invitations. Website
 eligibility and its session version remain unchanged while another approved domain remains.
-Historical website-only import approval cannot bypass this rule. Loss of the last domain, or a
-global hold, removes website eligibility, invalidates sessions and disables/signs out Cognito.
+Historical website-only import approval cannot bypass this rule by itself. The one exception is
+the explicit operator website allowlist (`websiteAllowlist` on the account, set with
+`scripts/website-allowlist.mjs` and recorded with a reason and actor): it keeps website sign-in
+without any working-group workspace, and every hold still applies. On 2026-09-18 the four
+legacy Auth0 allowlist accounts without a working group were granted it (operator decision).
+Otherwise loss of the last domain, or a global hold, removes website eligibility, invalidates
+sessions and disables/signs out Cognito.
 The open-tab check updates the UI, not the security boundary; delivered data cannot be recalled.
 
 Withdrawal also cancels unsent onboarding messages and queues removal of grants recorded as

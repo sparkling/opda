@@ -53,6 +53,15 @@ test('domain-policy login requires a real approved group even before legacy proj
   assert.equal(approvedParticipant(row, identity, NOW), false);
 });
 
+test('an explicit website allowlist keeps sign-in for an account with no approved group, but never lifts a hold', () => {
+  const identity = { sub: SUB, email: 'member@example.test' };
+  const row = participant({ approvedDomains: [], domainApprovals: {}, websiteAllowlist: true });
+  assert.equal(approvedParticipant(row, identity, NOW), true);
+  for (const hold of [{ suspended: true }, { active: false }, { reviewStatus: 'under_review' }, { expiresAt: NOW - 1 }, { websiteAllowlist: 'yes' }]) {
+    assert.equal(approvedParticipant(participant({ approvedDomains: [], domainApprovals: {}, websiteAllowlist: true, ...hold }), identity, NOW), false, JSON.stringify(hold));
+  }
+});
+
 function event(path, { query = {}, cookies = [], method = 'GET' } = {}) {
   return { rawPath: path, queryStringParameters: query, cookies, requestContext: { http: { method } } };
 }

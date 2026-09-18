@@ -81,7 +81,8 @@ export function planDomainApprovals({ map, row, decisions = [], holdReason, now,
     }
   }
   const approvedDomains = APPROVED_GROUPS.filter(id => domains[id]?.status === 'approved');
-  const active = !globalReason && approvedDomains.length > 0;
+  // An operator website allowlist keeps the account active with no domain; it grants no workspace.
+  const active = !globalReason && (approvedDomains.length > 0 || row.websiteAllowlist === true);
   // A change to one domain does not sign the person out of their remaining approved groups.
   // An external hold can already make ordinaryAccess false while the durable
   // active flag (and Cognito) is still true. Its disable must remain retryable.

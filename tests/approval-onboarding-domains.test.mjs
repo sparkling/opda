@@ -96,6 +96,20 @@ test('an account hold set by the worker overrides per-domain approvals and needs
   assert.equal(run(state, [decision('conveyancing')]).fields.active, false, 'a pre-hold approval cannot lift the hold');
   assert.equal(run(state, [decision('conveyancing', 'approved', now + 10)]).fields.active, true);
 });
+test('an allowlisted account keeps website access when its last domain goes, without invitations or a sign-out', () => {
+  const input = base(); input.row.websiteAllowlist = true;
+  const none = run(input, []);
+  assert.equal(none.fields.active, true); assert.equal(none.fields.reviewStatus, 'approved');
+  assert.equal(none.fields.suspended, false); assert.equal(none.fields.accessVersion, 2, 'first activation bumps once');
+  assert.equal(none.operations.length, 0);
+  const state = next(input, none), approved = run(state, [decision('conveyancing')]);
+  assert.equal(approved.fields.accessVersion, 2); assert.equal(approved.operations.length, 1);
+  const withdrawn = run(next(state, approved), [decision('conveyancing', 'withdrawn', now)]);
+  assert.equal(withdrawn.fields.active, true); assert.equal(withdrawn.fields.accessVersion, 2, 'no session churn');
+  assert.deepEqual(withdrawn.fields.approvedDomains, []); assert.equal(withdrawn.operations[0].action, 'revoke');
+  assert.equal(run({ ...input, row: { ...input.row, suspended: true, suspensionSource: 'external' } }, []).fields.active, false, 'a hold still wins');
+});
+
 test('historical website-only import loses eligibility without receiving domain invitations', () => {
   const input = base(); input.map.imported = true;
   Object.assign(input.row, { active: true, reviewStatus: 'approved', approvalId: APPROVAL.id });

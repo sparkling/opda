@@ -105,9 +105,12 @@ export function approvedParticipant(participant, identity, now) {
     && participant.reviewStatus === 'approved' && participant.suspended === false
     && participant.erasedAt === undefined && participant.deletedAt === undefined
     && participant.active === true
-    && Array.isArray(participant.approvedDomains) && participant.approvedDomains.some(domainId =>
-      typeof domainId === 'string' && Object.hasOwn(participant.domainApprovals ?? {}, domainId)
-        && participant.domainApprovals[domainId]?.status === 'approved')
+    // Website sign-in needs an approved working group, or an explicit operator allowlist
+    // (website only, no workspace). Holds above and below apply to both.
+    && (participant.websiteAllowlist === true
+      || Array.isArray(participant.approvedDomains) && participant.approvedDomains.some(domainId =>
+        typeof domainId === 'string' && Object.hasOwn(participant.domainApprovals ?? {}, domainId)
+          && participant.domainApprovals[domainId]?.status === 'approved'))
     && Number.isSafeInteger(participant.accessVersion) && participant.accessVersion >= 0
     && (participant.expiresAt === undefined || (Number.isSafeInteger(participant.expiresAt) && participant.expiresAt > now))
     && ['not_invited', 'complete'].includes(participant.enrolmentStatus));

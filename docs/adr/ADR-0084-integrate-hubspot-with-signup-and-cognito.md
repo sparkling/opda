@@ -281,7 +281,8 @@ source expiry/deletion and suppressions before initial activation. Contact delet
 or identity ambiguity suspends an existing mapping; restores and merges cannot
 transfer identity or replay an old approval. Independent AWS security suspensions,
 erasure and expiry cannot be cleared by CRM approval. Retain frozen import evidence, but require
-an actual approved domain for CRM-managed website access; never invent grants or invitations. ADR-0085
+an actual approved domain for CRM-managed website access (or the operator website allowlist of
+ADR-0085 §5, which is not CRM-managed); never invent grants or invitations. ADR-0085
 permits denial-only migration from matched prior approved scopes while legacy effects remain
 unresolved: withdrawals continue, new grants await explicit completion, and no mail is replayed.
 The six non-CRM legacy approvals are not revoked merely because they are absent from HubSpot.
