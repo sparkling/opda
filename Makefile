@@ -157,7 +157,7 @@ test-a11y: node_modules	## Axe WCAG 2.2 AA gate over representative routes
 	npm run test:a11y
 
 .PHONY: test-visual
-test-visual: node_modules	## Screenshot visual-drift gate (use --update-snapshots locally only)
+test-visual: node_modules	## Screenshot visual-drift gate (Linux baselines; skips itself on other platforms)
 	npm run test:visual
 
 .PHONY: check-routes

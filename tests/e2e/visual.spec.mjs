@@ -26,6 +26,8 @@ async function visitWarm(page, path) {
   await visit(page, path);
 }
 
+test.skip(process.platform !== 'linux', 'Visual baselines are rendered on Linux; run this gate in CI or the Playwright Linux image.');
+
 for (const [name, path] of routeFamilies) {
   test(`${name} desktop light visual contract`, async ({ page }) => {
     const clean = watchRuntime(page);
@@ -35,7 +37,6 @@ for (const [name, path] of routeFamilies) {
       animations: 'disabled',
       fullPage: name !== 'presentation',
       mask: [page.locator('#comments'), page.locator('[data-dynamic]')],
-      maxDiffPixelRatio: name === 'diagram' ? 0.02 : undefined,
     });
     clean();
   });
@@ -55,7 +56,6 @@ for (const [name, path] of routeFamilies) {
       fullPage: name !== 'presentation',
       ...(name !== 'presentation' ? { clip: { x: 0, y: 0, width: 390, height } } : {}),
       mask: [page.locator('#comments'), page.locator('[data-dynamic]')],
-      maxDiffPixelRatio: name === 'diagram' ? 0.02 : undefined,
     });
     clean();
   });
