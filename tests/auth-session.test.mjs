@@ -120,9 +120,10 @@ function handlerWith(options = {}) {
       }),
     };
   };
+  const logs = [];
   const handler = createHandler({
     config: { ...CONFIG, ...options.config }, fetch, store, now: () => state.now * 1000,
-    randomBytes: () => Buffer.alloc(32, ++randomCounter),
+    randomBytes: () => Buffer.alloc(32, ++randomCounter), log: (entry) => logs.push(entry),
   });
   async function login(returnPath = '/programme?view=current') {
     const result = await handler(event('/_auth/login', { query: { return: returnPath } }));
@@ -137,7 +138,7 @@ function handlerWith(options = {}) {
       cookies: started.cookies,
     }));
   }
-  return { handler, requests, operations, sessions, state, login, callback };
+  return { handler, requests, operations, sessions, state, login, callback, logs };
 }
 
 test('return targets are constrained to local absolute paths', () => {
@@ -404,6 +405,35 @@ test('withdrawal signs out every existing session and reapproval never revives o
   const fresh = await controls.callback();
   assert.equal(fresh.statusCode, 302);
   assert.equal((await controls.handler(event('/_auth/me', { cookies: fresh.cookies }))).statusCode, 200);
+});
+
+test('callback failures are readable pages that say why and offer a fresh sign-in, never JSON or provider detail', async () => {
+  const cases = [
+    { name: 'stale link', run: async (controls) => controls.handler(event('/_auth/callback', { query: { code: 'code', state: 'A'.repeat(43) } })),
+      status: 400, outcome: 'invalid-transaction', text: /expired|used|Sign in again/u },
+    { name: 'no approved group', options: { participant: { approvedDomains: [], domainApprovals: {} } },
+      run: (controls) => controls.callback(), status: 401, outcome: 'not-approved', text: /approved working group/u },
+    { name: 'exchange refused', options: { tokenFailure: true }, run: (controls) => controls.callback(),
+      status: 401, outcome: 'exchange-failed', text: /could not be completed/u },
+    { name: 'provider down', options: { fetchFailure: true }, run: (controls) => controls.callback(),
+      status: 503, outcome: 'unavailable', text: /temporarily unavailable/u },
+  ];
+  for (const item of cases) {
+    const controls = handlerWith(item.options), response = await item.run(controls);
+    assert.equal(response.statusCode, item.status, item.name);
+    assert.match(response.headers['content-type'], /^text\/html/u, item.name);
+    assert.equal(response.headers['cache-control'], 'no-store', item.name);
+    assert.match(response.headers['content-security-policy'], /default-src 'none'/u, item.name);
+    assert.match(response.body, item.text, item.name);
+    assert.match(response.body, /href="\/_auth\/login\?return=%2F/u, item.name);
+    assert.doesNotMatch(response.body, /\{"error"|id_token|access_token|identity provider unavailable/u, item.name);
+    assert.equal(cookieValue(response.cookies, '__Host-opda_session'), undefined, item.name);
+    assert.deepEqual(controls.logs.at(-1), { event: 'auth_callback', outcome: item.outcome, status: item.status }, item.name);
+    assert.doesNotMatch(JSON.stringify(controls.logs), /@|code|state=|verifier/u, item.name);
+  }
+  const controls = handlerWith();
+  assert.equal((await controls.callback()).statusCode, 302);
+  assert.deepEqual(controls.logs.at(-1), { event: 'auth_callback', outcome: 'signed-in', status: 302 });
 });
 
 test('me never accepts Auth0 token cookies or unknown/malformed opaque tokens', async () => {

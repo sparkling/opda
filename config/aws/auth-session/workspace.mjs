@@ -110,6 +110,14 @@ async function defaultInvoke(payload) {
   return value;
 }
 
+const PAGE_STYLE = ':root{color-scheme:light dark;--bg:#fff;--fg:#141413;--muted:#555;--link:#a9583e}*{box-sizing:border-box}body{margin:0;padding:clamp(24px,6vw,72px);background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif}main{max-width:680px;margin:auto}a,button{font:inherit}a{color:var(--link)}button{padding:.65rem 1rem;cursor:pointer}li{margin:.8rem 0}@media(prefers-color-scheme:dark){:root{--bg:#141413;--fg:#f5f1e8;--muted:#c9c1b4;--link:#e5b632}}';
+
+/** A sign-in outcome the person can act on: what happened, in plain words, and a fresh start. */
+export function renderSignInNotice({ title, message, returnPath = '/', help = '' }) {
+  const retry = `/_auth/login?return=${encodeURIComponent(returnPath)}`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="same-origin"><title>${escapeHtml(title)}</title><style>${PAGE_STYLE}</style></head><body><main><h1>${escapeHtml(title)}</h1><p role="status">${escapeHtml(message)}</p>${help ? `<p>${help}</p>` : ''}<p><a href="${escapeHtml(retry)}">Sign in again</a> or <a href="/">return to the site</a>.</p></main></body></html>`;
+}
+
 export function renderWorkspacePage({ groups, mode = 'initial', phase, selectedGroup, message = '', nonce = randomBytes(16).toString('base64url') }) {
   const ids = groups.map(validateGroupId);
   const list = ids.map(id => `<li><a data-group="${id}" href="/_auth/workspace?group=${encodeURIComponent(id)}">${escapeHtml(WORKSPACE_GROUPS[id].name)}</a></li>`).join('');
@@ -122,7 +130,7 @@ export function renderWorkspacePage({ groups, mode = 'initial', phase, selectedG
     ? `<form method="post" action="/_auth/workspace"><input type="hidden" name="phase" value="${formPhase}"><input type="hidden" name="group" value="${safeSelected}"><button type="submit">${mode === 'retry' ? 'Try again' : mode === 'return' ? 'Continue' : 'Open selected working group'}</button></form>`
     : mode === 'return' ? '<form hidden method="post" action="/_auth/workspace"><input type="hidden" name="phase" value="return"><input type="hidden" name="group" value=""></form>' : '';
   const notice = message ? `<p role="status">${escapeHtml(message)}</p>` : '';
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="same-origin"><title>${escapeHtml(title)}</title><style>:root{color-scheme:light dark;--bg:#fff;--fg:#141413;--muted:#555;--link:#a9583e}*{box-sizing:border-box}body{margin:0;padding:clamp(24px,6vw,72px);background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif}main{max-width:680px;margin:auto}a,button{font:inherit}a{color:var(--link)}button{padding:.65rem 1rem;cursor:pointer}li{margin:.8rem 0}@media(prefers-color-scheme:dark){:root{--bg:#141413;--fg:#f5f1e8;--muted:#c9c1b4;--link:#e5b632}}</style></head><body><main><h1>${escapeHtml(title)}</h1>${notice}<p>Choose an approved working group. OPDA checks current access before opening Teams.</p><ul>${list}</ul>${form}</main><script nonce="${escapeHtml(nonce)}">${script}</script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="same-origin"><title>${escapeHtml(title)}</title><style>${PAGE_STYLE}</style></head><body><main><h1>${escapeHtml(title)}</h1>${notice}<p>Choose an approved working group. OPDA checks current access before opening Teams.</p><ul>${list}</ul>${form}</main><script nonce="${escapeHtml(nonce)}">${script}</script></body></html>`;
 }
 
 // Chromium checks form-action on EVERY redirect of a form submission, so the list must cover the

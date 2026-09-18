@@ -5,7 +5,7 @@ import {
 import { createStore, sessionKey } from './store.mjs';
 import { readApprovedSession, validSessionToken } from './session.mjs';
 import {
-  OPDA_ORIGIN, approvedWorkspaceGroups, createWorkspaceRuntime, renderWorkspacePage,
+  OPDA_ORIGIN, approvedWorkspaceGroups, createWorkspaceRuntime, renderSignInNotice, renderWorkspacePage,
   validateGroupId, validateAccessResult, workspaceCsp,
 } from './workspace.mjs';
 
@@ -164,10 +164,32 @@ function parseWorkspaceBody(event) {
   return values;
 }
 
+// Every callback ends in exactly one of these. The log carries the outcome and nothing from the
+// request: no code, state, email or provider message.
+const SIGN_IN_NOTICES = Object.freeze({
+  'invalid-transaction': { status: 400, title: 'This sign-in link has expired',
+    message: 'A sign-in link works once and for five minutes. Start the sign-in again from the page you were on.' },
+  'exchange-failed': { status: 401, title: 'Sign-in could not be completed', message: 'The identity provider did not confirm the sign-in. Please try again.' },
+  'identity-rejected': { status: 401, title: 'Sign-in could not be completed', message: 'The identity provider returned an account OPDA could not verify. Please try again.' },
+  'not-approved': { status: 401, title: 'This account has no approved working group',
+    message: 'Website sign-in is for approved working-group participants, using the e-mail address the approval was sent to.',
+    help: 'Applied recently? Access opens once a working group approves your application. Not applied yet? <a href="/join">Join a working group</a>.' },
+  'session-conflict': { status: 401, title: 'Please sign in again', message: 'Your access changed while you were signing in.' },
+  unavailable: { status: 503, title: 'Sign-in is temporarily unavailable', message: 'Please try again in a few minutes.' },
+});
+
 export function createHandler(overrides = {}) {
   const fetchImpl = overrides.fetch ?? globalThis.fetch;
   const now = overrides.now ?? (() => Date.now());
   const randomBytes = overrides.randomBytes ?? cryptoRandomBytes;
+  const log = overrides.log ?? ((entry) => console.log(JSON.stringify(entry)));
+  function signInFailed(outcome, state, returnPath) {
+    const notice = SIGN_IN_NOTICES[outcome];
+    log({ event: 'auth_callback', outcome, status: notice.status });
+    return response(notice.status, renderSignInNotice({ ...notice, returnPath: safeReturnPath(returnPath) }), {
+      'content-type': 'text/html; charset=utf-8', 'content-security-policy': workspaceCsp(base64url(randomBytes(16))),
+    }, clearTransientCookie(state));
+  }
   let config, store, verifyIdToken, workspaceRuntime;
   function initialise() {
     config ??= normaliseConfig(overrides.config ?? environmentConfig());
@@ -201,7 +223,7 @@ export function createHandler(overrides = {}) {
     const stateValues = stateName ? transientCookiePairs(event).filter(([name]) => name === stateName) : [];
     const transaction = stateValues.length === 1 ? readTransientCookie(cookies, state, Math.floor(now() / 1000)) : null;
     if (typeof query.code !== 'string' || query.code.length < 1 || query.code.length > 4096 || !transaction) {
-      return json(400, { error: 'The sign-in transaction is invalid or has expired.' }, clearTransientCookie(state));
+      return signInFailed('invalid-transaction', state);
     }
     const { verifier, nonce, returnPath: storedReturn } = transaction;
     const tokenResult = await fetchImpl(config.providerOrigin + (config.provider === 'auth0' ? '/oauth/token' : '/oauth2/token'), {
@@ -213,18 +235,18 @@ export function createHandler(overrides = {}) {
       }),
       signal: AbortSignal.timeout(5000),
     });
-    if (!tokenResult.ok) return json(401, { error: 'Sign-in could not be completed.' }, clearTransientCookie(state));
+    if (!tokenResult.ok) return signInFailed('exchange-failed', state, storedReturn);
     // Discard access/refresh tokens. Only the verified ID-token claims cross this boundary.
     const tokens = await tokenResult.json();
     const identity = await verifyIdToken(tokens?.id_token, nonce);
-    if (!identity) return json(401, { error: 'This account is not authorised.' }, clearTransientCookie(state));
+    if (!identity) return signInFailed('identity-rejected', state, storedReturn);
     const resolved = config.provider === 'auth0' ? await store.resolveParticipant(identity)
       : { participant: await store.getParticipant(identity.sub) };
     const { participant, binding } = resolved ?? {};
     const canonicalIdentity = { ...identity, sub: participant?.cognitoSub };
     const current = Math.floor(now() / 1000);
     if (identity.exp <= current || !approvedParticipant(participant, canonicalIdentity, current)) {
-      return json(401, { error: 'This account is not authorised.' }, clearTransientCookie(state));
+      return signInFailed('not-approved', state, storedReturn);
     }
     const token = base64url(randomBytes(32));
     const expiresAt = Math.min(current + 3600, identity.exp, participant.expiresAt ?? Infinity);
@@ -239,12 +261,13 @@ export function createHandler(overrides = {}) {
       await store.issueSession({ participant, session, now: current, identity, binding });
     } catch (error) {
       if (error?.name === 'TransactionCanceledException' || error?.name === 'ConditionalCheckFailedException') {
-        return json(401, { error: 'This account is not authorised. Please sign in again.' }, clearTransientCookie(state));
+        return signInFailed('session-conflict', state, storedReturn);
       }
       throw error;
     }
     let returnPath = '/';
     try { returnPath = safeReturnPath(storedReturn); } catch { /* root */ }
+    log({ event: 'auth_callback', outcome: 'signed-in', status: 302 });
     return redirect(config.siteOrigin + returnPath, [
       secureCookie(COOKIE.session, token, expiresAt - current), ...clearTransientCookie(state), ...clearLegacyCookies(),
     ]);
@@ -347,8 +370,8 @@ export function createHandler(overrides = {}) {
       return await logout(event);
     } catch {
       if (path === WORKSPACE_PATH || path === WORKSPACE_CONTINUE_PATH) return json(503, { error: 'Workspace access is temporarily unavailable.' });
-      const cookies = path === CALLBACK_PATH ? clearTransientCookie(event?.queryStringParameters?.state) : clearAllCookies();
-      return json(503, { authenticated: false, error: 'Sign-in is temporarily unavailable.' }, cookies);
+      if (path === CALLBACK_PATH) return signInFailed('unavailable', event?.queryStringParameters?.state);
+      return json(503, { authenticated: false, error: 'Sign-in is temporarily unavailable.' }, clearAllCookies());
     }
   };
 }
