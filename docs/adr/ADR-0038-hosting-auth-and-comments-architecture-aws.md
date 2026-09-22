@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-06
-updated: 2026-09-11
+updated: 2026-09-22
 tags: [infrastructure, hosting, auth, deployment, comments]
 supersedes: []
 depends-on: []
@@ -9,6 +9,23 @@ implements: []
 ---
 
 # Hosting, auth, and comments architecture (AWS)
+
+> **Sign-in narrowed to Google, 2026-09-22.** The OPDA site gate previously offered
+> Apple, Facebook, GitHub, LinkedIn and Windows Live alongside Google. None of them
+> could produce a sign-in: the gate requires a verified e-mail claim, and under the
+> shared developer keys recorded below only the Google connection supplies
+> `email_verified`. GitHub requested no scopes at all, so it returned no verified
+> address and, for some accounts, no address; participants who chose it reached
+> "Sign-in could not be completed" with no way forward. Those five connections are
+> now disabled for the site gate, which offers Google only, as this decision's
+> member model already assumed. They remain enabled for unrelated tenant clients.
+> The retired **OPDA Artalk OAuth** application, whose callback still pointed at the
+> destroyed `opda-artalk.fly.dev` host, has had its callbacks, logout URLs and
+> connections cleared; comments use the HMAC server-to-server exchange instead.
+> The site gate's unused `refresh_token` grant was removed (it requests only
+> `openid email profile`), and the tenant's clickjacking-protection headers on
+> Auth0-hosted pages were re-enabled. Re-enabling any social provider for members
+> requires a self-registered OAuth client for it, not the shared keys.
 
 > **Public delivery restored, 2026-09-11.** The owner explicitly authorizes public
 > access to all pages, illustrations, downloads and comment reading. This supersedes
