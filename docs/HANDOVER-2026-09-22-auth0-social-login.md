@@ -106,15 +106,14 @@ optional `email_verified` claim. The deployed application no longer needs that
 exception; the general first-binding path accepts the signed Auth0 email for every
 provider and every eligible participant.
 
-The historical manual binding still needs to be removed from DynamoDB. The cleanup
-is waiting only for AWS SSO device approval in the `opda` profile. It must:
-
-1. verify the email reservation, participant and current binding agree;
-2. verify Maria retains a website allowlist or approved-group grant;
-3. delete only that exact identity record;
-4. clear the matching participant `auth0BindingKey` and increment `accessVersion`
-   in the same conditional transaction; and
-5. read back that the special binding is absent and the website grant remains.
+The historical manual binding has been removed from DynamoDB. Before mutation,
+strongly consistent reads confirmed that the email reservation, source, participant
+and GitHub identity binding all agreed, and that Maria retained an explicit website
+allowlist grant. One conditional transaction then deleted only that exact identity
+record, cleared the matching participant `auth0BindingKey` and incremented
+`accessVersion`. Readback confirmed that the binding and pointer are absent, the
+allowlist remains true and only `auth0BindingKey`, `accessVersion` and `updatedAt`
+changed on the participant.
 
 After cleanup, Maria's next sign-in will create a normal immutable binding through
 the same code used for every other eligible participant. Her own post-cleanup login
@@ -152,6 +151,9 @@ Live checks completed after deployment:
 - Auth0 Management API readback confirms all six connections are assigned;
 - GitHub sign-in with the owner's existing Sparkling profile completed and returned
   to protected OPDA content after the GitHub Action was deleted.
+- Maria's manually inserted GitHub identity record and participant binding pointer
+  are absent; her explicit website allowlist remains active and her access version
+  was incremented to invalidate sessions created through the exception.
 
 Apple, Facebook, LinkedIn and Microsoft have configuration and route readback but
 have not each completed a live account login in this session. Provider-account
