@@ -159,6 +159,23 @@ test('Auth0 tokens require verified email, signature-bound issuer/audience/nonce
   }
 });
 
+test('GitHub requires the Auth0 action claim for the same verified address and a GitHub subject', async () => {
+  const claim = 'https://opda.org.uk/github_verified_email';
+  const verified = setup({ claims: { sub: 'github|311648', email_verified: false, [claim]: 'member@example.test' } });
+  assert.equal((await verified.callback()).statusCode, 302);
+  for (const claims of [
+    { sub: 'github|311648', email_verified: false, [claim]: 'other@example.test' },
+    { sub: 'github|311648', email_verified: false, [claim]: true },
+    { sub: 'github|311648', email_verified: false },
+    { sub: 'google-oauth2|311648', email_verified: false, [claim]: 'member@example.test' },
+    { sub: 'github|bad', email_verified: false, [claim]: 'member@example.test' },
+  ]) {
+    const s = setup({ claims });
+    assert.equal((await s.callback()).statusCode, 401);
+    assert.equal(s.commands.length, 0);
+  }
+});
+
 test('an existing issuer/subject binding cannot be moved by a changed email or corrupt subject record', async () => {
   const s = setup(), key = identityKey({ issuer: ISSUER, sub: SUBJECT });
   await s.callback();

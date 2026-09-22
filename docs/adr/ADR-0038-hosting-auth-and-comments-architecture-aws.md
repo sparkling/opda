@@ -11,20 +11,24 @@ implements: []
 # Hosting, auth, and comments architecture (AWS)
 
 > **Sign-in connections corrected, 2026-09-22.** The OPDA site gate previously offered
-> Apple, Facebook, GitHub, LinkedIn and Windows Live alongside Google. None of them
-> could produce a sign-in: the gate requires a verified e-mail claim, and under the
-> shared developer keys recorded below only the Google connection supplies
-> `email_verified`. GitHub requested no scopes at all, so it returned no verified
-> address and, for some accounts, no address; participants who chose it reached
-> "Sign-in could not be completed" with no way forward. Apple, Facebook, LinkedIn
-> and Windows Live are disabled for the site gate. Google remains the default.
-> GitHub has an explicit login path requesting its `user:email` permission; OPDA
-> still requires a verified e-mail claim before resolving an approved participant.
-> A 2026-09-22 live readback found GitHub still assigned to the site gate: the
-> deprecated connection field had not removed that assignment. The dedicated
-> connection-clients API removed it. GitHub is reassigned only for its explicit
-> login path. The provider must supply a verified e-mail claim on a real sign-in;
-> an unverified address remains refused. Both providers have distinct retry links.
+> Apple, Facebook, GitHub, LinkedIn and Windows Live alongside Google. Only Google
+> supplied the `email_verified` claim required by the gate. GitHub requested no
+> scopes, so some accounts lacked an address, and participants reached "Sign-in
+> could not be completed". Apple, Facebook, LinkedIn and Windows Live are disabled
+> for the site gate. Google remains the default. GitHub has an explicit login path
+> requesting `user:email`. A live sign-in with the `sparkling` GitHub account
+> proved that the scope reaches GitHub and the primary address is verified, yet
+> Auth0 still omitted `email_verified`. That omission does not prove the GitHub
+> address is unverified. A dedicated Auth0 post-login Action for the OPDA site
+> client reads the current upstream token through a dedicated Management API
+> client with only `read:users` and `read:user_idp_tokens`, then checks GitHub's
+> `/user/emails`. It issues a namespaced ID-token claim only when the Auth0 email
+> equals GitHub's verified primary email. The gate accepts that signed claim only
+> for a GitHub subject and the exact same email. External failures, mismatches and
+> unverified addresses fail closed; participant approval and binding still apply.
+> A live readback also found GitHub assigned to the site gate despite a deprecated
+> connection field claiming otherwise. The dedicated connection-clients API now
+> assigns it only for the explicit login path. Both providers have distinct retries.
 > The retired **OPDA Artalk OAuth** application, whose callback still pointed at the
 > destroyed `opda-artalk.fly.dev` host, has had its callbacks, logout URLs and
 > connections cleared; comments use the HMAC server-to-server exchange instead.
@@ -32,8 +36,9 @@ implements: []
 > `openid email profile`), and the tenant's clickjacking-protection headers on
 > Auth0-hosted pages were re-enabled. GitHub still uses Auth0's shared developer
 > key; a dedicated OAuth client is required before treating it as production-ready.
-> The `user:email` request and real verified-email response must be checked with
-> a fresh GitHub sign-in. OPDA will not grant a session from an unverified claim.
+> The Action source is `config/auth0/github-email-action.cjs`; its M2M credentials
+> exist only as Auth0 Action secrets. A fresh GitHub sign-in must confirm its claim
+> and approval outcome. OPDA will not grant a session from an unverified address.
 
 > **Public delivery restored, 2026-09-11.** The owner explicitly authorizes public
 > access to all pages, illustrations, downloads and comment reading. This supersedes
