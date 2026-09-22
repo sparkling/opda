@@ -13,7 +13,7 @@ function setup(addresses = [{ email, primary: true, verified: true }]) {
     calls.push({ url, options });
     const body = url.endsWith('/oauth/token') ? { access_token: 'management-token' }
       : url.includes('/api/v2/users/') ? { user_id: 'github|311648', identities: [
-        { provider: 'github', user_id: '311648', access_token: 'github-token' }] } : addresses;
+        { provider: 'github', user_id: 311648, access_token: 'github-token' }] } : addresses;
     return { ok: true, json: async () => body };
   };
   const api = { idToken: { setCustomClaim: (...args) => claims.push(args) } };

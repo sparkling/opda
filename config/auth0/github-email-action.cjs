@@ -37,7 +37,7 @@ exports.onExecutePostLogin = async (event, api, fetchImpl = fetch) => {
     });
     if (profile?.user_id !== userId) return;
     const github = profile.identities?.find(identity => identity.provider === 'github'
-      && identity.user_id === userId.slice('github|'.length));
+      && String(identity.user_id) === userId.slice('github|'.length));
     if (typeof github?.access_token !== 'string') return;
     const addresses = await jsonResponse(fetchImpl, 'https://api.github.com/user/emails?per_page=100', {
       headers: { authorization: `Bearer ${github.access_token}`, accept: 'application/vnd.github+json',
