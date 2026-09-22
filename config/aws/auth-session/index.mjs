@@ -58,9 +58,9 @@ function transientCookieName(state) {
   return TRANSIENT_PREFIX + state;
 }
 
-function transientCookie(state, verifier, nonce, returnPath, createdAt) {
+function transientCookie(state, verifier, nonce, returnPath, createdAt, provider) {
   return secureCookie(transientCookieName(state), base64url(JSON.stringify({
-    verifier, nonce, createdAt, returnPath: safeReturnPath(returnPath),
+    verifier, nonce, createdAt, returnPath: safeReturnPath(returnPath), ...(provider ? { provider } : {}),
   })), 300);
 }
 
@@ -71,8 +71,9 @@ function readTransientCookie(cookies, state, nowSeconds) {
   try {
     const decoded = JSON.parse(Buffer.from(value, 'base64url').toString('utf8'));
     if (!decoded || typeof decoded !== 'object' || Array.isArray(decoded)
-      || Object.keys(decoded).sort().join(',') !== 'createdAt,nonce,returnPath,verifier'
+      || !['createdAt,nonce,returnPath,verifier', 'createdAt,nonce,provider,returnPath,verifier'].includes(Object.keys(decoded).sort().join(','))
       || !validSessionToken(decoded.verifier) || !validSessionToken(decoded.nonce)
+      || (decoded.provider !== undefined && !['google', 'github'].includes(decoded.provider))
       || !Number.isSafeInteger(decoded.createdAt) || decoded.createdAt > nowSeconds || nowSeconds - decoded.createdAt > 300
       || typeof decoded.returnPath !== 'string' || decoded.returnPath.length < 1 || decoded.returnPath.length > 2048
       || safeReturnPath(decoded.returnPath) !== decoded.returnPath) return null;
@@ -183,10 +184,13 @@ export function createHandler(overrides = {}) {
   const now = overrides.now ?? (() => Date.now());
   const randomBytes = overrides.randomBytes ?? cryptoRandomBytes;
   const log = overrides.log ?? ((entry) => console.log(JSON.stringify(entry)));
-  function signInFailed(outcome, state, returnPath) {
+  function signInFailed(outcome, state, returnPath, provider) {
     const notice = SIGN_IN_NOTICES[outcome];
     log({ event: 'auth_callback', outcome, status: notice.status });
-    return response(notice.status, renderSignInNotice({ ...notice, returnPath: safeReturnPath(returnPath) }), {
+    const help = outcome === 'identity-rejected' && provider === 'github'
+      ? 'GitHub must share a verified e-mail address matching your approved OPDA account. Check GitHub Settings → Emails and try again.'
+      : notice.help;
+    return response(notice.status, renderSignInNotice({ ...notice, help, returnPath: safeReturnPath(returnPath), provider }), {
       'content-type': 'text/html; charset=utf-8', 'content-security-policy': workspaceCsp(base64url(randomBytes(16))),
     }, clearTransientCookie(state));
   }
@@ -198,11 +202,15 @@ export function createHandler(overrides = {}) {
     workspaceRuntime ??= overrides.workspaceRuntime ?? createWorkspaceRuntime({ invoke: overrides.workspaceInvoke });
   }
 
-  function startLogin(event, returnValue) {
+  function startLogin(event, returnValue, providerValue) {
+    if (providerValue !== undefined && (config.provider !== 'auth0' || !['google', 'github'].includes(providerValue))) {
+      return json(400, { error: 'Unknown sign-in provider.' });
+    }
+    const provider = config.provider === 'auth0' ? providerValue ?? 'google' : undefined;
     const verifier = base64url(randomBytes(32));
     const state = base64url(randomBytes(32));
     const nonce = base64url(randomBytes(32));
-    const nextCookie = transientCookie(state, verifier, nonce, returnValue, Math.floor(now() / 1000));
+    const nextCookie = transientCookie(state, verifier, nonce, returnValue, Math.floor(now() / 1000), provider);
     const pending = pendingTransientStats(event);
     if (pending.count >= 6 || pending.bytes + Buffer.byteLength(nextCookie) > 6000) {
       return json(429, { error: 'Too many sign-in attempts. Complete one before starting another.' });
@@ -212,7 +220,8 @@ export function createHandler(overrides = {}) {
       response_type: 'code', client_id: config.clientId,
       redirect_uri: config.siteOrigin + CALLBACK_PATH, scope: 'openid email profile', state, nonce,
       code_challenge: createHash('sha256').update(verifier).digest('base64url'), code_challenge_method: 'S256',
-      ...(config.provider === 'auth0' ? { connection: 'google-oauth2' } : {}),
+      ...(provider ? { connection: provider === 'github' ? 'github' : 'google-oauth2' } : {}),
+      ...(provider === 'github' ? { connection_scope: 'user:email' } : {}),
     }).toString();
     return redirect(authorize.toString(), [nextCookie]);
   }
@@ -226,7 +235,7 @@ export function createHandler(overrides = {}) {
     if (typeof query.code !== 'string' || query.code.length < 1 || query.code.length > 4096 || !transaction) {
       return signInFailed('invalid-transaction', state);
     }
-    const { verifier, nonce, returnPath: storedReturn } = transaction;
+    const { verifier, nonce, returnPath: storedReturn, provider } = transaction;
     const tokenResult = await fetchImpl(config.providerOrigin + (config.provider === 'auth0' ? '/oauth/token' : '/oauth2/token'), {
       method: 'POST',
       headers: { accept: 'application/json', 'content-type': 'application/x-www-form-urlencoded' },
@@ -236,18 +245,18 @@ export function createHandler(overrides = {}) {
       }),
       signal: AbortSignal.timeout(5000),
     });
-    if (!tokenResult.ok) return signInFailed('exchange-failed', state, storedReturn);
+    if (!tokenResult.ok) return signInFailed('exchange-failed', state, storedReturn, provider);
     // Discard access/refresh tokens. Only the verified ID-token claims cross this boundary.
     const tokens = await tokenResult.json();
     const identity = await verifyIdToken(tokens?.id_token, nonce);
-    if (!identity) return signInFailed('identity-rejected', state, storedReturn);
+    if (!identity) return signInFailed('identity-rejected', state, storedReturn, provider);
     const resolved = config.provider === 'auth0' ? await store.resolveParticipant(identity)
       : { participant: await store.getParticipant(identity.sub) };
     const { participant, binding } = resolved ?? {};
     const canonicalIdentity = { ...identity, sub: participant?.cognitoSub };
     const current = Math.floor(now() / 1000);
     if (identity.exp <= current || !approvedParticipant(participant, canonicalIdentity, current)) {
-      return signInFailed('not-approved', state, storedReturn);
+      return signInFailed('not-approved', state, storedReturn, provider);
     }
     const token = base64url(randomBytes(32));
     const expiresAt = Math.min(current + 3600, identity.exp, participant.expiresAt ?? Infinity);
@@ -262,7 +271,7 @@ export function createHandler(overrides = {}) {
       await store.issueSession({ participant, session, now: current, identity, binding });
     } catch (error) {
       if (error?.name === 'TransactionCanceledException' || error?.name === 'ConditionalCheckFailedException') {
-        return signInFailed('session-conflict', state, storedReturn);
+        return signInFailed('session-conflict', state, storedReturn, provider);
       }
       throw error;
     }
@@ -363,7 +372,7 @@ export function createHandler(overrides = {}) {
     if ((path === WORKSPACE_PATH || path === WORKSPACE_CONTINUE_PATH) ? !['GET', 'POST'].includes(method) : method !== 'GET') return json(405, { error: 'Use GET for this operation.' });
     try {
       initialise();
-      if (path === LOGIN_PATH) return startLogin(event, event?.queryStringParameters?.return);
+      if (path === LOGIN_PATH) return startLogin(event, event?.queryStringParameters?.return, event?.queryStringParameters?.provider);
       if (path === CALLBACK_PATH) return await callback(event, event?.queryStringParameters ?? {});
       if (path === ME_PATH) return await session(event);
       if (path === WORKSPACE_PATH) return method === 'GET' ? await workspaceGet(event, false) : await workspacePost(event);
@@ -371,7 +380,11 @@ export function createHandler(overrides = {}) {
       return await logout(event);
     } catch {
       if (path === WORKSPACE_PATH || path === WORKSPACE_CONTINUE_PATH) return json(503, { error: 'Workspace access is temporarily unavailable.' });
-      if (path === CALLBACK_PATH) return signInFailed('unavailable', event?.queryStringParameters?.state);
+      if (path === CALLBACK_PATH) {
+        const state = event?.queryStringParameters?.state;
+        const transaction = readTransientCookie(parseCookies(event), state, Math.floor(now() / 1000));
+        return signInFailed('unavailable', state, transaction?.returnPath, transaction?.provider);
+      }
       return json(503, { authenticated: false, error: 'Sign-in is temporarily unavailable.' }, clearAllCookies());
     }
   };

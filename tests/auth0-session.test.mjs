@@ -74,12 +74,12 @@ function setup(options = {}) {
       const input = header + '.' + body;
       return { ok: true, json: async () => ({ id_token: input + '.' + sign('RSA-SHA256', Buffer.from(input), privateKey).toString('base64url') }) };
     } });
-  async function login() {
-    const result = await handler(request('/_auth/login', { return: '/programme' }));
+  async function login(provider) {
+    const result = await handler(request('/_auth/login', { return: '/programme', ...(provider ? { provider } : {}) }));
     nonce = oauthTransaction(result).data.nonce; return result;
   }
-  async function callback() {
-    const started = await login();
+  async function callback(provider) {
+    const started = await login(provider);
     return handler(request('/_auth/callback', { state: oauthTransaction(started).state, code: 'one-use-provider-code' }, started.cookies));
   }
   return { row, rows, emailKey, sourceKey, commands, fetches, handler, login, callback };
@@ -95,6 +95,20 @@ test('Auth0 uses the existing public PKCE client and the verified-email Google c
   assert.equal(url.searchParams.get('state'), transaction.state);
   assert.equal(url.searchParams.get('nonce'), transaction.data.nonce);
   assert.equal(s.commands.length, 0);
+});
+
+test('GitHub sign-in requests verified email access and keeps GitHub on retry', async () => {
+  const s = setup({ claims: { email_verified: false } });
+  const started = await s.login('github'), url = new URL(started.headers.location);
+  assert.equal(url.searchParams.get('connection'), 'github');
+  assert.equal(url.searchParams.get('connection_scope'), 'user:email');
+  const transaction = oauthTransaction(started);
+  assert.equal(transaction.data.provider, 'github');
+  const failed = await s.handler(request('/_auth/callback', { state: transaction.state, code: 'one-use-provider-code' }, started.cookies));
+  assert.equal(failed.statusCode, 401);
+  assert.match(failed.body, /href="\/_auth\/login\?return=%2Fprogramme&amp;provider=github"/u);
+  assert.match(failed.body, /GitHub must share a verified e-mail address/u);
+  assert.equal((await s.handler(request('/_auth/login', { provider: 'unknown' }))).statusCode, 400);
 });
 
 test('verified first Auth0 enrolment atomically binds a unique reviewed participant and issues only an opaque session', async () => {

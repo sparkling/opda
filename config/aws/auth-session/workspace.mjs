@@ -113,8 +113,8 @@ async function defaultInvoke(payload) {
 const PAGE_STYLE = ':root{color-scheme:light dark;--bg:#fff;--fg:#141413;--muted:#555;--link:#a9583e}*{box-sizing:border-box}body{margin:0;padding:clamp(24px,6vw,72px);background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif}main{max-width:680px;margin:auto}a,button{font:inherit}a{color:var(--link)}button{padding:.65rem 1rem;cursor:pointer}li{margin:.8rem 0}@media(prefers-color-scheme:dark){:root{--bg:#141413;--fg:#f5f1e8;--muted:#c9c1b4;--link:#e5b632}}';
 
 /** A sign-in outcome the person can act on: what happened, in plain words, and a fresh start. */
-export function renderSignInNotice({ title, message, returnPath = '/', help = '' }) {
-  const retry = `/_auth/login?return=${encodeURIComponent(returnPath)}`;
+export function renderSignInNotice({ title, message, returnPath = '/', help = '', provider }) {
+  const retry = `/_auth/login?return=${encodeURIComponent(returnPath)}${provider === 'github' ? '&provider=github' : ''}`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="same-origin"><title>${escapeHtml(title)}</title><style>${PAGE_STYLE}</style></head><body><main><h1>${escapeHtml(title)}</h1><p role="status">${escapeHtml(message)}</p>${help ? `<p>${help}</p>` : ''}<p><a href="${escapeHtml(retry)}">Sign in again</a> or <a href="/">return to the site</a>.</p></main></body></html>`;
 }
 
