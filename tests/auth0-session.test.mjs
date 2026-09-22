@@ -167,6 +167,7 @@ test('GitHub requires the Auth0 action claim for the same verified address and a
     { sub: 'github|311648', email_verified: false, [claim]: 'other@example.test' },
     { sub: 'github|311648', email_verified: false, [claim]: true },
     { sub: 'github|311648', email_verified: false },
+    { sub: 'github|311648', email_verified: true },
     { sub: 'google-oauth2|311648', email_verified: false, [claim]: 'member@example.test' },
     { sub: 'github|bad', email_verified: false, [claim]: 'member@example.test' },
   ]) {

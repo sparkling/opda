@@ -86,9 +86,10 @@ export function createIdentityVerifier(config, { fetch: fetchImpl, now }) {
     if (typeof payload.sub !== 'string' || !/^[\x21-\x7e]{1,255}$/u.test(payload.sub)) return null;
     if (config.provider === 'cognito' && !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/iu.test(payload.sub)) return null;
     const email = normaliseEmail(payload.email);
-    const githubVerified = config.provider === 'auth0' && /^github\|[0-9]+$/u.test(payload.sub)
+    const githubSubject = config.provider === 'auth0' && payload.sub.startsWith('github|');
+    const githubVerified = githubSubject && /^github\|[0-9]+$/u.test(payload.sub)
       && payload['https://opda.org.uk/github_verified_email'] === email;
-    if (!email || (payload.email_verified !== true && !githubVerified)) return null;
+    if (!email || (githubSubject ? !githubVerified : payload.email_verified !== true)) return null;
     let key = (await loadKeys()).get(header.kid);
     if (!key) key = (await loadKeys(true)).get(header.kid);
     if (!key || key.kty !== 'RSA' || (key.use && key.use !== 'sig') || (key.alg && key.alg !== 'RS256')) return null;
