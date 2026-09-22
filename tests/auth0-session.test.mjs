@@ -85,10 +85,10 @@ function setup(options = {}) {
   return { row, rows, emailKey, sourceKey, commands, fetches, handler, login, callback };
 }
 
-test('Auth0 uses the existing public PKCE client and all enabled Universal Login connections', async () => {
+test('Auth0 uses the existing public PKCE client and the verified-email Google connection', async () => {
   const s = setup(), result = await s.login(), url = new URL(result.headers.location);
   assert.equal(url.origin + url.pathname, ISSUER + 'authorize');
-  assert.equal(url.searchParams.get('connection'), null, 'do not force email-only or one social provider');
+  assert.equal(url.searchParams.get('connection'), 'google-oauth2');
   assert.equal(url.searchParams.get('code_challenge_method'), 'S256');
   assert.equal(url.searchParams.get('scope'), 'openid email profile');
   const transaction = oauthTransaction(result);

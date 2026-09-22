@@ -212,6 +212,7 @@ export function createHandler(overrides = {}) {
       response_type: 'code', client_id: config.clientId,
       redirect_uri: config.siteOrigin + CALLBACK_PATH, scope: 'openid email profile', state, nonce,
       code_challenge: createHash('sha256').update(verifier).digest('base64url'), code_challenge_method: 'S256',
+      ...(config.provider === 'auth0' ? { connection: 'google-oauth2' } : {}),
     }).toString();
     return redirect(authorize.toString(), [nextCookie]);
   }

@@ -19,6 +19,10 @@ implements: []
 > "Sign-in could not be completed" with no way forward. Those five connections are
 > now disabled for the site gate, which offers Google only, as this decision's
 > member model already assumed. They remain enabled for unrelated tenant clients.
+> A 2026-09-22 live readback found GitHub still assigned to the site gate: the
+> deprecated connection field had not removed that assignment. The dedicated
+> connection-clients API removed it, and the site login now explicitly selects
+> `google-oauth2` so another tenant assignment cannot reintroduce that choice.
 > The retired **OPDA Artalk OAuth** application, whose callback still pointed at the
 > destroyed `opda-artalk.fly.dev` host, has had its callbacks, logout URLs and
 > connections cleared; comments use the HMAC server-to-server exchange instead.
