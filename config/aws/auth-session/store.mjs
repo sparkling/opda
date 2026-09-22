@@ -38,16 +38,17 @@ export function createStore(config, overrides = {}) {
     return decode(result.Item);
   }
 
-  async function resolveParticipant(identity) {
+  async function resolveParticipant(identity, { existingOnly = false } = {}) {
     const table = config.participantsTableName, key = identityKey(identity);
     const existing = await get(table, key);
     if (existing) {
       if (existing.issuer !== identity.issuer || existing.subject !== identity.sub || existing.email !== identity.email) return null;
       const participant = await get(table, `USER#${existing.sub}`);
-      if (!participant || participant.auth0BindingKey !== key || participant.participantId !== existing.participantId
+      if (!participant || participant.participantId !== existing.participantId
         || participant.cognitoSub !== existing.sub || participant.email !== identity.email) return null;
       return { participant, binding: { record: existing, first: false } };
     }
+    if (existingOnly) return null;
     // Email locates a reviewed, unbound enrolment, never a second-provider link.
     const emailKey = `EMAIL#${createHash('sha256').update(identity.email).digest('hex')}`;
     const reserved = await get(table, emailKey);
@@ -61,7 +62,7 @@ export function createStore(config, overrides = {}) {
       || (sourceKey.startsWith('IMPORT#') && source.phase !== 'complete')
       || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/iu.test(source.cognitoSub ?? '')) return null;
     const participant = await get(table, `USER#${source.cognitoSub}`);
-    if (!participant || participant.participantId !== reserved.participantId || participant.auth0BindingKey !== undefined
+    if (!participant || participant.participantId !== reserved.participantId
       || participant.cognitoSub !== source.cognitoSub || participant.email !== identity.email) return null;
     return { participant, binding: { first: true, emailKey, sourceKey, record: {
       pk: key, issuer: identity.issuer, subject: identity.sub, email: identity.email,
@@ -71,6 +72,7 @@ export function createStore(config, overrides = {}) {
 
   return {
     getParticipant: (sub) => get(config.participantsTableName, `USER#${sub}`),
+    getIdentityBinding: (key) => get(config.participantsTableName, key),
     resolveParticipant,
     getSession: (key) => get(config.sessionsTableName, key),
     deleteSession: (key) => send('DeleteItemCommand', { TableName: config.sessionsTableName, Key: { pk: { S: key } } }),
@@ -104,8 +106,11 @@ export function createStore(config, overrides = {}) {
           || record.issuer !== identity.issuer || record.subject !== identity.sub
           || session.auth0BindingKey !== record.pk) throw new Error('Invalid identity binding.');
         guard.ExpressionAttributeNames['#auth0Key'] = 'auth0BindingKey';
-        guard.ConditionExpression += binding.first ? ' AND attribute_not_exists(#auth0Key)' : ' AND #auth0Key = :auth0Key';
-        if (!binding.first) guard.ExpressionAttributeValues[':auth0Key'] = attribute(record.pk);
+        guard.ConditionExpression += participant.auth0BindingKey === undefined
+          ? ' AND attribute_not_exists(#auth0Key)' : ' AND #auth0Key = :priorAuth0Key';
+        if (participant.auth0BindingKey !== undefined) {
+          guard.ExpressionAttributeValues[':priorAuth0Key'] = attribute(participant.auth0BindingKey);
+        }
         const bindingValues = { ':pid': attribute(record.participantId), ':sub': attribute(record.sub), ':email': attribute(record.email) };
         if (binding.first) {
           identityWrites.push({ Put: { TableName: config.participantsTableName,
@@ -141,7 +146,7 @@ export function createStore(config, overrides = {}) {
           },
         } };
       }
-      if (binding?.first) {
+      if (binding?.first && participant.auth0BindingKey === undefined) {
         const update = participantWrite.Update ?? { ...guard, UpdateExpression: 'SET #auth0Key = :auth0Key' };
         if (participantWrite.Update) update.UpdateExpression += ', #auth0Key = :auth0Key';
         update.ExpressionAttributeValues[':auth0Key'] = attribute(binding.record.pk);

@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-09-09
-updated: 2026-09-15
+updated: 2026-09-22
 tags: [hubspot, participants, working-groups, postmark, email, microsoft-365, teams, sharepoint, approval]
 supersedes: []
 amends: [ADR-0070, ADR-0071, ADR-0084]
@@ -295,7 +295,10 @@ eligibility and its session version remain unchanged while another approved doma
 Historical website-only import approval cannot bypass this rule by itself. The one exception is
 the explicit operator website allowlist (`websiteAllowlist` on the account, set with
 `scripts/website-allowlist.mjs` and recorded with a reason and actor): it keeps website sign-in
-without any working-group workspace, and every hold still applies. On 2026-09-18 the four
+without any working-group workspace. The operator can grant this to a participant
+whose only suspended state came from having no approved domain; independent holds
+still block the grant. This is an alternative website entitlement, never a group
+approval or workspace grant. On 2026-09-18 the four
 legacy Auth0 allowlist accounts without a working group were granted it (operator decision).
 Otherwise loss of the last domain, or a global hold, removes website eligibility, invalidates
 sessions and disables/signs out Cognito.

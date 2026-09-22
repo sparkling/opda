@@ -87,16 +87,17 @@ export function createIdentityVerifier(config, { fetch: fetchImpl, now }) {
     if (config.provider === 'cognito' && !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/iu.test(payload.sub)) return null;
     const email = normaliseEmail(payload.email);
     const githubSubject = config.provider === 'auth0' && payload.sub.startsWith('github|');
-    const githubVerified = githubSubject && /^github\|[0-9]+$/u.test(payload.sub)
-      && payload['https://opda.org.uk/github_verified_email'] === email;
-    if (!email || (githubSubject ? !githubVerified : payload.email_verified !== true)) return null;
+    if (githubSubject && !/^github\|[0-9]+$/u.test(payload.sub)) return null;
+    const githubVerified = githubSubject && payload['https://opda.org.uk/github_verified_email'] === email;
+    if (!email || (config.provider === 'cognito' && payload.email_verified !== true)) return null;
     let key = (await loadKeys()).get(header.kid);
     if (!key) key = (await loadKeys(true)).get(header.kid);
     if (!key || key.kty !== 'RSA' || (key.use && key.use !== 'sig') || (key.alg && key.alg !== 'RS256')) return null;
     try {
       const valid = verify('RSA-SHA256', Buffer.from(`${parts[0]}.${parts[1]}`),
         createPublicKey({ key, format: 'jwk' }), Buffer.from(parts[2], 'base64url'));
-      return valid ? { issuer: config.issuer, sub: payload.sub, email, exp: payload.exp } : null;
+      return valid ? { issuer: config.issuer, sub: payload.sub, email, exp: payload.exp,
+        emailTrusted: githubSubject ? githubVerified : payload.email_verified === true } : null;
     } catch { return null; }
   };
 }

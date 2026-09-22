@@ -1,5 +1,5 @@
-// Auth0 post-login action for the OPDA site gate. Only a fresh, verified
-// primary GitHub email matching Auth0's email is asserted in the ID token.
+// Auth0 post-login action for the OPDA site gate. A fresh, verified
+// GitHub email matching Auth0's email is asserted in the ID token.
 const CLIENT_ID = 'xjPgyXLJllYtefV6LZkZ6oYnce89RlZT';
 const AUTH0_ORIGIN = 'https://sparklesparkle.auth0.com';
 const CLAIM = 'https://opda.org.uk/github_verified_email';
@@ -44,7 +44,7 @@ exports.onExecutePostLogin = async (event, api, fetchImpl = fetch) => {
         'user-agent': 'OPDA-GitHub-email-verifier' },
     });
     if (Array.isArray(addresses) && addresses.length <= 100
-      && addresses.some(address => address.primary === true && address.verified === true
+      && addresses.some(address => address.verified === true
         && normaliseEmail(address.email) === email)) api.idToken.setCustomClaim(CLAIM, email);
   } catch {
     // External failures leave the claim absent; OPDA refuses the sign-in.

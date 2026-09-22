@@ -23,9 +23,14 @@ implements: []
 > client reads the current upstream token through a dedicated Management API
 > client with only `read:users` and `read:user_idp_tokens`, then checks GitHub's
 > `/user/emails`. It issues a namespaced ID-token claim only when the Auth0 email
-> equals GitHub's verified primary email. The gate accepts that signed claim only
-> for a GitHub subject and the exact same email. External failures, mismatches and
-> unverified addresses fail closed; participant approval and binding still apply.
+> equals any verified GitHub email. The gate accepts that signed claim only
+> for a GitHub subject and the exact same email. An explicitly reviewed, immutable
+> GitHub subject binding can also identify an already allowlisted participant when
+> the provider cannot attest email verification. An unverified email alone cannot
+> establish a new binding. Multiple social subjects can bind to one participant
+> after a verified email match; existing bindings cannot move by email.
+> Website eligibility is an approved working group **or** an explicit operator
+> allowlist entry; each workspace still requires its own approved group.
 > A live readback also found GitHub assigned to the site gate despite a deprecated
 > connection field claiming otherwise. The dedicated connection-clients API now
 > assigns it only for the explicit login path. Both providers have distinct retries.

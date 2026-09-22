@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-09-08
-updated: 2026-09-16
+updated: 2026-09-22
 amended-by: [ADR-0087]
 tags: [aws, hubspot, cognito, identity, participants, recruitment, crm, privacy, proportionality]
 supersedes: []
@@ -61,13 +61,16 @@ Restore ADR-0038's existing Auth0 application and coming-soon/gated-site boundar
 The later Cognito authentication passages below record the intervening migration,
 not the current website sign-in contract. Preserve the pool, canonical participant
 UUIDs, HubSpot mappings and Microsoft/email workers; no destructive migration or bulk replay.
-The PKCE callback verifies signature, issuer, audience, nonce, time and verified email.
-First enrolment may claim one unique, reviewed, unbound participant through the reserved
-email index, using conditional writes for both participant and immutable
-`issuer + subject` binding. Later logins resolve that binding, never rebind by email.
-A different provider identity requires reviewed recovery/linking, not an automatic merge.
-Only an active participant with at least one individually approved group gets an
-opaque, one-hour maximum session. Historical blanket-contact approval is not a bypass.
+The PKCE callback verifies signature, issuer, audience, nonce and time. A new
+social identity can claim a unique participant only when the provider attests the
+same email as verified; a reviewed, immutable `issuer + subject` binding also
+accepts a returning identity whose provider lacks that email attestation.
+Conditional writes bind each social subject to the participant. A second provider
+with the same verified email can link to that participant without moving an existing
+subject binding. Website eligibility is an individually approved working group
+**or** an explicit operator website allowlist entry, independent of workspace scope.
+Only an active, unheld participant receives an opaque, one-hour maximum session.
+Historical blanket-contact approval is not a bypass.
 The edge and regional service share strongly consistent session/participant checks; withdrawal,
 suspension, expiry or access-version changes deny the next request. HubSpot is not called
 during login or protected requests. Background integration remains unchanged.

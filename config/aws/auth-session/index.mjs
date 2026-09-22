@@ -172,8 +172,8 @@ const SIGN_IN_NOTICES = Object.freeze({
     message: 'A sign-in link works once and for five minutes. Start the sign-in again from the page you were on.' },
   'exchange-failed': { status: 401, title: 'Sign-in could not be completed', message: 'The identity provider did not confirm the sign-in. Please try again.' },
   'identity-rejected': { status: 401, title: 'Sign-in could not be completed', message: 'The identity provider returned an account OPDA could not verify. Please try again.' },
-  'not-approved': { status: 401, title: 'This account has no approved working group',
-    message: 'Website sign-in is for approved working-group participants, using the e-mail address the approval was sent to.',
+  'not-approved': { status: 401, title: 'This account has no website access',
+    message: 'Website sign-in requires an approved working group or an explicit OPDA website allowlist entry.',
     help: 'Applied recently? Access opens once a working group approves your application. Not applied yet? <a href="/join">Join a working group</a>.' },
   'session-conflict': { status: 401, title: 'Please sign in again', message: 'Your access changed while you were signing in.' },
   unavailable: { status: 503, title: 'Sign-in is temporarily unavailable', message: 'Please try again in a few minutes.' },
@@ -188,7 +188,7 @@ export function createHandler(overrides = {}) {
     const notice = SIGN_IN_NOTICES[outcome];
     log({ event: 'auth_callback', outcome, status: notice.status });
     const help = outcome === 'identity-rejected' && provider === 'github'
-      ? 'GitHub must share a verified e-mail address matching your approved OPDA account. Check GitHub Settings → Emails and try again.'
+      ? 'GitHub must share a verified e-mail address matching your OPDA account, or OPDA must link this GitHub account to your website access.'
       : notice.help;
     return response(notice.status, renderSignInNotice({ ...notice, help, returnPath: safeReturnPath(returnPath), provider }), {
       'content-type': 'text/html; charset=utf-8', 'content-security-policy': workspaceCsp(base64url(randomBytes(16))),
@@ -250,8 +250,11 @@ export function createHandler(overrides = {}) {
     const tokens = await tokenResult.json();
     const identity = await verifyIdToken(tokens?.id_token, nonce);
     if (!identity) return signInFailed('identity-rejected', state, storedReturn, provider);
-    const resolved = config.provider === 'auth0' ? await store.resolveParticipant(identity)
+    const resolved = config.provider === 'auth0' ? await store.resolveParticipant(identity, { existingOnly: !identity.emailTrusted })
       : { participant: await store.getParticipant(identity.sub) };
+    if (config.provider === 'auth0' && !identity.emailTrusted && !resolved) {
+      return signInFailed('identity-rejected', state, storedReturn, provider);
+    }
     const { participant, binding } = resolved ?? {};
     const canonicalIdentity = { ...identity, sub: participant?.cognitoSub };
     const current = Math.floor(now() / 1000);

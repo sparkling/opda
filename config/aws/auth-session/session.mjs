@@ -16,7 +16,12 @@ export async function readApprovedSession(token, store, now = () => Date.now()) 
   const checkedAt = Math.floor(now() / 1000);
   if (saved.expiresAt <= checkedAt || !approvedParticipant(participant, saved, checkedAt)
     || participant.enrolmentStatus !== 'complete' || participant.participantId !== saved.participantId
-    || participant.accessVersion !== saved.accessVersion
-    || (saved.auth0BindingKey !== undefined && saved.auth0BindingKey !== participant.auth0BindingKey)) return null;
+    || participant.accessVersion !== saved.accessVersion) return null;
+  if (saved.auth0BindingKey !== undefined && saved.auth0BindingKey !== participant.auth0BindingKey) {
+    if (!/^IDENTITY#[a-f0-9]{64}$/u.test(saved.auth0BindingKey) || !store.getIdentityBinding) return null;
+    const binding = await store.getIdentityBinding(saved.auth0BindingKey);
+    if (!binding || binding.pk !== saved.auth0BindingKey || binding.sub !== saved.sub
+      || binding.participantId !== saved.participantId || binding.email !== saved.email) return null;
+  }
   return { participant, session: saved };
 }

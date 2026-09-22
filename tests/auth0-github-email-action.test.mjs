@@ -20,7 +20,7 @@ function setup(addresses = [{ email, primary: true, verified: true }]) {
   return { calls, claims, fetchImpl, api };
 }
 
-test('OPDA GitHub action checks the current upstream primary verified email', async () => {
+test('OPDA GitHub action checks a current upstream verified email', async () => {
   const s = setup();
   await action.onExecutePostLogin(event(), s.api, s.fetchImpl);
   assert.deepEqual(s.claims, [['https://opda.org.uk/github_verified_email', email]]);
@@ -30,10 +30,15 @@ test('OPDA GitHub action checks the current upstream primary verified email', as
   assert.match(s.calls[2].url, /^https:\/\/api\.github\.com\/user\/emails\?/u);
 });
 
-test('OPDA GitHub action refuses unverified, secondary, mismatched and absent emails', async () => {
+test('OPDA GitHub action accepts a verified secondary email', async () => {
+  const s = setup([{ email, primary: false, verified: true }]);
+  await action.onExecutePostLogin(event(), s.api, s.fetchImpl);
+  assert.deepEqual(s.claims, [['https://opda.org.uk/github_verified_email', email]]);
+});
+
+test('OPDA GitHub action refuses unverified, mismatched and absent emails', async () => {
   for (const addresses of [
     [{ email, primary: true, verified: false }],
-    [{ email, primary: false, verified: true }],
     [{ email: 'other@example.test', primary: true, verified: true }],
     [], null,
   ]) {

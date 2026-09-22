@@ -8,7 +8,8 @@
  *   node scripts/website-allowlist.mjs revoke <email> [<email> …] --reason "<why>" --confirm
  *
  * grant marks the USER row; revoke clears it and bumps accessVersion so open sessions end.
- * Both are refused for an account that is held, erased or has no USER row.
+ * Grants can activate an account whose only hold is the absence of an approved
+ * domain. External holds, erasure and expiry still refuse a grant.
  */
 import { execFileSync } from 'node:child_process';
 import { DynamoDBClient, ScanCommand, UpdateItemCommand } from '@aws-sdk/client-dynamodb';
@@ -36,7 +37,9 @@ async function accounts() {
   } while (key);
   return rows;
 }
-const held = row => row.suspended === true || row.erasedAt || row.deletedAt || row.reviewStatus !== 'approved';
+const held = row => row.erasedAt || row.deletedAt || (row.expiresAt && row.expiresAt <= Date.now() / 1000)
+  || (row.suspended === true && row.suspensionSource !== 'hubspot-review')
+  || !['approved', 'under_review'].includes(row.reviewStatus);
 const describe = row => `${row.email}  allowlist=${row.websiteAllowlist === true} domains=${JSON.stringify(row.approvedDomains ?? [])} active=${row.active} review=${row.reviewStatus} enrolment=${row.enrolmentStatus}`;
 
 const rows = await accounts();
@@ -49,18 +52,22 @@ for (const email of emails) {
   const matches = rows.filter(row => String(row.email ?? '').toLowerCase() === email);
   if (matches.length !== 1) { console.error(`${email}: ${matches.length} USER rows; refusing`); process.exitCode = 1; continue; }
   const [row] = matches;
-  if (held(row)) { console.error(`${email}: account is held (${row.reviewStatus}/${row.suspended ? 'suspended' : 'ok'}); refusing`); process.exitCode = 1; continue; }
   const granting = command === 'grant';
+  if (granting && held(row)) { console.error(`${email}: account has an independent hold; refusing`); process.exitCode = 1; continue; }
   if ((row.websiteAllowlist === true) === granting) { console.log(`${email}: already ${granting ? 'allowlisted' : 'not allowlisted'}`); continue; }
   console.log(`${granting ? 'GRANT' : 'REVOKE'} ${describe(row)}`);
   if (!confirm) { console.log('  (dry run; add --confirm)'); continue; }
   await dynamo.send(new UpdateItemCommand({ TableName: tableName, Key: marshall({ pk: row.pk }),
-    ConditionExpression: 'accessVersion = :v AND #s = :false AND reviewStatus = :approved',
+    ConditionExpression: 'accessVersion = :v AND #s = :wasSuspended AND reviewStatus = :wasReview'
+      + (row.suspensionSource === undefined ? ' AND attribute_not_exists(suspensionSource)' : ' AND suspensionSource = :wasSource')
+      + ' AND attribute_not_exists(erasedAt) AND attribute_not_exists(deletedAt)',
     UpdateExpression: granting
-      ? 'SET websiteAllowlist = :on, websiteAllowlistAt = :at, websiteAllowlistReason = :reason, websiteAllowlistActor = :actor, updatedAt = :now'
+      ? 'SET websiteAllowlist = :on, websiteAllowlistAt = :at, websiteAllowlistReason = :reason, websiteAllowlistActor = :actor, updatedAt = :now, active = :on, #s = :off, reviewStatus = :approved, suspensionSource = :clear, accessVersion = :next'
       : 'SET websiteAllowlist = :off, websiteAllowlistRevokedAt = :at, websiteAllowlistReason = :reason, websiteAllowlistActor = :actor, accessVersion = :next, updatedAt = :now',
     ExpressionAttributeNames: { '#s': 'suspended' },
-    ExpressionAttributeValues: marshall({ ':v': row.accessVersion, ':false': false, ':approved': 'approved', ':at': now, ':reason': reason,
-      ':actor': actor, ':now': Date.now(), ...(granting ? { ':on': true } : { ':off': false, ':next': row.accessVersion + 1 }) }) }));
+    ExpressionAttributeValues: marshall({ ':v': row.accessVersion, ':wasSuspended': row.suspended,
+      ':wasReview': row.reviewStatus, ...(row.suspensionSource === undefined ? {} : { ':wasSource': row.suspensionSource }),
+      ':at': now, ':reason': reason, ':actor': actor, ':now': Date.now(), ':next': row.accessVersion + 1,
+      ...(granting ? { ':on': true, ':off': false, ':approved': 'approved', ':clear': '' } : { ':off': false }) }) }));
   console.log(`  done`);
 }

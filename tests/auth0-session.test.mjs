@@ -52,7 +52,12 @@ function setup(options = {}) {
         if (options.race) throw Object.assign(new Error('Approval changed'), { name: 'TransactionCanceledException' });
         for (const op of input.TransactItems) {
           if (op.Put) { const item = decode(op.Put.Item); rows.set(item.pk, item); }
-          if (op.Update) { row.enrolmentStatus = 'complete'; row.auth0BindingKey = op.Update.ExpressionAttributeValues[':auth0Key'].S; }
+          if (op.Update) {
+            row.enrolmentStatus = 'complete';
+            if (op.Update.ExpressionAttributeValues[':auth0Key']) {
+              row.auth0BindingKey = op.Update.ExpressionAttributeValues[':auth0Key'].S;
+            }
+          }
         }
         return {};
       }
@@ -137,11 +142,10 @@ test('verified first Auth0 enrolment atomically binds a unique reviewed particip
   }
 });
 
-test('Auth0 cannot claim missing, ambiguous, unapproved, already-bound or concurrently withdrawn participants', async () => {
+test('Auth0 cannot claim missing, ambiguous, unapproved or concurrently withdrawn participants', async () => {
   for (const modify of [s => s.rows.delete(s.emailKey), s => s.row.active = false,
     s => s.row.approvedDomains = [], s => s.row.email = 'changed@example.test',
-    s => s.rows.get(s.emailKey).participantId = 'different-participant',
-    s => s.row.auth0BindingKey = 'IDENTITY#another-provider']) {
+    s => s.rows.get(s.emailKey).participantId = 'different-participant']) {
     const s = setup(); modify(s);
     assert.equal((await s.callback()).statusCode, 401);
     assert.equal(s.commands.filter(c => c.TransactItems).length, 0);
@@ -149,13 +153,13 @@ test('Auth0 cannot claim missing, ambiguous, unapproved, already-bound or concur
   assert.equal((await setup({ race: true }).callback()).statusCode, 401);
 });
 
-test('Auth0 tokens require verified email, signature-bound issuer/audience/nonce and nonempty subject', async () => {
+test('new Auth0 bindings require trusted email, signature-bound issuer/audience/nonce and nonempty subject', async () => {
   for (const claims of [{ email_verified: false }, { email_verified: 'true' }, { email_verified: null },
     { iss: 'https://other.auth0.com/' }, { aud: 'another-client' }, { exp: NOW },
     { nonce: 'wrong' }, { sub: '' }, { sub: 'bad\nsubject' }, { token_use: 'access' }]) {
     const s = setup({ claims });
     assert.equal((await s.callback()).statusCode, 401);
-    assert.equal(s.commands.length, 0);
+    assert.equal(s.commands.filter(c => c.TransactItems).length, 0);
   }
 });
 
@@ -173,8 +177,37 @@ test('GitHub requires the Auth0 action claim for the same verified address and a
   ]) {
     const s = setup({ claims });
     assert.equal((await s.callback()).statusCode, 401);
-    assert.equal(s.commands.length, 0);
+    assert.equal(s.commands.filter(c => c.TransactItems).length, 0);
   }
+});
+
+test('a second Auth0 social provider can use the same approved or allowlisted website account', async () => {
+  for (const row of [{}, { approvedDomains: [], domainApprovals: {}, websiteAllowlist: true }]) {
+    const claims = {};
+    const s = setup({ claims, row });
+    const google = await s.callback();
+    assert.equal(google.statusCode, 302);
+    const originalKey = s.row.auth0BindingKey;
+    claims.sub = 'github|311648';
+    claims.email_verified = false;
+    claims['https://opda.org.uk/github_verified_email'] = s.row.email;
+    const github = await s.callback('github');
+    assert.equal(github.statusCode, 302);
+    assert.equal(s.row.auth0BindingKey, originalKey);
+    assert.equal((await s.handler(request('/_auth/me', {}, github.cookies))).statusCode, 200);
+    assert.equal((await s.handler(request('/_auth/me', {}, google.cookies))).statusCode, 200);
+  }
+});
+
+test('an explicitly bound GitHub account can use an allowlist entry without an email verification claim', async () => {
+  const subject = 'github|159436596';
+  const s = setup({ claims: { sub: subject, email_verified: false },
+    row: { approvedDomains: [], domainApprovals: {}, websiteAllowlist: true } });
+  const key = identityKey({ issuer: ISSUER, sub: subject });
+  s.rows.set(key, { pk: key, issuer: ISSUER, subject, email: s.row.email,
+    sub: SUB, participantId: s.row.participantId });
+  assert.equal((await s.callback('github')).statusCode, 302);
+  assert.equal(s.row.auth0BindingKey, undefined);
 });
 
 test('an existing issuer/subject binding cannot be moved by a changed email or corrupt subject record', async () => {
