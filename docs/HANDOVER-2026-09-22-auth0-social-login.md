@@ -1,253 +1,186 @@
 # Handover: Auth0 social login and website eligibility
 
-Prepared 22 September 2026. Repository: `/Users/henrik/source/opda`.
+Updated 22 September 2026. Repository: `/Users/henrik/source/opda`.
 
-## Required outcome
+## Required contract
 
-Every person who satisfies either of these conditions must be able to sign in to
-the OPDA website through every social connection offered by the OPDA Auth0
-application:
+Every participant who has either of these grants can sign in to the OPDA website
+through every enabled Auth0 social provider:
 
-1. the person has at least one approved working group; or
-2. the person has an explicit website allowlist entry.
+1. at least one approved working group; or
+2. an explicit website allowlist entry.
 
-Those are two independent ways to receive website access. Working-group approval
-does not need to set the website allowlist flag. An explicit allowlist entry does
-not grant access to any working-group workspace.
+Those are the complete website eligibility rules. Participant lifecycle projections
+such as active, suspended, review, enrolment, retention, deletion and erasure do not
+override a surviving grant. An allowlist entry grants no working-group workspace;
+each workspace still requires approval for that group.
 
-Provider choice must not introduce another eligibility rule. A person must not
-need a manual database edit, a per-account exception or a particular social
-provider. After Auth0 has authenticated the person and OPDA has safely linked the
-social subject to the eligible participant, the website authorization decision is:
+Authentication and record-integrity checks remain mandatory. The callback verifies
+the signed ID token, issuer, audience, nonce, subject and time. Sessions remain
+opaque, expire after at most one hour and are bound to the canonical participant,
+immutable Auth0 subject and current access version.
+
+## Deployed implementation
+
+Commit `4feef7db` (`fix(auth): generalize social login eligibility`) is deployed.
+
+- [Infrastructure run 35745447732](https://github.com/sparkling/opda/actions/runs/35745447732) — success
+- [Site run 35745448271](https://github.com/sparkling/opda/actions/runs/35745448271) — success
+
+The implementation now has one provider registry shared by login validation,
+Auth0 connection selection, failure retries, the holding page and tests. It contains:
+
+| Public key | Auth0 connection | Holding-page label |
+|---|---|---|
+| `google` | `google-oauth2` | Google |
+| `github` | `github` | GitHub |
+| `apple` | `apple` | Apple |
+| `facebook` | `facebook` | Facebook |
+| `linkedin` | `linkedin` | LinkedIn |
+| `microsoft` | `windowslive` | Microsoft |
+
+The default `/_auth/login` route leaves `connection` unset so Auth0 Universal Login
+can present all assigned connections. A direct provider route supplies the registry's
+connection name. GitHub additionally requests `user:email`.
+
+### General first binding
+
+For a first social login, OPDA uses the normalized email in the signed Auth0 ID token
+to locate the existing unique email reservation and canonical participant. It then
+creates an immutable `issuer + subject` binding and the opaque website session in one
+conditional transaction. Auth0's optional provider-specific `email_verified` claim
+is not an additional requirement.
+
+For later logins, the immutable binding identifies the participant even when the
+provider changes or omits the email claim. A subject binding cannot move to another
+participant. Missing or ambiguous participant records, invalid tokens, corrupt
+bindings and transaction races still fail closed.
+
+### Exact authorization predicate
+
+The shared website access function returns a grant only when:
 
 ```text
-has an approved working group OR is explicitly website-allowlisted
+websiteAllowlist === true
+OR
+approvedDomains contains a domain whose domainApprovals[domain].status is "approved"
 ```
 
-JWT signature, issuer, audience, nonce and transaction checks remain authentication
-integrity checks. They must not be used to introduce another membership rule.
+The auth callback, session reader, edge gate and comments API all use this shared
+predicate. Atomic session creation rechecks the selected allowlist or approved-domain
+grant in DynamoDB. Removing the final grant and incrementing `accessVersion`
+invalidates existing sessions; reapproval cannot revive an old cookie.
 
-## Direct answer about Maria
+The allowlist administration script now changes the allowlist grant and audit fields
+without refusing or rewriting unrelated lifecycle projections.
 
-**Yes. Maria received account-specific handling.** A production identity record
-was manually created to bind the GitHub subject seen in her failed Auth0 attempt to
-her existing allowlisted participant record. The participant record was also
-updated so existing session/version checks accepted that binding.
+## Auth0 tenant state
 
-That manual binding means the exact bound GitHub subject can return without a new
-GitHub verified-email claim. It is not a general solution and must not become an
-operator step for Maria or anybody else. Maria's own login after the binding has
-**not** been tested, so her login must not be reported as verified.
+All six social connections exist and are assigned to the OPDA site client:
 
-Keep the existing binding as a legitimate immutable identity association. Replace
-the need for such manual associations with a general, auditable linking flow that
-works for every eligible participant and every enabled provider.
+| Connection | Assigned to OPDA |
+|---|---:|
+| Google | Yes |
+| GitHub | Yes |
+| Apple | Yes |
+| Facebook | Yes |
+| LinkedIn | Yes |
+| Microsoft / Windows Live | Yes |
 
-## Current live status
+The OPDA GitHub verified-email Action has been detached and deleted. Its dedicated
+Management API application and its `read:users` / `read:user_idp_tokens` grant have
+also been deleted. The two unrelated tenant post-login actions remain bound in their
+original order:
 
-The deployed code is commit `6e9e8cf2` (`fix(auth): allow approved or allowlisted
-members across social providers`). Both deployment workflows for that commit
-completed successfully:
+1. `HM Email Allow-List`;
+2. `Add API Claims to Browser Tokens`.
 
-- [Infrastructure run 35734940125](https://github.com/sparkling/opda/actions/runs/35734940125)
-- [Site run 35734940433](https://github.com/sparkling/opda/actions/runs/35734940433)
+There is no provider-specific OPDA Auth0 Action, custom email claim or GitHub-only
+runtime path.
 
-The current system supports multiple immutable Auth0 subjects for one participant,
-but the available providers and first-link behavior are incomplete.
+## Maria account status
 
-| Auth0 social connection | Exists in tenant | Assigned to OPDA site app | Offered by OPDA page/code | Current result |
-|---|---:|---:|---:|---|
-| Google | Yes | Yes | Yes, default | Available |
-| GitHub | Yes | Yes | Yes | Available, with GitHub-specific verification Action |
-| Apple | Yes | No | No | Unavailable |
-| Facebook | Yes | No | No | Unavailable |
-| LinkedIn | Yes | No | No | Unavailable |
-| Microsoft / Windows Live (`windowslive`) | Yes | No | No | Unavailable |
+Maria previously received account-specific handling: an operator manually inserted
+an Auth0 GitHub subject binding after her provider returned an email without the
+optional `email_verified` claim. The deployed application no longer needs that
+exception; the general first-binding path accepts the signed Auth0 email for every
+provider and every eligible participant.
 
-The live connection-client readback showed that only Google and GitHub are assigned
-to the OPDA site application. Adding assignments in Auth0 alone is insufficient:
-the application currently rejects any `provider` value other than `google` or
-`github`, and the under-development page renders only those two links.
+The historical manual binding still needs to be removed from DynamoDB. The cleanup
+is waiting only for AWS SSO device approval in the `opda` profile. It must:
 
-### Live verification completed
+1. verify the email reservation, participant and current binding agree;
+2. verify Maria retains a website allowlist or approved-group grant;
+3. delete only that exact identity record;
+4. clear the matching participant `auth0BindingKey` and increment `accessVersion`
+   in the same conditional transaction; and
+5. read back that the special binding is absent and the website grant remains.
 
-- A GitHub sign-in with the owner's existing **sparkling** Chrome/GitHub profile
-  completed the Auth0 callback and opened protected OPDA content.
-- The sign-in created another immutable social identity record for the same
-  allowlisted participant.
-- This proves the deployed GitHub path for that account. It does not prove Maria's
-  login or coverage for every participant/provider pair.
+After cleanup, Maria's next sign-in will create a normal immutable binding through
+the same code used for every other eligible participant. Her own post-cleanup login
+has not yet been performed and must not be reported as tested.
 
-### GitHub-specific implementation
+## Verification evidence
 
-Auth0 did not supply `email_verified` for the tested GitHub identity even though
-GitHub reported the address as verified. The deployed Auth0 post-login Action in
-`config/auth0/github-email-action.cjs` therefore:
+Local validation for `4feef7db`:
 
-1. runs only for the OPDA site client and GitHub connection;
-2. reads the current GitHub identity token through a restricted Auth0 Management
-   API client;
-3. calls GitHub's `/user/emails` endpoint; and
-4. adds a namespaced ID-token claim only when Auth0's email exactly matches a
-   verified GitHub email.
+- `make test`: 1,117 tests passed, one existing skip;
+- `make build`: 2,781 pages built successfully;
+- `node scripts/check-ci-test-inventory.mjs`: 130 test files have one owner, tier
+  and lane;
+- `git diff --check`: clean.
 
-The OPDA callback trusts that signed custom claim only for a numeric GitHub
-subject and the same normalized email. Version 3 of the Action accepts a matching
-verified secondary GitHub address as well as the primary address.
+The tests cover:
 
-GitHub still uses Auth0's shared development OAuth key. A dedicated GitHub OAuth
-application is required before treating that connection as production-ready.
+- all six provider keys and Auth0 connection mappings;
+- direct-provider retries and Universal Login without a forced connection;
+- first binding for approved-group and allowlist-only participants across all six
+  providers;
+- absent, false, null and string `email_verified` values;
+- returning bindings with a changed or missing provider email;
+- refusal of malformed tokens, missing email on an unbound identity, missing or
+  ambiguous reservations, corrupt bindings and concurrent grant changes;
+- allowlist and approved-domain atomic DynamoDB guards;
+- lifecycle projections not overriding a surviving website grant;
+- final-grant withdrawal and access-version invalidation; and
+- the six rendered holding-page login links.
 
-## Current implementation gaps
+Live checks completed after deployment:
 
-### 1. Provider list is duplicated and limited
+- the holding page visibly renders Google, GitHub, Apple, Facebook, LinkedIn and
+  Microsoft links with the expected provider parameters;
+- Auth0 Management API readback confirms all six connections are assigned;
+- GitHub sign-in with the owner's existing Sparkling profile completed and returned
+  to protected OPDA content after the GitHub Action was deleted.
 
-`config/aws/auth-session/index.mjs` hardcodes `google` and `github` in transient
-transaction validation, login request validation and Auth0 connection mapping.
-GitHub also has a hardcoded scope exception. `config/aws/auth-session/workspace.mjs`
-preserves only GitHub on retry, and `src/pages/under-development.astro` contains
-only Google and GitHub sign-in links.
-
-Create one shared provider registry that owns:
-
-- the public provider key;
-- the Auth0 connection name;
-- the display label and order;
-- any required connection scope;
-- the provider's trusted-email claim strategy; and
-- whether the provider is enabled for the OPDA Auth0 application.
-
-Use that registry in login validation, transaction persistence, retry URLs, UI
-rendering and tests. Do not add six separate implementations.
-
-### 2. First-time identity linking is not provider-independent
-
-`config/aws/auth-session/identity.mjs` treats a normal Auth0 `email_verified: true`
-claim as trusted and contains a special rule for GitHub's custom claim.
-`config/aws/auth-session/store.mjs` can add a second social subject to the same
-participant after a trusted email match. An untrusted or missing email can use
-only an identity binding that already exists.
-
-This is why Maria needed a manual binding. It will recur for any provider that
-omits a trustworthy email claim or returns a different address.
-
-Implement one general first-link path:
-
-1. If the social provider supplies a trustworthy email that uniquely matches an
-   eligible participant, create the immutable `issuer + subject` binding
-   atomically.
-2. Otherwise, send a one-time ownership challenge to the email on the eligible
-   OPDA participant record. After successful verification, atomically bind the
-   authenticated Auth0 subject to that participant.
-3. On later sign-ins, resolve the immutable binding without requiring the provider
-   to repeat its email attestation.
-4. Refuse ambiguous matches and refuse moving an existing subject to another
-   participant.
-
-This must be a normal product flow available to every eligible user. It must not
-depend on an engineer inserting an identity record.
-
-### 3. The authorization predicate still has extra participant gates
-
-`approvedParticipant()` currently requires the access union and also checks fields
-including `reviewStatus`, `active`, `suspended`, deletion/erasure markers, expiry,
-`accessVersion` and enrolment status. Review that model against the required rule.
-No additional account-state field may cause a person who still has an approved
-working group or explicit website allowlist entry to fail website login.
-
-If an operational action is intended to revoke website access, it must remove or
-withdraw both qualifying grants as applicable. Session invalidation and immutable
-identity checks should continue to prevent stale or reassigned access.
-
-### 4. Auth0 connections are not restored
-
-Apple, Facebook, LinkedIn and Microsoft/Windows Live exist in the tenant but are
-not assigned to the OPDA application. Before assignment, verify each connection's
-dedicated production credentials, callback configuration, scopes and actual ID
-token claims. Shared Auth0 development keys must not be accepted as the final
-production configuration.
-
-Restore all six connections only with the application support and tests in the
-same release. Do not expose a provider button that reaches a known dead or
-unhandled callback path.
-
-### 5. Coverage is incomplete
-
-The current unit suite proves Google and GitHub flows, multiple bindings and the
-GitHub custom claim behavior. It does not prove the full provider-by-eligibility
-matrix or the general ownership-challenge path.
-
-## Required implementation sequence
-
-1. Introduce the shared social-provider registry and refactor the existing Google
-   and GitHub behavior onto it without changing their live result.
-2. Implement the provider-independent first-link flow, including the one-time OPDA
-   email ownership challenge for missing, untrusted or different provider email.
-3. Make website authorization use exactly the required access union after identity
-   authentication and linking. Keep workspace authorization scoped to each
-   approved group.
-4. Add Apple, Facebook, LinkedIn and Microsoft/Windows Live to the registry and UI.
-5. Configure dedicated provider credentials and assign all six connections to the
-   OPDA Auth0 application.
-6. Update the accepted architecture records, especially ADR-0038 and ADR-0084, so
-   they describe the restored provider set and general linking flow.
-7. Run `make test` and `make build`, then deploy through the normal main-branch CI.
-8. Verify every provider live through the existing **OPDA** Chrome profile unless
-   the operator explicitly names another profile. Record the account, provider,
-   callback outcome and protected-page result without storing tokens or sensitive
-   identifiers.
-9. Have Maria complete a fresh GitHub login and record the result. Her existing
-   manual binding is useful migration coverage, not acceptance evidence for the
-   general first-link flow.
-
-## Acceptance matrix
-
-Every cell below must pass before the work is complete.
-
-| Eligible participant state | Google | GitHub | Apple | Facebook | LinkedIn | Microsoft |
-|---|---:|---:|---:|---:|---:|---:|
-| One approved working group | Pass | Pass | Pass | Pass | Pass | Pass |
-| Explicit website allowlist only | Pass | Pass | Pass | Pass | Pass | Pass |
-| Both approval and allowlist | Pass | Pass | Pass | Pass | Pass | Pass |
-
-For every provider, cover these cases:
-
-- first sign-in with a trusted matching email;
-- first sign-in with missing, untrusted or different provider email through the
-  general ownership challenge;
-- repeat sign-in through an existing immutable binding;
-- adding the provider as a second identity for the same participant;
-- refusal of an ambiguous participant match;
-- refusal to move a subject already bound to another participant;
-- access to the website with an explicit allowlist and no group approval;
-- access to the website with a group approval and no allowlist;
-- access only to workspaces whose group is approved; and
-- withdrawal of the final qualifying grant invalidating existing sessions.
-
-No acceptance test may rely on a manual DynamoDB identity insertion.
+Apple, Facebook, LinkedIn and Microsoft have configuration and route readback but
+have not each completed a live account login in this session. Provider-account
+consent and upstream claim behavior should be recorded when suitable test accounts
+are available. This does not change the shared OPDA authorization path.
 
 ## Relevant files
 
-| File | Current responsibility |
+| File | Responsibility |
 |---|---|
-| `config/aws/auth-session/index.mjs` | OAuth transaction, provider selection, callback and session issue |
-| `config/aws/auth-session/identity.mjs` | ID-token verification, trusted-email decision and website eligibility |
-| `config/aws/auth-session/store.mjs` | Participant lookup, immutable social identity binding and session persistence |
-| `config/aws/auth-session/workspace.mjs` | Sign-in failure and retry page |
-| `config/auth0/github-email-action.cjs` | GitHub-only verified-email claim |
-| `src/pages/under-development.astro` | Current Google/GitHub login choices |
+| `config/aws/auth-session/providers.mjs` | Shared social-provider registry and direct login links |
+| `config/aws/auth-session/identity.mjs` | ID-token verification and exact website grant predicate |
+| `config/aws/auth-session/store.mjs` | Participant resolution, immutable subject binding and atomic session persistence |
+| `config/aws/auth-session/index.mjs` | OAuth transaction, callback and session issue |
+| `config/aws/auth-session/session.mjs` | Current session, participant and binding validation |
+| `config/aws/auth-session/workspace.mjs` | Provider-preserving sign-in retries and workspace selection |
 | `scripts/website-allowlist.mjs` | Explicit website allowlist administration |
-| `tests/auth0-session.test.mjs` | Auth0 callback, identity binding and eligibility tests |
-| `tests/auth0-github-email-action.test.mjs` | GitHub Action tests |
-| `tests/design-system-layout-contract.test.mjs` | Current sign-in-link contract |
-| `docs/adr/ADR-0038-hosting-auth-and-comments-architecture-aws.md` | Current hosting and Auth0 architecture record |
-| `docs/adr/ADR-0084-integrate-hubspot-with-signup-and-cognito.md` | Participant eligibility and identity integration record |
-| `docs/adr/ADR-0085-approval-driven-working-group-onboarding-and-invitations.md` | Per-group approval and invitation behavior |
+| `src/pages/under-development.astro` | Six provider login choices from the shared registry |
+| `tests/auth0-session.test.mjs` | Auth0 provider, binding and eligibility contracts |
+| `tests/auth-session.test.mjs` | Shared session and DynamoDB authorization contracts |
+| `tests/comments-api.test.mjs` | Comment identity behavior under the exact entitlement rule |
+| `tests/edge-gate.test.mjs` | Edge behavior under the exact entitlement rule |
 
-## Repository state and handling constraints
+The GitHub-only files `config/auth0/github-email-action.cjs` and
+`tests/auth0-github-email-action.test.mjs` were deleted.
 
-At preparation, `main` matched `origin/main` at `6e9e8cf2`. Preserve these unrelated
-working-tree items:
+## Repository handling
+
+Work remains directly on `main`. Preserve these unrelated working-tree items:
 
 - modified `.agents/skills/security-audit/SKILL.md`;
 - untracked `.agentic-qe/`.
