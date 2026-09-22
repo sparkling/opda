@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { websiteAccessGrant } from './identity.mjs';
 
 export const sessionKey = (token) => `SESSION#${createHash('sha256').update(token).digest('hex')}`;
 export const identityKey = ({ issuer, sub }) => `IDENTITY#${createHash('sha256').update(JSON.stringify([issuer, sub])).digest('hex')}`;
@@ -38,18 +39,19 @@ export function createStore(config, overrides = {}) {
     return decode(result.Item);
   }
 
-  async function resolveParticipant(identity, { existingOnly = false } = {}) {
+  async function resolveParticipant(identity) {
     const table = config.participantsTableName, key = identityKey(identity);
     const existing = await get(table, key);
     if (existing) {
-      if (existing.issuer !== identity.issuer || existing.subject !== identity.sub || existing.email !== identity.email) return null;
+      if (existing.issuer !== identity.issuer || existing.subject !== identity.sub) return null;
       const participant = await get(table, `USER#${existing.sub}`);
       if (!participant || participant.participantId !== existing.participantId
-        || participant.cognitoSub !== existing.sub || participant.email !== identity.email) return null;
+        || participant.cognitoSub !== existing.sub) return null;
       return { participant, binding: { record: existing, first: false } };
     }
-    if (existingOnly) return null;
-    // Email locates a reviewed, unbound enrolment, never a second-provider link.
+    // Auth0 authenticated the social identity. Its signed email locates the one
+    // reserved OPDA participant; the immutable issuer/subject binding owns repeats.
+    if (!identity.email) return null;
     const emailKey = `EMAIL#${createHash('sha256').update(identity.email).digest('hex')}`;
     const reserved = await get(table, emailKey);
     const sourceKey = reserved?.approvalKey ?? reserved?.importKey;
@@ -77,32 +79,42 @@ export function createStore(config, overrides = {}) {
     getSession: (key) => get(config.sessionsTableName, key),
     deleteSession: (key) => send('DeleteItemCommand', { TableName: config.sessionsTableName, Key: { pk: { S: key } } }),
     async issueSession({ participant, session, now, identity, binding }) {
-      if (participant.active !== true) throw new Error('Participant is inactive.');
+      const grant = websiteAccessGrant(participant);
+      if (!grant) throw new Error('Participant has no website access grant.');
       const guard = {
         TableName: config.participantsTableName,
         Key: { pk: { S: participant.pk } },
-        ConditionExpression: 'attribute_exists(pk) AND #review = :approved AND #suspended = :false'
-          + ' AND attribute_not_exists(erasedAt) AND attribute_not_exists(deletedAt)'
-          + ' AND #version = :version AND #sub = :sub AND #email = :email AND #participant = :participant'
-          + ' AND #enrolment = :enrolment AND #active = :active'
-          + ' AND (attribute_not_exists(#expires) OR #expires > :now)',
+        ConditionExpression: 'attribute_exists(pk) AND #version = :version AND #sub = :sub'
+          + ' AND #email = :email AND #participant = :participant',
         ExpressionAttributeNames: {
-          '#review': 'reviewStatus', '#suspended': 'suspended', '#version': 'accessVersion',
-          '#sub': 'cognitoSub', '#email': 'email', '#participant': 'participantId',
-          '#enrolment': 'enrolmentStatus', '#active': 'active', '#expires': 'expiresAt',
+          '#version': 'accessVersion', '#sub': 'cognitoSub', '#email': 'email', '#participant': 'participantId',
         },
         ExpressionAttributeValues: {
-          ':approved': { S: 'approved' }, ':false': { BOOL: false }, ':version': attribute(participant.accessVersion),
+          ':version': attribute(participant.accessVersion),
           ':sub': attribute(participant.cognitoSub), ':email': attribute(participant.email),
-          ':participant': attribute(participant.participantId), ':enrolment': attribute(participant.enrolmentStatus),
-          ':active': { BOOL: true }, ':now': attribute(now),
+          ':participant': attribute(participant.participantId),
         },
       };
+      if (grant.type === 'allowlist') {
+        guard.ConditionExpression += ' AND #websiteAllowlist = :entitled';
+        guard.ExpressionAttributeNames['#websiteAllowlist'] = 'websiteAllowlist';
+        guard.ExpressionAttributeValues[':entitled'] = { BOOL: true };
+      } else {
+        guard.ConditionExpression += ' AND contains(#approvedDomains, :approvedDomain)'
+          + ' AND #domainApprovals.#approvedDomain.#status = :approved';
+        Object.assign(guard.ExpressionAttributeNames, {
+          '#approvedDomains': 'approvedDomains', '#domainApprovals': 'domainApprovals',
+          '#approvedDomain': grant.domainId, '#status': 'status',
+        });
+        Object.assign(guard.ExpressionAttributeValues, {
+          ':approvedDomain': attribute(grant.domainId), ':approved': attribute('approved'),
+        });
+      }
       const identityWrites = [];
       if (config.provider === 'auth0') {
         const record = binding?.record;
         if (!identity || !record || record.pk !== identityKey(identity) || record.sub !== session.sub
-          || record.email !== session.email || record.participantId !== participant.participantId
+          || record.participantId !== participant.participantId
           || record.issuer !== identity.issuer || record.subject !== identity.sub
           || session.auth0BindingKey !== record.pk) throw new Error('Invalid identity binding.');
         guard.ExpressionAttributeNames['#auth0Key'] = 'auth0BindingKey';
@@ -124,8 +136,12 @@ export function createStore(config, overrides = {}) {
             ExpressionAttributeValues: bindingValues } });
         } else {
           identityWrites.push({ ConditionCheck: { TableName: config.participantsTableName,
-            Key: { pk: attribute(record.pk) }, ConditionExpression: 'participantId = :pid AND #sub = :sub AND email = :email',
-            ExpressionAttributeNames: { '#sub': 'sub' }, ExpressionAttributeValues: bindingValues } });
+            Key: { pk: attribute(record.pk) }, ConditionExpression: 'participantId = :pid AND #sub = :sub'
+              + ' AND issuer = :issuer AND subject = :subject',
+            ExpressionAttributeNames: { '#sub': 'sub' }, ExpressionAttributeValues: {
+              ':pid': bindingValues[':pid'], ':sub': bindingValues[':sub'],
+              ':issuer': attribute(record.issuer), ':subject': attribute(record.subject),
+            } } });
         }
       }
       let participantWrite = { ConditionCheck: guard };
@@ -135,7 +151,8 @@ export function createStore(config, overrides = {}) {
           UpdateExpression: 'SET #enrolment = :complete, #completed = :completed, #verifiedAt = :completed'
             + ', #verifiedEmail = :verifiedEmail, #verifiedSub = :verifiedSub, #verifiedIssuer = :verifiedIssuer',
           ExpressionAttributeNames: {
-            ...guard.ExpressionAttributeNames, '#completed': 'completedAt', '#verifiedAt': 'verifiedEmailAt',
+            ...guard.ExpressionAttributeNames, '#enrolment': 'enrolmentStatus',
+            '#completed': 'completedAt', '#verifiedAt': 'verifiedEmailAt',
             '#verifiedEmail': 'verifiedEmail', '#verifiedSub': config.provider === 'auth0' ? 'verifiedSubject' : 'verifiedCognitoSub', '#verifiedIssuer': 'verifiedIssuer',
           },
           ExpressionAttributeValues: {

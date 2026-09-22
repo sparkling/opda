@@ -53,13 +53,15 @@ test('domain-policy login requires a real approved group even before legacy proj
   assert.equal(approvedParticipant(row, identity, NOW), false);
 });
 
-test('an explicit website allowlist keeps sign-in for an account with no approved group, but never lifts a hold', () => {
+test('an explicit website allowlist is sufficient regardless of unrelated lifecycle projections', () => {
   const identity = { sub: SUB, email: 'member@example.test' };
   const row = participant({ approvedDomains: [], domainApprovals: {}, websiteAllowlist: true });
   assert.equal(approvedParticipant(row, identity, NOW), true);
-  for (const hold of [{ suspended: true }, { active: false }, { reviewStatus: 'under_review' }, { expiresAt: NOW - 1 }, { websiteAllowlist: 'yes' }]) {
-    assert.equal(approvedParticipant(participant({ approvedDomains: [], domainApprovals: {}, websiteAllowlist: true, ...hold }), identity, NOW), false, JSON.stringify(hold));
+  for (const projection of [{ suspended: true }, { active: false }, { reviewStatus: 'under_review' },
+    { expiresAt: NOW - 1 }, { enrolmentStatus: 'expired' }, { erasedAt: 'prior-marker' }, { deletedAt: 'prior-marker' }]) {
+    assert.equal(approvedParticipant(participant({ approvedDomains: [], domainApprovals: {}, websiteAllowlist: true, ...projection }), identity, NOW), true, JSON.stringify(projection));
   }
+  assert.equal(approvedParticipant(participant({ approvedDomains: [], domainApprovals: {}, websiteAllowlist: 'yes' }), identity, NOW), false);
 });
 
 function event(path, { query = {}, cookies = [], method = 'GET' } = {}) {
@@ -96,7 +98,9 @@ function handlerWith(options = {}) {
       operations.push(['issueSession', clone(input)]);
       options.beforeIssue?.(state);
       if (options.writeFailure) throw new Error('write unavailable');
-      if (JSON.stringify(state.participant) !== JSON.stringify(input.participant)) {
+      if (!approvedParticipant(state.participant, input.session, state.now)
+        || state.participant.participantId !== input.session.participantId
+        || state.participant.accessVersion !== input.session.accessVersion) {
         throw Object.assign(new Error('approval changed'), { name: 'TransactionCanceledException' });
       }
       if (state.participant.enrolmentStatus === 'not_invited') {
@@ -255,11 +259,10 @@ test('verified OTP callback completes approval-bound onboarding and exposes only
   assert.doesNotMatch(me.body, /token|provider-/u);
 });
 
-test('unknown, unapproved, suspended, expired and identity-unbound participants cannot create sessions', async (t) => {
-  const cases = [null, { reviewStatus: 'pending' }, { suspended: true }, { suspended: undefined },
-    { cognitoSub: 'different-sub' }, { email: 'outsider@example.test' }, { expiresAt: NOW },
-    { active: false }, { active: undefined }, { enrolmentStatus: 'complete', active: false },
-    { enrolmentStatus: 'unexpected' }, { accessVersion: '1' }];
+test('unknown, ineligible, structurally invalid and identity-unbound participants cannot create sessions', async (t) => {
+  const cases = [null, { approvedDomains: [], domainApprovals: {} },
+    { cognitoSub: 'different-sub' }, { email: 'outsider@example.test' },
+    { participantId: '' }, { accessVersion: '1' }];
   for (const value of cases) await t.test(JSON.stringify(value), async () => {
     const controls = handlerWith({ participant: value });
     assert.equal((await controls.callback()).statusCode, 401);
@@ -289,12 +292,12 @@ test('callback rejects bad signatures, algorithms and all required Cognito ID-to
   });
 });
 
-test('session expiry is capped by both provider token and participant expiry', async () => {
+test('session expiry is capped by the provider token and one-hour session limit', async () => {
   const controls = handlerWith({ tokenOverrides: { exp: NOW + 1800 }, participant: { expiresAt: NOW + 600 } });
   const response = await controls.callback();
   assert.equal(response.statusCode, 302);
-  assert.equal([...controls.sessions.values()][0].expiresAt, NOW + 600);
-  assert.match(response.cookies.find((cookie) => cookie.startsWith('__Host-opda_session=')), /Max-Age=600$/u);
+  assert.equal([...controls.sessions.values()][0].expiresAt, NOW + 1800);
+  assert.match(response.cookies.find((cookie) => cookie.startsWith('__Host-opda_session=')), /Max-Age=1800$/u);
 });
 
 test('simultaneous OAuth transactions keep independent state, nonce, return path and PKCE when callbacks complete out of order', async () => {
@@ -362,22 +365,21 @@ test('already-complete active participants can sign in without repeating onboard
   assert.equal(controls.state.participant.accessVersion, 1);
 });
 
-test('a concurrent approval, deactivation or enrollment change prevents enrollment and session issuance', async (t) => {
-  for (const change of [{ suspended: true }, { active: false }, { accessVersion: 2 }, { reviewStatus: 'rejected' }, { enrolmentStatus: 'complete', active: false }]) {
+test('a concurrent entitlement, version or identity change prevents session issuance', async (t) => {
+  for (const change of [{ approvedDomains: [], domainApprovals: {} }, { accessVersion: 2 },
+    { email: 'changed@example.test' }, { cognitoSub: 'changed-sub' }]) {
     await t.test(JSON.stringify(change), async () => {
       const controls = handlerWith({ beforeIssue: (state) => Object.assign(state.participant, change) });
       assert.equal((await controls.callback()).statusCode, 401);
       assert.equal(controls.sessions.size, 0);
-      assert.equal(controls.state.participant.active, change.active ?? true);
       assert.equal(controls.state.participant.verifiedEmailAt, undefined);
     });
   }
 });
 
-test('me rechecks current membership and session bindings instead of trusting a stale cookie', async (t) => {
-  const changes = [null, { reviewStatus: 'rejected' }, { reviewStatus: 'withdrawn' }, { suspended: true }, { active: false },
-    { enrolmentStatus: 'not_invited' }, { accessVersion: 2 }, { email: 'changed@example.test' },
-    { cognitoSub: 'changed-sub' }, { participantId: 'changed-participant' }, { expiresAt: NOW }];
+test('me rechecks current access grants and session bindings instead of trusting a stale cookie', async (t) => {
+  const changes = [null, { approvedDomains: [], domainApprovals: {} }, { accessVersion: 2 },
+    { email: 'changed@example.test' }, { cognitoSub: 'changed-sub' }, { participantId: 'changed-participant' }];
   for (const change of changes) await t.test(JSON.stringify(change), async () => {
     const controls = handlerWith(), response = await controls.callback();
     controls.state.participant = change === null ? null : { ...controls.state.participant, ...change };
@@ -396,18 +398,28 @@ test('me rechecks current membership and session bindings instead of trusting a 
   }
 });
 
+test('me retains access while the qualifying grant remains despite unrelated lifecycle projections', async () => {
+  for (const change of [{ reviewStatus: 'rejected' }, { suspended: true }, { active: false },
+    { enrolmentStatus: 'expired' }, { expiresAt: NOW }, { erasedAt: 'prior-marker' }, { deletedAt: 'prior-marker' }]) {
+    const controls = handlerWith(), response = await controls.callback();
+    Object.assign(controls.state.participant, change);
+    assert.equal((await controls.handler(event('/_auth/me', { cookies: response.cookies }))).statusCode, 200, JSON.stringify(change));
+  }
+});
+
 test('withdrawal signs out every existing session and reapproval never revives old cookies', async () => {
   const controls = handlerWith();
   const first = await controls.callback(), second = await controls.callback();
   assert.equal(controls.sessions.size, 2);
-  Object.assign(controls.state.participant, { reviewStatus: 'withdrawn', active: false, suspended: true, accessVersion: 2 });
+  Object.assign(controls.state.participant, { approvedDomains: [], domainApprovals: {}, accessVersion: 2 });
   for (const session of [first, second]) {
     const denied = await controls.handler(event('/_auth/me', { cookies: session.cookies }));
     assert.equal(denied.statusCode, 401);
     assert.equal(cookieValue(denied.cookies, '__Host-opda_session'), '');
   }
   assert.equal((await controls.callback()).statusCode, 401);
-  Object.assign(controls.state.participant, { reviewStatus: 'approved', active: true, suspended: false, accessVersion: 3 });
+  Object.assign(controls.state.participant, { approvedDomains: ['conveyancing'],
+    domainApprovals: { conveyancing: { status: 'approved' } }, accessVersion: 3 });
   for (const session of [first, second]) {
     assert.equal((await controls.handler(event('/_auth/me', { cookies: session.cookies }))).statusCode, 401);
   }
@@ -527,7 +539,7 @@ test('real DynamoDB approval lists and maps survive session reads and deny withd
   assert.equal((await handler(request)).statusCode, 401);
 });
 
-test('DynamoDB adapter uses strong reads and atomic approval-bound enrollment/session writes', async () => {
+test('DynamoDB adapter uses strong reads and atomic entitlement-bound enrollment/session writes', async () => {
   const commands = [];
   class Command { constructor(input) { this.input = input; } }
   const store = createStore(CONFIG, {
@@ -546,27 +558,31 @@ test('DynamoDB adapter uses strong reads and atomic approval-bound enrollment/se
   const update = transaction[0].Update;
   assert.match(update.UpdateExpression, /#enrolment = :complete/u);
   assert.doesNotMatch(update.UpdateExpression, /#active/u);
-  assert.equal(update.ExpressionAttributeValues[':active'].BOOL, true);
   for (const field of ['verifiedEmailAt', 'verifiedEmail', 'verifiedCognitoSub', 'verifiedIssuer']) {
     assert.ok(Object.values(update.ExpressionAttributeNames).includes(field), field);
   }
   assert.equal(update.ExpressionAttributeValues[':verifiedEmail'].S, session.email);
   assert.equal(update.ExpressionAttributeValues[':verifiedSub'].S, SUB);
   assert.equal(update.ExpressionAttributeValues[':verifiedIssuer'].S, ISSUER);
-  for (const guard of ['#review = :approved', '#suspended = :false', '#version = :version', '#sub = :sub', '#email = :email', '#participant = :participant', '#enrolment = :enrolment', '#active = :active', '#expires > :now']) {
+  for (const guard of ['#version = :version', '#sub = :sub', '#email = :email', '#participant = :participant', '#domainApprovals.#approvedDomain.#status = :approved']) {
     assert.ok(update.ConditionExpression.includes(guard), guard);
   }
-  assert.equal(update.ExpressionAttributeValues[':enrolment'].S, 'not_invited');
+  for (const removed of ['#review', '#suspended', '#active', '#expires']) assert.ok(!update.ConditionExpression.includes(removed), removed);
   assert.equal(transaction[1].Put.Item.expiresAt.N, String(NOW + 3600));
   assert.equal(transaction[1].Put.ConditionExpression, 'attribute_not_exists(pk)');
   assert.doesNotMatch(JSON.stringify(transaction), /id_token|access_token|refresh_token/u);
   await store.issueSession({ participant: participant({ enrolmentStatus: 'complete', active: true }), session, now: NOW });
   assert.ok(commands[3].TransactItems[0].ConditionCheck);
   assert.equal(commands[3].TransactItems[0].Update, undefined);
+  await store.issueSession({ participant: participant({ approvedDomains: [], domainApprovals: {},
+    websiteAllowlist: true, enrolmentStatus: 'complete' }), session, now: NOW });
+  const allowlistGuard = commands[4].TransactItems[0].ConditionCheck;
+  assert.match(allowlistGuard.ConditionExpression, /#websiteAllowlist = :entitled/u);
+  assert.equal(allowlistGuard.ExpressionAttributeValues[':entitled'].BOOL, true);
   await store.deleteSession('SESSION#hash');
-  assert.deepEqual(commands[4].Key, { pk: { S: 'SESSION#hash' } });
-  await assert.rejects(store.issueSession({ participant: participant({ active: false }), session, now: NOW }), /inactive/u);
-  assert.equal(commands.length, 5);
+  assert.deepEqual(commands[5].Key, { pk: { S: 'SESSION#hash' } });
+  await store.issueSession({ participant: participant({ active: false, enrolmentStatus: 'complete' }), session, now: NOW });
+  assert.equal(commands.length, 7);
 });
 
 test('comments use the opaque website session without browser bearer tokens or automatic writes', async () => {

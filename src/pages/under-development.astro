@@ -1,6 +1,7 @@
 ---
 // Original public work-in-progress landing, recovered from f11d40c2.
 // The edge maps anonymous / here, preserving the signed-in homepage.
+import { providerLoginHref, socialProviders } from '../../config/aws/auth-session/providers.mjs';
 const title = 'OPDA — Work in progress';
 ---
 <!doctype html>
@@ -35,8 +36,9 @@ const title = 'OPDA — Work in progress';
   <main>
     <h1 class="sr-only">Under development — the OPDA Knowledge Base is being prepared</h1>
     <nav class="cs-signin" aria-label="Sign in to the Knowledge Base">
-      <a href="/_auth/login?return=%2F">Sign in with Google</a>
-      <a href="/_auth/login?return=%2F&amp;provider=github">Sign in with GitHub</a>
+      {socialProviders.map(provider => (
+        <a href={providerLoginHref(provider.key, '/')}>Sign in with {provider.label}</a>
+      ))}
     </nav>
     <a class="cs-wordmark" href="/">Open Property Data Association</a>
     <img class="cs-art" src="/coming-soon.jpg" width="2400" height="1339" fetchpriority="high"

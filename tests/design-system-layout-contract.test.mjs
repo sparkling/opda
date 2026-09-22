@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import test from 'node:test';
+import { providerLoginHref, socialProviders } from '../config/aws/auth-session/providers.mjs';
 import { inspectContents, needsContentsSlot } from '../src/lib/contents-slot.mjs';
 
 test('desktop contents geometry includes chapters with their own inline slot', async () => {
@@ -68,11 +69,11 @@ test('every Astro page belongs to an explicit visual route family', async () => 
   }
 });
 
-test('the under-development sign-in offers Google and GitHub with a safe homepage return', async () => {
+test('the under-development sign-in renders every shared social provider with a safe homepage return', async () => {
   const source = await readFile(file('src/pages/under-development.astro'), 'utf8');
-  const nav = source.match(/<nav class="cs-signin"[\s\S]*?<\/nav>/u)?.[0] ?? '';
-  const hrefs = [...nav.matchAll(/<a href="([^"]+)">/gu)].map(match => match[1].replaceAll('&amp;', '&'));
-  assert.deepEqual(hrefs, ['/_auth/login?return=%2F', '/_auth/login?return=%2F&provider=github']);
+  assert.match(source, /socialProviders\.map/u);
+  const hrefs = socialProviders.map(provider => providerLoginHref(provider.key, '/'));
+  assert.equal(hrefs.length, 6);
   for (const href of hrefs) {
     const destination = new URL(href, 'https://opda.test');
     assert.equal(destination.pathname, '/_auth/login');

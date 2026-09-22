@@ -10,40 +10,31 @@ implements: []
 
 # Hosting, auth, and comments architecture (AWS)
 
-> **Sign-in connections corrected, 2026-09-22.** The OPDA site gate previously offered
-> Apple, Facebook, GitHub, LinkedIn and Windows Live alongside Google. Only Google
-> supplied the `email_verified` claim required by the gate. GitHub requested no
-> scopes, so some accounts lacked an address, and participants reached "Sign-in
-> could not be completed". Apple, Facebook, LinkedIn and Windows Live are disabled
-> for the site gate. Google remains the default. GitHub has an explicit login path
-> requesting `user:email`. A live sign-in with the `sparkling` GitHub account
-> proved that the scope reaches GitHub and the primary address is verified, yet
-> Auth0 still omitted `email_verified`. That omission does not prove the GitHub
-> address is unverified. A dedicated Auth0 post-login Action for the OPDA site
-> client reads the current upstream token through a dedicated Management API
-> client with only `read:users` and `read:user_idp_tokens`, then checks GitHub's
-> `/user/emails`. It issues a namespaced ID-token claim only when the Auth0 email
-> equals any verified GitHub email. The gate accepts that signed claim only
-> for a GitHub subject and the exact same email. An explicitly reviewed, immutable
-> GitHub subject binding can also identify an already allowlisted participant when
-> the provider cannot attest email verification. An unverified email alone cannot
-> establish a new binding. Multiple social subjects can bind to one participant
-> after a verified email match; existing bindings cannot move by email.
-> Website eligibility is an approved working group **or** an explicit operator
-> allowlist entry; each workspace still requires its own approved group.
-> A live readback also found GitHub assigned to the site gate despite a deprecated
-> connection field claiming otherwise. The dedicated connection-clients API now
-> assigns it only for the explicit login path. Both providers have distinct retries.
+> **General social sign-in restored, 2026-09-22.** The OPDA site gate supports
+> Google, GitHub, Apple, Facebook, LinkedIn and Microsoft/Windows Live through one
+> shared provider registry. Universal Login may present every assigned connection;
+> the holding page also offers one direct path per provider. GitHub requests
+> `user:email`; the other providers use their existing Auth0 connection scopes.
+> The callback verifies the Auth0 token signature, issuer, audience, nonce, subject
+> and time for every provider. For a first sign-in, its signed normalized email must
+> exactly locate the reserved canonical participant before an immutable
+> `issuer + subject` binding is created atomically. Auth0 providers are not required
+> to emit the optional `email_verified` claim. Later sign-ins resolve that immutable
+> subject binding even if a provider changes or omits its email. Existing bindings
+> cannot move by email. No provider or participant has a special linking path, and
+> the former GitHub post-login verification Action is retired.
+> Website eligibility is exactly an approved working group **or** an explicit
+> operator allowlist entry. Participant lifecycle projections do not override an
+> extant website entitlement. Each workspace still requires approval for that
+> specific working group. Opaque one-hour sessions retain participant, binding and
+> access-version integrity checks so stale or reassigned identities cannot pass.
 > The retired **OPDA Artalk OAuth** application, whose callback still pointed at the
 > destroyed `opda-artalk.fly.dev` host, has had its callbacks, logout URLs and
 > connections cleared; comments use the HMAC server-to-server exchange instead.
 > The site gate's unused `refresh_token` grant was removed (it requests only
 > `openid email profile`), and the tenant's clickjacking-protection headers on
-> Auth0-hosted pages were re-enabled. GitHub still uses Auth0's shared developer
-> key; a dedicated OAuth client is required before treating it as production-ready.
-> The Action source is `config/auth0/github-email-action.cjs`; its M2M credentials
-> exist only as Auth0 Action secrets. A fresh GitHub sign-in must confirm its claim
-> and approval outcome. OPDA will not grant a session from an unverified address.
+> Auth0-hosted pages were re-enabled. Provider credential ownership is an Auth0
+> tenant configuration concern and does not change the common OPDA login contract.
 
 > **Public delivery restored, 2026-09-11.** The owner explicitly authorizes public
 > access to all pages, illustrations, downloads and comment reading. This supersedes

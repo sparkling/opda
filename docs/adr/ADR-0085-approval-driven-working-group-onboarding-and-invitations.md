@@ -292,16 +292,14 @@ must not falsely claim an AI agent wrote or reviewed the invitation.
 Withdrawing a domain removes only that person's approval, owned Microsoft grants and unsent
 mail for that domain. Other approved domains retain access and pending invitations. Website
 eligibility and its session version remain unchanged while another approved domain remains.
-Historical website-only import approval cannot bypass this rule by itself. The one exception is
-the explicit operator website allowlist (`websiteAllowlist` on the account, set with
-`scripts/website-allowlist.mjs` and recorded with a reason and actor): it keeps website sign-in
-without any working-group workspace. The operator can grant this to a participant
-whose only suspended state came from having no approved domain; independent holds
-still block the grant. This is an alternative website entitlement, never a group
-approval or workspace grant. On 2026-09-18 the four
+Historical website-only import approval cannot bypass this rule by itself. The explicit
+operator website allowlist (`websiteAllowlist` on the account, set with
+`scripts/website-allowlist.mjs` and recorded with a reason and actor) keeps website sign-in
+without any working-group workspace. It is an alternative website entitlement, never a group
+approval or workspace grant, and participant lifecycle projections do not override it. On 2026-09-18 the four
 legacy Auth0 allowlist accounts without a working group were granted it (operator decision).
-Otherwise loss of the last domain, or a global hold, removes website eligibility, invalidates
-sessions and disables/signs out Cognito.
+Loss of the last approved domain removes website eligibility only when the allowlist is also
+absent. Removing the final entitlement increments the access version and invalidates sessions.
 The open-tab check updates the UI, not the security boundary; delivered data cannot be recalled.
 
 Withdrawal also cancels unsent onboarding messages and queues removal of grants recorded as
@@ -315,8 +313,8 @@ The withdrawal path is:
 1. Staff change the relevant domain's review from **Approved** to **Withdrawn**. Pending,
    Under review, Rejected or clearing the domain field also removes that domain's approval.
 2. AWS records its decision/domain version first and recomputes website eligibility. Only loss
-   of website eligibility increments the session access version and disables/signs out Cognito.
-   Contact removal, identity change, erasure, expiry and independent security holds deny all.
+   of the final website entitlement increments the session access version. Identity-binding and
+   session-integrity failures still deny access; lifecycle projections do not add eligibility gates.
 3. The committed domain decision creates an opaque withdrawal operation. Cancel only that
    domain's unsent invitations before cleanup; dispatched email cannot be recalled.
 4. Read the participant-bound ownership receipts. Remove owned SharePoint contributor and index

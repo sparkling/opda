@@ -55,8 +55,8 @@ test('post identity is derived only from current approved membership, not the re
   assert.equal(JSON.parse(response.body).data.ip, undefined);
 });
 
-test('missing, duplicate, expired, withdrawn and stale sessions cannot post', async () => {
-  for (const mutate of [s => s.state.saved = null, s => s.row.active = false, s => s.row.suspended = true,
+test('missing, duplicate, expired, unentitled and stale sessions cannot post', async () => {
+  for (const mutate of [s => s.state.saved = null,
     s => s.row.domainApprovals.conveyancing.status = 'withdrawn', s => s.row.accessVersion++,
     s => s.saved.expiresAt = NOW, s => s.state.row = null]) {
     const s = setup(); mutate(s);
@@ -72,8 +72,9 @@ test('missing, duplicate, expired, withdrawn and stale sessions cannot post', as
   assert.equal(s.calls.length, 0);
 });
 
-test('public comment reading survives absent, withdrawn and unavailable sessions', async () => {
-  for (const mutate of [s => s.state.saved = null, s => s.row.active = false, s => s.state.fail = true]) {
+test('public comment reading survives absent, unentitled and unavailable sessions', async () => {
+  for (const mutate of [s => s.state.saved = null,
+    s => s.row.domainApprovals.conveyancing.status = 'withdrawn', s => s.state.fail = true]) {
     const s = setup(); mutate(s);
     const response = await s.handler(s.event());
     assert.equal(response.statusCode, 200);
@@ -82,6 +83,15 @@ test('public comment reading survives absent, withdrawn and unavailable sessions
   }
   const s = setup();
   assert.equal((await s.handler(s.event({ cookies: [] }))).statusCode, 200);
+});
+
+test('comments remain authenticated while a website entitlement survives lifecycle projections', async () => {
+  for (const change of [{ active: false }, { suspended: true }, { reviewStatus: 'withdrawn' },
+    { enrolmentStatus: 'expired' }, { expiresAt: NOW }, { deletedAt: NOW }, { erasedAt: NOW }]) {
+    const s = setup(); Object.assign(s.row, change);
+    assert.equal((await s.handler(s.post())).statusCode, 200, JSON.stringify(change));
+    assert.deepEqual(JSON.parse((await s.handler(s.event())).body).data.viewer, { name: 'Current Member' });
+  }
 });
 
 test('the explicit public feed is identical for all viewers and never reads session storage', async () => {

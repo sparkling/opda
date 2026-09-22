@@ -86,36 +86,30 @@ export function createIdentityVerifier(config, { fetch: fetchImpl, now }) {
     if (typeof payload.sub !== 'string' || !/^[\x21-\x7e]{1,255}$/u.test(payload.sub)) return null;
     if (config.provider === 'cognito' && !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/iu.test(payload.sub)) return null;
     const email = normaliseEmail(payload.email);
-    const githubSubject = config.provider === 'auth0' && payload.sub.startsWith('github|');
-    if (githubSubject && !/^github\|[0-9]+$/u.test(payload.sub)) return null;
-    const githubVerified = githubSubject && payload['https://opda.org.uk/github_verified_email'] === email;
-    if (!email || (config.provider === 'cognito' && payload.email_verified !== true)) return null;
+    if (config.provider === 'cognito' && (!email || payload.email_verified !== true)) return null;
     let key = (await loadKeys()).get(header.kid);
     if (!key) key = (await loadKeys(true)).get(header.kid);
     if (!key || key.kty !== 'RSA' || (key.use && key.use !== 'sig') || (key.alg && key.alg !== 'RS256')) return null;
     try {
       const valid = verify('RSA-SHA256', Buffer.from(`${parts[0]}.${parts[1]}`),
         createPublicKey({ key, format: 'jwk' }), Buffer.from(parts[2], 'base64url'));
-      return valid ? { issuer: config.issuer, sub: payload.sub, email, exp: payload.exp,
-        emailTrusted: githubSubject ? githubVerified : payload.email_verified === true } : null;
+      return valid ? { issuer: config.issuer, sub: payload.sub, email, exp: payload.exp } : null;
     } catch { return null; }
   };
 }
 
-export function approvedParticipant(participant, identity, now) {
+export function websiteAccessGrant(participant) {
+  if (participant?.websiteAllowlist === true) return { type: 'allowlist' };
+  const domainId = Array.isArray(participant?.approvedDomains) && participant.approvedDomains.find(id =>
+    typeof id === 'string' && Object.hasOwn(participant.domainApprovals ?? {}, id)
+      && participant.domainApprovals[id]?.status === 'approved');
+  return domainId ? { type: 'domain', domainId } : null;
+}
+
+export function approvedParticipant(participant, identity) {
   return Boolean(participant && participant.pk === `USER#${identity.sub}`
     && participant.cognitoSub === identity.sub && normaliseEmail(participant.email) === identity.email
     && typeof participant.participantId === 'string' && participant.participantId.length > 0
-    && participant.reviewStatus === 'approved' && participant.suspended === false
-    && participant.erasedAt === undefined && participant.deletedAt === undefined
-    && participant.active === true
-    // Website sign-in needs an approved working group, or an explicit operator allowlist
-    // (website only, no workspace). Holds above and below apply to both.
-    && (participant.websiteAllowlist === true
-      || Array.isArray(participant.approvedDomains) && participant.approvedDomains.some(domainId =>
-        typeof domainId === 'string' && Object.hasOwn(participant.domainApprovals ?? {}, domainId)
-          && participant.domainApprovals[domainId]?.status === 'approved'))
     && Number.isSafeInteger(participant.accessVersion) && participant.accessVersion >= 0
-    && (participant.expiresAt === undefined || (Number.isSafeInteger(participant.expiresAt) && participant.expiresAt > now))
-    && ['not_invited', 'complete'].includes(participant.enrolmentStatus));
+    && websiteAccessGrant(participant));
 }

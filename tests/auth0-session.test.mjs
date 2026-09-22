@@ -4,6 +4,7 @@ import test from 'node:test';
 import { createHandler } from '../config/aws/auth-session/index.mjs';
 import { createStore, identityKey } from '../config/aws/auth-session/store.mjs';
 import { approvedParticipant } from '../config/aws/auth-session/identity.mjs';
+import { socialProviders } from '../config/aws/auth-session/providers.mjs';
 
 const NOW = 1_800_000_000, SUB = '11111111-2222-3333-4444-555555555555';
 const ISSUER = 'https://sparklesparkle.auth0.com/', SUBJECT = 'google-oauth2|test-member';
@@ -90,33 +91,41 @@ function setup(options = {}) {
   return { row, rows, emailKey, sourceKey, commands, fetches, handler, login, callback };
 }
 
-test('Auth0 uses the existing public PKCE client and the verified-email Google connection', async () => {
+test('Auth0 uses the public PKCE client and offers every configured social connection', async () => {
   const s = setup(), result = await s.login(), url = new URL(result.headers.location);
   assert.equal(url.origin + url.pathname, ISSUER + 'authorize');
-  assert.equal(url.searchParams.get('connection'), 'google-oauth2');
+  assert.equal(url.searchParams.get('connection'), null);
   assert.equal(url.searchParams.get('code_challenge_method'), 'S256');
   assert.equal(url.searchParams.get('scope'), 'openid email profile');
   const transaction = oauthTransaction(result);
   assert.equal(url.searchParams.get('state'), transaction.state);
   assert.equal(url.searchParams.get('nonce'), transaction.data.nonce);
   assert.equal(s.commands.length, 0);
+  assert.deepEqual(socialProviders.map(({ key, connection }) => [key, connection]), [
+    ['google', 'google-oauth2'], ['github', 'github'], ['apple', 'apple'],
+    ['facebook', 'facebook'], ['linkedin', 'linkedin'], ['microsoft', 'windowslive'],
+  ]);
+  for (const provider of socialProviders) {
+    const direct = await s.login(provider.key), directUrl = new URL(direct.headers.location);
+    assert.equal(directUrl.searchParams.get('connection'), provider.connection);
+    assert.equal(directUrl.searchParams.get('connection_scope'), provider.connectionScope ?? null);
+    assert.equal(oauthTransaction(direct).data.provider, provider.key);
+  }
 });
 
-test('GitHub sign-in requests verified email access and keeps GitHub on retry', async () => {
-  const s = setup({ claims: { email_verified: false } });
-  const started = await s.login('github'), url = new URL(started.headers.location);
-  assert.equal(url.searchParams.get('connection'), 'github');
-  assert.equal(url.searchParams.get('connection_scope'), 'user:email');
-  const transaction = oauthTransaction(started);
-  assert.equal(transaction.data.provider, 'github');
-  const failed = await s.handler(request('/_auth/callback', { state: transaction.state, code: 'one-use-provider-code' }, started.cookies));
-  assert.equal(failed.statusCode, 401);
-  assert.match(failed.body, /href="\/_auth\/login\?return=%2Fprogramme&amp;provider=github"/u);
-  assert.match(failed.body, /GitHub must share a verified e-mail address/u);
+test('provider retry preserves every selected connection', async () => {
+  for (const provider of socialProviders) {
+    const s = setup({ claims: { email: null } });
+    const started = await s.login(provider.key), transaction = oauthTransaction(started);
+    const failed = await s.handler(request('/_auth/callback', { state: transaction.state, code: 'one-use-provider-code' }, started.cookies));
+    assert.equal(failed.statusCode, 401);
+    assert.match(failed.body, new RegExp(`provider=${provider.key}`, 'u'));
+  }
+  const s = setup();
   assert.equal((await s.handler(request('/_auth/login', { provider: 'unknown' }))).statusCode, 400);
 });
 
-test('verified first Auth0 enrolment atomically binds a unique reviewed participant and issues only an opaque session', async () => {
+test('first Auth0 enrolment atomically binds a unique eligible participant and issues only an opaque session', async () => {
   for (const source of [{}, { imported: true }, { legacy: true }]) {
     const s = setup(source), result = await s.callback();
     assert.equal(result.statusCode, 302);
@@ -142,9 +151,9 @@ test('verified first Auth0 enrolment atomically binds a unique reviewed particip
   }
 });
 
-test('Auth0 cannot claim missing, ambiguous, unapproved or concurrently withdrawn participants', async () => {
-  for (const modify of [s => s.rows.delete(s.emailKey), s => s.row.active = false,
-    s => s.row.approvedDomains = [], s => s.row.email = 'changed@example.test',
+test('Auth0 cannot claim missing, ambiguous, ineligible or concurrently withdrawn participants', async () => {
+  for (const modify of [s => s.rows.delete(s.emailKey),
+    s => { s.row.approvedDomains = []; s.row.domainApprovals = {}; }, s => s.row.email = 'changed@example.test',
     s => s.rows.get(s.emailKey).participantId = 'different-participant']) {
     const s = setup(); modify(s);
     assert.equal((await s.callback()).statusCode, 401);
@@ -153,28 +162,17 @@ test('Auth0 cannot claim missing, ambiguous, unapproved or concurrently withdraw
   assert.equal((await setup({ race: true }).callback()).statusCode, 401);
 });
 
-test('new Auth0 bindings require trusted email, signature-bound issuer/audience/nonce and nonempty subject', async () => {
-  for (const claims of [{ email_verified: false }, { email_verified: 'true' }, { email_verified: null },
-    { iss: 'https://other.auth0.com/' }, { aud: 'another-client' }, { exp: NOW },
-    { nonce: 'wrong' }, { sub: '' }, { sub: 'bad\nsubject' }, { token_use: 'access' }]) {
-    const s = setup({ claims });
-    assert.equal((await s.callback()).statusCode, 401);
-    assert.equal(s.commands.filter(c => c.TransactItems).length, 0);
+test('new Auth0 bindings accept the signed provider email without provider-specific verification claims', async () => {
+  for (const email_verified of [false, 'true', null, undefined]) {
+    const s = setup({ claims: { email_verified } });
+    assert.equal((await s.callback('github')).statusCode, 302);
+    assert.equal(s.commands.filter(c => c.TransactItems).length, 1);
   }
 });
 
-test('GitHub requires the Auth0 action claim for the same verified address and a GitHub subject', async () => {
-  const claim = 'https://opda.org.uk/github_verified_email';
-  const verified = setup({ claims: { sub: 'github|311648', email_verified: false, [claim]: 'member@example.test' } });
-  assert.equal((await verified.callback()).statusCode, 302);
-  for (const claims of [
-    { sub: 'github|311648', email_verified: false, [claim]: 'other@example.test' },
-    { sub: 'github|311648', email_verified: false, [claim]: true },
-    { sub: 'github|311648', email_verified: false },
-    { sub: 'github|311648', email_verified: true },
-    { sub: 'google-oauth2|311648', email_verified: false, [claim]: 'member@example.test' },
-    { sub: 'github|bad', email_verified: false, [claim]: 'member@example.test' },
-  ]) {
+test('new Auth0 bindings still require a signed issuer, audience, nonce, email and subject', async () => {
+  for (const claims of [{ email: null }, { iss: 'https://other.auth0.com/' }, { aud: 'another-client' }, { exp: NOW },
+    { nonce: 'wrong' }, { sub: '' }, { sub: 'bad\nsubject' }, { token_use: 'access' }]) {
     const s = setup({ claims });
     assert.equal((await s.callback()).statusCode, 401);
     assert.equal(s.commands.filter(c => c.TransactItems).length, 0);
@@ -190,7 +188,6 @@ test('a second Auth0 social provider can use the same approved or allowlisted we
     const originalKey = s.row.auth0BindingKey;
     claims.sub = 'github|311648';
     claims.email_verified = false;
-    claims['https://opda.org.uk/github_verified_email'] = s.row.email;
     const github = await s.callback('github');
     assert.equal(github.statusCode, 302);
     assert.equal(s.row.auth0BindingKey, originalKey);
@@ -199,20 +196,35 @@ test('a second Auth0 social provider can use the same approved or allowlisted we
   }
 });
 
-test('an explicitly bound GitHub account can use an allowlist entry without an email verification claim', async () => {
-  const subject = 'github|159436596';
-  const s = setup({ claims: { sub: subject, email_verified: false },
-    row: { approvedDomains: [], domainApprovals: {}, websiteAllowlist: true } });
-  const key = identityKey({ issuer: ISSUER, sub: subject });
-  s.rows.set(key, { pk: key, issuer: ISSUER, subject, email: s.row.email,
-    sub: SUB, participantId: s.row.participantId });
-  assert.equal((await s.callback('github')).statusCode, 302);
-  assert.equal(s.row.auth0BindingKey, undefined);
+test('every social provider uses the same first-binding path for approved and allowlist-only users', async () => {
+  for (const eligible of [
+    {},
+    { approvedDomains: [], domainApprovals: {}, websiteAllowlist: true },
+  ]) for (const [index, provider] of socialProviders.entries()) {
+    const subject = `${provider.connection}|subject-${index}`;
+    const s = setup({ claims: { sub: subject, email_verified: false }, row: eligible });
+    assert.equal((await s.callback(provider.key)).statusCode, 302, provider.key);
+    const key = identityKey({ issuer: ISSUER, sub: subject });
+    assert.equal(s.rows.get(key).participantId, s.row.participantId, provider.key);
+  }
 });
 
-test('an existing issuer/subject binding cannot be moved by a changed email or corrupt subject record', async () => {
-  const s = setup(), key = identityKey({ issuer: ISSUER, sub: SUBJECT });
-  await s.callback();
+test('an existing issuer/subject binding survives provider email changes but cannot move through corrupt records', async () => {
+  const claims = {}, s = setup({ claims }), key = identityKey({ issuer: ISSUER, sub: SUBJECT });
+  assert.equal((await s.callback()).statusCode, 302);
+  for (const email of ['different@example.test', null]) {
+    claims.email = email;
+    const result = await s.callback();
+    assert.equal(result.statusCode, 302);
+    const token = cookie(result, '__Host-opda_session');
+    const saved = s.rows.get('SESSION#' + createHash('sha256').update(token).digest('hex'));
+    assert.equal(saved.email, s.row.email);
+    assert.equal(saved.auth0BindingKey, s.row.auth0BindingKey);
+    assert.equal(approvedParticipant(s.row, saved, NOW), true);
+    const me = await s.handler(request('/_auth/me', {}, result.cookies));
+    assert.equal(me.statusCode, 200, me.body);
+    assert.equal(JSON.parse(me.body).email, s.row.email);
+  }
   s.rows.get(key).subject = 'windowslive|different-subject';
   assert.equal((await s.callback()).statusCode, 401);
 });

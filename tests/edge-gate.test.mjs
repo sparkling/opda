@@ -160,10 +160,10 @@ test('approved content is rewritten only after session/participant checks on eve
   assert.equal((await s.handler(event('/programme', options))).status, '302', 'reapproval cannot revive an old cookie');
 });
 
-test('expiry, logout, unknown cookies, missing membership and storage outages fail closed', async () => {
-  for (const change of [s => s.state.saved = null, s => s.state.row = null, s => s.row.active = false,
-    s => s.row.suspended = true, s => s.row.approvedDomains = [], s => s.state.time += 3600,
-    s => s.row.enrolmentStatus = 'not_invited', s => s.saved.participantId = 'other']) {
+test('session expiry, logout, missing entitlements, identity mismatch and storage outages fail closed', async () => {
+  for (const change of [s => s.state.saved = null, s => s.state.row = null,
+    s => { s.row.approvedDomains = []; s.row.domainApprovals = {}; }, s => s.state.time += 3600,
+    s => s.saved.participantId = 'other']) {
     const s = setup(); change(s);
     assert.equal((await s.handler(event('/programme', { cookie: '__Host-opda_session=' + TOKEN }))).status, '302');
   }
@@ -172,9 +172,11 @@ test('expiry, logout, unknown cookies, missing membership and storage outages fa
   assert.equal((await s.handler(event('/api/v2/comments', { method: 'POST' }))).status, '401');
 });
 
-test('deleted or erased accounts cannot retain access through an otherwise valid session', async () => {
-  for (const field of ['deletedAt', 'erasedAt']) {
-    const s = setup(); s.row[field] = NOW;
-    assert.equal((await s.handler(event('/programme', { cookie: '__Host-opda_session=' + TOKEN }))).status, '302');
+test('website access survives unrelated lifecycle projections while an entitlement remains', async () => {
+  for (const change of [{ active: false }, { suspended: true }, { reviewStatus: 'withdrawn' },
+    { enrolmentStatus: 'not_invited' }, { expiresAt: NOW }, { deletedAt: NOW }, { erasedAt: NOW }]) {
+    const s = setup(); Object.assign(s.row, change);
+    assert.equal((await s.handler(event('/programme', { cookie: '__Host-opda_session=' + TOKEN }))).uri,
+      '/programme/index.html', JSON.stringify(change));
   }
 });

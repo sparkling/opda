@@ -1,5 +1,5 @@
 import { approvedParticipant } from './identity.mjs';
-import { sessionKey } from './store.mjs';
+import { identityKey, sessionKey } from './store.mjs';
 
 export const SESSION_COOKIE = '__Host-opda_session';
 export const validSessionToken = token => typeof token === 'string' && /^[A-Za-z0-9_-]{43}$/u.test(token);
@@ -15,13 +15,14 @@ export async function readApprovedSession(token, store, now = () => Date.now()) 
   const participant = await store.getParticipant(saved.sub);
   const checkedAt = Math.floor(now() / 1000);
   if (saved.expiresAt <= checkedAt || !approvedParticipant(participant, saved, checkedAt)
-    || participant.enrolmentStatus !== 'complete' || participant.participantId !== saved.participantId
+    || participant.participantId !== saved.participantId
     || participant.accessVersion !== saved.accessVersion) return null;
   if (saved.auth0BindingKey !== undefined && saved.auth0BindingKey !== participant.auth0BindingKey) {
     if (!/^IDENTITY#[a-f0-9]{64}$/u.test(saved.auth0BindingKey) || !store.getIdentityBinding) return null;
     const binding = await store.getIdentityBinding(saved.auth0BindingKey);
     if (!binding || binding.pk !== saved.auth0BindingKey || binding.sub !== saved.sub
-      || binding.participantId !== saved.participantId || binding.email !== saved.email) return null;
+      || binding.participantId !== saved.participantId
+      || identityKey({ issuer: binding.issuer, sub: binding.subject }) !== saved.auth0BindingKey) return null;
   }
   return { participant, session: saved };
 }

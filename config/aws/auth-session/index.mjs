@@ -1,8 +1,9 @@
 import { createHash, randomBytes as cryptoRandomBytes } from 'node:crypto';
 import {
-  approvedParticipant, createIdentityVerifier, environmentConfig, normaliseConfig,
+  approvedParticipant, createIdentityVerifier, environmentConfig, normaliseConfig, normaliseEmail,
 } from './identity.mjs';
 import { createStore, sessionKey } from './store.mjs';
+import { socialProvider } from './providers.mjs';
 import { readApprovedSession, validSessionToken } from './session.mjs';
 import {
   OPDA_ORIGIN, approvedWorkspaceGroups, createWorkspaceRuntime, renderSignInNotice, renderWorkspacePage,
@@ -73,7 +74,7 @@ function readTransientCookie(cookies, state, nowSeconds) {
     if (!decoded || typeof decoded !== 'object' || Array.isArray(decoded)
       || !['createdAt,nonce,returnPath,verifier', 'createdAt,nonce,provider,returnPath,verifier'].includes(Object.keys(decoded).sort().join(','))
       || !validSessionToken(decoded.verifier) || !validSessionToken(decoded.nonce)
-      || (decoded.provider !== undefined && !['google', 'github'].includes(decoded.provider))
+      || (decoded.provider !== undefined && !socialProvider(decoded.provider))
       || !Number.isSafeInteger(decoded.createdAt) || decoded.createdAt > nowSeconds || nowSeconds - decoded.createdAt > 300
       || typeof decoded.returnPath !== 'string' || decoded.returnPath.length < 1 || decoded.returnPath.length > 2048
       || safeReturnPath(decoded.returnPath) !== decoded.returnPath) return null;
@@ -187,10 +188,7 @@ export function createHandler(overrides = {}) {
   function signInFailed(outcome, state, returnPath, provider) {
     const notice = SIGN_IN_NOTICES[outcome];
     log({ event: 'auth_callback', outcome, status: notice.status });
-    const help = outcome === 'identity-rejected' && provider === 'github'
-      ? 'GitHub must share a verified e-mail address matching your OPDA account, or OPDA must link this GitHub account to your website access.'
-      : notice.help;
-    return response(notice.status, renderSignInNotice({ ...notice, help, returnPath: safeReturnPath(returnPath), provider }), {
+    return response(notice.status, renderSignInNotice({ ...notice, returnPath: safeReturnPath(returnPath), provider }), {
       'content-type': 'text/html; charset=utf-8', 'content-security-policy': workspaceCsp(base64url(randomBytes(16))),
     }, clearTransientCookie(state));
   }
@@ -203,10 +201,11 @@ export function createHandler(overrides = {}) {
   }
 
   function startLogin(event, returnValue, providerValue) {
-    if (providerValue !== undefined && (config.provider !== 'auth0' || !['google', 'github'].includes(providerValue))) {
+    if (providerValue !== undefined && (config.provider !== 'auth0' || !socialProvider(providerValue))) {
       return json(400, { error: 'Unknown sign-in provider.' });
     }
-    const provider = config.provider === 'auth0' ? providerValue ?? 'google' : undefined;
+    const provider = config.provider === 'auth0' ? providerValue : undefined;
+    const selectedProvider = socialProvider(provider);
     const verifier = base64url(randomBytes(32));
     const state = base64url(randomBytes(32));
     const nonce = base64url(randomBytes(32));
@@ -220,8 +219,8 @@ export function createHandler(overrides = {}) {
       response_type: 'code', client_id: config.clientId,
       redirect_uri: config.siteOrigin + CALLBACK_PATH, scope: 'openid email profile', state, nonce,
       code_challenge: createHash('sha256').update(verifier).digest('base64url'), code_challenge_method: 'S256',
-      ...(provider ? { connection: provider === 'github' ? 'github' : 'google-oauth2' } : {}),
-      ...(provider === 'github' ? { connection_scope: 'user:email' } : {}),
+      ...(selectedProvider ? { connection: selectedProvider.connection } : {}),
+      ...(selectedProvider?.connectionScope ? { connection_scope: selectedProvider.connectionScope } : {}),
     }).toString();
     return redirect(authorize.toString(), [nextCookie]);
   }
@@ -250,21 +249,19 @@ export function createHandler(overrides = {}) {
     const tokens = await tokenResult.json();
     const identity = await verifyIdToken(tokens?.id_token, nonce);
     if (!identity) return signInFailed('identity-rejected', state, storedReturn, provider);
-    const resolved = config.provider === 'auth0' ? await store.resolveParticipant(identity, { existingOnly: !identity.emailTrusted })
+    const resolved = config.provider === 'auth0' ? await store.resolveParticipant(identity)
       : { participant: await store.getParticipant(identity.sub) };
-    if (config.provider === 'auth0' && !identity.emailTrusted && !resolved) {
-      return signInFailed('identity-rejected', state, storedReturn, provider);
-    }
     const { participant, binding } = resolved ?? {};
-    const canonicalIdentity = { ...identity, sub: participant?.cognitoSub };
+    const canonicalIdentity = { ...identity, sub: participant?.cognitoSub,
+      email: config.provider === 'auth0' ? normaliseEmail(participant?.email) : identity.email };
     const current = Math.floor(now() / 1000);
     if (identity.exp <= current || !approvedParticipant(participant, canonicalIdentity, current)) {
       return signInFailed('not-approved', state, storedReturn, provider);
     }
     const token = base64url(randomBytes(32));
-    const expiresAt = Math.min(current + 3600, identity.exp, participant.expiresAt ?? Infinity);
+    const expiresAt = Math.min(current + 3600, identity.exp);
     const session = {
-      pk: sessionKey(token), sub: canonicalIdentity.sub, email: identity.email,
+      pk: sessionKey(token), sub: canonicalIdentity.sub, email: canonicalIdentity.email,
       participantId: participant.participantId, accessVersion: participant.accessVersion,
       createdAt: current, expiresAt,
       ...(binding ? { auth0BindingKey: binding.record.pk } : {}),

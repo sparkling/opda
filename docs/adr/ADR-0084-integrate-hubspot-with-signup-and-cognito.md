@@ -61,19 +61,20 @@ Restore ADR-0038's existing Auth0 application and coming-soon/gated-site boundar
 The later Cognito authentication passages below record the intervening migration,
 not the current website sign-in contract. Preserve the pool, canonical participant
 UUIDs, HubSpot mappings and Microsoft/email workers; no destructive migration or bulk replay.
-The PKCE callback verifies signature, issuer, audience, nonce and time. A new
-social identity can claim a unique participant only when the provider attests the
-same email as verified; a reviewed, immutable `issuer + subject` binding also
-accepts a returning identity whose provider lacks that email attestation.
-Conditional writes bind each social subject to the participant. A second provider
-with the same verified email can link to that participant without moving an existing
-subject binding. Website eligibility is an individually approved working group
-**or** an explicit operator website allowlist entry, independent of workspace scope.
-Only an active, unheld participant receives an opaque, one-hour maximum session.
-Historical blanket-contact approval is not a bypass.
-The edge and regional service share strongly consistent session/participant checks; withdrawal,
-suspension, expiry or access-version changes deny the next request. HubSpot is not called
-during login or protected requests. Background integration remains unchanged.
+The PKCE callback verifies signature, issuer, audience, nonce, subject and time.
+For a first sign-in, the normalized email in the signed Auth0 ID token must exactly
+locate the reserved canonical participant; the provider-specific optional
+`email_verified` claim is not an additional requirement. Conditional writes bind
+each `issuer + subject` to that participant. Later sign-ins use the immutable
+binding even if the provider changes or omits its email, and a binding cannot move
+to another participant. The same flow applies to every enabled social provider.
+Website eligibility is exactly an individually approved working group **or** an
+explicit operator website allowlist entry, independent of workspace scope. Active,
+suspension, review, enrolment, retention, deletion and erasure projections do not
+override either entitlement. Opaque sessions last at most one hour. The edge and
+regional service share strongly consistent entitlement, participant, binding and
+access-version checks. HubSpot is not called during login or protected requests.
+Background integration remains unchanged.
 
 ### 1. What integrating authentication with HubSpot actually means
 
@@ -162,7 +163,7 @@ Unknown values must fail validation and become a review issue, not disappear.
 AWS retains the participant/contact mapping without another custom property or a credential
 in a CRM link. It also retains source registration IDs, form/option-set version, per-domain
 decision IDs/versions, actors, reasons and invitation/completion receipts; approved domain IDs;
-suspension and verified email/subject evidence; `accessVersion`, retention deadlines and sync
+suspension and identity subject-binding evidence; `accessVersion`, retention deadlines and sync
 errors. Domain decisions and privileged grants are separate. The six staff-review properties
 are not editable mirrors of effective AWS grants; active/enrolment remain AWS-owned projections.
 
