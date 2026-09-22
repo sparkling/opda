@@ -68,14 +68,16 @@ test('every Astro page belongs to an explicit visual route family', async () => 
   }
 });
 
-test('the under-development sign-in returns to the homepage through auth', async () => {
+test('the under-development sign-in offers Google and GitHub with a safe homepage return', async () => {
   const source = await readFile(file('src/pages/under-development.astro'), 'utf8');
-  const href = source.match(/<a class="cs-signin" href="([^"]+)">/u)?.[1];
-  assert.equal(href, '/_auth/login?return=%2F');
-
-  const destination = new URL(href, 'https://opda.test');
-  assert.equal(destination.pathname, '/_auth/login');
-  assert.equal(destination.searchParams.get('return'), '/');
+  const nav = source.match(/<nav class="cs-signin"[\s\S]*?<\/nav>/u)?.[0] ?? '';
+  const hrefs = [...nav.matchAll(/<a href="([^"]+)">/gu)].map(match => match[1].replaceAll('&amp;', '&'));
+  assert.deepEqual(hrefs, ['/_auth/login?return=%2F', '/_auth/login?return=%2F&provider=github']);
+  for (const href of hrefs) {
+    const destination = new URL(href, 'https://opda.test');
+    assert.equal(destination.pathname, '/_auth/login');
+    assert.equal(destination.searchParams.get('return'), '/');
+  }
 });
 
 test('reader pages delegate local contents navigation to the shared right rail', async () => {
