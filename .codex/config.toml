@@ -20,3 +20,19 @@ web_search = "live"
 # Environment-specific settings
 # [env]
 # ANTHROPIC_API_KEY = "your-local-key"
+
+# Microsoft MCP servers are intentionally scoped to the trusted OPDA project.
+[mcp_servers.microsoft-enterprise]
+url = "https://mcp.svc.cloud.microsoft/enterprise"
+default_tools_approval_mode = "writes"
+enabled_tools = ["microsoft_graph_suggest_queries", "microsoft_graph_get", "microsoft_graph_list_properties"]
+scopes = ["api://e8c77dc2-69b3-43f4-bc51-3213c9d915b4/.default"]
+
+[mcp_servers.microsoft-enterprise.oauth]
+client_id = "d5e126a4-e567-4e9f-8347-4a59312bdcd4"
+
+[mcp_servers.microsoft-mail]
+url = "https://agent365.svc.cloud.microsoft/agents/tenants/143540d4-4fbc-4005-882a-29656cd01a36/servers/mcp_MailTools"
+
+[mcp_servers.microsoft-mail.oauth]
+client_id = "d5e126a4-e567-4e9f-8347-4a59312bdcd4"
