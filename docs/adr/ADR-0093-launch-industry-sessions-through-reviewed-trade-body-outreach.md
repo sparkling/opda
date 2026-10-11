@@ -1,6 +1,7 @@
 ---
 status: proposed
 date: 2026-10-11
+updated: 2026-10-11
 tags: [engagement, working-groups, marketing, recruitment, trade-bodies]
 supersedes: []
 amends: []
@@ -34,7 +35,7 @@ copy of those materials or an independent sending system.
 ## Decision Outcome
 
 Propose the third option as the operational next step under ADR-0071/0086. Henrik
-provides Paul the existing toolkit link, checks the templates with him, and prepares
+has already provided Paul the toolkit link; he checks the templates with him and prepares
 the introduction-session proposition and materials. Henrik and Paul agree a proposed
 domain order, dates, facilitators and what participants are being invited to do.
 Paul and Maria lead the named personal approaches and ask organisations to distribute
@@ -59,13 +60,18 @@ does not change the website's existing access policy or launch the campaign.
 
 ### Confirmation
 
+Completed: Henrik sent **https://opda.org.uk/marketing** in the direct Teams chat
+with Paul on **5 October 2026 at 10:53 AM**, as displayed by Teams. The message is
+marked **Seen**. This verifies delivery of the link, not completion of Paul's review
+or approval of the templates. No review response was visible after that message.
+
 The research establishes the intended route and assigned preparatory work. It does
 not establish current toolkit quality, approved session dates, successful outreach,
 public signup reachability or permission to use any trade body's mark.
 
 | Owner | Outstanding action | Completion evidence |
 |---|---|---|
-| Henrik | Provide the existing toolkit to Paul and incorporate his review. | Reviewed asset versions and an accessible canonical signup journey. |
+| Paul, then Henrik | Review the already-shared toolkit; Henrik incorporates agreed feedback. | Recorded review, updated asset versions and an accessible canonical signup journey. |
 | Henrik + Paul | Agree proposed order, dates and facilitation for industry introductions. | Session plan ready for the relevant organisers to confirm. |
 | Paul + Maria | Make personal approaches and agree distribution with named organisations. | Recorded responses, distribution approvals and any branding permission. |
 | Henrik | Tell Maria what support is needed and which sessions are confirmed versus proposed. | Clear status and specific requests in the catch-up update. |
@@ -76,5 +82,12 @@ public signup reachability or permission to use any trade body's mark.
 - [Call: toolkit link and Paul/Maria personal outreach](https://app.fireflies.ai/view/01M45ND5QBCV7GM3ARX5ZJBB5X?t=2397)
 - [Paul, Notes and Actions and association list](https://mail.google.com/mail/u/?authuser=henrik%40sparklingideas.co.uk#all/1a110f9196fac40a)
 - Maria's direct Teams messages, 1 and 9 October, read during this research; no durable message link captured.
+- Direct Teams chat with Paul: Henrik's 5 October 10:53 AM marketing-link message, marked Seen; no durable message link captured.
 - [ADR-0071 — coordinated recruitment campaign](./ADR-0071-bounded-context-recruitment-campaign.md)
 - [ADR-0086 — canonical Marketing toolkit and dispatch boundaries](./ADR-0086-create-a-task-first-marketing-toolkit-with-portable-recruitment-assets.md)
+
+## Amendments
+
+- **2026-10-11 — Link delivery verified.** Following Henrik's correction, inspected
+  the direct Teams chat and confirmed the 5 October message and Seen state. Removed
+  sending the link from outstanding actions; template review remains outstanding.

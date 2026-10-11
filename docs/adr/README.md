@@ -149,8 +149,10 @@ Henrik's immediate actions, based on the sources rather than an implementation a
 5. Reconcile mortgage material against existing intake records and model provenance,
    including NatWest's dictionary and later fictional JSON example. Distinguish
    invitations, receipt, review and incorporation in the update to Maria.
-6. Give Paul the existing Marketing toolkit for review; agree industry-session order,
-   proposed dates and facilitation with him. Paul/Maria lead personal trade-body outreach.
+6. Follow up on Paul's review of the Marketing toolkit, then incorporate agreed
+   feedback; agree industry-session order, proposed dates and facilitation with him.
+   **Sending the link is complete:** the 5 October 10:53 AM direct Teams message is
+   marked Seen. Paul/Maria lead personal trade-body outreach.
 7. Clarify the modelling-website cleanup with Paul, and confirm the target site and
    ownership before taking on Maria's broader developer/accreditation content request.
 
