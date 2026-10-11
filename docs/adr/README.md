@@ -116,6 +116,47 @@ modelling website remains unchanged:
 |---|---|---|
 | [ADR-0084](./ADR-0084-integrate-hubspot-with-signup-and-cognito.md) | Integrate HubSpot with working-group signup and Cognito authentication | proposed |
 
+## October 2026 call, email and Teams review
+
+These records are **proposals**, not claims of OPDA ratification or implementation.
+They synthesise the sources read in this research. Considered options are editorial
+alternatives for assessing each proposal, not a claim that the meeting voted on
+those options. Fireflies speaker labels and its AI action-owner assignments are
+inconsistent; Paul's written action email and Henrik's direct corrections take
+precedence where they clarify ownership or delivery. Private source links require
+the reader's own access. No private source attachments are reproduced here.
+
+| # | Title | Status |
+|---|---|---|
+| [ADR-0089](./ADR-0089-separate-internal-technical-governance-from-cross-scheme-coordination.md) | Separate internal technical governance from cross-scheme coordination | proposed |
+| [ADR-0090](./ADR-0090-close-property-pack-review-with-explicit-status-and-sign-off.md) | Close Property Pack review with explicit status and sign-off | proposed |
+| [ADR-0091](./ADR-0091-ratify-ontology-first-schema-change-and-migration-process.md) | Ratify an ontology-first schema-change and migration process | proposed |
+| [ADR-0092](./ADR-0092-support-evidence-and-feedback-without-microsoft-tenant-access.md) | Support evidence and feedback without Microsoft tenant access | proposed |
+| [ADR-0093](./ADR-0093-launch-industry-sessions-through-reviewed-trade-body-outreach.md) | Launch industry sessions through reviewed trade-body outreach | proposed |
+| [ADR-0094](./ADR-0094-assign-content-owners-and-record-website-approval.md) | Assign content owners and record website approval | proposed |
+
+Henrik's immediate actions, based on the sources rather than an implementation audit:
+
+1. Give Maria a catch-up status on the **451-item Property Pack**, mortgage
+   submissions and industry sessions. Her 8 October meeting has happened and Henrik
+   confirms he did not provide an update for it; do not mark that update delivered.
+2. With Paul, agree the Property Pack review deadline, decision owner and sign-off
+   route; prepare the candidate/version, open issues and coverage evidence.
+3. Prepare the ontology-to-schema workflow and PR-based training/demo. Current PR
+   approvals belong with knowledgeable subgroup reviewers, coordinated by Paul.
+4. Confirm the meeting time with Rick and compare LMS modular schemas with ontology
+   outputs. Tuesday was acceptable in the read email thread; a time was not confirmed.
+5. Reconcile mortgage material against existing intake records and model provenance,
+   including NatWest's dictionary and later fictional JSON example. Distinguish
+   invitations, receipt, review and incorporation in the update to Maria.
+6. Give Paul the existing Marketing toolkit for review; agree industry-session order,
+   proposed dates and facilitation with him. Paul/Maria lead personal trade-body outreach.
+7. Clarify the modelling-website cleanup with Paul, and confirm the target site and
+   ownership before taking on Maria's broader developer/accreditation content request.
+
+Each ADR contains the source links, dependent owners, unknowns and completion evidence.
+No new deadline, sent message, approval or model incorporation is inferred from notes.
+
 ## Authoring a new ADR
 
 1. Run `/ruflo-adr:adr-create "<short title>"` — the skill picks the

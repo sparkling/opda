@@ -21,7 +21,7 @@
  * @property {string} date    - ISO date string from frontmatter, or ''
  */
 
-/** All 88 ADRs in the corpus. Every ADR gets a live page. */
+/** All 94 ADRs in the corpus. Every ADR gets a live page. */
 export const ADR_REGISTRY = [
   { id: "adr-0001", number: "0001", title: "Selective adoption of DCAM v3 and DAMA-DMBOK2 elements", status: "accepted", date: "2026-05-18" },
   { id: "adr-0002", number: "0002", title: "Folder hierarchy and slug taxonomy", status: "accepted", date: "2026-05-18" },
@@ -111,4 +111,10 @@ export const ADR_REGISTRY = [
   { id: "adr-0086", number: "0086", title: "Create a task-first Marketing toolkit with portable recruitment assets", status: "accepted", date: "2026-09-10" },
   { id: "adr-0087", number: "0087", title: "Acknowledge every submission independently of the CRM", status: "accepted", date: "2026-09-16" },
   { id: "adr-0088", number: "0088", title: "Approve working-group domains from a Teams card", status: "proposed", date: "2026-09-16" },
+  { id: "adr-0089", number: "0089", title: "Separate internal technical governance from cross-scheme coordination", status: "proposed", date: "2026-10-11" },
+  { id: "adr-0090", number: "0090", title: "Close Property Pack review with explicit status and sign-off", status: "proposed", date: "2026-10-11" },
+  { id: "adr-0091", number: "0091", title: "Ratify an ontology-first schema-change and migration process", status: "proposed", date: "2026-10-11" },
+  { id: "adr-0092", number: "0092", title: "Support evidence and feedback without Microsoft tenant access", status: "proposed", date: "2026-10-11" },
+  { id: "adr-0093", number: "0093", title: "Launch industry sessions through reviewed trade-body outreach", status: "proposed", date: "2026-10-11" },
+  { id: "adr-0094", number: "0094", title: "Assign content owners and record website approval", status: "proposed", date: "2026-10-11" },
 ];
