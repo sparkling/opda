@@ -191,7 +191,10 @@ jobs:
           MAX_ARTIFACT_MB: 500
         run: pnpm run report:artifact
       - name: Install Chromium
-        run: pnpm exec playwright install --with-deps chromium
+        run: |
+          # Avoid the Azure mirror that stalled browser font downloads.
+          sudo sed -i 's@azure.archive.ubuntu.com@archive.ubuntu.com@g' /etc/apt/apt-mirrors.txt
+          pnpm exec playwright install --with-deps chromium
       - name: Critical browser journeys
         if: needs.classify.outputs.application != 'true'
         run: pnpm run test:e2e:release
