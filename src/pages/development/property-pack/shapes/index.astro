@@ -19,7 +19,7 @@ const contextOptions = contexts.map((context) => ({ value: context.id, label: co
   category="Meaning & constraints"
   crumbs={[{ label: 'SHACL shapes' }]}
 >
-  <h1>SHACL shapes</h1>
+  <h1>Data rules: SHACL shapes</h1>
   <p class="lead">
     The generated validation layer contains {counts.shapes} node shapes and
     {counts.constraints} property constraints. It targets SHACL 1.2 Core while using
@@ -27,6 +27,7 @@ const contextOptions = contexts.map((context) => ({ value: context.id, label: co
   </p>
 
 
+  <p>A shape says what candidate data must look like for a particular class. For example, the <a href="/development/property-pack/shapes/common/Property">Property shape</a> requires one UPRN string made of digits. Passing that check confirms the recorded rule was met; it does not establish that the UPRN is correct or the proposed rule is approved.</p>
   <h2 id="register">Shape register</h2>
   <PropertyPackFilter
     targetId="v2-shape-register"

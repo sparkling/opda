@@ -97,7 +97,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
   await page.setViewportSize({ width: 1440, height: 1000 });
   for (const [route, section, label] of [
     ['/strategy/project-roadmap', 'programme', 'Project roadmap'],
-    ['/development/property-pack/validation', 'spdtf', 'Validation evidence'],
+    ['/development/property-pack/validation', 'spdtf', 'Technical validation evidence'],
     ['/development/working-groups/estate-agency/evidence', 'working-groups', 'Evidence'],
     [pdtfClasses, 'spdtf', 'Classes'],
     ['/governance/decisions', 'governance', 'Decisions'],
@@ -326,7 +326,7 @@ test('Property Pack ontology is owned by SPDTF development', async ({ page }) =>
   expect(await page.locator('nav[aria-label="Primary"] a').allTextContents()).not.toContain('V2');
   const local = page.locator('#section-navigation');
   await expect(local.locator('a[href="/development/property-pack"]')).toHaveText('Property Pack ontology');
-  await expect(local.locator('a[aria-current="page"]')).toHaveText('Validation evidence');
+  await expect(local.locator('a[aria-current="page"]')).toHaveText('Technical validation evidence');
   await expect(local.locator('a[href="/development/property-pack"]')
     .locator('xpath=ancestor::section[1]')).toHaveClass(/is-open/u);
   clean();
@@ -337,7 +337,7 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
   await visit(page, '/development/property-pack/resources/common/Property');
   const crumbs = page.locator('nav[aria-label="Breadcrumb"]');
   await expect(crumbs.locator('a')).toHaveText([
-    'Property Pack ontology', 'Current ontology model', 'Ontology resources',
+    'Property Pack ontology', 'Explore the candidate model', 'Browse terms and relationships',
   ]);
   expect(await crumbs.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual([
     '/development/property-pack', '/development/property-pack/model', '/development/property-pack/resources',

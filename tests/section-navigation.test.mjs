@@ -96,7 +96,7 @@ test('the left section navigation implements all seven destinations from one reg
     programme: 18,
     governance: 32,
     'semantic-modelling': 1 + MODELLING_JOURNEYS.reduce((count, journey) => count + 1 + journey.children.length, 0),
-    spdtf: 241,
+    spdtf: 242,
     'working-groups': 39,
     resources: 20,
     marketing: 20 + operationalEmails.length,
@@ -489,13 +489,12 @@ test('semantic modelling uses the shared four-journey registry with linked paren
 test('Property Pack work-package coverage exposes all eight source-catalogue views', () => {
   const propertyPack = SECTION_NAVIGATION.spdtf.groups
     .find(({ heading }) => heading === 'Property Pack ontology');
-  const currentModel = propertyPack.items.find(({ url }) => url === '/development/property-pack/model');
-  const workPackages = currentModel.children.find(({ url }) => url === '/development/property-pack/work-packages');
+  const workPackages = propertyPack.items.find(({ url }) => url === '/development/property-pack/work-packages');
   assert.equal(workPackages.children.length, 8);
   assert.ok(workPackages.children.every(({ url }) => url.startsWith('/development/property-pack/work-packages/')));
   assert.deepEqual(findNavigationPage('/development/property-pack/work-packages/fixtures-fittings').trail
     .map(({ url }) => url), [
-    '/development/property-pack/model', '/development/property-pack/work-packages',
+    '/development/property-pack/work-packages',
     '/development/property-pack/work-packages/fixtures-fittings',
   ]);
 });

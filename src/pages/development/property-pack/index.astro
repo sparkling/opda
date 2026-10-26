@@ -1,121 +1,45 @@
 ---
-import GraphDiagram from '@/components/GraphDiagram.astro';
-import PropertyPackDiagramLegend from '@/components/property-pack/PropertyPackDiagramLegend.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
-import {
-  boundaryDiagram,
-  candidateManifest,
-  contexts,
-  contextRoute,
-  contextStats,
-  counts,
-} from '@/lib/property-pack-model.mjs';
+import { counts, candidateManifest } from '@/lib/property-pack-model.mjs';
 ---
-<PropertyPackPage
-  title="Property Pack ontology candidate"
-  description="The machine-generated Property Pack ontology candidate: an accelerated, non-normative component of SPDTF awaiting Technical Working Group determination."
->
-  <h1>Property Pack ontology</h1>
+<PropertyPackPage title="Property Pack" description="Understand the Property Pack, follow a worked example and review the proposed data model and its evidence.">
+  <h1>Property Pack</h1>
+  <p class="lead">A shared set of property information for a transaction. This section shows the proposed model for describing that information consistently, the evidence behind it and the decisions still needed.</p>
 
-  <p class="lead">
-    The Property Pack is the standardised bundle of information needed to support a
-    property transaction. This ontology candidate models that bundle as a defined part
-    of SPDTF, spanning several semantic contexts rather than pretending it is one
-    universal business domain.
-  </p>
-
-  <div class="callout callout--key">
-    <p class="callout__label">Accelerated determination</p>
-    <p>
-      <strong>The Technical Working Group must determine this candidate by the end of
-      September 2026.</strong> The current <code>{candidateManifest.candidate_version}</code>
-      model remains <code>{candidateManifest.candidate_status}</code>. Later domain,
-      scheme and Interoperability working-group review may propose controlled changes;
-      none of those reviews or an external authority decision has yet occurred.
-    </p>
-  </div>
-
-
-  <h2 id="what-it-is">What a Property Pack is</h2>
-  <p>
-    It is an exchange and delivery profile: a governed set of information that travels
-    with a property transaction and draws on conveyancing, estate agency, finance,
-    property-data services, property technology, surveying and shared identifiers. The
-    451 required source items define the current coverage boundary; they do not prescribe
-    451 RDF properties or reproduce the structure of a JSON document.
-  </p>
-
-  <h2 id="headline-counts">Candidate at a glance</h2>
-  <div class="v2-metrics">
-    <div class="v2-metric"><strong>{counts.sourceItems}</strong><span>required source data points, each traced to the candidate</span></div>
-    <div class="v2-metric"><strong>{counts.resources}</strong><span>OWL resources: {counts.classes} classes and {counts.objectProperties + counts.datatypeProperties} properties</span></div>
-    <div class="v2-metric"><strong>{counts.schemes}</strong><span>controlled-vocabulary schemes with {counts.concepts} curated concepts</span></div>
-    <div class="v2-metric"><strong>{counts.shapes}</strong><span>SHACL node shapes carrying {counts.constraints} property constraints</span></div>
-    <div class="v2-metric"><strong>{contexts.length}</strong><span>semantic homes: six bounded contexts, one common boundary and one scheme context</span></div>
-    <div class="v2-metric"><strong>{counts.topicConcepts}</strong><span>source-topic concepts for consolidated Property Pack questions</span></div>
-  </div>
-
-  <h2 id="boundaries">Contextual boundaries</h2>
-  <p>
-    Every ontology resource has one semantic home. The dashed arrows point from the
-    Common boundary because it supplies a small set of shared elements; they do not mean
-    that every context interoperates through it, and they do not assert mapping, control
-    or inheritance. Cross-domain mappings are a separate
-    <a href="/semantic-modelling/method/mapping-records#cross-context-mappings">Category 8 review concern</a>
-    and remain <strong>awaiting working-group evidence</strong>.
-  </p>
-  <PropertyPackDiagramLegend variant="boundary" />
-  <GraphDiagram
-    source={boundaryDiagram()}
-    minHeight="560px"
-    caption="Declared context architecture: six bounded contexts, the DBT Smart Data scheme context, and the deliberately small Common boundary. Click a node to open its context page."
-  />
-
-  <div class="v2-card-grid">
-    {contexts.map((context) => {
-      const stats = contextStats(context.id);
-      return (
-        <a class="v2-card" href={contextRoute(context)}>
-          <span class={`pill ${context.kind === 'common-boundary' ? 'pill--brand' : context.kind === 'scheme-context' ? 'pill--warn' : 'pill--info'}`}>
-            {context.kind === 'bounded-context' ? 'Bounded context' : context.kind === 'common-boundary' ? 'Common boundary' : 'Scheme context'}
-          </span>
-          <h3>{context.label}</h3>
-          <p>{context.definition}</p>
-          <p class="v2-card__meta">{stats.resources} resources · {stats.sourceItems} source data points</p>
-        </a>
-      );
-    })}
-  </div>
-
-  <h2 id="reference">Explore the reference</h2>
-  <div class="v2-card-grid">
-    <a class="v2-card" href="/development/property-pack/definition-and-scope"><span class="pill pill--brand">451 items</span><h3>Definition and scope</h3><p>Inspect every required source item, constraint, semantic home, candidate disposition and evidence trace.</p></a>
-    <a class="v2-card" href="/development/property-pack/pdtf-schema-lineage"><span class="pill pill--brand">Lineage</span><h3>PDTF schema lineage</h3><p>Separate proven schema coverage from the incomplete semantic crosswalk to the ontology extracted from PDTF schema.</p></a>
-    <a class="v2-card" href="/development/property-pack/model"><span class="pill pill--brand">Atlas</span><h3>Complete model</h3><p>A class-relationship diagram in the PDTF schema convention, with synchronized structured references for all 159 candidate resources.</p></a>
-    <a class="v2-card" href="/development/property-pack/resources"><span class="pill pill--info">OWL</span><h3>Ontology resources</h3><p>Human definitions, technical identifiers, semantic homes, domains, ranges, constraints and evidence traces.</p></a>
-    <a class="v2-card" href="/development/property-pack/data-dictionary"><span class="pill pill--info">451 items</span><h3>Data dictionary</h3><p>The exact Property Pack source scope, source constraints and candidate-model disposition for every item.</p></a>
-    <a class="v2-card" href="/development/property-pack/vocabularies"><span class="pill pill--info">SKOS</span><h3>Controlled vocabularies</h3><p>Fourteen curated value schemes plus the distinct source-topic concept layer.</p></a>
-    <a class="v2-card" href="/development/property-pack/shapes"><span class="pill pill--info">SHACL</span><h3>Validation shapes</h3><p>Forty-five target-class shapes and every emitted datatype, class, count and pattern constraint.</p></a>
-    <a class="v2-card" href="/development/property-pack/coverage"><span class="pill pill--success">Traceable</span><h3>Source coverage</h3><p>How all 451 source items reach candidate constructs without importing the legacy ontology.</p></a>
-    <a class="v2-card" href="/development/property-pack/standards"><span class="pill pill--warn">Exact claims</span><h3>Standards profile</h3><p>RDF 1.2 Basic, SPARQL 1.2 and SHACL 1.2 targets, with explicit non-claims.</p></a>
-    <a class="v2-card" href="/development/property-pack/validation"><span class="pill pill--success">Evidence</span><h3>Technical validation</h3><p>Parser, SHACL probe, competency-query and deterministic-regeneration results.</p></a>
-    <a class="v2-card" href="/development/property-pack/technical-working-group-determination"><span class="pill pill--warn">Pending</span><h3>Technical determination</h3><p>Review remit, deadline, evidence, questions and the decision record that must be completed before any determination is claimed.</p></a>
-    <a class="v2-card" href="/development/property-pack/review-and-releases"><span class="pill pill--info">Later</span><h3>Review and releases</h3><p>How later domain review, controlled change and immutable versions follow the accelerated technical determination.</p></a>
-  </div>
-
-  <h2 id="scope">Scope and authority</h2>
-  <div class="v2-note-grid">
+  <div class="pp-overview" id="what-it-is">
     <section>
-      <h3>Closed business-data scope</h3>
-      <p>Exactly the 451 workbook rows marked Required. Supporting ontology constructs make the data meaningful but do not enlarge that business-data scope.</p>
+      <h2>Give information a meaning people can share</h2>
+      <p>A property transaction draws on information held by different people and organisations: identifiers, title information, certificates, searches and answers about the property.</p>
+      <p>The Property Pack brings a defined selection together. The <strong>ontology</strong> is the model of what those things mean and how they connect, so an answer can be understood beyond the document or system it came from.</p>
+      <p><a href="/development/property-pack/worked-example">See how an energy certificate connects to a property →</a></p>
     </section>
-    <section>
-      <h3>Greenfield semantics</h3>
-      <p>The PDTF schema contains the Property Pack source definition. The separate schema-derived ontology is expected to express corresponding meaning, but that coverage is not yet proven. This candidate imports neither topology; the item-level semantic crosswalk remains incomplete.</p>
-    </section>
-    <section>
-      <h3>Human authority</h3>
-      <p>AI drafted the candidate. The Technical Working Group makes the accelerated initial determination; later working groups may review and propose versioned changes. Government use does not itself grant OPDA external authority.</p>
-    </section>
+    <figure class="pp-pack">
+      <figcaption>One pack, several kinds of evidence</figcaption>
+      <ul><li>Which property? Identifiers and address</li><li>What is recorded? Title and legal information</li><li>What supports it? Certificates and search results</li><li>What is being reported? Property questions and answers</li></ul>
+      <small>Illustrative information families. The exact current scope is the 451-row source catalogue.</small>
+    </figure>
   </div>
+
+  <h2 id="reference">What would you like to do?</h2>
+  <div class="pp-paths">
+    <a class="pp-path" href="/development/property-pack/definition-and-scope"><span class="pp-path__role">New to the work</span><h3>Understand the pack and the 451 items</h3><p>What is included, where the number comes from and why required information can be conditional.</p><strong>Start with the scope →</strong></a>
+    <a class="pp-path" href="/development/property-pack/work-packages"><span class="pp-path__role">Property practitioners and contributors</span><h3>Review a familiar topic</h3><p>Choose a slice such as property identity, legal information or energy. Check the wording against your experience.</p><strong>Choose a review topic →</strong></a>
+    <a class="pp-path" href="/development/property-pack/model"><span class="pp-path__role">Modellers and implementers</span><h3>Explore the candidate model</h3><p>Understand contexts, browse terms and relationships, then inspect value lists and validation rules.</p><strong>Read the model guide →</strong></a>
+    <a class="pp-path" href="/development/property-pack/technical-working-group-determination"><span class="pp-path__role">Reviewers and decision makers</span><h3>Check readiness and the next decision</h3><p>Separate generated evidence from human agreement, release and authority.</p><strong>Open the review status →</strong></a>
+  </div>
+
+  <h2 id="headline-counts">What is available today?</h2>
+  <ol class="pp-sequence">
+    <li><span class="pill pill--info">Source evidence</span><h3>{counts.sourceItems} source items</h3><p>The exact workbook rows selected as Required, with paths, conditions and provenance. <a href="/development/property-pack/data-dictionary">Find an item</a>.</p></li>
+    <li><span class="pill pill--warn">Candidate model</span><h3>{counts.resources} model terms</h3><p>Proposed classes and properties, with source traces, {counts.schemes} value lists and {counts.shapes} validation shapes. <a href="/development/property-pack/resources">Browse the terms</a>.</p></li>
+    <li><span class="pill pill--warn">Decision pending</span><h3>Human review remains open</h3><p>The recorded candidate is {candidateManifest.candidate_version}. No Technical Working Group determination or SPDTF release is recorded. <a href="/development/property-pack/technical-working-group-determination">See what remains</a>.</p></li>
+  </ol>
+  <p class="pp-source-note">The original determination target was 30 September 2026. It remains a historical target; this site does not record its completion or invent a replacement date.</p>
+
+  <h2 id="scope">Where this fits in SPDTF</h2>
+  <p>The <strong>Smart Property Data Trust Framework (SPDTF)</strong> is the wider collaborative scheme being developed. The Property Pack candidate is one component. The existing <strong>PDTF JSON schema</strong> and the separate <strong>ontology derived from that schema</strong> are evidence inputs with their own histories.</p>
+  <p><a href="/development/property-pack/pdtf-schema-lineage">Compare the three artefacts and their evidence →</a></p>
+  <h2 id="boundaries">Who understands each part?</h2>
+  <p>Conveyancing, estate agency, finance, surveying, property-data services and property technology each bring their own language and expertise. The model gives each term a proposed <strong>semantic home</strong>, so its meaning can be reviewed in the right context.</p>
+  <p><a href="/development/property-pack/contexts">Understand the context boundaries</a> or <a href="/development/property-pack/work-packages">start with a practical review topic</a>.</p>
 </PropertyPackPage>

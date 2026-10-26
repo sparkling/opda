@@ -26,20 +26,26 @@ function targetLabel(row) {
 }
 ---
 <PropertyPackPage
-  title="Complete model"
+  title="Explore the candidate model"
   description="The complete model atlas for the accelerated SPDTF Property Pack ontology candidate: a class-centred Mermaid projection and synchronized structured reference for all 159 OWL resources."
   category="Model atlas"
   crumbs={[{ label: 'Complete model' }]}
 >
-  <h1>Complete model</h1>
-  <p class="lead">
-    This atlas documents all {counts.resources} OWL resources. Its Mermaid view follows the
-    schema-derived ontology's class-diagram convention: classes are nodes and object properties directly
-    connect class to class. Datatype properties can be revealed inside their class nodes;
-    coded-value properties remain in the structured reference.
-  </p>
-
-
+  <h1>Explore the candidate model</h1>
+  <p class="lead">The model describes the things in a Property Pack, how they relate, the values they can use and the rules that can be checked. Start with a term or a small example, then use the complete atlas when you need the whole structure.</p>
+  <p><a class="btn" href="/development/property-pack/resources">Browse all model terms</a> <a href="/development/property-pack/worked-example">Learn through the energy-certificate example</a></p>
+  <h2 id="reading-guide">Six things you will encounter</h2>
+  <dl class="pp-reading-key">
+    <div><dt>A source item: what the evidence asks for</dt><dd>A workbook row and its full path, such as the current energy rating. <a href="/development/property-pack/data-dictionary">Source dictionary</a>.</dd></div>
+    <div><dt>A resource: a term in the model</dt><dd>A class describes a kind of thing, such as a certificate. A property describes a relationship or a value, such as its rating. <a href="/development/property-pack/resources">Resource browser</a>.</dd></div>
+    <div><dt>A context: who owns the meaning</dt><dd>A semantic home groups terms whose meaning is considered together. Common holds the deliberately small shared boundary. <a href="/development/property-pack/contexts">Context guide</a>.</dd></div>
+    <div><dt>A work package: what to review together</dt><dd>A practical group of source items, such as construction, services and energy. It may span several contexts. <a href="/development/property-pack/work-packages">Review topics</a>.</dd></div>
+    <div><dt>A vocabulary: the available values</dt><dd>A named list of concepts, such as energy-rating values. Topic concepts separately identify what a question is about. <a href="/development/property-pack/vocabularies">Values and topics</a>.</dd></div>
+    <div><dt>A shape: a check on candidate data</dt><dd>A SHACL shape describes machine-checkable constraints on RDF data, such as a required value or datatype. <a href="/development/property-pack/shapes">Data rules</a>.</dd></div>
+  </dl>
+  <h2 id="choose-view">Choose the view for your question</h2>
+  <p><strong>“What does this term mean?”</strong> Use the resource browser. <strong>“Where did it come from?”</strong> Follow its source traces. <strong>“Who should review it?”</strong> Open its context. <strong>“How does it connect?”</strong> Use a context diagram or the full atlas below.</p>
+  <p class="pp-source-note">All {counts.resources} resources remain machine-proposed. A readable definition, a connected graph and passing tests provide review evidence; human determination remains separate.</p>
   <h2 id="composition">Model composition</h2>
   <div class="v2-metrics">
     <div class="v2-metric"><strong>{counts.classes}</strong><span>classes</span></div>
@@ -50,7 +56,8 @@ function targetLabel(row) {
     <div class="v2-metric"><strong>{counts.rangeEdges}</strong><span>asserted ranges or datatypes</span></div>
   </div>
 
-  <h2 id="diagram">Mermaid class relationship model</h2>
+  <h2 id="diagram">Complete relationship atlas</h2>
+  <p>Classes are boxes; object properties link classes. Use the diagram controls to reveal datatype fields. Coded-value properties and incomplete relationships remain in the structured reference below.</p>
   <PropertyPackDiagramLegend />
   <GraphDiagram
     source={completeModelDiagram()}

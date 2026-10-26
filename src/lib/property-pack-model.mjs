@@ -42,7 +42,7 @@ export const validationReport = readJson('validation/report.json');
 export const propertyPackLifecycleStatus = Object.freeze({
   sourceDefinition: '451 required Property Pack items — source scope validated',
   ontologyCandidate: `${candidateManifest.candidate_version} — machine-proposed and non-normative`,
-  technicalDetermination: 'Pending — milestone: end of September 2026',
+  technicalDetermination: 'Pending — original target: 30 September 2026; no determination recorded',
   laterDomainReview: 'Pending — follows the Technical Working Group determination',
   implementationRelease: 'Not released or adopted as SPDTF',
   externalAuthority: 'No government approval or delegated authority recorded',

@@ -9,7 +9,7 @@ import { GLOBAL_DESTINATIONS, getActiveDestination } from './site-ia.mjs';
 import { isRetiredPdtf1DocumentationRoute, PDTF1_ROUTES } from './pdtf1-routes.mjs';
 import { MARKETING_NAVIGATION_SECTION } from './marketing-navigation.ts';
 import { HANDOVER_DOCUMENTS } from './handover-navigation.ts';
-import { workPackageRoute, workPackages } from './property-pack-model.mjs';
+import { PROPERTY_PACK_JOURNEY as propertyPackJourney } from './property-pack-navigation.ts';
 import {
   GOVERNANCE_FRAMEWORK_ITEMS,
   SEMANTIC_MODELLING_JOURNEYS,
@@ -61,60 +61,6 @@ function category(heading: string, url: string, items: Item[] = []): NavigationG
   ));
   return { heading, url, items: children };
 }
-const propertyPackBase = '/development/property-pack';
-const workPackageNavigationItems: Item[] = workPackages.map(({ id, label }) => ({
-  url: workPackageRoute(id),
-  title: label.replace(/\b\w/gu, (letter) => letter.toUpperCase()),
-}));
-const propertyPackJourney: Item = {
-  url: propertyPackBase,
-  title: 'Property Pack ontology',
-  children: [
-    { url: `${propertyPackBase}/definition-and-scope`, title: 'Definition and 451-item scope' },
-    { url: `${propertyPackBase}/pdtf-schema-lineage`, title: 'PDTF schema lineage' },
-    {
-      url: `${propertyPackBase}/model`,
-      title: 'Current ontology model',
-      children: [
-        {
-          url: `${propertyPackBase}/contexts`,
-          title: 'Contextual boundaries',
-          children: [
-            { url: `${propertyPackBase}/contexts/common`, title: 'Common boundary' },
-            { url: `${propertyPackBase}/contexts/conveyancing`, title: 'Conveyancing' },
-            { url: `${propertyPackBase}/contexts/estate-agency`, title: 'Estate agency' },
-            { url: `${propertyPackBase}/contexts/finance-and-banking`, title: 'Finance and banking' },
-            { url: `${propertyPackBase}/contexts/property-data-services`, title: 'Property data services' },
-            { url: `${propertyPackBase}/contexts/property-technology`, title: 'Property technology' },
-            { url: `${propertyPackBase}/contexts/surveying-and-valuation`, title: 'Surveying and valuation' },
-            { url: `${propertyPackBase}/contexts/dbt-smart-data`, title: 'DBT Smart Data candidate context' },
-          ],
-        },
-        {
-          url: `${propertyPackBase}/work-packages`,
-          title: 'Work-package coverage',
-          children: workPackageNavigationItems,
-        },
-        { url: `${propertyPackBase}/resources`, title: 'Ontology resources' },
-        { url: `${propertyPackBase}/relationships`, title: 'Relationships' },
-        { url: `${propertyPackBase}/data-dictionary`, title: 'Data dictionary' },
-        { url: `${propertyPackBase}/vocabularies`, title: 'Controlled vocabularies' },
-        { url: `${propertyPackBase}/shapes`, title: 'SHACL shapes' },
-      ],
-    },
-    {
-      url: `${propertyPackBase}/coverage`,
-      title: 'Candidate source coverage',
-      children: [
-        { url: `${propertyPackBase}/standards`, title: 'Standards profile' },
-        { url: `${propertyPackBase}/validation`, title: 'Validation evidence' },
-        { url: `${propertyPackBase}/artefacts`, title: 'Generated artefacts' },
-      ],
-    },
-    { url: `${propertyPackBase}/technical-working-group-determination`, title: 'Technical Working Group determination' },
-    { url: `${propertyPackBase}/review-and-releases`, title: 'Later review and releases' },
-  ],
-};
 const workingGroupItems: Item[] = WORKING_GROUPS.map((group) => {
   const url = `/development/working-groups/${group.slug}`;
   return {

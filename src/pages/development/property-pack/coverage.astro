@@ -38,14 +38,14 @@ const safeTraceRows = JSON.stringify(traceRows).replaceAll('<', '\\u003c');
   category="Evidence & assurance"
   crumbs={[{ label: 'Source coverage' }]}
 >
-  <h1>Source coverage</h1>
-  <p class="lead">
-    Every one of the 451 normalized source data points has exactly one proposed
-    semantic home and reaches at least one ontology resource. Coverage is traceability,
-    not working-group approval of the interpretation.
-  </p>
-
-
+  <h1>Check evidence and decisions</h1>
+  <p class="lead">Every one of the 451 source items has a trace into the candidate. That lets you ask where a proposed term came from and how a source requirement was treated. It does not establish that the interpretation is correct or approved.</p>
+  <dl class="pp-reading-key">
+    <div><dt>Find the proposed treatment</dt><dd><a href="#trace">Search the trace register</a>. Follow a source item to its wording and constraints, then open the model terms it reaches.</dd></div>
+    <div><dt>Check what has been decided</dt><dd><a href="/development/property-pack/technical-working-group-determination">Read the human review status</a>. Recorded machine checks and a recorded determination answer different questions.</dd></div>
+    <div><dt>Check reproducibility</dt><dd><a href="/development/property-pack/validation">Inspect technical validation</a> and <a href="/development/property-pack/artefacts">the exact candidate files</a>.</dd></div>
+    <div><dt>Check the other model</dt><dd><a href="/development/property-pack/pdtf-schema-lineage">Read the schema-derived crosswalk gap</a>. Full source-to-candidate traceability does not prove equivalence with that separate ontology.</dd></div>
+  </dl>
   <h2 id="closure">Coverage closure</h2>
   <div class="v2-metrics">
     <div class="v2-metric"><strong>{counts.sourceItems}</strong><span>unique source data points</span></div>

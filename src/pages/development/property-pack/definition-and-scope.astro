@@ -41,23 +41,16 @@ const safeDetails = JSON.stringify(details).replace(/</g, '\\u003c');
   description="The exact 451-item Property Pack source definition, constraints, candidate dispositions and evidence coverage."
   crumbs={[{ label: 'Definition and scope' }]}
 >
-  <h1>Property Pack definition and 451-item scope</h1>
-  <p class="lead">
-    A first-principles model of exactly <strong>{candidateSummary.source_item_count} required source data points</strong>
-    as <strong>{candidateSummary.ontology_resource_count} candidate ontology resources</strong> across bounded contexts
-    and a deliberately small common boundary. The source rows are evidence to model—not 451 pre-decided RDF properties.
-  </p>
+  <h1>Understand the pack and its scope</h1>
+  <p class="lead">The current Property Pack scope is a selected set of information for a property transaction. Its starting point is exactly 451 workbook rows marked Required. That list fixes what the candidate must account for; it leaves the meaning and model design open to review.</p>
+  <h2 id="why-451">Why 451?</h2>
+  <p>The source workbook contains 1,702 data rows: 451 marked Required and 1,251 marked Optional. The accepted modelling decision selects the 451 required rows as the initial boundary. Every selected full path was reconciled with the local PDTF v3.5 schema.</p>
+  <p><strong>This is a source inventory, not 451 questions everyone must answer or 451 ontology properties.</strong> Of the selected rows, 283 are conditionally required, 133 pass through a repeatable list, and 240 have no workbook description. Those gaps and conditions matter when a person reviews the meaning.</p>
+  <div class="callout callout--note"><p class="callout__label">Read “Required” in context</p><p>A field can be required only when a particular branch or condition applies. Its source condition must be preserved. A blank answer, an unknown answer and a condition that does not apply must not be assumed to mean the same thing.</p></div>
+  <p><a href="/development/property-pack/worked-example">Follow a worked example first</a>, or <a href="#browse">search the source catalogue below</a>.</p>
+  <p class="pp-source-note">Basis: <a href="/resource?path=docs/research/property-pack-451-evidence-validation.md">451-item evidence validation, 3 August 2026</a> and <a href="/resource?path=docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md">accepted ADR-0066</a>. A later 442/451 counting question is recorded in <a href="/resource?path=docs/adr/ADR-0090-close-property-pack-review-with-explicit-status-and-sign-off.md">proposed ADR-0090</a>; it has not changed the accepted baseline.</p>
 
-  <div class="callout callout--warning">
-    <div class="callout__label">Review candidate—not an approved semantic release</div>
-    <p>
-      Every item has a machine-proposed semantic home, role, disposition and trace to one or more model
-      constructs. These are reviewable hypotheses, not settled meaning. Working groups must challenge the
-      definitions and context ownership; the Interoperability Working Group must review common-boundary
-      terms and mappings. This candidate does not replace the current published ontology.
-    </p>
-  </div>
-
+  <details class="pp-supporting-detail"><summary>Inspect the model summary, proposed ownership and generated files</summary>
   <section class="baseline-metrics" aria-label="Catalogue summary">
     <article><strong>{candidateSummary.source_item_count}</strong><span>source data points covered</span></article>
     <article><strong>{candidateSummary.ontology_resource_count}</strong><span>candidate ontology resources</span></article>
@@ -123,7 +116,9 @@ const safeDetails = JSON.stringify(details).replace(/</g, '\\u003c');
     </article>
   </div>
 
-  <h2 id="browse">Browse all 451 items</h2>
+  </details>
+
+  <h2 id="browse">Find an item in the 451-row scope</h2>
   <p>
     Search by label, definition or full source path. Filter by bounded context, proposed model
     role, disposition, datatype, requiredness or vocabulary use. Select a label to inspect the

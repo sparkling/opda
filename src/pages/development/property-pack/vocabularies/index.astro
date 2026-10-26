@@ -18,7 +18,7 @@ const contextOptions = contexts.map((context) => ({ value: context.id, label: co
   category="Meaning & constraints"
   crumbs={[{ label: 'Controlled vocabularies' }]}
 >
-  <h1>Controlled vocabularies</h1>
+  <h1>Allowed values and topics</h1>
   <p class="lead">
     Fourteen candidate SKOS schemes publish 85 controlled values. A separate topic
     layer gives 413 consolidated source questions a stable concept IRI without treating
@@ -26,6 +26,7 @@ const contextOptions = contexts.map((context) => ({ value: context.id, label: co
   </p>
 
 
+  <p>A <strong>controlled vocabulary</strong> gives values stable names and identifiers so different systems can recognise them. A <strong>topic</strong> names the subject of a question. For example, an energy rating value and the question “What is the current energy rating?” play different roles. <a href="/development/property-pack/worked-example#values">See the candidate’s actual values and a review question</a>.</p>
   <h2 id="schemes">Controlled-value schemes</h2>
   <PropertyPackFilter
     targetId="v2-vocabulary-register"

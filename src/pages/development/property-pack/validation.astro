@@ -14,6 +14,7 @@ const passCount = validationReport.checks.filter((check) => check.state === 'pas
   <p class="lead">All {validationReport.checks.length} recorded technical checks passed against the exact generated tree identified below. This is reproducibility evidence, not semantic approval.</p>
 
 
+  <dl class="pp-reading-key"><div><dt>What these checks establish</dt><dd>Recorded source coverage, valid generated syntax, tested rule/query behaviour and reproducibility for an identified candidate tree.</dd></div><div><dt>What needs human evidence</dt><dd>Whether a term means the right thing, a condition reflects practice, a value list is useful and the candidate is fit for an authorised use. <a href="/development/property-pack/technical-working-group-determination">Review status</a>.</dd></div></dl>
   <h2 id="result">Technical result</h2>
   <div class="v2-metrics">
     <div class="v2-metric"><strong>{passCount}/{validationReport.checks.length}</strong><span>checks passed</span></div>

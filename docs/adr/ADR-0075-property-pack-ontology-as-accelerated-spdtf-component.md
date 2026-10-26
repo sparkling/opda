@@ -301,3 +301,14 @@ No publication or deployment is authorised by this ADR.
   now records schema path → schema-derived construct or gap → SPDTF construct. Reader
   routes use `/spdtf/**` and `/spdtf/inputs/pdtf-schema/**`; historical `/v2/**` source-route evidence
   and stable `/pdtf/**` identifiers remain unchanged.
+
+- **2026-10-26 — Local presentation refactor commissioned.** The operator requested a
+  clearer Property Pack subsection, explicitly limited to presentation of the
+  documented model. Reader navigation now follows four tasks: understand the pack,
+  review a topic, explore the candidate model, and check evidence and decisions.
+  The worked energy-certificate example reads the existing candidate projection;
+  it adds no source item, semantic assertion, ontology decision or approval.
+  Existing `/development/property-pack/**` routes and content fragments remain;
+  the new example has its own route. The September target is shown as historical
+  and proposed ADR-0090 remains proposed. This local preview has no publication
+  approval; the candidate corpus, stable IRIs and model meaning are unchanged.

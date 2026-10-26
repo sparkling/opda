@@ -7,6 +7,9 @@ import {
   validationReport,
 } from '@/lib/property-pack-model.mjs';
 import '@/styles/property-pack.css';
+import '@/styles/property-pack-journey.css';
+import { PROPERTY_PACK_JOURNEY } from '@/lib/property-pack-navigation';
+import { findNavigationPage } from '@/lib/site-navigation';
 import '@/styles/property-pack-candidate-info.css';
 
 interface Crumb {
@@ -30,6 +33,8 @@ const {
   description,
   search = {},
 } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
+const activeTask = findNavigationPage(currentPath)?.trail[0]?.url;
 const searchMeta = { title, type: 'page', collection: 'property-pack', pageType: 'model-documentation', ...search };
 const technicalState = validationReport.status === 'pass'
   ? 'Technical candidate checks passed'
@@ -121,6 +126,15 @@ const technicalState = validationReport.status === 'pass'
       </aside>
     </div>
 
+    <div class="pp-status" aria-label="Candidate status">
+      <span class="pill pill--warn">Draft for review</span>
+      <p><strong>{candidateManifest.candidate_version}</strong> · Machine-proposed · Human determination pending</p>
+      <a href="/development/property-pack/technical-working-group-determination">Review status</a>
+    </div>
+    <nav class="pp-task-nav" aria-label="Property Pack tasks">
+      <a href="/development/property-pack" aria-current={Astro.url.pathname.replace(/\/$/, '') === '/development/property-pack' ? 'page' : undefined}>Overview</a>
+      {PROPERTY_PACK_JOURNEY.children?.map((item) => <a href={item.url} aria-current={currentPath === item.url ? 'page' : activeTask === item.url ? 'location' : undefined}>{item.title}</a>)}
+    </nav>
     <slot />
   </div>
   <slot name="scripts" slot="scripts" />

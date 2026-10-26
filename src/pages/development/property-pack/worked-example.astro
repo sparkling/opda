@@ -1,0 +1,56 @@
+---
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import { coverageById, dataPointRoute, resourceByKey, resourceRoute, shapes, shapeRoute, vocabularyByKey, vocabularyRoute } from '@/lib/property-pack-model.mjs';
+const property = resourceByKey.get('common:Property');
+const certificate = resourceByKey.get('property-data-services:EnergyPerformanceCertificate');
+const link = resourceByKey.get('property-data-services:hasEnergyPerformanceCertificate');
+const rating = resourceByKey.get('property-data-services:energyRating');
+const scheme = vocabularyByKey.get('property-data-services:EnergyRatingScheme');
+const uprn = resourceByKey.get('common:uprn');
+const uprnSource = coverageById.get('pp-d1f058853e2f');
+const propertyShape = shapes.find((shape) => shape.target_key === property.key);
+const items = certificate.direct_source_item_ids.map((id) => coverageById.get(id));
+---
+<PropertyPackPage title="Follow an energy-certificate example" description="Follow four real source items through the candidate model, vocabulary and human review, using an energy performance certificate.">
+  <h1>Follow an energy-certificate example</h1>
+  <p class="lead">A practitioner asks: “Which property does this certificate describe, and what does it say?” Follow that question through the existing candidate. Every linked term and source item below comes from the current model.</p>
+  <h2 id="source">1. Start with the information people recognise</h2>
+  <p>An <strong>Energy Performance Certificate (EPC)</strong> is represented in the candidate by four source items. Each has its own workbook row and full source path. The table explains how the candidate groups them around the certificate.</p>
+  <div class="v2-table-wrap"><table><thead><tr><th>Source item</th><th>Candidate treatment</th><th>Why it is grouped here</th></tr></thead><tbody>
+    {items.map((item) => <tr><td><a href={dataPointRoute(item)}>{item.preferred_label}</a></td><td>{item.disposition}</td><td>{item.rationale}</td></tr>)}
+  </tbody></table></div>
+  <p>“Consolidate” means several source fields contribute to a shared modelling pattern. “Challenge” flags an inherited assumption for review. Neither label records human approval.</p>
+
+  <h2 id="model">2. Read the proposed relationship</h2>
+  <figure class="pp-example-figure">
+    <div class="pp-example-chain">
+      <a href={resourceRoute(property)}>Property</a>
+      <span><a href={resourceRoute(link)}>has a certificate</a></span>
+      <a href={resourceRoute(certificate)}>Energy performance certificate</a>
+      <span><a href={resourceRoute(rating)}>records a rating</a></span>
+      <a href={vocabularyRoute(scheme)}>Rating value</a>
+    </div>
+    <figcaption>A simplified reading of the candidate: the property is linked to a certificate, and the certificate has a controlled rating value. The vocabulary link shows the candidate values; it is not an assertion that a particular property has a particular rating.</figcaption>
+  </figure>
+  <p>The <strong>property</strong> has its semantic home in the Common boundary. The <strong>certificate and its relationships</strong> belong to Property Data Services. That division is a proposed ownership of meaning, not an instruction that every organisation must store data in the same way.</p>
+  <p><a href="/development/property-pack/contexts/property-data-services">Inspect the Property Data Services context</a> or <a href="/development/property-pack/work-packages/construction-services-energy">review the wider construction, services and energy topic</a>.</p>
+
+  <h2 id="values">3. Check what the values actually mean</h2>
+  <p>The current energy-rating vocabulary contains <strong>{scheme.concepts.length} values</strong>: {scheme.concepts.map((concept) => concept.label).join(', ')}.</p>
+  <div class="callout callout--note"><p class="callout__label">A question for domain reviewers</p><p>A–G are ratings. “No certificate”, “Survey instructed” and “Exempt property” describe other states. Should one value list carry all of these meanings, or should a later revision distinguish them? This is a review question raised by the existing source and candidate, not an approved change.</p></div>
+  <p><a href={vocabularyRoute(scheme)}>Inspect the value list and its source trace →</a></p>
+
+  <h2 id="rules">4. Separate a source rule from a proposed data rule</h2>
+  <p>The pack’s main <strong>Unique Property Reference Number (UPRN)</strong> provides a second useful example. Its source datatype is <code>{uprnSource.source_constraints.datatype}</code>. The candidate treats it as a string of digits because it is an identifier used for matching, rather than a quantity used for arithmetic.</p>
+  <dl class="pp-reading-key">
+    <div><dt>Source evidence</dt><dd><a href={dataPointRoute(uprnSource)}>The original UPRN item</a> retains the integer datatype and records the candidate disposition as <strong>{uprnSource.disposition}</strong>.</dd></div>
+    <div><dt>Candidate validation</dt><dd><a href={shapeRoute(propertyShape)}>The Property shape</a> requires one UPRN string matching <code>{uprn.constraints.pattern}</code>. This is the candidate’s rule; a technical pass does not settle whether the modelling choice is correct.</dd></div>
+  </dl>
+
+  <h2 id="review">5. Turn an observation into useful feedback</h2>
+  <p>A useful review identifies the exact item, explains a concrete scenario, cites supporting evidence and says what should change. For this example:</p>
+  <blockquote><p>“For the current energy-rating item, please distinguish a recorded rating from the absence of a certificate. Here is the case our service needs to exchange, and the source that supports it.”</p></blockquote>
+  <p>This is an illustrative feedback prompt. It has not been submitted or accepted. <a href="/development/property-pack/technical-working-group-determination#questions">Read the review questions and decision route</a>.</p>
+  <p class="pp-source-note">Evidence: the linked source-item, resource, vocabulary and shape pages are generated from the same candidate corpus. The diagram explains that corpus; it does not add an ontology assertion or a real property record.</p>
+  <p class="pp-next"><a href="/development/property-pack/work-packages">Choose your own review topic →</a></p>
+</PropertyPackPage>

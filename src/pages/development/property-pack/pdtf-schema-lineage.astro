@@ -24,20 +24,19 @@ const exactPathMatches = requiredProperties.filter((record) => provenancePaths.h
   category="Lineage and crosswalk"
   crumbs={[{ label: 'PDTF schema lineage' }]}
 >
-  <h1>PDTF schema lineage and semantic crosswalk</h1>
-
-  <p class="lead v2-comparison-lead">
-    The PDTF schema contains the source paths used to define the Property Pack. A separate
-    draft ontology was derived from that schema, its dictionary, glossary and supporting
-    evidence. The SPDTF Property Pack candidate reconsiders the bounded profile by
-    contextual meaning; it is neither a renamed schema nor a revised list of terms.
-  </p>
-
+  <h1>How the pack relates to PDTF and SPDTF</h1>
+  <p class="lead">Three different artefacts appear in this work. Their roles and histories matter more than their file formats or the number of terms they contain.</p>
+  <ol class="pp-sequence">
+    <li><h3>Existing PDTF schema</h3><p>A JSON structure for exchanging data. It contains the paths for the 451 selected Property Pack source items. It is an attributed input.</p></li>
+    <li><h3>Schema-derived ontology</h3><p>A separate linked-data model extracted from the broader schema and supporting material. It provides technical evidence and traceability.</p></li>
+    <li><h3>Property Pack candidate</h3><p>A proposed component of SPDTF, modelling the selected scope by meaning and context. Its candidate structure is reviewed separately.</p></li>
+  </ol>
+  <p>The schema was used to derive the second artefact. The Property Pack candidate uses the selected source scope while reconsidering the meaning; it does not inherit the schema-derived ontology as its semantic design. SPDTF is the wider collaboratively authored scheme draft.</p>
+  <p><a href="#crosswalk-status">See what the crosswalk proves</a> or <a href="#comparison">compare the technical details</a>.</p>
   <div class="callout callout--key" id="bottom-line">
-    <p class="callout__label">Bottom line</p>
+    <p class="callout__label">Why there are separate models</p>
     <p>
-      <strong>The main change is modelling authority and evidence discipline—not a move
-      from JSON to RDF.</strong> A separate graph ontology was derived from the PDTF schema,
+      <strong>The candidate makes domain meaning and human review explicit.</strong> A separate graph ontology was derived from the PDTF schema,
       but neither artefact has scheme authority. The Property Pack candidate asks
       domain-led questions afresh, keeps source facts separate from semantic proposals
       and assigns every candidate resource one explicit semantic home.
@@ -63,6 +62,7 @@ const exactPathMatches = requiredProperties.filter((record) => provenancePaths.h
   </p>
 
 
+  <details><summary>Inspect corpus counts and technical comparison</summary>
   <h2 id="scale">Quantitative snapshot</h2>
   <div class="callout callout--warn">
     <p class="callout__label">Not a like-for-like size comparison</p>
@@ -256,6 +256,8 @@ const exactPathMatches = requiredProperties.filter((record) => provenancePaths.h
       </p>
     </section>
   </div>
+
+  </details>
 
   <h2 id="continuity">What carries forward from PDTF schema</h2>
   <ul class="v2-check-list">

@@ -3,32 +3,23 @@ import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro'
 import { candidateManifest } from '@/lib/property-pack-model.mjs';
 ---
 <PropertyPackPage
-  title="Technical Working Group determination"
-  description="The pending Technical Working Group determination for the SPDTF Property Pack ontology candidate, due by the end of September 2026."
+  title="Review status and the next decision"
+  description="What is ready, what remains pending and what evidence is needed for a human determination of the Property Pack candidate."
   category="Governance milestone"
   crumbs={[{ label: 'Technical Working Group determination' }]}
 >
-  <h1>Technical Working Group determination</h1>
-  <p class="lead">
-    The Technical Working Group must review the current Property Pack ontology candidate
-    as-is and make an initial determination by the end of September 2026. This accelerated
-    review allows the component to support time-critical government-scheme work before
-    every domain working group has completed a separate review.
-  </p>
-
-  <div class="callout callout--warning">
-    <p class="callout__label">Determination pending</p>
-    <p>
-      No Technical Working Group determination is recorded. Technical validation of
-      <code>{candidateManifest.candidate_version}</code> is evidence for the review; it
-      is not semantic approval, release, adoption or external recognition of OPDA.
-    </p>
-  </div>
-
+  <h1>Review status and the next decision</h1>
+  <p class="lead">The candidate and its technical evidence are available for review. No Technical Working Group determination is recorded. The next decision must identify the version being judged, the reviewers, the decision authority and the conditions attached to the outcome.</p>
+  <ol class="pp-sequence">
+    <li><span class="pill pill--info">Available</span><h3>Evidence and candidate</h3><p>The source catalogue, proposed terms, coverage traces and recorded technical checks can be inspected now.</p></li>
+    <li><span class="pill pill--warn">Pending</span><h3>Human determination</h3><p>Reviewers must assess meaning, unresolved issues and fitness for the intended use, then record an explicit decision.</p></li>
+    <li><span class="pill pill--warn">Separate decision</span><h3>Release and use</h3><p>A determination must state what use it authorises. Later domain review, implementation release and external recognition remain distinct.</p></li>
+  </ol>
+  <p class="pp-source-note">The original target was 30 September 2026. <a href="/resource?path=docs/adr/ADR-0090-close-property-pack-review-with-explicit-status-and-sign-off.md">ADR-0090, proposed on 11 October</a>, records the need to agree a closing review and sign-off plan. It does not supply an accepted replacement deadline or a completed determination.</p>
 
   <h2 id="milestone">Milestone and boundary</h2>
   <dl class="v2-facts">
-    <div><dt>Milestone</dt><dd>End of September 2026</dd></div>
+    <div><dt>Original target</dt><dd>30 September 2026 — elapsed; no completion recorded</dd></div>
     <div><dt>Current state</dt><dd>Pending; no determination recorded</dd></div>
     <div><dt>Candidate</dt><dd><code>{candidateManifest.candidate_version}</code></dd></div>
     <div><dt>Scope</dt><dd>The Property Pack component, not the whole SPDTF ontology</dd></div>
@@ -47,18 +38,21 @@ import { candidateManifest } from '@/lib/property-pack-model.mjs';
 
   <h2 id="questions">Review questions</h2>
   <ol>
-    <li>Does the candidate cover the Property Pack definition needed for the September milestone?</li>
+    <li>Does the candidate account for the accepted 451-item scope, with its source conditions and unresolved meaning visible?</li>
     <li>Are the proposed identities, definitions, contextual boundaries and relationships fit for the initial determination?</li>
     <li>Which qualifications or changes are required before the determined version can be recorded?</li>
     <li>Which issues may safely proceed to later domain-group review, and which block the initial determination?</li>
     <li>What use, if any, is authorised after determination, and what claims remain prohibited?</li>
   </ol>
 
+  <h2 id="contribute">Prepare feedback that can be acted on</h2>
+  <p>Link the source item or candidate term. Describe a real case the current wording fails to express, include an authorised source, and explain the proposed change and its impact. A question or objection is useful even when you cannot suggest a technical solution.</p>
+  <p>Use your <a href="/development/working-groups/member-guide">working-group member guide</a> for the established discussion and evidence routes. Group access and model decision authority are separate. The Technical Working Group is distinct from the Property Technology bounded-context group.</p>
   <h2 id="decision-record">Decision record requirements</h2>
   <p>
     Before the site may say “determined”, Governance must record the group’s canonical
     identity, delegated remit, decision owner, quorum or decision rule, evidence set,
     allowed outcome, qualifications, dissent, escalation path, date and immutable
-    candidate digest. Those fields are not yet complete, so this page makes no decision claim.
+    candidate digest. The local record does not establish completion of those fields. The proposed close-out plan must be confirmed by the authorised group before it is treated as operative.
   </p>
 </PropertyPackPage>
