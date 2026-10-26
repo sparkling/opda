@@ -189,6 +189,7 @@ async function adapt(html, data, {baseUrl, heading, home, publicRelease=false, p
   if (header) header.children = [h('nav', {class:'opda-local-header', 'aria-label':'OPDA learning media'},
     h('a', {href:home}, 'OPDA · Learning media'), h('a', {href:publicRelease?'/development/property-pack':'http://127.0.0.1:4339/development/property-pack'}, 'Property Pack guide'))];
   if (publicRelease) for (const meta of all(tree, 'meta[name="robots"]')) meta.attributes.content='index,follow';
+  if (one(tree, '.collections-index')) for (const meta of all(tree, 'meta[name="theme-color"]')) meta.attributes.content='#dce5e9';
   const nav = one(tree, '.nav-overview');
   if (nav) nav.children = [h('span', {}, heading)];
   for (const type of all(tree, '.unified-type')) if (!one(type, '.unified-topic')) {
@@ -207,7 +208,7 @@ async function adapt(html, data, {baseUrl, heading, home, publicRelease=false, p
   }
   for (const node of all(tree, 'h1,h2,h3,h4,h5')) if (node.children?.length === 1 && node.children[0].value === 'The case for an AI-enabled H&M') node.children = [h('span', {}, heading)];
   for (const link of all(tree, 'a')) if ((link.attributes.href??'').startsWith('https://notebooklm.google.com/')) link.parent.children = link.parent.children.filter(child => child !== link);
-  const style = parse('<style>.opda-local-header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding:20px 32px;border-bottom:1px solid var(--line)}.opda-local-header a{color:var(--ink);text-underline-offset:.25em}.opda-local-header a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.collections-index .collection-card{--directory-surface:#f3e6a0;--directory-ink:#182b31;--directory-accent:#17392e;--ink:#182b31;--muted:#243538;--accent:#17392e;--line:#d4c46f;box-shadow:8px 10px 0 #526775}.collapsible-index main :is(h1,h2,h3,h4,h5),.collapsible-index .index-toggle{white-space:normal;overflow-wrap:break-word}.unified-topic>.authoring-actions{margin-block:16px}</style>').children[0];
+  const style = parse('<style>.opda-local-header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding:20px 32px;border-bottom:1px solid var(--line)}.opda-local-header a{color:var(--ink);text-underline-offset:.25em}.opda-local-header a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.collections-index{color-scheme:light;--bg:#dce5e9;--ink:#18313b;--muted:#3f5662;--accent:#246b63;--line:#a9bec6;background:var(--bg);color:var(--ink)}.collections-index .collection-card{--directory-surface:#f3e6a0;--directory-ink:#182b31;--directory-accent:#17392e;--ink:#182b31;--muted:#243538;--accent:#17392e;--line:#d4c46f;box-shadow:8px 10px 0 #526775}.collapsible-index main :is(h1,h2,h3,h4,h5),.collapsible-index .index-toggle{white-space:normal;overflow-wrap:break-word}.unified-topic>.authoring-actions{margin-block:16px}</style>').children[0];
   one(tree, 'head').children.push(style);
   let rendered=renderSync(tree);
   if(publicRelease) rendered=rendered.replaceAll('indexed SHA256','public text SHA256')
