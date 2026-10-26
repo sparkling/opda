@@ -101,7 +101,8 @@ jobs:
     name: Build ${{ needs.classify.outputs.primary }} release candidate
     if: needs.classify.outputs.site == 'true'
     needs: classify
-    runs-on: ubuntu-latest
+    # Keep browser dependency installation on a fixed, supported runner image.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
         with:
