@@ -30,7 +30,7 @@ import HandoverLayout from '@/layouts/HandoverLayout.astro';
   <p>Use <a href="/programme">Programme</a> for purpose, <a href="/governance">Governance</a> for authority, <a href="/semantic-modelling">Modelling</a> for method, <a href="/development">Development</a> for drafts and inputs, <a href="/development/working-groups">Groups</a> for participation and <a href="/resources">Resources</a> for evidence. The separate association website and this knowledge base have different publishing responsibilities.</p>
 
   <h2 id="setup">Local setup and prerequisites</h2>
-  <p>Use Node.js 22 to match CI, Corepack and the <code>pnpm@11.17.0</code> version pinned in <code>package.json</code>. For ontology work, add Python <strong>3.11</strong> and Java 17 or newer; CI uses Java 21. Docker is only needed for optional Skosmos. Marketing asset regeneration requires local <code>ffmpeg</code>.</p>
+  <p>Use Node.js <strong>22.12 or newer within Node 22</strong> to satisfy Astro's engine requirement and match CI, Corepack and the <code>pnpm@11.17.0</code> version pinned in <code>package.json</code>. For ontology work, add Python <strong>3.11</strong> and <strong>Java 21</strong>. The pinned Jena/Fuseki 6.1.0 binaries require Java 21; older repository comments saying Java 17+ are stale. Docker is only needed for optional Skosmos. Marketing asset regeneration requires local <code>ffmpeg</code>.</p>
   <pre><code>{`# In the repository root, on main
 corepack enable
 make install
@@ -44,9 +44,21 @@ make build`}</code></pre>
 python3.11 -m venv tools/opda-gen/.venv
 make ontology-install
 
-# Model-query development; Ctrl-C stops the owned services
+# Use the same Python for root-level catalogue/candidate commands
+source tools/opda-gen/.venv/bin/activate
+python3 --version
+java -version
+
+# Provision the pinned Jena distribution through its existing resolver
+# Downloads and checksum-verifies it when no installation is found
+python3 -c "from opda_gen.jena_shacl import resolve_jena_shacl; print(resolve_jena_shacl())"`}</code></pre>
+  <p>Keep this Python environment active for the model recipes. Root-level package scripts invoke <code>python3</code>, while <code>make ontology-install</code> and the <code>opda-gen</code> targets select the repository environment themselves. Confirm that the version checks show Python 3.11 and Java 21.</p>
+  <p>The Jena resolver checks <code>OPDA_JENA_HOME</code>, then <code>PATH</code>, then the local cache. Verify that any existing override is the intended 6.1.0 distribution. The Property Pack validator does not download Jena: it needs executable <code>riot</code>, <code>arq</code> and <code>shacl</code> together under <code>JENA_HOME/bin</code>, the repository's <code>.jena/</code> cache or <code>PATH</code>. If the resolver uses an external installation, make that same installation discoverable to the candidate validator.</p>
+  <pre><code>{`# Optional model-query development; mutates local dataset/projections
+# Ctrl-C stops these owned services before a later make build-data
 make serve-data`}</code></pre>
-  <p><code>make serve-data</code> starts Fuseki on port 3031 and the optional local API on port 3002. Jena distributions are downloaded, checksum-verified and cached when required. Some full ontology gates need the upstream schema archive at <code>source/03-standards/schemas/</code>; obtain the revision pinned by the release workflow rather than an arbitrary latest checkout.</p>
+  <p><code>make serve-data</code> starts Fuseki on port 3031, clears and reloads its <code>opda</code> dataset, rewrites <code>src/data/ontology-model.json</code> and <code>public/data/ontology-graph-elements.json</code>, then starts the local API on port 3002. Inspect generated diffs afterwards. Confirm that no other Fuseki process owns the selected port or shared local data directory; stop the owned interactive services before running <code>make build-data</code>. Fuseki is separately downloaded and checksum-verified when required.</p>
+  <p>Some full ontology gates need the upstream schema archive at <code>source/03-standards/schemas/</code>; obtain the revision pinned by <code>.github/workflows/site-release.yml</code> rather than an arbitrary latest checkout. Catalogue regeneration also needs its original Property Pack workbook and matching schema evidence, as described in <a href="/resources/handover/models-and-validation#model-workflow">Models and validation</a>.</p>
   <p>The development server exposes selected local evidence files for the resource viewer. The production build does not copy the whole archive. A resource that works locally is therefore not proof that its approved production download exists.</p>
 
 </HandoverLayout>

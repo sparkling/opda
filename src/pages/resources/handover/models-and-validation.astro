@@ -5,21 +5,28 @@ import HandoverLayout from '@/layouts/HandoverLayout.astro';
 <HandoverLayout title="Models and validation" description="Change models at their maintained source and select the right validation evidence.">
   <h2 id="model-workflow">Change models at their maintained source</h2>
   <h3>Schema-derived ontology</h3>
-  <p>Read <code>tools/opda-gen/README.md</code>, the relevant ODR and generator input definitions before changing the committed Turtle corpus. Keep derivation, provenance, documentary annotations and permitted inference behaviour intact. Fix the generator or maintained inputs, regenerate and compare the output; editing only a generated reference page creates drift.</p>
+  <p>Read the relevant ODR, generator input definitions and <code>Makefile</code> before changing the committed Turtle corpus. <code>tools/opda-gen/README.md</code> retains a historical “Phase 2 — Substrate” status and stub descriptions; use it for background, and check the current commands and implementation under <code>tools/opda-gen/src/opda_gen/</code> for supported behaviour. Keep derivation, provenance, documentary annotations and permitted inference behaviour intact. Fix the generator or maintained inputs, regenerate and compare the output; editing only a generated reference page creates drift.</p>
   <pre><code>{`make ontology-test
 make ci-ontology
 make build-data
 make ci-ontology-doc
 make ci-ontology-graph`}</code></pre>
-  <p><code>make ci-ontology</code> covers unit/round-trip, profile, declaration, construct, coverage and provenance contracts, then proves regeneration byte identity. <code>make build-data</code> uses ephemeral Fuseki to refresh the committed model and graph and build the site. Review changes to <code>src/data/ontology-model.json</code> and <code>public/data/ontology-graph-elements.json</code> alongside the model inputs. Use <code>make ci-ontology-model</code> with a running local Fuseki when checking that extraction independently.</p>
+  <p><code>make ci-ontology</code> covers unit/round-trip, profile, declaration, construct, coverage and provenance contracts, then proves regeneration byte identity. <code>make build-data</code> starts Fuseki, clears and reloads the local dataset, refreshes the committed model and graph, builds the site and stops its owned service. Stop any owned <code>make serve-data</code> session first; these commands must not compete for the same port or data directory. Review changes to <code>src/data/ontology-model.json</code> and <code>public/data/ontology-graph-elements.json</code> alongside the model inputs. Use <code>make ci-ontology-model</code> with a running local Fuseki when checking that extraction independently.</p>
   <p><code>make jena-load</code> clears and reloads the selected local dataset. Confirm the target before using it. <code>make api</code> and <code>make ontology-model</code> expect a running local Fuseki; they do not administer production.</p>
   <h3>Property Pack candidate</h3>
-  <p>The maintained catalogue and contextual rules live under <code>src/data/property-pack/</code>, including <code>properties/</code> and <code>candidate-model/</code>. The Python catalogue and candidate scripts produce the isolated versioned artefacts. Preserve the accepted 451-item evidence scope and item-to-model traceability; a count comparison alone does not establish semantic equivalence.</p>
-  <pre><code>{`# After an intentional maintained-model change
+  <p>The maintained catalogue and contextual rules live under <code>src/data/property-pack/</code>. Catalogue fragments in <code>properties/</code> generate <code>required-properties.json</code> and <code>validation-report.json</code>. The separate <code>candidate-model/</code> definitions consume that JSON through the <code>catalogue_path</code> and <code>catalogue_sha256</code> pin in <code>candidate-model/manifest.toml</code>. Candidate generation does not regenerate the catalogue. Preserve the accepted 451-item evidence scope and item-to-model traceability; a count comparison alone does not establish semantic equivalence.</p>
+  <p>Complete the <a href="/resources/handover/getting-started#setup">Python/Jena setup</a> first. Before regenerating a curated catalogue change, obtain both <code>source/04-governance-bodies/working-groups/regulator/PDTF base schema.xlsx</code> and <code>source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json</code>, matching the evidence hashes in <code>src/data/property-pack/catalogue.toml</code>. A clone alone does not supply both. The check command can use a frozen reconciliation receipt when both sources are absent; that is not a fresh source comparison.</p>
+  <pre><code>{`# After an intentional catalogue TOML change, with matching source evidence
+pnpm run property-pack:generate
+pnpm run property-pack:check`}</code></pre>
+  <p>Review the catalogue JSON and validation-report diff. If the intended catalogue change alters the JSON hash, review and deliberately update <code>catalogue_sha256</code> in the candidate manifest to bind the candidate to that exact input. Do not update source-evidence hashes or the candidate pin merely to silence a mismatch. Record any authorised source-version or scope decision before continuing.</p>
+  <pre><code>{`# After a reviewed catalogue/pin change or candidate-model-only change
 make property-pack-candidate
 
 # Non-publishing validation and deterministic regeneration
+pnpm run property-pack:check
 make ci-property-pack-candidate
+make test-model
 make test
 make build`}</code></pre>
   <p>The candidate gates validate RDF, SHACL, SPARQL, coverage and byte identity. They do not sign off the model. Use the <a href="/development/property-pack">Property Pack workspace</a> and <a href="/development/property-pack/review-and-releases">review and release record</a> to keep open questions, reviewer dispositions and the exact candidate version linked to the eventual determination. Any unresolved required-field counting or source-version discrepancy needs an explicit crosswalk and decision.</p>
@@ -36,7 +43,7 @@ make build`}</code></pre>
       <tr><td>Shared interface</td><td>Focused consumer contracts, <code>make check-design-system</code>, accessible light/dark and narrow-viewport review. Use the shared component and update its consumers.</td></tr>
       <tr><td>ADR</td><td>Read the status enum and format in <code>docs/adr/README.md</code>; run <code>make gen-adr</code> and <code>make check-adr</code>. Check publication eligibility before building.</td></tr>
       <tr><td>Schema or ontology</td><td><code>make ci-ontology</code>, relevant schema reproducibility gates, model/document/graph drift checks and regenerated-output review.</td></tr>
-      <tr><td>Property Pack</td><td><code>make ci-property-pack-candidate</code>, catalogue/model contracts and human review of affected definitions and traceability.</td></tr>
+      <tr><td>Property Pack</td><td><code>pnpm run property-pack:check</code>, <code>make ci-property-pack-candidate</code>, <code>make test-model</code> and human review of the catalogue pin, affected definitions and traceability.</td></tr>
       <tr><td>AWS or participant services</td><td>Focused boundary tests, infrastructure workflow validation and an authorised live acceptance check that avoids unintended participant effects.</td></tr>
       <tr><td>Marketing or NotebookLM</td><td><code>make marketing-check</code> or the local notebook receipt verifier, then human content/authority/rights review.</td></tr>
     </tbody>
