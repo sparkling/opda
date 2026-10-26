@@ -319,12 +319,21 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     else if (flag === '--port') options.port = Number(value);
     else throw Error('Usage: property-pack-index.mjs [--run property-pack-v1] [--port 4340]');
   }
-  console.log(JSON.stringify(await buildIndex(options)));
+  const install = async options => {
+    let result;
+    do {
+      result = await buildIndex(options);
+      if (result.busy) await new Promise(resolve => setTimeout(resolve, 2000));
+    } while (result.busy);
+    console.log(JSON.stringify(result));
+  };
+  // A final delivery must not exit behind another run's older index snapshot.
+  await install(options);
   // An inherited job can complete after its successor's own queue has finished.
   // Every delivery refresh therefore also advances the current aggregate view.
   const currentFile = path.join(ROOT, '.local/property-pack-media/current-run.json');
   if (await exists(currentFile)) {
     const {run} = await json(currentFile);
-    if (run !== (options.run ?? 'property-pack-v1')) console.log(JSON.stringify(await buildIndex({...options, run})));
+    if (run !== (options.run ?? 'property-pack-v1')) await install({...options, run});
   }
 }
