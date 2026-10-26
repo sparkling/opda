@@ -479,3 +479,17 @@ execution_and_review:
       - Every output note has passed citation, model-status and technical review.
       - Missing mappings, crosswalk and working-group evidence remain visible.
       - The gate approval records an approving human and date.
+
+# A separately commissioned successor; the August prompt receipts above stay frozen.
+artefact_catalogues:
+  - id: property-pack-v1
+    governing_adr: ADR-0095
+    commissioned_on: 2026-10-26
+    authority: repository-owner-requested-generation-and-local-index
+    configuration: docs/notebooklm/property-pack-media/catalogue.json
+    workflow: config/notebook-workflow.json
+    notebook_id: 60ae191d-cc07-4144-b185-a0ce4f5b71ab
+    sharing: private-owner-only-verified
+    source_policy: New authored readings and selected complete originals with full indexed readbacks; no August generated notes are supplied.
+    output_scope: 2 videos, 2 long decks, 3 audio overviews and 6 infographics across four independently chosen topics.
+    publication: local-only-no-push-no-deploy-no-public-sharing

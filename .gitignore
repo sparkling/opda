@@ -132,6 +132,9 @@ ruvector.db
 # Local scratch / probe outputs (bake-off renders, runtime probes, presentation
 # runs) — regenerable, ~275MB; never tracked.
 /outputs/
+# ADR0095 private provider receipts, original media and pinned renderer exports.
+/.local/property-pack-media/
+/.local/shared-renderer/
 .claude/.bundle-backup/
 
 # Codex local configuration
