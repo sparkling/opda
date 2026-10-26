@@ -1,0 +1,98 @@
+---
+/**
+ * OPDA adaptation of semantic-app ListPageLayout / ConceptCard. One component
+ * owns both corpus browsers; the server renders every canonical link first.
+ */
+import { computeFacetCounts } from '@/lib/ontology-browser/filter.mjs';
+import { KINDS, labelFor } from '@/lib/site-search-model.mjs';
+import '@/styles/ontology-browser.css';
+
+interface Props {
+  id: string;
+  entries: any[];
+  contextLabel?: string;
+}
+const {id, entries, contextLabel = 'Module'} = Astro.props;
+const facets = [{key:'kind',label:'Resource kind'},{key:'context',label:contextLabel}];
+const counts = computeFacetCounts(entries, facets.map(facet => facet.key));
+const label = (key, value) => key === 'kind' ? labelFor(KINDS,value,'singular') : entries.find(item => item.context === value)?.contextLabel || value;
+const sorted = [...entries].sort((a,b) => a.title.localeCompare(b.title));
+const payload = JSON.stringify({entries,facets}).replace(/</g, '\\u003c');
+---
+<section class="ontology-browser" data-ontology-browser id={id} aria-label="Ontology browser">
+  <div class="ontology-browser__controls" data-browser-enhancement hidden>
+    <div class="ontology-browser__toolbar">
+      <label class="ontology-browser__search" for={`${id}-search`}>Search resources
+        <input class="db-input" type="search" id={`${id}-search`} data-browser-query placeholder="Name, identifier or definition…" maxlength="500" />
+      </label>
+      <label>Sort
+        <select class="db-input" data-browser-sort aria-label="Sort resources">
+          <option value="name">Name / search relevance</option><option value="kind">Resource kind</option><option value="context">{contextLabel}</option>
+        </select>
+      </label>
+      <label>Order
+        <select class="db-input" data-browser-direction aria-label="Sort order"><option value="asc">Ascending</option><option value="desc">Descending</option></select>
+      </label>
+      <label>View
+        <select class="db-input" data-browser-view aria-label="Result view"><option value="cards">Cards</option><option value="compact">Compact list</option></select>
+      </label>
+      <button class="btn" type="button" data-browser-reset>Reset</button>
+    </div>
+    <details class="ontology-browser__filters" open>
+      <summary>Filter resources</summary>
+      <div class="ontology-browser__facets">
+        {facets.map(facet => (
+          <fieldset><legend>{facet.label}</legend>
+            {counts[facet.key].map(({value,count}) => (
+              <label class="db-filter-option">
+                <input type="checkbox" data-browser-facet={facet.key} value={value} />
+                <span data-option-label>{label(facet.key,value)}</span>
+                <span class="db-filter-option-count" data-facet-count>{count}</span>
+              </label>
+            ))}
+          </fieldset>
+        ))}
+      </div>
+      <label class="db-filter-option ontology-browser__root-filter"><input type="checkbox" data-browser-roots />Root classes only <span class="muted">— no superclass in this corpus</span></label>
+    </details>
+    <ul class="ontology-browser__chips" data-browser-chips aria-label="Applied filters"></ul>
+  </div>
+  <p class="ontology-browser__summary" data-browser-summary role="status" aria-live="polite">{entries.length} resources. Open any resource for its complete reference.</p>
+  <div class="ontology-browser__workspace">
+    <div class="ontology-browser__results">
+      <p data-browser-empty hidden>No resources match. Remove a filter or try a shorter search.</p>
+      <ul class="ontology-browser__list" data-browser-list>
+        {sorted.map(item => (
+          <li class="ontology-browser__card" data-browser-record={item.id}>
+            <p class="ontology-browser__eyebrow">{item.kindLabel} · {item.contextUrl ? <a href={item.contextUrl}>{item.contextLabel}</a> : item.contextLabel}</p>
+            <h3><a href={item.url}>{item.title}</a></h3>
+            <code class="standalone-identifier">{item.identifier}</code>
+            <p class="ontology-browser__definition">{item.summary || 'No definition recorded.'}</p>
+            {item.evidence && <p class="ontology-browser__evidence">{item.evidence}</p>}
+            <button class="btn ontology-browser__inspect" type="button" data-browser-select={item.id} data-browser-enhancement hidden aria-controls={`${id}-detail`}>Inspect<span class="sr-only"> {item.title}</span></button>
+          </li>
+        ))}
+      </ul>
+      <nav class="ontology-browser__pagination" data-browser-enhancement hidden aria-label="Resource result pages">
+        <button class="btn" type="button" data-browser-page="previous">Previous</button>
+        <span data-browser-page-status></span>
+        <button class="btn" type="button" data-browser-page="next">Next</button>
+        <label>Per page <select class="db-input" data-browser-page-size><option>25</option><option>50</option><option>100</option></select></label>
+      </nav>
+    </div>
+    <section class="ontology-browser__detail" id={`${id}-detail`} data-browser-detail hidden aria-label="Selected resource">
+      <div class="ontology-browser__detail-actions">
+        <button class="btn" type="button" data-browser-record-nav="previous">Previous resource</button>
+        <button class="btn" type="button" data-browser-record-nav="next">Next resource</button>
+        <button class="btn" type="button" data-browser-close>Close</button>
+      </div>
+      <div data-browser-detail-content></div>
+    </section>
+  </div>
+  <noscript><p>All resources are listed above. Search, filters and inline inspection become available with JavaScript.</p></noscript>
+  <script type="application/json" is:inline data-browser-data set:html={payload}></script>
+</section>
+
+<script>
+  import '@/scripts/ontology-browser.mjs';
+</script>

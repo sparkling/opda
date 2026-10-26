@@ -46,6 +46,7 @@
     { "path": "tests/rendering-lazy-method-image.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/rendering-campaign-css.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/rendering-font-fallbacks.test.mjs", "owner": "design-system", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/rendering-ontology-browser.test.mjs", "owner": "ontology-browser", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/immutable-ui-assets.test.mjs", "owner": "platform", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/site-cache-release.test.mjs", "owner": "platform", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/page-seo.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },

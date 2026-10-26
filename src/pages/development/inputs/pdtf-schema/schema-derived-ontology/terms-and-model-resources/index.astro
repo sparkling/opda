@@ -1,6 +1,10 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import GatewayCard from '@/components/ia/GatewayCard.astro';
+import OntologyBrowser from '@/components/ontology/OntologyBrowser.astro';
+import { model, pdtfUrl, contextUrl } from '@/lib/ontology-model';
+import { projectSchemaResources } from '@/lib/ontology-browser/projection.mjs';
+const entries = projectSchemaResources(model, pdtfUrl, contextUrl);
 ---
 
 <Layout
@@ -24,6 +28,11 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
     </p>
   </div>
 
+  <h2 id="browser">Ontology browser</h2>
+  <p>Search classes, properties, shapes, concepts and schemes together. Combine resource-kind
+    and module filters, inspect a resource, then follow its model connections or open its complete reference.</p>
+  <OntologyBrowser id="schema-ontology-browser" entries={entries} />
+
   <h2 id="choose">Choose the right index</h2>
   <table>
     <thead><tr><th scope="col">If you need…</th><th scope="col">Use…</th><th scope="col">Why</th></tr></thead>
@@ -39,11 +48,11 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
   <h2 id="browse">Browse model resources</h2>
   <div class="card-grid">
     <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/graph" title="Interactive graph" eyebrow="Relationship overview" description="Explore the OWL class backbone by module and neighbourhood before opening exact resource pages." />
-    <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes" title="Classes" eyebrow="OWL resources" description="Browse all 41 OWL classes—Substance Kinds, Roles, RoleMixins and Relators—by module, with definitions, diagrams, relationships, UFO stereotypes and canonical links." />
+    <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes" title="Classes" eyebrow="OWL resources" description={`Browse all ${Object.keys(model.classes).length} OWL classes—Substance Kinds, Roles, RoleMixins and Relators—by module, with definitions, diagrams, relationships, UFO stereotypes and canonical links.`} />
     <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/categories" title="UFO categories" eyebrow="Classification facet" description="Inspect the inert opda:ufoCategory documentary facet and the OWL classes grouped under each UFO-informed category; the corpus is UFO-informed, not UFO-grounded." />
-    <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/properties" title="Properties" eyebrow="Relationships and values" description="Find all 73 object and 203 datatype properties with their domains, ranges, constraints, inverses and source provenance." />
+    <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/properties" title="Properties" eyebrow="Relationships and values" description={`Find all ${Object.keys(model.objectProperties).length} object and ${Object.keys(model.datatypeProperties).length} datatype properties with their domains, ranges, constraints, inverses and source provenance.`} />
     <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/datatypes" title="Datatypes" eyebrow="Literal value spaces" description="See every literal datatype used by the corpus and the datatype properties that range over it." />
-    <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/vocabularies" title="Controlled vocabularies" eyebrow="SKOS resources" description="Browse the 46 SKOS concept schemes and 304 coded concepts without turning controlled values into OWL subclasses." />
+    <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/vocabularies" title="Controlled vocabularies" eyebrow="SKOS resources" description={`Browse the ${Object.keys(model.schemes).length} SKOS concept schemes and ${Object.keys(model.concepts).length} coded concepts without turning controlled values into OWL subclasses.`} />
     <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/glossary" title="Index and glossary" eyebrow="A–Z discovery" description="Search across classes, properties, shapes, concepts and schemes, then open each resource at its dereferenceable /pdtf page." />
   </div>
 

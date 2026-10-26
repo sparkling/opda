@@ -1,16 +1,15 @@
 ---
-import PropertyPackFilter from '@/components/property-pack/PropertyPackFilter.astro';
+import OntologyBrowser from '@/components/ontology/OntologyBrowser.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import { projectCandidateResources } from '@/lib/ontology-browser/projection.mjs';
 import {
   contexts,
-  contextById,
-  kindLabels,
+  contextRoute,
   resourceRoute,
   resources,
 } from '@/lib/property-pack-model.mjs';
 
-const contextOptions = contexts.map((context) => ({ value: context.id, label: context.label }));
-const kindOptions = Object.entries(kindLabels).map(([value, label]) => ({ value, label }));
+const entries = projectCandidateResources(resources, contexts, resourceRoute, contextRoute);
 ---
 <PropertyPackPage
   title="Ontology resources"
@@ -27,34 +26,9 @@ const kindOptions = Object.entries(kindLabels).map(([value, label]) => ({ value,
 
 
   <h2 id="register">Resource register</h2>
-  <PropertyPackFilter
-    targetId="v2-resource-register"
-    placeholder="Search labels, identifiers and definitions…"
-    contextOptions={contextOptions}
-    kindOptions={kindOptions}
-  />
-  <div class="v2-table-wrap" id="v2-resource-register">
-    <table>
-      <thead>
-        <tr><th>Resource</th><th>Kind</th><th>Semantic home</th><th>Definition</th><th>Source traces</th></tr>
-      </thead>
-      <tbody>
-        {resources.map((resource) => (
-          <tr
-            data-search={`${resource.label} ${resource.key} ${resource.definition}`.toLocaleLowerCase()}
-            data-context={resource.semantic_home}
-            data-kind={resource.kind}
-          >
-            <td><a href={resourceRoute(resource)}><strong>{resource.label}</strong></a><br/><code class="standalone-identifier">{resource.key}</code></td>
-            <td>{kindLabels[resource.kind]}</td>
-            <td><a href={`/development/property-pack/contexts/${resource.semantic_home}`}>{contextById.get(resource.semantic_home)?.label}</a></td>
-            <td>{resource.definition}</td>
-            <td>{resource.direct_source_item_ids.length} direct · {resource.structural_source_item_ids.length} structural</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+  <p>Search and combine filters, then inspect a resource to follow its superclass, subclasses,
+    domains and ranges. Open its complete reference for constraints, vocabularies and source evidence.</p>
+  <OntologyBrowser id="v2-resource-register" entries={entries} contextLabel="Semantic home" />
 
   <h2 id="reading">How to read the register</h2>
   <div class="v2-note-grid">
