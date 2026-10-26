@@ -4,6 +4,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath, pathToFileURL} from 'node:url';
+import {validatePublication, publicInputs, publicReadingViews, publicMedia, copyVerified, finishPublication, assertPublicText} from './property-pack-publication.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const OWNERS = path.resolve(ROOT, '../hm');
@@ -99,7 +100,7 @@ async function verifiedRecords(item, publicDir, digest) {
   return records.length > 0;
 }
 
-async function renderMedia({input, runRoot, publicDir, build, renderer}) {
+async function renderMedia({input, inspection=input, publication=false, runRoot, publicDir, build, renderer}) {
   const {details, prepareRenditions, digest, videoInfo} = await import(pathToFileURL(path.join(renderer.directory, 'site/scripts/media-originals.mjs')));
   const {renderPdfSlides} = await import(pathToFileURL(path.join(renderer.directory, 'site/scripts/pdf-slide-images.mjs')));
   const {verifiedVideoKey} = await import(pathToFileURL(path.join(AI, 'scripts/notebooks/video-quality.mjs')));
@@ -170,22 +171,23 @@ async function renderMedia({input, runRoot, publicDir, build, renderer}) {
     const topicInputs = chapter.topics.map(topic => {
       const selected = requests.filter(request => request.topic.id === topic.id);
       if (!selected.length) throw Error('Topic has no frozen requests: '+topic.id);
-      return {topicId:topic.id, sourceIds:[...new Set(selected.flatMap(request => request.sourceIds))], requests:selected};
+      return {topicId:topic.id, sourceIds:[...new Set(selected.flatMap(request => inspection.requests.get(request.key).sourceIds))], requests:selected.map(request=>inspection.requests.get(request.key))};
     });
     subjects.push({id:chapter.id, section:section.id, title:chapter.title, description:chapter.purpose, jobs,
       topics:chapter.topics.map(topic => ({...topic, commission:topic.description})), topicInputs,
-      selectedSourceIds:[...new Set(requests.flatMap(request => request.sourceIds))],
-      brief:{id:chapter.id, editorialTerm:'Synthesis', readingViews:focusedInputViews(input, chapter, jobs)}});
+      selectedSourceIds:[...new Set(requests.flatMap(request => inspection.requests.get(request.key).sourceIds))],
+      brief:{id:chapter.id, editorialTerm:'Synthesis', readingViews:publication ? publicReadingViews(focusedInputViews(inspection, chapter, jobs),inspection,chapter) : focusedInputViews(input, chapter, jobs)}});
   }
   return {subjects, errors, items};
 }
 
-async function adapt(html, data, {baseUrl, heading, home, parse, one, all, h, renderSync, unifiedHierarchy}) {
+async function adapt(html, data, {baseUrl, heading, home, publicRelease=false, parse, one, all, h, renderSync, unifiedHierarchy}) {
   const tree = parse(data ? unifiedHierarchy(html, data).replaceAll(`http://127.0.0.1:8932/v/${data.variant}`, baseUrl) : html);
   // The pinned shell's GlobalSiteNav ignores its product prop. Branding remains a consumer option.
   const header = one(tree, '.index-header__inner');
   if (header) header.children = [h('nav', {class:'opda-local-header', 'aria-label':'OPDA learning media'},
-    h('a', {href:home}, 'OPDA · Learning media'), h('a', {href:'http://127.0.0.1:4339/development/property-pack'}, 'Property Pack guide'))];
+    h('a', {href:home}, 'OPDA · Learning media'), h('a', {href:publicRelease?'/development/property-pack':'http://127.0.0.1:4339/development/property-pack'}, 'Property Pack guide'))];
+  if (publicRelease) for (const meta of all(tree, 'meta[name="robots"]')) meta.attributes.content='index,follow';
   const nav = one(tree, '.nav-overview');
   if (nav) nav.children = [h('span', {}, heading)];
   for (const type of all(tree, '.unified-type')) if (!one(type, '.unified-topic')) {
@@ -206,13 +208,22 @@ async function adapt(html, data, {baseUrl, heading, home, parse, one, all, h, re
   for (const link of all(tree, 'a')) if ((link.attributes.href??'').startsWith('https://notebooklm.google.com/')) link.parent.children = link.parent.children.filter(child => child !== link);
   const style = parse('<style>.opda-local-header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding:20px 32px;border-bottom:1px solid var(--line)}.opda-local-header a{color:var(--ink);text-underline-offset:.25em}.opda-local-header a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.collapsible-index main :is(h1,h2,h3,h4,h5),.collapsible-index .index-toggle{white-space:normal;overflow-wrap:break-word}.unified-topic>.authoring-actions{margin-block:16px}</style>').children[0];
   one(tree, 'head').children.push(style);
-  return renderSync(tree);
+  let rendered=renderSync(tree);
+  if(publicRelease) rendered=rendered.replaceAll('indexed SHA256','public text SHA256')
+    .replaceAll('Exact raw inputs','Published inputs')
+    .replaceAll('Full frozen request records (JSON)','Public prompts and source selections (JSON)')
+    .replaceAll('Full request and provenance archive (JSON)','Public source and prompt manifest (JSON)');
+  if(publicRelease) assertPublicText(rendered);
+  return rendered;
 }
 
-export async function buildIndex({run='property-pack-v1', port=4340}={}) {
+export async function buildIndex({run='property-pack-v1', port=4340, publication=false}={}) {
+  const release=publication?validatePublication(await json(path.join(ROOT,'config/notebook-publication.json'))):null;
+  if(release) run=release.run;
+  const route=release?.route??ROUTE;
   if (!safe(run) || !Number.isSafeInteger(port) || port < 1024 || port > 65535) throw Error('Invalid local run or port');
   const work = path.join(ROOT, '.local/property-pack-media'), runRoot = path.join(work, 'runs', run);
-  const build = path.join(work, 'build'), site = path.join(work, 'site'), publicDir = path.join(build, 'public');
+  const build = path.join(work, 'build'), site = path.join(work, publication?'public-release/site':'site'), publicDir = path.join(build, 'public');
   await fs.mkdir(build, {recursive:true});
   const lockFile = path.join(build, 'index.lock');
   let lock;
@@ -232,8 +243,10 @@ export async function buildIndex({run='property-pack-v1', port=4340}={}) {
     const snapshot = await json(path.join(runRoot, 'request-inputs.json'));
     if (snapshot.config.id !== run) throw Error('Run identity differs from frozen inputs');
     const input = projectInputs(snapshot), renderer = await resolveRenderer();
+    const exposed=release?publicInputs(input,release):null;
+    if(release) { await fs.rm(site,{recursive:true,force:true}); await fs.mkdir(site,{recursive:true}); }
     const currentFile = path.join(work,'current-run.json');
-    const isCurrent = !await exists(currentFile) || (await json(currentFile)).run === run;
+    const isCurrent = publication || !await exists(currentFile) || (await json(currentFile)).run === run;
     const {unifiedHierarchy} = await import(pathToFileURL(path.join(AI, 'scripts/notebooks/local-unified-view.mjs')));
     const {parse, h, renderSync} = await import(pathToFileURL(path.join(AI, 'site/node_modules/ultrahtml/dist/index.js')));
     const {querySelector:one, querySelectorAll:all} = await import(pathToFileURL(path.join(AI, 'site/node_modules/ultrahtml/dist/selector.js')));
@@ -241,17 +254,18 @@ export async function buildIndex({run='property-pack-v1', port=4340}={}) {
       const readback = await json(path.join(runRoot, 'source-readbacks', source.sourceId+'.json'));
       if (hash(readback.content) !== source.indexedTextSha256) throw Error('Readback differs: '+source.id);
     }
-    const model = await renderMedia({input, runRoot, publicDir, build, renderer});
+    const model = await renderMedia({input, inspection:exposed?.input??input, publication, runRoot, publicDir, build, renderer});
+    if(release) await publicMedia(model,publicDir,site);
     const reviewFile = await exists(path.join(runRoot, 'review.json')) ? path.join(runRoot, 'review.json') : path.join(ROOT, 'docs/notebooklm/property-pack-media/review.json');
     if (await exists(reviewFile)) {
       const reviewData = await json(reviewFile), reviews = reviewData.reviews??reviewData;
       for (const item of model.items) item.review = matchingReview(reviews, item);
     }
-    const origin = `http://127.0.0.1:${port}`, runRoute = `${ROUTE}/runs/${run}`;
+    const origin = release?.origin??`http://127.0.0.1:${port}`, runRoute = `${route}/runs/${run}`;
     const catalogue = {decks:model.items.filter(item => item.type === 'slide_deck').map(item => ({...item, slug:item.prefix.replace(/^\/presentations\//, '')+item.slug})), multimedia:model.items.filter(item => item.type !== 'slide_deck')};
-    const data = {inspectionModel:'three-views', variant:run, sourceProof:input.sourceProof.sources, renderer,
+    const data = {inspectionModel:'three-views', variant:run, sourceProof:(exposed?.input??input).sourceProof.sources, renderer,
       subjects:model.subjects, catalogue, requested:input.requests.size, available:model.items.length, errors:model.errors,
-      updatedAt:new Date().toISOString(), title:snapshot.config.title, sections:input.sections, runRoute, route:ROUTE};
+      updatedAt:new Date().toISOString(), title:snapshot.config.title, sections:input.sections, runRoute, route};
     const pin = await json(path.join(ROOT, 'config/shared-renderer.json'));
     for (const asset of pin.assets) {
       if (!asset.startsWith('fonts/') || asset.includes('..')) throw Error('Unexpected shared asset');
@@ -262,7 +276,7 @@ export async function buildIndex({run='property-pack-v1', port=4340}={}) {
     await fs.rm(path.join(build, 'src/pages'), {recursive:true, force:true});
     await save(path.join(build, 'src/data.json'), data);
     const components = path.join(renderer.directory, 'site/src/components');
-    const shell = {canonicalOrigin:origin, brandTitle:'OPDA · Learning media', description:'Property Pack explanations with the exact commissioned sources and prompts.', homeHref:ROUTE+'/', notebookUrl:'#', comments:false, chat:false};
+    const shell = {canonicalOrigin:origin, brandTitle:'OPDA · Learning media', description:'Property Pack explanations with the exact commissioned sources and prompts.', homeHref:route+'/', notebookUrl:'#', comments:false, chat:false};
     await atomic(path.join(build, 'astro.config.mjs'), `import {defineConfig} from 'astro/config';import react from '@astrojs/react';export default defineConfig({integrations:[react()],cacheDir:'./.astro-cache',output:'static',trailingSlash:'always',devToolbar:{enabled:false},vite:{environments:{prerender:{resolve:{noExternal:['@astrojs/react']}}},resolve:{dedupe:['react','react-dom'],alias:{'@ea':${JSON.stringify(path.join(renderer.directory, 'site/src'))}}}}});`);
     await atomic(path.join(build, 'src/pages/index.astro'), `---
 import Shell from ${JSON.stringify(path.join(components, 'NotebookIndexShell.astro'))};
@@ -270,7 +284,7 @@ import Directory from ${JSON.stringify(path.join(components, 'NotebookCollection
 import data from '../data.json';
 const collections=data.sections.map(section=>{const preview=data.catalogue.multimedia.find(item=>item.type==='infographic'&&data.subjects[item.level].section===section.id);return {id:section.id,title:section.title,path:data.route+'/'+section.id+'/',question:section.question,summary:section.purpose,perspective:section.audience,image:preview?{src:preview.preview.path,alt:'Preview of '+preview.title}:undefined,description:[{heading:'Related subjects',items:section.relatedSubjects}],chapters:section.chapters.map((chapter,index)=>({title:chapter.title,href:data.route+'/'+section.id+'/#system-'+index}))}});
 ---
-<Shell {...${JSON.stringify(shell)}} localOnly bodyClass="notebook-index collections-index" path={data.route+'/'} title="OPDA · Property Pack learning media"><Directory collections={collections} heading="Property Pack learning media" eyebrow="Local review · NotebookLM explanations" intro="Explore how property information becomes a connected model, and how its meaning and readiness are reviewed." navigationLabel="Property Pack media sections"><div slot="before-collections"><p>Generated explanations support learning. The documented candidate and its recorded decisions remain the source of authority.</p></div><p><a href={data.runRoute+'/'}>Open the versioned run and its frozen inputs</a></p><details><summary>Local run status</summary><p>{data.available} of {data.requested} commissioned artefacts are available for review. Updated {data.updatedAt}.</p><p>Further output review was waived for this commission. Pending delivery is labelled in each topic.</p></details></Directory></Shell>`);
+<Shell {...${JSON.stringify(shell)}} localOnly={${!publication}} bodyClass="notebook-index collections-index" path={data.route+'/'} title="OPDA · Property Pack learning media"><Directory collections={collections} heading="Property Pack learning media" eyebrow="${publication?'NotebookLM explanations':'Local review · NotebookLM explanations'}" intro="Explore how property information becomes a connected model, and how its meaning and readiness are reviewed." navigationLabel="Property Pack media sections"><div slot="before-collections"><p>Generated explanations support learning. The documented candidate and its recorded decisions remain the source of authority.</p></div><p><a href={data.runRoute+'/'}>Open the versioned run and its frozen inputs</a></p><details><summary>${publication?'Release status':'Local run status'}</summary><p>{data.available} of {data.requested} commissioned artefacts are available for review. Updated {data.updatedAt}.</p><p>Further output review was waived for this commission. Pending delivery is labelled in each topic.</p></details></Directory></Shell>`);
     for (const section of input.sections) {
       const sectionData = {...data, subjects:data.subjects.filter(subject => subject.section === section.id), section};
       const levels = new Map(sectionData.subjects.map((subject, index) => [subject.id, index]));
@@ -280,13 +294,23 @@ const collections=data.sections.map(section=>{const preview=data.catalogue.multi
 import Collection from ${JSON.stringify(path.join(components, 'NotebookSubjectCollection.astro'))};
 import data from ${JSON.stringify('../'+section.id+'.json')};
 ---
-<Collection levels={data.subjects.map(s=>[s.title])} descriptions={data.subjects.map(s=>s.description)} subjectIds={data.subjects.map(s=>s.id)} briefs={data.subjects.map(s=>s.brief)} editorials={[]} catalogue={data.catalogue} multimedia={data.catalogue.multimedia} prefix="/presentations/" configured localOnly label="Chapter" heading={data.section.title} title={data.section.title+' · OPDA'} eyebrow="Property Pack · Local learning media" intro={data.section.purpose} path={data.route+'/'+data.section.id+'/'} shell={${JSON.stringify({...shell, bodyClass:'notebook-index collapsible-index unified-index'})}}><div slot="intro"><p><a href={data.route+'/'}>All learning media</a> · <a href={data.runRoute+'/'+data.section.id+'/'}>Versioned run</a></p><p>These generated explanations describe a draft Property Pack candidate. The Property Pack guide retains the documented model and decisions.</p><p>Open a chapter, then a topic. Its three input readers show the exact commission and selected source bodies.</p><details><summary>Availability and review</summary><p>{data.available} of {data.requested} commissioned artefacts are available locally. Updated {data.updatedAt}. Further output review was waived for this commission.</p>{data.errors.length>0&&<ul>{data.errors.map(error=><li>{error.key}: awaiting verified local delivery.</li>)}</ul>}</details></div></Collection>`);
+<Collection levels={data.subjects.map(s=>[s.title])} descriptions={data.subjects.map(s=>s.description)} subjectIds={data.subjects.map(s=>s.id)} briefs={data.subjects.map(s=>s.brief)} editorials={[]} catalogue={data.catalogue} multimedia={data.catalogue.multimedia} prefix="/presentations/" configured localOnly={${!publication}} label="Chapter" heading={data.section.title} title={data.section.title+' · OPDA'} eyebrow="Property Pack · ${publication?'Learning media':'Local learning media'}" intro={data.section.purpose} path={data.route+'/'+data.section.id+'/'} shell={${JSON.stringify({...shell, bodyClass:'notebook-index collapsible-index unified-index'})}}><div slot="intro"><p><a href={data.route+'/'}>All learning media</a> · <a href={data.runRoute+'/'+data.section.id+'/'}>Versioned run</a></p><p>These generated explanations describe a draft Property Pack candidate. The Property Pack guide retains the documented model and decisions.</p><p>Open a chapter, then a topic. Its three input readers show the exact commission and selected source bodies.</p><details><summary>Availability and review</summary><p>{data.available} of {data.requested} commissioned artefacts are available${publication?'':' locally'}. Updated {data.updatedAt}. Further output review was waived for this commission.</p>{data.errors.length>0&&<ul>{data.errors.map(error=><li>{error.key}: awaiting verified local delivery.</li>)}</ul>}</details></div></Collection>`);
     }
     execFileSync(path.join(build, 'node_modules/.bin/astro'), ['build', '--root', build], {cwd:ROOT, stdio:'pipe', maxBuffer:8*1024*1024});
     // Install immutable asset paths and exact inputs before replacing any visible HTML.
     await fs.mkdir(site, {recursive:true});
-    for (const folder of ['_astro','fonts','presentations','custody']) if (await exists(path.join(build, 'dist', folder))) await fs.cp(path.join(build, 'dist', folder), path.join(site, folder), {recursive:true,force:false});
+    for (const folder of (publication?['_astro','fonts']:['_astro','fonts','presentations','custody'])) if (await exists(path.join(build, 'dist', folder))) await fs.cp(path.join(build, 'dist', folder), path.join(site, folder), {recursive:true,force:false});
     const runSite = path.join(site, runRoute);
+    if(exposed) {
+      await save(path.join(runSite,'inputs/request-inputs.json'),exposed.manifest);
+      for(const source of exposed.sourceFiles) {
+        await atomic(path.join(runSite,'inputs/sources',source.id+'.txt'),source.body);
+        if(source.originalPath) {
+          const s=source.source,retained=path.join(runRoot,'source-originals',s.id+'-'+s.sha256.slice(0,12)+path.extname(s.path).toLowerCase());
+          await copyVerified(retained,path.join(site,source.originalPath),source.originalSha256);
+        }
+      }
+    } else {
     await save(path.join(runSite, 'inputs/request-inputs.json'), snapshot);
     for (const source of snapshot.sources) await atomic(path.join(runSite, 'inputs/sources', source.sourceId+'.txt'), source.uploadedBody);
     for (const source of snapshot.sources) await atomic(path.join(runSite, 'inputs/source-readbacks', source.sourceId+'.json'), await fs.readFile(path.join(runRoot, 'source-readbacks', source.sourceId+'.json')));
@@ -296,25 +320,30 @@ import data from ${JSON.stringify('../'+section.id+'.json')};
       if (hash(original)!==source.sha256) throw Error('Supplied original bytes changed');
       await atomic(path.join(runSite,'inputs/originals',source.sourceId+path.extname(source.path)),original);
     }
-    const options = {baseUrl:origin+runRoute, home:ROUTE+'/', parse, one, all, h, renderSync, unifiedHierarchy};
+    }
+    const options = {baseUrl:origin+runRoute, home:route+'/', publicRelease:publication, parse, one, all, h, renderSync, unifiedHierarchy};
     const directory = await adapt(await fs.readFile(path.join(build, 'dist/index.html'), 'utf8'), null, {...options, heading:'Property Pack learning media'});
-    for (const base of [...(isCurrent?[path.join(site, ROUTE)]:[]), runSite]) await atomic(path.join(base, 'index.html'), base === runSite ? input.sections.reduce((html,section)=>html.replaceAll(ROUTE+'/'+section.id+'/',runRoute+'/'+section.id+'/'),directory) : directory);
+    for (const base of [...(isCurrent?[path.join(site, route)]:[]), runSite]) await atomic(path.join(base, 'index.html'), base === runSite ? input.sections.reduce((html,section)=>html.replaceAll(route+'/'+section.id+'/',runRoute+'/'+section.id+'/'),directory) : directory);
     for (const section of input.sections) {
       const sectionData = await json(path.join(build, 'src', section.id+'.json'));
       const html = await adapt(await fs.readFile(path.join(build, 'dist', section.id, 'index.html'), 'utf8'), sectionData, {...options, heading:section.title});
-      if (isCurrent) await atomic(path.join(site, ROUTE, section.id, 'index.html'), html);
+      if (isCurrent) await atomic(path.join(site, route, section.id, 'index.html'), html);
       await atomic(path.join(runSite, section.id, 'index.html'), html);
     }
-    await save(path.join(runSite, 'release.json'), {...data, catalogue:undefined, frozenInputSha256:hash(await fs.readFile(path.join(runRoot, 'request-inputs.json')))});
-    await save(path.join(runSite, 'version.json'), {id:run, title:data.title, available:data.available, requested:data.requested, manifestSha256:snapshot.manifestSha256, renderer, updatedAt:data.updatedAt, publish:false});
-    return {available:data.available, requested:data.requested, errors:data.errors, directory:site, url:origin+ROUTE+'/'};
+    if(!publication) await save(path.join(runSite, 'release.json'), {...data, catalogue:undefined, frozenInputSha256:hash(await fs.readFile(path.join(runRoot, 'request-inputs.json')))});
+    await save(path.join(runSite, 'version.json'), {id:run, title:data.title, available:data.available, requested:data.requested, manifestSha256:snapshot.manifestSha256, renderer:publication?{revision:renderer.revision}:renderer, updatedAt:data.updatedAt, publish:publication});
+    const result={available:data.available, requested:data.requested, errors:data.errors, directory:site, url:origin+route+'/'};
+    if(release) result.publication=await finishPublication(site,release,result);
+    return result;
   } finally { await lock.close(); await fs.unlink(lockFile); }
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2), options = {};
   while (args.length) {
-    const flag = args.shift(), value = args.shift();
+    const flag = args.shift();
+    if(flag==='--public') { options.publication=true; continue; }
+    const value = args.shift();
     if (flag === '--run') options.run = value;
     else if (flag === '--port') options.port = Number(value);
     else throw Error('Usage: property-pack-index.mjs [--run property-pack-v1] [--port 4340]');
@@ -332,7 +361,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   // An inherited job can complete after its successor's own queue has finished.
   // Every delivery refresh therefore also advances the current aggregate view.
   const currentFile = path.join(ROOT, '.local/property-pack-media/current-run.json');
-  if (await exists(currentFile)) {
+  if (!options.publication && await exists(currentFile)) {
     const {run} = await json(currentFile);
     if (run !== (options.run ?? 'property-pack-v1')) await install({...options, run});
   }

@@ -1,0 +1,10 @@
+{
+  "schema":"opda.notebook-publication.v1",
+  "id":"property-pack-public-v1",
+  "run":"property-pack-complete-v1",
+  "origin":"https://opda.org.uk",
+  "route":"/presentations",
+  "expectedArtefacts":286,
+  "authorisation":"Owner explicitly commissioned public publication of all 286 artefacts and the index at opda.org.uk/presentations on 26 October 2026.",
+  "sourcePolicy":"Publish exact supplied text sources and unchanged native originals; exclude native indexed readbacks, signed transport URLs, provider identities and private receipts."
+}

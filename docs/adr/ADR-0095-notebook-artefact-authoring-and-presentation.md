@@ -436,6 +436,41 @@ served routes before handing over URLs.
   Media and HTML install atomically; unchanged compatible renditions are reused.
   The live local availability count remains the delivery authority during the run.
 
+## Public release authorisation and implementation — 26 October 2026
+
+The owner subsequently explicitly authorised public publication of all 286
+artefacts and their index at `https://opda.org.uk/presentations/`, using OPDA's
+existing S3/CloudFront release owners. This supersedes the earlier local-only
+delivery boundary. Historical frozen commissions retain `publish:false`; the
+separate `config/notebook-publication.json` records the new publication scope.
+
+`node scripts/notebooks/property-pack-index.mjs --public` verifies the same
+provider/file evidence and reuses the pinned shared renderer. It stages all 286
+unchanged originals, their renditions, five section pages, the directory and the
+corresponding versioned run. Public input readers preserve exact prompts and
+supplied text. Native PDF/DOCX/PPTX sources link to the unchanged original files;
+their private indexed readbacks and temporary image URLs are excluded. Public
+source keys replace provider source IDs. Private notebook links, raw receipts,
+renderer checkout paths and reference archives are excluded. Earlier factual
+correction notices remain bound to their original media hashes; additional
+output review remains waived under the owner's explicit instruction.
+
+The finite stage is `.local/property-pack-media/public-release/site/`, with an
+external file-hash manifest at `public-release/manifest.json`. Large immutable
+media and supplied native originals use `/presentations/platform/media/` and
+the existing resources bucket through a dedicated CloudFront behaviour. This
+namespace preserves the shared slide-player admission contract. The small
+`config/presentations/public-site.zip` contains only public pages, input texts,
+CSS, JavaScript and fonts. `config/presentations-release.json` pins every file
+and the archive; the normal site build installs it through the existing release
+process. Source-archive synchronisation preserves the separate media prefix.
+
+Public staging requires all 286 deliveries and rejects private host/transport
+references. Verification covers current/versioned routes, selected source bodies,
+original file hashes, production canonical links and the absence of private
+notebook/source identities. Staging is not a claim of successful S3 upload or
+live activation; those require the AWS deployment owner's separate evidence.
+
 ## Consequences
 
 Reuse preserves the mature media experience and avoids another renderer/scheduler.
