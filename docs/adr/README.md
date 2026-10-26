@@ -159,6 +159,10 @@ Henrik's immediate actions, based on the sources rather than an implementation a
 Each ADR contains the source links, dependent owners, unknowns and completion evidence.
 No new deadline, sent message, approval or model incorporation is inferred from notes.
 
+## Notebook artefact production and presentation
+
+- [ADR-0095](./ADR-0095-notebook-artefact-authoring-and-presentation.md) — accepted implementation plan; source-led authoring, media defaults, reusable index reference and OPDA pipeline binding. New artefact pipeline implementation remains pending.
+
 ## Authoring a new ADR
 
 1. Run `/ruflo-adr:adr-create "<short title>"` — the skill picks the

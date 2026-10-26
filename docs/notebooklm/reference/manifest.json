@@ -1,0 +1,110 @@
+{
+  "purpose": "Versioned implementation reference; not an installed OPDA pipeline or complete dependency closure. Reuse shared owners; do not execute AI-specific scripts unchanged. No source research, media, secrets, notebooks or runtime state included.",
+  "captured": "2026-10-26",
+  "sourceCommits": {
+    "/Users/henrik/source/hm/semantic-ai-stratecy-business-architecture": "940a8bccd837b10b39a8d45581bcda4a27bbe370",
+    "/Users/henrik/source/hm/semantic-enterprise-architecture": "1a19439285822e852f45cf3ad50bbe22740e85a4"
+  },
+  "files": [
+    {
+      "archivePath": "ai-reference/site/notebooks/pages/index.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-ai-stratecy-business-architecture/site/notebooks/pages/index.astro",
+      "sha256": "747f59456429d1cd3e131256651f4981d5e5e6c871c122a13c282d69e9237ecd"
+    },
+    {
+      "archivePath": "ai-reference/site/notebooks/pages/[...scope].astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-ai-stratecy-business-architecture/site/notebooks/pages/[...scope].astro",
+      "sha256": "ee5ebb68ae6e2ae6c7ad6ce15fa9103c2b0c174373b68895232b77824e75f70e"
+    },
+    {
+      "archivePath": "ai-reference/site/notebooks/components/NotebookScaffold.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-ai-stratecy-business-architecture/site/notebooks/components/NotebookScaffold.astro",
+      "sha256": "5677c00fa29e324d1086a8c7241f1b73d87457aa7ebd5ace5f95986d91655c3e"
+    },
+    {
+      "archivePath": "ai-reference/scripts/notebooks/local-comparison-refresh.mjs",
+      "sourcePath": "/Users/henrik/source/hm/semantic-ai-stratecy-business-architecture/scripts/notebooks/local-comparison-refresh.mjs",
+      "sha256": "83e27dd8a09db9661aa1cf6490b97dc77a78bb1e6f66b2764fb1f59cbdd8f3bb"
+    },
+    {
+      "archivePath": "ai-reference/scripts/notebooks/local-unified-view.mjs",
+      "sourcePath": "/Users/henrik/source/hm/semantic-ai-stratecy-business-architecture/scripts/notebooks/local-unified-view.mjs",
+      "sha256": "960589ac9732b15c4aceac023adedcdb5544023bfe70707736a4cea6c7bbccb7"
+    },
+    {
+      "archivePath": "ai-reference/config/shared-renderer.json",
+      "sourcePath": "/Users/henrik/source/hm/semantic-ai-stratecy-business-architecture/config/shared-renderer.json",
+      "sha256": "ec792cf15807adbdc5ab3ee092b568a5a0924f74ef48a3f303f2b36a989a9eaa"
+    },
+    {
+      "archivePath": "ea-reference/site/src/components/NotebookIndexShell.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-enterprise-architecture/site/src/components/NotebookIndexShell.astro",
+      "sha256": "9393ad606f8bf2d4d1fe39aef9515af167476e15366d9a6ef0c75019e2dac3c0"
+    },
+    {
+      "archivePath": "ea-reference/site/src/components/NotebookCollectionDirectory.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-enterprise-architecture/site/src/components/NotebookCollectionDirectory.astro",
+      "sha256": "8f5df84e3c21fee4616c0e9bc24f2882bec2b701d64ca5457cc033897227ba2b"
+    },
+    {
+      "archivePath": "ea-reference/site/src/components/NotebookSubjectCollection.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-enterprise-architecture/site/src/components/NotebookSubjectCollection.astro",
+      "sha256": "5a17619d306593d1db814224307f77a6bc2c4af2d95f94538d0038387b121caa"
+    },
+    {
+      "archivePath": "ea-reference/site/src/components/NotebookAuthoringActions.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-enterprise-architecture/site/src/components/NotebookAuthoringActions.astro",
+      "sha256": "0a0bd69aad553b69118e546a9b1f3b6e1f4b57aafecd9b3518be992e7c5de4e0"
+    },
+    {
+      "archivePath": "ea-reference/site/src/components/NotebookDeckPreview.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-enterprise-architecture/site/src/components/NotebookDeckPreview.astro",
+      "sha256": "436aa113d90f041c3c38b5d759b0cef85e18acc98b1affe293c59257a4c9ed0e"
+    },
+    {
+      "archivePath": "ea-reference/site/src/components/NotebookInfographicCarousel.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-enterprise-architecture/site/src/components/NotebookInfographicCarousel.astro",
+      "sha256": "c586aa562102b58714f2b22472c1ccf63faf5764b6d7e201545b0bd87860d30d"
+    },
+    {
+      "archivePath": "ea-reference/site/src/components/NotebookMediaPlayer.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-enterprise-architecture/site/src/components/NotebookMediaPlayer.astro",
+      "sha256": "e80c3ec728187c4d7b6b04fdf5eb111b711c2506a5d6b1a12252217d8e933526"
+    },
+    {
+      "archivePath": "ea-reference/site/src/components/NotebookRunGallery.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-enterprise-architecture/site/src/components/NotebookRunGallery.astro",
+      "sha256": "258d566e3db819d1ad274b103d5882dbc6feaf45bb63e9566e04cf8942531f4f"
+    },
+    {
+      "archivePath": "ea-reference/site/src/components/CognitiveMultimedia.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-enterprise-architecture/site/src/components/CognitiveMultimedia.astro",
+      "sha256": "a62f63e3a8a265015fe26b0b8a7cea9761b68403329c6b848568f7953b4bae88"
+    },
+    {
+      "archivePath": "ea-reference/site/src/components/CognitiveEditorials.astro",
+      "sourcePath": "/Users/henrik/source/hm/semantic-enterprise-architecture/site/src/components/CognitiveEditorials.astro",
+      "sha256": "fa21cc1a469e574162a4e03d59f666509a4d83b3a73b8fa32f8dee30ece56c6a"
+    },
+    {
+      "archivePath": "skill/SKILL.md",
+      "sourcePath": "/Users/henrik/.codex/skills/notebooklm-authoring/SKILL.md",
+      "sha256": "9d9836c294a196f0d2270828ab278492ed90805c9ed5f88bbabbd7e961511546"
+    },
+    {
+      "archivePath": "skill/references/project-workflow.md",
+      "sourcePath": "/Users/henrik/.codex/skills/notebooklm-authoring/references/project-workflow.md",
+      "sha256": "17e429304d2317938de32e9a648bfd6888fd9cd796a003a15c58c2caba20ed3e"
+    },
+    {
+      "archivePath": "skill/agents/openai.yaml",
+      "sourcePath": "/Users/henrik/.codex/skills/notebooklm-authoring/agents/openai.yaml",
+      "sha256": "f7bf82eb8dd702753558b5ed2062dd5cc321d6a2a0576fe23b568b7b76917b67"
+    },
+    {
+      "archivePath": "skill/scripts/run-workflow.py",
+      "sourcePath": "/Users/henrik/.codex/skills/notebooklm-authoring/scripts/run-workflow.py",
+      "sha256": "982a72b67ce18b4990df7e239e28d998fcd0edc08f94410822965c55b38c57f2"
+    }
+  ]
+}
