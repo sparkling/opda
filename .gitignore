@@ -135,6 +135,8 @@ ruvector.db
 # ADR0095 private provider receipts, original media and pinned renderer exports.
 /.local/property-pack-media/
 /.local/shared-renderer/
+# QE runtime includes generated signing keys and live memory sidecars.
+/.agentic-qe/
 .claude/.bundle-backup/
 
 # Codex local configuration
