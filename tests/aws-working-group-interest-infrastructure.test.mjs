@@ -135,11 +135,11 @@ test('public content uses only path rewriting; APIs enforce their own authorizat
   assert.match(gate, /Runtime: cloudfront-js-2\.0/u);
   const behaviors = site.match(/DefaultCacheBehavior:[\s\S]*?(?=\n\s{8}CustomErrorResponses:)/u)?.[0];
   assert.ok(behaviors);
-  assert.equal((behaviors.match(/TargetOriginId:/gu) ?? []).length, 9);
+  assert.equal((behaviors.match(/TargetOriginId:/gu) ?? []).length, 10);
   assert.doesNotMatch(behaviors, /LambdaFunctionAssociations|GateFunctionVersionArn/u);
   assert.equal((behaviors.match(/FunctionARN: !GetAtt PublicPathFunction.FunctionARN/gu) ?? []).length, 5);
   assert.equal((behaviors.match(/ResponseHeadersPolicyId: !Ref PrivateResponseHeaders/gu) ?? []).length, 3);
-  assert.equal((behaviors.match(/ResponseHeadersPolicyId: !Ref PublicResponseHeaders/gu) ?? []).length, 5);
+  assert.equal((behaviors.match(/ResponseHeadersPolicyId: !Ref PublicResponseHeaders/gu) ?? []).length, 6);
   assert.match(behaviors, /PathPattern: '\/resources\/'[\s\S]*?TargetOriginId: site-s3[\s\S]*?PathPattern: '\/resources\/\*'[\s\S]*?TargetOriginId: resources-s3/u);
   assert.match(behaviors, /PathPattern: '\/resources\/handover'[\s\S]*?TargetOriginId: site-s3[\s\S]*?PathPattern: '\/resources\/handover\/\*'[\s\S]*?TargetOriginId: site-s3[\s\S]*?PathPattern: '\/resources\/\*'/u);
   const source = gate.match(/FunctionCode: \|\n([\s\S]*)$/u)?.[1]

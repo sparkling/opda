@@ -50,6 +50,8 @@ AWS_REGION="eu-west-2"     # region the opda-site stack lives in (see infra.yml)
 # relative to source/ (the sync root), so they carry NO leading "source/".
 # ─────────────────────────────────────────────────────────────────────────
 EXCLUDES=(
+  # Independently published, content-addressed presentation media is not source/.
+  --exclude "presentations/*"
   --exclude "*/node_modules/*"
   --exclude "node_modules/*"
   --exclude "*/.git/*"

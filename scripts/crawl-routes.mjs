@@ -38,7 +38,9 @@ const emitted = [...files(DIST)];
 const emittedSet = new Set(emitted.map((path) => resolve(path)));
 const html = emitted.filter((path) => path.endsWith('.html'));
 const routeFiles = html.filter((path) => path.endsWith(`${sep}index.html`) || path === join(DIST, 'index.html'));
-const runtimePrefixes = ['/_auth', '/api', '/comments'];
+// Presentation media is verified against its upload manifest in the resources
+// bucket; it is deliberately absent from the smaller static-site artifact.
+const runtimePrefixes = ['/_auth', '/api', '/comments', '/presentations/platform'];
 const isRuntime = (path) => runtimePrefixes.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
 // Generated source projections and vendored documentation bundles preserve
 // documentary repository links that are verified by focused doc/ontology

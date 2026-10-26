@@ -23,6 +23,9 @@ export function routesForPaths(inputPaths) {
   const routes = new Set();
   let needsFallback = false;
   for (const path of inputPaths.map((value) => value.trim()).filter(Boolean)) {
+    if (path.startsWith('config/presentations') || path === 'src/integrations/presentations-snapshot.mjs') {
+      routes.add('/presentations');
+    }
     const route = pageRoute(path)
       ?? decisionRoute(path, { source: 'adr', prefix: 'ADR', route: '/modelling/adr' })
       ?? decisionRoute(path, { source: 'ontology/odr', prefix: 'ODR', route: '/modelling/odr' });

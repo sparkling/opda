@@ -18,6 +18,8 @@ on:
       - 'config/fuseki-config.ttl'
       - 'config/property-pack-candidate/**'
       - 'config/ci-test-tiers.json'
+      - 'config/presentations-release.json'
+      - 'config/presentations/**'
       - 'tools/opda-gen/**'
       - 'scripts/**'
       - '!scripts/*notebooklm*'

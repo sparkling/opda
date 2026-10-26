@@ -21,7 +21,7 @@
  * @property {string} date    - ISO date string from frontmatter, or ''
  */
 
-/** All 94 ADRs in the corpus. Every ADR gets a live page. */
+/** All 95 ADRs in the corpus. Every ADR gets a live page. */
 export const ADR_REGISTRY = [
   { id: "adr-0001", number: "0001", title: "Selective adoption of DCAM v3 and DAMA-DMBOK2 elements", status: "accepted", date: "2026-05-18" },
   { id: "adr-0002", number: "0002", title: "Folder hierarchy and slug taxonomy", status: "accepted", date: "2026-05-18" },
@@ -117,4 +117,5 @@ export const ADR_REGISTRY = [
   { id: "adr-0092", number: "0092", title: "Support evidence and feedback without Microsoft tenant access", status: "proposed", date: "2026-10-11" },
   { id: "adr-0093", number: "0093", title: "Launch industry sessions through reviewed trade-body outreach", status: "proposed", date: "2026-10-11" },
   { id: "adr-0094", number: "0094", title: "Assign content owners and record website approval", status: "proposed", date: "2026-10-11" },
+  { id: "adr-0095", number: "0095", title: "Create OPDA notebook artefacts and their presentation indexes", status: "accepted", date: "2026-10-26" },
 ];

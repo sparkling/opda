@@ -2,6 +2,12 @@
   "schemaVersion": 1,
   "tiers": ["release-blocking", "pull-request-blocking", "scheduled-assurance", "development-aid", "delete"],
   "tests": [
+    { "path": "tests/property-pack-publication.test.mjs", "owner": "learning-media", "tier": "release-blocking", "lane": "application" },
+    { "path": "tests/property-pack-learning-journey.test.mjs", "owner": "property-pack", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/property-pack-media-index.test.mjs", "owner": "learning-media", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/property-pack-media-inputs.test.mjs", "owner": "learning-media", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/rendering-handover-routes.test.mjs", "owner": "documentation-platform", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/rendering-presentations-publication.test.mjs", "owner": "documentation-platform", "tier": "release-blocking", "lane": "application" },
     { "path": "tests/audience-tracking.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-access-notices.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/approval-onboarding-notice-worker.test.mjs", "owner": "identity", "tier": "pull-request-blocking", "lane": "application" },
