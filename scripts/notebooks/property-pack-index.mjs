@@ -187,6 +187,10 @@ async function adapt(html, data, {baseUrl, heading, home, publicRelease=false, p
   const header = one(tree, '.index-header__inner');
   if (header) header.children = [h('nav', {class:'opda-local-header', 'aria-label':'OPDA learning media'},
     h('a', {href:home}, 'OPDA · Learning media'), h('a', {href:publicRelease?'/development/property-pack':'http://127.0.0.1:4339/development/property-pack'}, 'Property Pack guide'))];
+  if (one(tree, '.collections-index')) {
+    const indexHeader = one(tree, '.index-header');
+    if (indexHeader) indexHeader.parent.children = indexHeader.parent.children.filter(child => child !== indexHeader);
+  }
   if (publicRelease) for (const meta of all(tree, 'meta[name="robots"]')) meta.attributes.content='index,follow';
   const nav = one(tree, '.nav-overview');
   if (nav) nav.children = [h('span', {}, heading)];
@@ -206,7 +210,7 @@ async function adapt(html, data, {baseUrl, heading, home, publicRelease=false, p
   }
   for (const node of all(tree, 'h1,h2,h3,h4,h5')) if (node.children?.length === 1 && node.children[0].value === 'The case for an AI-enabled H&M') node.children = [h('span', {}, heading)];
   for (const link of all(tree, 'a')) if ((link.attributes.href??'').startsWith('https://notebooklm.google.com/')) link.parent.children = link.parent.children.filter(child => child !== link);
-  const style = parse('<style>.opda-local-header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding:20px 32px;border-bottom:1px solid var(--line)}.opda-local-header a{color:var(--ink);text-underline-offset:.25em}.opda-local-header a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.collections-index .collection-card{--directory-surface:#f3e6a0;--directory-ink:#182b31;--directory-accent:#17392e;--ink:#182b31;--muted:#243538;--accent:#17392e;--line:#d4c46f;box-shadow:8px 10px 0 #526775}.collapsible-index main :is(h1,h2,h3,h4,h5),.collapsible-index .index-toggle{white-space:normal;overflow-wrap:break-word}.unified-topic>.authoring-actions{margin-block:16px}</style>').children[0];
+  const style = parse('<style>.opda-local-header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding:20px 32px;border-bottom:1px solid var(--line)}.opda-local-header a{color:var(--ink);text-underline-offset:.25em}.opda-local-header a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.collections-index .collection-card{box-shadow:8px 10px 0 #526775}.collapsible-index main :is(h1,h2,h3,h4,h5),.collapsible-index .index-toggle{white-space:normal;overflow-wrap:break-word}.unified-topic>.authoring-actions{margin-block:16px}</style>').children[0];
   one(tree, 'head').children.push(style);
   let rendered=renderSync(tree);
   if(publicRelease) rendered=rendered.replaceAll('indexed SHA256','public text SHA256')
@@ -290,7 +294,7 @@ import Directory from ${JSON.stringify(path.join(components, 'NotebookCollection
 import data from '../data.json';
 const collections=data.sections.map(section=>({id:section.id,title:section.title,path:data.route+'/'+section.id+'/',question:section.question,summary:section.purpose,perspective:section.audience,image:data.cardArtwork[section.id],chapters:section.chapters.map((chapter,index)=>({title:chapter.title,href:data.route+'/'+section.id+'/#system-'+index}))}));
 ---
-<Shell {...${JSON.stringify(shell)}} localOnly={${!publication}} bodyClass="notebook-index collections-index" path={data.route+'/'} title="OPDA · Property Pack learning media"><Directory collections={collections} heading="Property Pack learning media" eyebrow="${publication?'NotebookLM explanations':'Local review · NotebookLM explanations'}" intro="Explore how property information becomes a connected model, and how its meaning and readiness are reviewed." navigationLabel="Property Pack media sections"><div slot="before-collections"><p>Generated explanations support learning. The documented candidate and its recorded decisions remain the source of authority.</p></div><p><a href={data.runRoute+'/'}>Open the versioned run and its frozen inputs</a></p><details><summary>${publication?'Release status':'Local run status'}</summary><p>{data.available} of {data.requested} commissioned artefacts are available for review. Updated {data.updatedAt}.</p><p>Further output review was waived for this commission. Pending delivery is labelled in each topic.</p></details></Directory></Shell>`);
+<Shell {...${JSON.stringify(shell)}} localOnly={${!publication}} bodyClass="notebook-index collections-index" path={data.route+'/'} title="OPDA · Property Pack learning media"><Directory collections={collections} heading="Property Pack learning media" eyebrow="${publication?'NotebookLM explanations':'Local review · NotebookLM explanations'}" intro="Explore how property information becomes a connected model, and how its meaning and readiness are reviewed." navigationLabel="Property Pack media sections" /></Shell>`);
     for (const section of input.sections) {
       const sectionData = {...data, subjects:data.subjects.filter(subject => subject.section === section.id), section};
       const levels = new Map(sectionData.subjects.map((subject, index) => [subject.id, index]));
