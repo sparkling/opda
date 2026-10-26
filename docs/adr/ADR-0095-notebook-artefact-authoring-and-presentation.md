@@ -188,6 +188,93 @@ for third-party redistribution; keep this internal reference out of public asset
    links and evaluation notes. Ordinary viewers see useful subjects, not diagnostic
    counts such as “6 / 6 ready” masquerading as topic descriptions.
 
+## Artefact indexing pipeline: copied implementation and OPDA binding
+
+The owner additionally requested the indexing pipeline itself. The separate
+[pipeline source archive](../notebooklm/reference/notebook-index-pipeline.zip)
+contains 187 files from the AI index/generation integration, SA programme owners
+and EA shared rendering code. Its embedded `manifest.json` records source
+repositories, commits, exact copied file hashes and sizes. This complements the
+smaller presentation/skill reference above. It is a source handover, not an
+activated OPDA runtime. Copied working-file hashes are authoritative where they
+differ from the recorded repository commit. Do not serve either archive publicly.
+
+### Data flow and ownership
+
+```text
+OPDA reviewed catalogue + frozen per-request inputs
+    → acknowledged provider jobs and verified downloaded originals
+    → media metadata/quality checks + slide/image renditions
+    → catalogue projection joined by stable subject/topic/request IDs
+    → shared Astro directory + section/chapter/topic views + input dialogs
+    → isolated static output + integrity/link checks
+    → OPDA release owner uploads media and matching indexes
+    → live byte and access verification, delivery receipt
+```
+
+This is presentation indexing, not the semantic/vector knowledge MCP index.
+Generation, download, rendering and publication are separate stages. Index updates
+consume acknowledged state; they never create a replacement provider job.
+
+| Copied owner | Responsibility and required adaptation |
+| --- | --- |
+| `ai/scripts/notebooks/local-comparison-refresh.mjs` | Current delivered-run index, exact input checks, media rendition integration and shared-renderer build. Replace AI variant paths and private run locations with OPDA run configuration. |
+| `ai/scripts/notebooks/local-unified-view.mjs` | Three input views, topic hierarchy, infographic detail levels, icon/download controls and safe content handling. Bind OPDA IDs, source projections and catalogue; retain shared behaviour. |
+| `ai/scripts/notebooks/inventory.mjs` and `ai/site/notebooks/` | Collection directory, section pages and chapter/media projection. Supply OPDA catalogue rather than AI programme records. |
+| `ai/scripts/notebooks/video-quality.mjs` | Original-video quality selection/checks; preserve distinction between provider original and rendition. |
+| `ea/site/scripts/media-originals.mjs`, `pdf-slide-images.mjs`, `pdf-page-render.py` | Metadata, original hashes and passive renditions/slide previews; configure real converter dependencies and target dimensions. |
+| `ea/site/src/components/`, styles and scripts | Shared directory, subjects, media players, deck preview/lightbox, infographic carousel, inspection dialogs and visual behaviour. Resolve actual transitive imports and assets through shared owner. |
+| `sa/src/programme/shared-renderer.py` and `prepare-site.mjs` | Pin/resolve shared renderer and prepare static assets; change repository-relative location through binding, not a second renderer. |
+| `ai/scripts/notebooks/local-generation.py`, `pipeline.py` and SA programme modules | Existing generation/delivery integration that requests index refresh as verified completions arrive. Adapt only the OPDA data/ownership boundary after dependency review. |
+| `ai/scripts/notebooks/publication.mjs` and `ai/scripts/site/unified_n01.py` | Examples of exact media/index release joins and receipts. H&M-specific scope and bucket assumptions must be replaced by OPDA release ownership; these are not OPDA publish commands. |
+
+Extract for implementation inspection, preserving the archive:
+
+```sh
+python3 -m zipfile -e docs/notebooklm/reference/notebook-index-pipeline.zip /tmp/opda-notebook-index-reference
+```
+
+The copied pipeline is deliberately not placed on an executable OPDA production
+path: its historical run IDs, notebook IDs, H&M destinations and fixed subject
+counts would be unsafe or incorrect there. Keep those snapshots unchanged as
+references. Bind reusable code once through the shared owners and implement only
+OPDA-specific catalogue/run adapters in OPDA's normal scripts/config locations.
+Do not copy AI source bodies, source IDs, generation state, cookies or credentials.
+Do not treat all copied components as required; use the import closure of the
+actual selected views. Font/asset licences and packages remain separate dependencies.
+
+### Incremental index and release behaviour
+
+- Catalogue identity includes run, section/chapter, medium, topic, detail/take,
+  provider ID and input hash; a title change must not select another job's media.
+- Update only changed catalogue entries and affected pages/assets; reuse unchanged
+  compatible renditions by original hash plus renderer/settings fingerprint.
+  A full static build may still be useful, but must not trigger media regeneration.
+- A failed item remains recorded while ready items continue through download,
+  validation, indexing and scoped release. No fabricated URLs or empty thumbnails.
+- Write metadata/indexes atomically. Publish referenced media before the index
+  that exposes it; verify object hashes and access, then invalidate affected routes.
+  Rollback selects a previous complete manifest, not mixed old HTML/new inputs.
+- Superseded and deleted items disappear from the new current catalogue while
+  immutable older run pages remain retained unless separately authorised for removal.
+- Input-inspection buttons read the exact frozen package for that output, never the
+  newest prospective authoring file. Otherwise a historic deck could appear to have
+  used instructions it never received.
+- Resume from the persisted acknowledged IDs and delivery ledger after interruption.
+  One supervisor owns writes; no competing generation/downloader/index loops.
+- Validate an OPDA sample through the full chain before claiming installed: actual
+  media, source/prompt dialogs, section navigation, topic variants, downloads,
+  refresh after another completion, interrupted-run recovery and unchanged rerun.
+  Confirm unchanged inputs create no new provider jobs and preserve original bytes.
+
+## Amendment — 26 October 2026
+
+Added the full indexing-pipeline source handover, stage/owner mapping, incremental
+index/release rules and adaptation instructions at the owner's explicit request.
+The requested documentation and source copy are complete; OPDA executable binding,
+generation and publication remain subsequent implementation work, not completed
+by this amendment.
+
 ## Implementation sequence and existing owners
 
 1. Inventory current OPDA sources/notebook receipts and audience needs. Read current
