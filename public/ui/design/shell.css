@@ -319,10 +319,44 @@
 }
 
 @media (max-width: 960px) {
+  /* The measured --header-height is an offset for the page rails, not an
+     input to the masthead: otherwise a desktop measurement survives resize.
+     Give identity and controls their own rows so neither can be squeezed out. */
+  .app-header,
+  .app-header__inner { height: auto; }
+  .app-header__inner {
+    display: grid;
+    grid-template-areas: 'title' 'utilities';
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    padding: var(--space-3);
+    gap: var(--space-2);
+  }
+  .app-header__title { overflow: visible; }
+  .app-header__title .brand-heading__label { overflow: visible; }
+  .app-header__utilities {
+    width: 100%;
+    min-width: 0;
+    align-self: center;
+    justify-content: flex-end;
+    translate: none;
+  }
+  .app-header .global-nav-panel .header-actions--compact {
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-2);
+  }
+  .app-header .global-nav-panel {
+    max-height: calc(100dvh - var(--header-height));
+  }
   .menu-toggle { display: inline-flex; margin-left: auto; }
   .app-header .global-nav { margin-left: var(--space-3); gap: 0; }
   .app-header .global-nav a { padding: var(--space-2) var(--space-3); font-size: var(--text-sm); }
   .app-body,
+  .app-body.reserve-toc-rail,
+  .app-body.no-sidebar.reserve-toc-rail,
+  .app-body.no-sidebar.reserve-navigation-rail,
   .app-body.with-toc,
   .app-body.no-sidebar.with-toc,
   .app-body.sidebar-collapsed,
@@ -332,6 +366,7 @@
   .app-body.no-sidebar.with-toc.toc-collapsed {
     grid-template-columns: minmax(0, 1fr);
   }
+  .app-body.reserve-navigation-rail > .app-main { grid-column: 1; }
   .app-sidebar {
     position: fixed;
     top: var(--header-height);
@@ -339,6 +374,7 @@
     right: auto;
     width: min(22rem, 92vw);
     height: calc(100vh - var(--header-height));
+    height: calc(100dvh - var(--header-height));
     transform: translateX(-100%);
     transition: transform var(--duration-normal) var(--ease),
                 visibility 0s linear var(--duration-normal);

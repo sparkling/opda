@@ -21,6 +21,22 @@ for (const { width, label } of [
   });
 }
 
+test('narrow authored paragraphs retain natural word spacing', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/resources');
+  for (const width of [390, 640, 960]) {
+    await page.setViewportSize({ width, height: 900 });
+    const paragraphs = page.locator('.editorial-content p:not([class])');
+    expect(await paragraphs.count()).toBeGreaterThan(0);
+    for (const paragraph of await paragraphs.all()) {
+      await expect(paragraph).toHaveCSS('text-align', width <= 640 ? 'start' : 'justify');
+      await expect(paragraph).toHaveCSS('hyphens', width <= 640 ? 'manual' : 'auto');
+    }
+    await assertNoBodyOverflow(page);
+  }
+  clean();
+});
+
 for (const route of ['/', '/join', '/programme']) {
   test(`design controls are URL-gated on ${route}`, async ({ page }) => {
     const clean = watchRuntime(page);

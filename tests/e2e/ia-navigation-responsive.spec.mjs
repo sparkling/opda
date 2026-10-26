@@ -5,6 +5,59 @@ import { assertNoBodyOverflow, visit, watchRuntime } from './support.mjs';
 
 const primary = GLOBAL_NAVIGATION_ITEMS.map(({ title, url }) => ({ title, url }));
 
+test('desktop header measurements do not trap the mobile masthead at desktop height', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.route('**/_auth/me', route => route.fulfill({ status: 503, contentType: 'application/json', body: '{}' }));
+  await page.setViewportSize({ width: 1800, height: 900 });
+  await visit(page, '/resources');
+  await expect(page.locator('#auth-login-btn')).toHaveText('Sign-in unavailable');
+  const header = page.locator('.app-header');
+  await expect.poll(() => header.evaluate(node => node.getBoundingClientRect().height)).toBeGreaterThan(120);
+
+  // Resize the same document: reloading would discard the measured shell height
+  // and miss the desktop-to-mobile feedback defect.
+  for (const width of [960, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect.poll(() => header.evaluate(node => node.getBoundingClientRect().height)).toBeLessThan(120);
+    const brand = page.locator('.app-header__title .brand-heading__label');
+    await expect(brand).toHaveText('Open Property Data Association');
+    expect(await brand.evaluate(node => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
+    for (const selector of ['#global-nav-toggle', '#menu-toggle', '.app-header .theme-toggle', '#auth-login-btn']) {
+      const control = page.locator(selector);
+      if (!await control.count()) continue;
+      const box = await control.boundingBox();
+      expect(box.x).toBeGreaterThanOrEqual(0);
+      expect(box.x + box.width).toBeLessThanOrEqual(width);
+      if (selector !== '#auth-login-btn') {
+        expect(box.width).toBeGreaterThanOrEqual(44);
+        expect(box.height).toBeGreaterThanOrEqual(44);
+      }
+    }
+    await page.locator('#global-nav-toggle').click();
+    const actions = page.locator('.global-nav-panel .header-actions--compact');
+    expect(await actions.evaluate(node => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
+    await page.locator('#global-nav-panel a').first().focus();
+    await page.keyboard.press('Escape');
+    await assertNoBodyOverflow(page);
+  }
+  clean();
+});
+
+test('mobile reserved rails leave the full viewport available to the article', async ({ page }) => {
+  const clean = watchRuntime(page);
+  for (const route of ['/search?q=PDTF', '/development/candidates']) {
+    for (const width of [320, 390, 768, 960]) {
+      await page.setViewportSize({ width, height: 900 });
+      await visit(page, route);
+      const main = await page.locator('.app-main').boundingBox();
+      expect(main.x).toBeCloseTo(0, 0);
+      expect(main.width).toBeCloseTo(width, 0);
+      await assertNoBodyOverflow(page);
+    }
+  }
+  clean();
+});
+
 test('mobile primary disclosure is keyboard-operable and 320px does not overflow', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 320, height: 900 });

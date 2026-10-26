@@ -31,8 +31,8 @@
   margin-inline: 0 auto;
 }
 
-/* Reading paragraphs use a deliberate full measure; final lines remain naturally
-   aligned and browser hyphenation prevents conspicuous gaps in narrow columns. */
+/* Wide reading paragraphs use a deliberate full measure; final lines remain
+   naturally aligned. Narrow screens keep natural word spacing instead. */
 .editorial-content:is(.prose, main) p:not([class]) {
   text-align: justify;
   text-align-last: start;
@@ -166,4 +166,11 @@
 @media (max-width: 48rem) {
   .editorial-content:is(.prose, main) dl:not([class]):has(> dt) { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
   .editorial-content:is(.prose, main) dl:not([class]):has(> dt) > dd + dt { margin-block-start: var(--space-5); }
+}
+
+@media (max-width: 40rem) {
+  .editorial-content:is(.prose, main) p:not([class]) {
+    text-align: start;
+    hyphens: manual;
+  }
 }
