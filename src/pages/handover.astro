@@ -1,0 +1,302 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Callout from '@/components/Callout.astro';
+---
+
+<Layout
+  title="Maintainer handover"
+  description="The operational handover for the OPDA knowledge base, model toolchain, working-group services and supporting content."
+  hideSidebar
+  hideFooter
+  hideComments
+  suppressActiveDestination
+  mainClass="handover"
+>
+  <h1>Maintainer handover</h1>
+  <p class="lead">A practical guide to taking responsibility for the OPDA knowledge base, its semantic-model toolchain and the services around it. Start with access and a reproducible build, then complete the service and ownership checks before accepting the handover.</p>
+  <p><strong>Repository review:</strong> <time datetime="2026-10-26">26 October 2026</time>. <strong>Document status:</strong> public operational reference; acceptance remains to be recorded by the receiving owner.</p>
+
+  <Callout title="What this handover establishes" tone="important">
+    <p>The commands and architecture below are grounded in the checked-in implementation. A template, passing test or historic receipt does not prove that an account is accessible, an automation is running or an integration is enabled today. Those checks are listed explicitly. This page does not certify a completed transfer or approve a standard.</p>
+    <p>Account identifiers, tenant locations, private submissions, personal contact details, credentials and recovery secrets belong in an authorised, restricted handoff. Obtain access through OPDA's owners; do not place those details in this public page or Git history.</p>
+  </Callout>
+
+  <h2 id="start">1. First day: establish a safe baseline</h2>
+  <ol>
+    <li><strong>Identify the receiving owners.</strong> Agree who owns the programme, standards decisions, website, AWS operations, Microsoft workspaces, participant data, communications and NotebookLM. Record a deputy and escalation route privately. A repository maintainer does not automatically inherit each of these authorities.</li>
+    <li><strong>Receive the repository and source archive.</strong> Confirm read/write access to the correct GitHub repository and its Actions settings. Work in the existing <code>main</code> checkout. Run <code>git status --short</code> and <code>git log -5 --oneline</code>; preserve other people's work. Record the starting commit and the currently deployed release identity.</li>
+    <li><strong>Read the contributor contract.</strong> Begin with <code>AGENTS.md</code>, <code>README.md</code>, <code>DESIGN.md</code>, <code>Makefile</code> and the relevant accepted ADRs. Some old guidance describes earlier hosting or time-limited executor arrangements; compare it with current code and record conflicts before relying on it.</li>
+    <li><strong>Build from the locked dependencies.</strong> Follow the setup below, then run <code>make test</code> and <code>make build</code>. Keep the results and inspect <code>git status --short</code> again for generated changes. A site build requires neither AWS credentials nor a production database.</li>
+    <li><strong>Inspect the public experience.</strong> Check the six main destinations, Property Pack pages, search and resource downloads. Use the approved Chrome connection and existing OPDA profile for local browser work. Reading is public; optional member sign-in serves participation features.</li>
+    <li><strong>Complete a supervised release and recovery exercise.</strong> Use a small authorised change, observe the CI gates and deployment, verify the published commit, then demonstrate the recovery procedure in a controlled setting. Agree an incident contact and confirm an operational alert actually reaches its recipient.</li>
+  </ol>
+  <p>The transfer is ready for acceptance when a successor can repeat these steps with their own approved access and can explain the remaining open items. The final checklist is in <a href="#acceptance">section 13</a>.</p>
+
+  <h2 id="scope">2. Understand the four bodies of work</h2>
+  <p>The site explains work with different origins and authority. Keep these distinctions in pages, model outputs, presentations and generated media.</p>
+  <table>
+    <caption>Model and standards authority boundaries</caption>
+    <thead><tr><th scope="col">Body of work</th><th scope="col">Role</th><th scope="col">Authority boundary</th></tr></thead>
+    <tbody>
+      <tr><td>PDTF schema</td><td>Existing Digital Property Pack JSON Schema, overlays, dictionary, glossary and supporting implementation material.</td><td>Attributed third-party technical input. It does not determine SPDTF business meaning or demonstrate working-group agreement.</td></tr>
+      <tr><td>Schema-derived ontology</td><td>The separate draft linked-data extraction from that schema corpus, with RDF/OWL, SKOS, SHACL, mappings and provenance. Stable technical identifiers retain <code>/pdtf/**</code>.</td><td>A technical derivation with its own evidence and validation. It is neither the PDTF schema itself nor the SPDTF standard.</td></tr>
+      <tr><td>SPDTF</td><td>The Smart Property Data Trust Framework being developed collaboratively across domain practitioners and stakeholders.</td><td>In development and non-normative. Human groups determine meaning through recorded governance; publication does not confer statutory or standards authority.</td></tr>
+      <tr><td>Property Pack ontology candidate</td><td>An independent, greenfield delivery intended as a future SPDTF component, covering a closed source scope of 451 required items.</td><td>Machine-proposed and non-normative. Source items are coverage requirements, not 451 predetermined RDF properties. Technical determination and subsequent domain review remain separate authority stages.</td></tr>
+    </tbody>
+  </table>
+  <p>Accepted ADR-0063 establishes domain-led bounded contexts; ADR-0066 and ADR-0067 establish the Property Pack scope and architecture; ADR-0075 establishes its accelerated component role; ADR-0077 establishes the PDTF input boundary. ADR-0065's AI-assisted workflow and ADR-0068's wider lifecycle and ratification policy remain <strong>proposed</strong>. Do not turn their suggested process into an adopted rule through paraphrase.</p>
+  <p>Use <a href="/programme">Programme</a> for purpose, <a href="/governance">Governance</a> for authority, <a href="/semantic-modelling">Modelling</a> for method, <a href="/development">Development</a> for drafts and inputs, <a href="/development/working-groups">Groups</a> for participation and <a href="/resources">Resources</a> for evidence. The separate association website and this knowledge base have different publishing responsibilities.</p>
+
+  <h2 id="architecture">3. Architecture and repository map</h2>
+  <p><strong>The main website is static.</strong> Astro renders maintained routes, Markdown collections and committed data into <code>dist/</code>. GitHub Actions validates that candidate, publishes it to S3 and refreshes CloudFront. Route 53 and an ACM certificate support the public domain. Normal page reading does not call an LLM or a live triplestore.</p>
+  <table>
+    <caption>Three operational surfaces</caption>
+    <thead><tr><th scope="col">Surface</th><th scope="col">Implementation</th><th scope="col">Maintenance boundary</th></tr></thead>
+    <tbody>
+      <tr><td>Public pages and assets</td><td>Astro, shared OPDA design system, client scripts, static search/data bundles, S3 and CloudFront.</td><td>Build and release the website through CI. Keep stable routes, redirects, resource receipts and accessible shared components.</td></tr>
+      <tr><td>Model generation and inspection</td><td>Python generators, Apache Jena/Fuseki, SHACL, a local GRLC-style SPARQL-to-REST API and committed model projections.</td><td>Local or conditional build-time tooling. Fuseki and <code>src/api/</code> are not deployed as public production services.</td></tr>
+      <tr><td>Participant operations</td><td>AWS API/Lambda services, participant/registration data, identity/session integrations, comments, event queues, CRM and email/Microsoft connections.</td><td>Stateful services require separate access, monitoring, data protection and recovery. A successful static build does not verify them.</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <caption>Where to find and change things</caption>
+    <thead><tr><th scope="col">Path</th><th scope="col">Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td><code>src/pages/</code></td><td>Public Astro routes. This handover is maintained in <code>src/pages/handover.astro</code>.</td></tr>
+      <tr><td><code>src/layouts/</code>, <code>src/components/</code>, <code>src/styles/</code>, <code>public/ui/</code></td><td>Shared page shell, accessible interface, typography, theme, tokens and generated design assets. Reuse their owners; do not copy a page's implementation into another route.</td></tr>
+      <tr><td><code>src/lib/</code>, <code>src/data/</code></td><td>Navigation, route/status contracts, model loaders, maintained catalogues and committed generated projections. Check which fields are maintained versus generated before editing.</td></tr>
+      <tr><td><code>docs/adr/</code>, <code>docs/ontology/odr/</code>, <code>docs/manual/</code></td><td>Architecture decisions, ontology decisions and generated reference content. Configured collections render selected documents; treat changes here as potential publication.</td></tr>
+      <tr><td><code>source/</code></td><td>Attributed evidence, standards and upstream/research archives. Much of the local archive is gitignored and will not arrive with a clone.</td></tr>
+      <tr><td><code>source/03-standards/ontology/</code></td><td>The committed schema-derived ontology corpus consumed by the generator, Fuseki and drift gates.</td></tr>
+      <tr><td><code>src/data/property-pack/</code>, <code>source/03-standards/ontology-candidates/property-pack/</code></td><td>Maintained catalogue/model definitions and isolated candidate outputs and validation receipts.</td></tr>
+      <tr><td><code>tools/opda-gen/</code>, <code>scripts/</code>, <code>src/api/</code></td><td>Deterministic ontology toolchain, build/resource/operational helpers and local query API.</td></tr>
+      <tr><td><code>config/aws/</code>, <code>.github/workflows/</code></td><td>CloudFormation and runtime implementation; site, infrastructure and assurance pipelines.</td></tr>
+      <tr><td><code>docs/notebooklm/</code>, <code>src/data/marketing/</code>, <code>scripts/marketing/</code></td><td>Notebook source/prompt/receipt records and maintained marketing sources and generated assets.</td></tr>
+      <tr><td><code>tests/</code>, <code>config/ci-test-tiers.json</code>, <code>Makefile</code></td><td>Contracts, fixtures, test ownership and the task catalogue.</td></tr>
+    </tbody>
+  </table>
+  <p><code>dist/</code>, <code>node_modules/</code>, <code>.astro/</code>, <code>.fuseki/</code>, <code>.jena/</code> and local run directories are generated state or caches. They do not replace version-controlled sources or a backup of the research archive.</p>
+
+  <h2 id="setup">4. Local setup and prerequisites</h2>
+  <p>Use Node.js 22 to match CI, Corepack and the <code>pnpm@11.17.0</code> version pinned in <code>package.json</code>. For ontology work, add Python <strong>3.11</strong> and Java 17 or newer; CI uses Java 21. Docker is only needed for optional Skosmos. Marketing asset regeneration requires local <code>ffmpeg</code>.</p>
+  <pre><code>{`# In the repository root, on main
+corepack enable
+make install
+make dev
+
+# Repeatable static-site checks
+make test
+make build`}</code></pre>
+  <p><code>make install</code> uses the frozen pnpm lockfile. <code>make dev</code> selects a free loopback port from 4330–4339 and reuses an existing project server. Use the exact address it prints. Do not run competing dev processes against the shared Vite cache. <code>make preview</code> builds and serves the production output.</p>
+  <pre><code>{`# Additional setup for opda-gen
+python3.11 -m venv tools/opda-gen/.venv
+make ontology-install
+
+# Model-query development; Ctrl-C stops the owned services
+make serve-data`}</code></pre>
+  <p><code>make serve-data</code> starts Fuseki on port 3031 and the optional local API on port 3002. Jena distributions are downloaded, checksum-verified and cached when required. Some full ontology gates need the upstream schema archive at <code>source/03-standards/schemas/</code>; obtain the revision pinned by the release workflow rather than an arbitrary latest checkout.</p>
+  <p>The development server exposes selected local evidence files for the resource viewer. The production build does not copy the whole archive. A resource that works locally is therefore not proof that its approved production download exists.</p>
+
+  <h2 id="model-workflow">5. Change models at their maintained source</h2>
+  <h3>Schema-derived ontology</h3>
+  <p>Read <code>tools/opda-gen/README.md</code>, the relevant ODR and generator input definitions before changing the committed Turtle corpus. Keep derivation, provenance, documentary annotations and permitted inference behaviour intact. Fix the generator or maintained inputs, regenerate and compare the output; editing only a generated reference page creates drift.</p>
+  <pre><code>{`make ontology-test
+make ci-ontology
+make build-data
+make ci-ontology-doc
+make ci-ontology-graph`}</code></pre>
+  <p><code>make ci-ontology</code> covers unit/round-trip, profile, declaration, construct, coverage and provenance contracts, then proves regeneration byte identity. <code>make build-data</code> uses ephemeral Fuseki to refresh the committed model and graph and build the site. Review changes to <code>src/data/ontology-model.json</code> and <code>public/data/ontology-graph-elements.json</code> alongside the model inputs. Use <code>make ci-ontology-model</code> with a running local Fuseki when checking that extraction independently.</p>
+  <p><code>make jena-load</code> clears and reloads the selected local dataset. Confirm the target before using it. <code>make api</code> and <code>make ontology-model</code> expect a running local Fuseki; they do not administer production.</p>
+  <h3>Property Pack candidate</h3>
+  <p>The maintained catalogue and contextual rules live under <code>src/data/property-pack/</code>, including <code>properties/</code> and <code>candidate-model/</code>. The Python catalogue and candidate scripts produce the isolated versioned artefacts. Preserve the accepted 451-item evidence scope and item-to-model traceability; a count comparison alone does not establish semantic equivalence.</p>
+  <pre><code>{`# After an intentional maintained-model change
+make property-pack-candidate
+
+# Non-publishing validation and deterministic regeneration
+make ci-property-pack-candidate
+make test
+make build`}</code></pre>
+  <p>The candidate gates validate RDF, SHACL, SPARQL, coverage and byte identity. They do not sign off the model. Use the <a href="/development/property-pack">Property Pack workspace</a> and <a href="/development/property-pack/review-and-releases">review and release record</a> to keep open questions, reviewer dispositions and the exact candidate version linked to the eventual determination. Any unresolved required-field counting or source-version discrepancy needs an explicit crosswalk and decision.</p>
+  <h3>Semantic review</h3>
+  <p>Keep six outputs aligned: business glossary, data dictionary, taxonomies, controlled vocabularies, resources and relationships. Record a resource's contextual home, source version, rights, definition, examples, counterexamples and competency questions. Domain practitioners own domain meaning; interoperability work owns the limited shared boundary and qualified mappings. Proposals, objections, validations and human decisions must remain distinguishable.</p>
+
+  <h2 id="validation">6. Choose and preserve the right validation evidence</h2>
+  <p>There is no <code>lint</code> script. The Makefile is the task entry point. Always run <code>make test</code> after code changes and <code>make build</code> for website changes; use <code>make build-data</code> when ontology inputs change. Add the affected model, operational or interface checks rather than treating every change as equivalent.</p>
+  <table>
+    <caption>Checks by affected surface</caption>
+    <thead><tr><th scope="col">Change</th><th scope="col">Additional evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Ordinary content or route</td><td>Inspect status/provenance and internal links, validate the changed built route and verify the page with the approved Chrome connection.</td></tr>
+      <tr><td>Shared interface</td><td>Focused consumer contracts, <code>make check-design-system</code>, accessible light/dark and narrow-viewport review. Use the shared component and update its consumers.</td></tr>
+      <tr><td>ADR</td><td>Read the status enum and format in <code>docs/adr/README.md</code>; run <code>make gen-adr</code> and <code>make check-adr</code>. Check publication eligibility before building.</td></tr>
+      <tr><td>Schema or ontology</td><td><code>make ci-ontology</code>, relevant schema reproducibility gates, model/document/graph drift checks and regenerated-output review.</td></tr>
+      <tr><td>Property Pack</td><td><code>make ci-property-pack-candidate</code>, catalogue/model contracts and human review of affected definitions and traceability.</td></tr>
+      <tr><td>AWS or participant services</td><td>Focused boundary tests, infrastructure workflow validation and an authorised live acceptance check that avoids unintended participant effects.</td></tr>
+      <tr><td>Marketing or NotebookLM</td><td><code>make marketing-check</code> or the local notebook receipt verifier, then human content/authority/rights review.</td></tr>
+    </tbody>
+  </table>
+  <p>The release workflow classifies changed paths into editorial, application, ontology, infrastructure and tooling lanes. Common checks include design/ADR drift, governed test ownership and stable release contracts. Application changes add focused behaviour checks; ontology changes provision the model toolchain and upstream pinned schema. Changed-route checks and critical browser journeys run against the built candidate before publication.</p>
+  <p>Broader whole-site, accessibility, responsive and visual assurance is scheduled separately; external-link checks run weekly. Scheduled assurance does not deploy. <code>make ci</code> remains a comprehensive local path. Repository browser commands describe CI's Playwright suite; local browser interaction must follow <code>AGENTS.md</code> and use the authorised existing Chrome session. If that connection is unavailable, report the exact missing browser evidence rather than claiming a visual pass.</p>
+  <p>Keep validation outputs with the relevant commit or release record. Passing syntax, machine validation or AI review does not prove source rights, standards approval, operational activation or transfer of ownership.</p>
+
+  <h2 id="release">7. Release through CI and verify the result</h2>
+  <ol>
+    <li><strong>Prepare a scoped change on main.</strong> Read before editing, preserve unrelated work, stage only the requested slice and use a meaningful conventional commit. Check that generated files and publication boundaries match the intended change.</li>
+    <li><strong>Run local checks.</strong> Complete the relevant checks above and inspect the final diff. Repository working notes, confidential evidence and exploratory reports must not become public routes incidentally.</li>
+    <li><strong>Push under the applicable release authority.</strong> <code>make deploy</code> pushes <code>main</code>; the AWS caller workflow selects the validation lanes. It does not upload the local <code>dist/</code>.</li>
+    <li><strong>Observe the whole release.</strong> Follow <code>.github/workflows/deploy-aws.yml</code> and <code>site-release.yml</code>. Required contracts and the release candidate must both succeed before the exact validated artifact can deploy.</li>
+    <li><strong>Check the live identity and behaviour.</strong> Read the published <code>/release.json</code> and compare its <code>sourceCommit</code> with the intended commit. Check the changed page, critical navigation, dependent assets and any affected service. Record the release/run identity and the observed result.</li>
+  </ol>
+  <p>The deployment uses GitHub OIDC to assume the approved AWS role. It publishes content-addressed assets first, then changed mutable objects and targeted CloudFront invalidations. Old immutable assets remain available to already-open pages. Do not assign immutable cache policy to HTML, manually copy a different build over the release, or delete the prior assets as routine cleanup.</p>
+  <p>Infrastructure changes have a separate <code>infra.yml</code> pipeline. Its ordered CloudFormation deployments and runtime packaging are part of the implementation. Bootstrap resources are deliberately outside that pipeline. A coupled infrastructure/site change needs the documented order and checks in both workflows.</p>
+  <Callout title="Publication and emergency boundaries" tone="caution">
+    <p><code>make publish-resources</code> is a separate, consequential publication of the local source archive to its resource bucket. Confirm the exact files, permissions and publication authority before using it. Never use it merely to repair an unexamined link.</p>
+    <p><strong>Use <code>make deploy</code>, not <code>npm run deploy</code> or <code>./deploy.sh</code>.</strong> The latter still invoke a legacy script that stages the entire working tree, can rewrite the remote and deploys to retired Cloudflare hosting. <code>make deploy-manual</code> also reaches that script. These names are not interchangeable.</p>
+    <p>A separate AWS break-glass workflow bypasses normal release gates. It needs an explicitly authorised incident decision and follow-up validation; it is not the routine release procedure.</p>
+  </Callout>
+
+  <h2 id="recovery">8. Incident triage and recovery</h2>
+  <p>First distinguish a static-site problem from a participant-service incident or a local tool failure. Capture the release commit, affected feature, start time and non-sensitive error evidence. Assign an incident owner. Preserve participant data and previous immutable assets; a redeploy of HTML cannot restore a stateful service's data.</p>
+  <table>
+    <caption>Recovery paths and their limits</caption>
+    <thead><tr><th scope="col">Symptom</th><th scope="col">First checks</th><th scope="col">Recovery boundary</th></tr></thead>
+    <tbody>
+      <tr><td>Release failed before deployment</td><td>Read the failing job and retained failure evidence. Confirm whether deployment ran and compare the live release identity.</td><td>Fix the failure and rerun the normal pipeline. Do not assume a failed build changed production.</td></tr>
+      <tr><td>Bad page or client behaviour after release</td><td>Compare live and intended commits, changed routes, asset responses and cache evidence.</td><td>Revert the specific faulty change on <code>main</code>, preserving later accepted work, then validate and release through CI. Verify the resulting live commit and behaviour.</td></tr>
+      <tr><td>Local dev or model query fails</td><td>Check the owned server, selected port, Node/pnpm, Java/Python, upstream input revision and tool output.</td><td>Restart only the owned process or rebuild the affected projection. Do not start another server against shared state or change production to fix a local issue.</td></tr>
+      <tr><td>Signup, approval, acknowledgement or onboarding fails</td><td>Check the corresponding function, queue/dead-letter state, logs, provider health and enablement configuration with authorised access.</td><td>Use the owning service's idempotent retry/review path. Verify each real postcondition before resending messages or declaring provisioning complete.</td></tr>
+      <tr><td>Comments unavailable or data recovery needed</td><td>Check gateway/session services, the Artalk task and persistence health.</td><td>Preserve the SQLite/Litestream persistence model and single-writer invariant. Restore only under an agreed, tested data-recovery plan.</td></tr>
+      <tr><td>Infrastructure or identity access failure</td><td>Check the last infrastructure run, CloudFormation events, owner access and the relevant provider integration.</td><td>Use the authorised infrastructure owner. Do not delete/recreate stacks, alter trust or rotate shared credentials as speculative troubleshooting.</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Rollback implementation limit:</strong> there is no general one-command production/data rollback established by this handover. The normal site recovery is a reviewed forward commit or scoped revert followed by the same CI release. Site artifacts currently have short retention, so do not assume an old workflow artifact remains downloadable. A revert that affects infrastructure, stored data or third-party side effects needs a separate recovery decision.</p>
+  <p><strong>Backup evidence:</strong> checked-in templates enable point-in-time recovery on key registration/participant stores and versioning on relevant persistence buckets. A retained migration-evidence bucket is explicitly not an automated backup service. Confirm live settings, retention, recovery-point/recovery-time objectives and a successful isolated restore with the operator. Repository code and template declarations are not restore-test evidence.</p>
+  <p><strong>Alert delivery:</strong> the operations stack wires an SNS alarm topic; email subscriptions must be confirmed. An existing topic or configured alarm does not prove somebody receives notifications. Transfer the recipient ownership and demonstrate delivery, including the agreed Teams route where used.</p>
+  <h3>Participant data, retention and queue replay</h3>
+  <p>Agree who receives privacy requests and owns retention, expiry, withdrawals, erasure and provider suppression. Check the actual maintenance schedule and outcomes; documented policy is not evidence that a daily sweep is active. Participant approval, email preference, operational access and a marketing unsubscribe have distinct effects and must not be substituted for one another.</p>
+  <p>Inspect failed consumer events and their live source state before a bounded replay. The worker must recheck approval, expiry, deletion and suppression; do not restore an old grant or resend old messages from a queue snapshot. A data restore needs quarantine and reconciliation with subsequent erasures, withdrawals and security suspensions before anything returns to service. ADR-0084 records this boundary; complete the restricted retention/recovery runbook and demonstrate it with the data owner.</p>
+
+  <h2 id="ownership">9. Accounts, ownership and restricted operational handoff</h2>
+  <p>AWS hosting is intended to sit in OPDA's account. The receiving owner must verify organisational ownership, billing responsibility, administrative recovery and their own access. This repository review does not establish those facts. Main infrastructure is in <code>eu-west-2</code>; certificate/edge resources also use <code>us-east-1</code>.</p>
+  <table>
+    <caption>Access transfer register — owners and acceptance evidence to confirm</caption>
+    <thead><tr><th scope="col">Service</th><th scope="col">Restricted handoff</th><th scope="col">Acceptance evidence</th></tr></thead>
+    <tbody>
+      <tr><td>GitHub and repository</td><td>Organisation/repository owner, maintainer/deputy, Actions permissions, repository variables, environment controls and recovery.</td><td>Successor can clone, review, commit on <code>main</code> and observe an authorised CI release with their own access.</td></tr>
+      <tr><td>AWS and public domain</td><td>OPDA account/billing owner, approved SSO profile, role assignments, OIDC trust, stack inventory, domain/registrar and DNS owners, certificate renewal and alert recipients.</td><td>Expected identity and permissions verified; billing/domain ownership confirmed; operational dashboards and release outputs visible.</td></tr>
+      <tr><td>Identity, sessions and comments</td><td>Identity-provider ownership, app registrations, session service operations, comment moderation, container registry, database persistence and recovery.</td><td>Approved test user can use the intended participation journey; unauthorised access fails; moderator and recovery responsibilities are accepted.</td></tr>
+      <tr><td>Microsoft 365</td><td>Tenant administrators, Team owners/deputies, SharePoint site/group/folder administrators, application permissions and automation identity.</td><td>Live memberships and organisation isolation read back; a permitted contributor can reach the right workspace and an unrelated organisation cannot.</td></tr>
+      <tr><td>CRM and outbound email</td><td>HubSpot, Postmark and Microsoft app owners, approved credentials/secrets management, sending-domain responsibility, suppression and delivery support.</td><td>Authorised canary verifies acknowledgement, approval state and delivery without duplicate invitations or unintended participant mail.</td></tr>
+      <tr><td>NotebookLM and media</td><td>Notebook ownership/access, subscription responsibility, export inventory and authorised media destination.</td><td>Successor opens each required notebook, follows a source citation and downloads/opens the agreed source and output exports.</td></tr>
+      <tr><td>Developer and scheduled-agent environment</td><td>Approved native model subscriptions, MCP registrations, local source archive, scheduler host, automation identity and operational checkpoint owner.</td><td>Tools are reachable under successor access; scheduled run and recovery are demonstrated independently of the departing developer's machine.</td></tr>
+    </tbody>
+  </table>
+  <p>For AWS sign-in use the approved profile and device flow: <code>aws sso login --profile &lt;approved-profile&gt; --use-device-code --no-browser</code>. Give the operator the fresh verification link and code privately, then verify <code>aws sts get-caller-identity --profile &lt;approved-profile&gt;</code> against the expected account and role. Never save the code, tokens or identity output in this public page.</p>
+  <p>Transfer roles and recovery methods rather than sharing personal logins. Keep secret locations, exact identifiers, provider configuration, authorised contacts and data-recovery instructions in the restricted operational record. Confirm rotation/revocation with the owners after successful transfer; do not revoke the only working access prematurely.</p>
+
+  <h2 id="ai">10. Developer AI and scheduled automation</h2>
+  <p>AI tools assist research, coding, review, modelling proposals and communications preparation. They are not a dependency for reading the static site. The AWS participant services execute ordinary application code; the checked-in architecture does not establish a public website inference API.</p>
+  <p>Contributor tooling includes Codex/Claude arrangements, Ruflo coordination/memory, local source-knowledge connections and approved native provider subscriptions. Availability is host- and session-specific. Configuration in Git is not proof that a tool is registered, reachable or authorised on the successor's machine. Do not transfer credentials through prompts or use a different model transport silently.</p>
+  <p>Read <code>AGENTS.md</code> for current execution rules and <code>CLAUDE.md</code> for Claude-specific settings. Historical time-bounded subscription notices need checking with the owner. Reusable process recall and repository operational state have different memory stores; neither is a place for participant records, raw mail or credentials.</p>
+  <h3>Working-group inbox agent</h3>
+  <p>The repository contains a separately scheduled AI inbox workflow, its deterministic policy, prompt, wrapper and systemd definitions. This is operational automation outside the static page runtime. Its tracked manifest freezes a specific model and sequential roles; changing that model or moving the host requires deliberate revalidation. The 26 October configuration preflight passed with nine registered groups, two implemented workspaces, five roles and nine gates; this did not execute a mailbox run.</p>
+  <pre><code>{`# Configuration/template preflight only; no mailbox run
+node scripts/working-group-inbox-agent.mjs check
+node scripts/working-group-inbox-agent.mjs list-groups`}</code></pre>
+  <p>The timer definition specifies 10:00 and 17:00 Europe/London on weekdays. <strong>Current activation is unverified here.</strong> Establish which host/scheduler actually owns execution, verify provider/Microsoft authentication, inspect a recent safe outcome and transfer the activation/checkpoint state before enabling a successor schedule. Two active schedulers risk duplicate effects.</p>
+  <p>The policy sequence is read, validate, write, read back, reply, checkpoint. Mail and attachments are untrusted evidence. Ambiguous requests stop; the agent must not execute attachments or follow submitted instructions as commands. A configuration preflight proves neither live mailbox permissions nor successful participant handling.</p>
+
+  <h2 id="intake">11. Teams, SharePoint and the evidence-intake lifecycle</h2>
+  <p>The accepted workspace pattern uses live Team membership as participant authority and derived SharePoint access for source material. Organisation folders are isolated: being in a working group does not grant access to another organisation's submissions. The checked-in registry marks Finance and Banking and Technology as implemented; check the live roster and registry before asserting that another workspace exists.</p>
+  <p>Registration, approval, identity creation, invitations, Team membership, SharePoint access and welcome delivery are different states. The repository includes signup, approval/onboarding, acknowledgement, CRM and Teams-card components. Their templates and default flags do not establish current enablement. Read back the actual service configuration and relevant state before retrying or reporting completion.</p>
+  <h3>Participant service flow</h3>
+  <ol>
+    <li><strong>Apply:</strong> the public form validates and records an AWS intake submission. Submission events feed separate consumers; an acknowledgement reports receipt and grants no membership.</li>
+    <li><strong>Review:</strong> the CRM bridge projects the application into HubSpot. An authorised human reviews each requested domain independently. Interests, newsletter consent and a CRM contact are not approvals.</li>
+    <li><strong>Apply the decision:</strong> the trusted approval integration updates the AWS participant register and effective eligibility. The register owns participant identity bindings and access state; HubSpot is not queried on every sign-in.</li>
+    <li><strong>Provision asynchronously:</strong> a durable per-domain operation prepares verified Microsoft membership and organisation-folder access where supported. It reads current decisions before effects, then sends the domain-specific invitation after the required postconditions. Website eligibility does not wait for Microsoft or mail availability.</li>
+    <li><strong>Sign in and participate:</strong> Auth0 verifies website identity in the current documented arrangement; the retained Cognito pool serves lifecycle integration. The AWS register and session service enforce entitlement. Neither a provider account nor Microsoft membership independently grants website privileges. Confirm the live provider configuration and comments availability during acceptance.</li>
+    <li><strong>Withdraw or recover:</strong> a domain withdrawal removes that domain's approval and initiates the corresponding owned-access cleanup. Remaining approvals are assessed independently. Account/security/privacy restrictions and ambiguous effects require their owning review path; do not replay an invitation to resolve uncertainty.</li>
+  </ol>
+  <p>The participant-facing <a href="/development/working-groups/member-guide">member guide</a> explains the intended journey. The operational owners are <code>config/aws/working-group-interest/</code>, <code>acknowledgement/</code>, <code>hubspot-sync/</code>, <code>hubspot-approval/</code>, <code>auth-session/</code> and <code>src/approval-onboarding/</code>; inspect the owning implementation and service state when troubleshooting.</p>
+  <h3>Evidence intake</h3>
+  <ol>
+    <li><strong>Receive.</strong> Record the source, submitting organisation, date, version, intended use and permitted sharing. An invitation or discussion is not proof that a file was supplied.</li>
+    <li><strong>Store and verify.</strong> Use the authorised organisation-isolated workspace; confirm the exact stored artefact and access. Email attachments can be a fallback when organisational controls block tenant access. Never advise bypassing those controls.</li>
+    <li><strong>Register and review.</strong> Link the artefact to the existing source/intake record. Keep sensitivity, rights, provenance, review owner, questions and current disposition.</li>
+    <li><strong>Model or decline.</strong> Link incorporated concepts to the exact source version and model change. Record exclusions, unresolved questions or reasons for deferral. Upload alone is not incorporation.</li>
+    <li><strong>Close the loop.</strong> Acknowledge the actual receipt and communicate the review/model disposition through the authorised channel. Publication requires its own permission and content review.</li>
+  </ol>
+  <p>The inbox policy permits only bounded approved attachment types and verified company identities for automatic organisation-folder intake. Generic-provider identities do not automatically establish a company SharePoint boundary. Failed or partial provisioning must remain visible and must not receive a success claim.</p>
+  <p><strong>Outstanding acceptance check:</strong> demonstrate how an approved participant whose employer blocks the OPDA Microsoft tenant can submit evidence and feedback through the agreed alternative. Public reading and an optional sign-in control do not prove that end-to-end journey. Reconcile actual received, stored, reviewed, incorporated and pending material against the private intake records; historical snapshots are not a current submission census.</p>
+
+  <h2 id="content">12. Maintain public content, marketing and NotebookLM</h2>
+  <h3>Website and source evidence</h3>
+  <p>Use the shared layouts, navigation/status owners, tokens and components. Preserve stable identifiers and redirects; keep generated references downstream of their maintained input. New documents are not automatically approved for the public site. Inspect content-collection rules and the actual built output when changing ADRs, ODRs, manuals or source integrations.</p>
+  <p>The local evidence archive needs an explicit transfer inventory because it is largely gitignored. Preserve original files, source URLs, capture/version dates, rights, checksums and associated metadata. Keep superseded files as archives. Resource manifests and production resource-bucket contents have separate generation/publication steps; verify both. No top-level repository licence grants unrestricted reuse of all imported material.</p>
+  <h3>Marketing and illustrations</h3>
+  <p>Maintained marketing data and scripts produce portable rich HTML, images and copy, available through the <a href="/marketing">marketing workspace</a>. Run <code>make marketing-build</code> after an intentional source change, then <code>make marketing-check</code>. The build also checks generated marketing drift. Review the rendered email/page and intended destination before sending or publishing.</p>
+  <p>Invitations and primary marketing use designed rich HTML; plain text is an accessible/transport fallback. Social platforms need compatible image/video assets and post copy. Each illustration placement has distinct relevant artwork, shared brand/accessibility treatment and archived superseded assets; light/dark renditions belong to one placement. Keep rights and asset manifests with the files.</p>
+  <h3>NotebookLM source and media workflow</h3>
+  <p>ADR-0081 defines six purpose-specific core notebooks: Programme, policy and history; Standards governance; Semantic modelling method; Working-group participant guide; Property Pack ontology; and PDTF lineage and historical evidence. A separate private aggregate supports discovery. The notebooks are derived production/research workspaces; repository sources retain their authority.</p>
+  <p>Configurations, shared facts, source manifests, prompt dependencies and append-only receipts live under <code>docs/notebooklm/</code>. Historical records describe machine-complete preparation, with human authority/fitness review still pending. <strong>The current local integrity check on 26 October failed:</strong> <code>programme-policy-history: upload hash differs for src-468fc63ce6752d69</code>. Those historical receipts therefore do not establish that today's repository sources match the uploaded notebook content.</p>
+  <p>Before relying on or regenerating that portfolio, identify the changed source and intended version, inspect its prepared projection and upload receipt, refresh the affected approved sources and dependent outputs through the governed workflow, then rerun the verifier. Preserve the old evidence; do not edit a receipt merely to make its checksum pass. NotebookLM repair and current remote-state verification remain outstanding handover actions. Private draft-generation authority does not establish permission to share notebooks, publish media or place it on the homepage.</p>
+  <pre><code>{`# Local integrity check; does not access or prove live notebook ownership
+node scripts/verify-notebooklm-execution.mjs --require-all-prompts
+
+# Inspect the builder/runner interfaces before an authorised refresh
+node scripts/build-notebooklm-prepared-sources.mjs --help
+node scripts/run-notebooklm-preparation.mjs --help`}</code></pre>
+  <p>For a refresh, first review the selected sources and shared facts, then rebuild the one-to-one prepared inputs and checksums using the documented local site address. Ingest only the approved manifest into the correct authorised account/profile, run prompts in dependency order and retain versioned receipts. The execution command writes to remote notebooks; it is not an offline verification command. Do not reuse a departing operator's personal profile by assumption.</p>
+  <p>Keep source authority, proposed status, dates, contradictions and missing evidence visible in prompts and outputs. Review final audio, video, slides or infographics for factual accuracy, pronunciation, captions/accessibility, permissions and prohibited authority claims before publication. A citation count or generated review is not human approval.</p>
+  <p><strong>Notebook handoff deliverables:</strong> an inventory of the notebooks and their owners/access; original source files and manifests; prepared-source and prompt/receipt records; generated notes and media exports; review/approval status; and an agreed authorised storage location. Open representative files and follow their provenance under successor access. Confirm current product-supported ownership/sharing options before choosing transfer or recreation; do not assume every account type permits ownership transfer. Preserve the existing workspace until the receiving owner verifies continuity.</p>
+
+  <h2 id="acceptance">13. Acceptance checklist and open decisions</h2>
+  <p>Use this as an agenda for the outgoing and receiving owners. Record names, dates, evidence links and dispositions in the restricted transfer record. These are checks to complete, not statements that the transfer has happened.</p>
+  <table>
+    <caption>Handover acceptance evidence</caption>
+    <thead><tr><th scope="col">Area</th><th scope="col">Required evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Ownership and access</td><td>Named accountable owners/deputies; approved successor access; account, billing, domain and recovery ownership verified; restricted configuration inventory delivered.</td></tr>
+      <tr><td>Reproducible website</td><td>Successor runs locked install, tests and build from the identified commit and explains generated outputs and archive dependencies.</td></tr>
+      <tr><td>Reproducible model</td><td>Correct Python/Java/upstream inputs available; affected ontology/candidate gates pass; maintained sources and generated projections identified.</td></tr>
+      <tr><td>Release and recovery</td><td>Supervised CI release, matching live source commit, changed-route/asset check, scoped rollback exercise and an agreed incident/recovery plan.</td></tr>
+      <tr><td>Participant services</td><td>Current enablement and service ownership read back; canary signup/approval/acknowledgement/onboarding and permitted comments tested without unintended participant effects.</td></tr>
+      <tr><td>Operations and data</td><td>Alert delivery demonstrated; logs and queue ownership confirmed; retention and backup coverage verified; isolated restore evidence and recovery objectives accepted.</td></tr>
+      <tr><td>Microsoft and intake</td><td>Team/SharePoint authority and isolation verified; actual contribution states reconciled; alternative route for blocked participants demonstrated.</td></tr>
+      <tr><td>Scheduled automation</td><td>Actual host and schedule identified; one active owner; provider/Microsoft access verified; checkpoints and a recent audited outcome handed over.</td></tr>
+      <tr><td>Content and NotebookLM</td><td>Source/archive/asset and export inventories complete; notebooks usable by successor; human review and publication status retained.</td></tr>
+      <tr><td>Formal acceptance</td><td>Receiving owner records accepted scope, date, evidence, remaining risks, action owners and review dates before outgoing access is retired.</td></tr>
+    </tbody>
+  </table>
+  <p>The remaining governance work includes the exact Property Pack review/version, source-count reconciliation, named decision owner, reviewer dispositions and recorded determination. Wider SPDTF lifecycle/ratification policy remains proposed. Do not report model generation, schema comparisons, pull-request/module reviews or a handover meeting as formal approval.</p>
+  <p>The remaining operational work is to verify current account access, live integration enablement, deployment/recovery evidence, alert recipients, backup restoration, scheduler activation and notebook continuity. No current live census of private submissions, provider subscriptions or account ownership is asserted by this page. Assign an owner and next action to each unresolved item instead of silently treating it as complete.</p>
+
+  <h2 id="evidence">14. Source map and maintenance of this handover</h2>
+  <p>This page was checked against the repository sources below. Paths identify what an authorised successor should inspect in the checkout; private operational contents and correspondence are deliberately not reproduced. Recheck the implementation and dated evidence after material changes.</p>
+  <p>Open the <a href="https://github.com/sparkling/opda">repository</a>, <a href="https://github.com/sparkling/opda/blob/main/README.md">setup and architecture README</a>, <a href="https://github.com/sparkling/opda/blob/main/Makefile">command catalogue</a>, <a href="https://github.com/sparkling/opda/blob/main/.github/workflows/site-release.yml">release workflow</a>, <a href="https://github.com/sparkling/opda/blob/main/docs/adr/ADR-0084-integrate-hubspot-with-signup-and-cognito.md">participant integration and recovery decision</a>, <a href="https://github.com/sparkling/opda/blob/main/docs/adr/ADR-0085-approval-driven-working-group-onboarding-and-invitations.md">onboarding decision</a> and <a href="https://github.com/sparkling/opda/blob/main/docs/adr/ADR-0081-organise-opda-evidence-into-purpose-specific-notebooklm-portfolios.md">NotebookLM maintenance decision</a>. These links follow <code>main</code>; use the accepted release commit when investigating historical behaviour.</p>
+  <table>
+    <caption>Sources for the procedures and limitations above</caption>
+    <thead><tr><th scope="col">Subject</th><th scope="col">Repository source</th></tr></thead>
+    <tbody>
+      <tr><td>Contributor rules, commands and architecture</td><td><code>AGENTS.md</code>, <code>README.md</code>, <code>Makefile</code>, <code>package.json</code>, <code>astro.config.mjs</code>, <code>src/content.config.ts</code>, <code>DESIGN.md</code>.</td></tr>
+      <tr><td>Release and assurance</td><td><code>.github/workflows/deploy-aws.yml</code>, <code>site-release.yml</code>, <code>site-assurance.yml</code>, <code>infra.yml</code>; <code>scripts/classify-ci-changes.mjs</code>, <code>scripts/site-cache-release.mjs</code>, <code>scripts/write-release-manifest.mjs</code>.</td></tr>
+      <tr><td>AWS and recovery boundaries</td><td><code>config/aws/site-stack.yaml</code>, <code>operations-stack.yaml</code>, <code>participant-identity-stack.yaml</code>, <code>working-group-interest-stack.yaml</code>, <code>comments-stack.yaml</code>; ADR-0038, ADR-0040 and ADR-0079.</td></tr>
+      <tr><td>Semantic authority and generators</td><td>ADR-0063, ADR-0065, ADR-0066, ADR-0067, ADR-0068, ADR-0075, ADR-0077; <code>tools/opda-gen/</code>, <code>src/data/property-pack/</code>, <code>scripts/property_pack_catalogue.py</code>, <code>scripts/property_pack_candidate.py</code>.</td></tr>
+      <tr><td>Workspaces, intake and scheduled agent</td><td>ADR-0070, ADR-0072, ADR-0085, ADR-0087, ADR-0088; <code>src/agents/working-group-inbox/domain.mjs</code>, <code>config/agents/working-group-inbox/</code>, <code>scripts/working-group-inbox-agent.mjs</code>, <code>src/approval-onboarding/</code>.</td></tr>
+      <tr><td>Evidence, marketing and NotebookLM</td><td><code>source/README.md</code>, <code>src/data/resources-manifest.json</code>, <code>scripts/publish-resources.sh</code>, <code>scripts/marketing/</code>; ADR-0081; <code>docs/notebooklm/</code>, preparation/execution scripts and <code>scripts/verify-notebooklm-execution.mjs</code>.</td></tr>
+    </tbody>
+  </table>
+  <p>Maintain this route alongside changes to commands, deployment, ownership boundaries or toolchains. Update the review date only after checking the affected sources. Keep operational secrets in their authorised owner systems and record acceptance separately from this public reference. The shared site print stylesheet supports a printable copy; a saved copy must retain its review date and status.</p>
+</Layout>
+
+<style>
+  :global(.handover) pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+  @media print {
+    :global(.handover) { color: #000; background: #fff; }
+    :global(.handover) :is(h1, h2, h3, p, li, td, th, caption, code) { color: #000; }
+    :global(.handover) :is(table, pre) { max-width: 100%; font-size: 9pt; }
+    :global(.handover) tr { break-inside: avoid; }
+    :global(.handover) thead { display: table-header-group; }
+  }
+</style>
