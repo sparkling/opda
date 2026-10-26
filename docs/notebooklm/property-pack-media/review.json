@@ -1,0 +1,32 @@
+{
+  "schema": "opda.media-review.v1",
+  "run": "property-pack-v1",
+  "reviews": [
+    {
+      "key": "pp-02-deck-detailed-deck",
+      "originalSha256": "9b3dd6b6cff861aa793edc1e3248b0b9ba51ab7f2c32af39922491d569d792ce",
+      "status": "Factual corrections required",
+      "coverage": "All 17 slides visually inspected at 2048px on 26 October 2026. Useful broad account and readable layouts; generated diagrams need the corrections below. Original retained for review.",
+      "findings": [
+        "Slide 4 describes rdfs:domain as a prohibition on use outside a class. RDFS domain supports type inference; SHACL supplies the explicit data constraints.",
+        "Slide 5 is not a faithful model diagram: Address belongs to property-data-services, hasAddress links Property to Address, and postcode is text on Address. The illustrated hasAddress-to-Active, postcode-to-utilityOutcome and invented common:Owner links must not be used as model guidance.",
+        "Slides 8 and 11 turn conditional requiredness into a third answer value. Source item pp-0067a00fc9eb permits Yes and No; conditional describes when the answer is required.",
+        "Slide 7 reverses the useful relationship: Property hasUtilityServiceRecord UtilityServiceRecord. Slide 8 gives the correct overall direction.",
+        "Slide 11 implies a universal mandatory source-evidence constraint for the sewer-map item; consult its exact coverage/source constraints instead.",
+        "Slide 14 uses SW1A, an incomplete UK postcode, as its passing illustration. The simplified candidate constraint checks postcode presence; this is not proof of a valid real-world postcode.",
+        "Slide 15 conflates RDF parsing with SHACL constraint evaluation. Parsing, validation and factual verification are distinct checks.",
+        "Slide 2 calls the model one singular truth. This is a draft candidate; its coverage and validation do not establish factual correctness."
+      ]
+    },
+    {
+      "key": "pp-03-infographic-concise-1",
+      "originalSha256": "d9a84506f20a575348e2af91adb8f02770a22c1062530033109190839c7d0006",
+      "status": "Visually reviewed; candidate context applies",
+      "coverage": "Complete landscape infographic visually inspected. Clear ownership-versus-reuse contrast, useful direct-cross-domain explanation and readable hierarchy.",
+      "findings": [
+        "The page supplies the candidate status omitted by the image. The eight homes comprise six domain contexts, the DBT scheme and common; they are not eight business domains.",
+        "The concise common description emphasises shared identity; the complete source also covers stable shared exchange meaning."
+      ]
+    }
+  ]
+}

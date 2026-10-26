@@ -1,0 +1,29 @@
+{
+  "schema":"notebooklm.project-workflow.v1",
+  "cwd":"..",
+  "runId":"property-pack-v1",
+  "dependencies":[
+    {"path":"/Users/henrik/.local/share/uv/tools/notebooklm-mcp-cli/bin/python3","purpose":"Installed native NotebookLM SDK; saved personal profile"},
+    {"path":"scripts/notebooks/property-pack-media.py","purpose":"OPDA private finite-run binding to existing BA/SA queue and source-readback owners"},
+    {"path":"scripts/notebooks/property-pack-inputs.mjs","purpose":"OPDA source preparation and exact input projection"},
+    {"path":"docs/notebooklm/property-pack-media/catalogue.json","purpose":"Reviewed finite catalogue, sources and format settings"},
+    {"path":"../hm/semantic-ai-stratecy-business-architecture/scripts/notebooks/prepare.py","purpose":"Retained exact source import and full indexed vocabulary verification"},
+    {"path":"../hm/semantic-ai-stratecy-business-architecture/scripts/notebooks/pipeline.py","purpose":"Verified original-video selection, decode checks and same-ID recovery"},
+    {"path":"../hm/semantic-business-architecture/scripts/research/ba-media-worker.py","purpose":"Native media create adapter"},
+    {"path":"../hm/semantic-solution-architecture/src/programme/generation-worker.py","purpose":"Durable intents, acknowledgement, quota, reconciliation and download"},
+    {"path":"../hm/semantic-solution-architecture/src/programme/shared-renderer.py","purpose":"Verified pinned shared-renderer export"},
+    {"path":"config/shared-renderer.json","purpose":"Exact EA renderer revision"},
+    {"path":"scripts/notebooks/property-pack-index.mjs","purpose":"Local-only catalogue and media index refresh"},
+    {"path":"../hm/semantic-enterprise-architecture/site/node_modules","purpose":"Shared Astro, React, safe Markdown and image dependencies"},
+    {"path":"/opt/homebrew/bin/ffmpeg","purpose":"Original-media complete decode and still poster extraction"},
+    {"path":"/opt/homebrew/bin/ffprobe","purpose":"Audio and video dimensions, codec and duration verification"}
+  ],
+  "commands":{
+    "dry-run":["/Users/henrik/.local/share/uv/tools/notebooklm-mcp-cli/bin/python3","scripts/notebooks/property-pack-media.py","dry-run"],
+    "prepare":["/Users/henrik/.local/share/uv/tools/notebooklm-mcp-cli/bin/python3","scripts/notebooks/property-pack-media.py","prepare"],
+    "validate":["/Users/henrik/.local/share/uv/tools/notebooklm-mcp-cli/bin/python3","scripts/notebooks/property-pack-media.py","validate"],
+    "generate":["/Users/henrik/.local/share/uv/tools/notebooklm-mcp-cli/bin/python3","scripts/notebooks/property-pack-media.py","generate"],
+    "download":["/Users/henrik/.local/share/uv/tools/notebooklm-mcp-cli/bin/python3","scripts/notebooks/property-pack-media.py","download"],
+    "index":["node","scripts/notebooks/property-pack-index.mjs"]
+  }
+}

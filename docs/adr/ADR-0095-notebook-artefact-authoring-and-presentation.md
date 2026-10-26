@@ -13,11 +13,12 @@ implements: []
 
 ## Status and scope
 
-Accepted implementation plan at the owner's request. This change supplies the plan,
-shared-skill instructions and a versioned implementation reference. OPDA's existing
-source preparation is implemented; the new media generation/delivery/index binding
-is not implemented or exercised by this ADR. No generation or public sharing was
-started. Notebook and source identities already recorded under ADR-0081 remain intact.
+Accepted decision, followed by the owner's explicit commission to implement and
+generate the finite Property Pack learning catalogue on 26 October 2026. The OPDA
+source, generation, delivery and local index adapters are now implemented and
+exercised. Runtime completion evidence is recorded below; generation completion
+does not imply content approval. No notebook was shared publicly and the media
+index is served only on loopback. ADR-0081's historical identities remain intact.
 
 ## Context and decision
 
@@ -330,13 +331,64 @@ and subsequent finite runs need no manual babysitting. Retain scoped evidence an
 appropriate native project-memory readback through the OPDA owner, never this AI
 project's connection. Do not write OPDA ADR metadata into another project's index.
 
-This ADR commissions the implementation design and reference handover only. It
-neither starts generation nor adds routes to the public OPDA website. Subsequent
-implementation uses the existing repository main-only workflow and scoped commits.
+The original ADR commissioned design and reference handover only. The subsequent
+owner instruction explicitly commissioned generation and local index integration;
+it did not add media routes to the public OPDA website. Implementation uses the
+existing repository main-only workflow and scoped commits.
 Publication follows ADR-0081's source/sharing boundaries and the actual release
 approval; no private notebooks, prompt receipts or research reference archive become
 public simply because an index has been built. Test local first and verify exact
 served routes before handing over URLs.
+
+## Implementation evidence — 26 October 2026
+
+- `docs/notebooklm/property-pack-media/catalogue.json` freezes one section, four
+  chapters and four deliberately different media topics: the transaction account
+  (two videos), reading the connected model (two Long decks), semantic ownership
+  and reuse (six infographics), and validation/judgement/release (three audio
+  formats). This is 13 commissioned outputs, not every chapter multiplied by 13.
+- Four attributed readings and three complementary complete originals are selected.
+  All seven private notebook sources passed complete indexed-text readback and exact
+  source membership checks. Verification preserves ordered, case-sensitive words;
+  it does not assert byte-identical Markdown/Turtle/JSON formatting. Frozen inputs
+  retain original, uploaded and indexed hashes and exact consumed native arguments.
+- The successor commission is linked from `property-pack-ontology.yaml`. It uses a
+  separate owner-only notebook because the historical portfolio was already shared.
+  The previous portfolio, August receipts and frozen bodies are retained unchanged.
+- `config/notebook-workflow.json` binds the skill's workflow runner to the OPDA
+  inputs/media/index adapters. Source import reuses AI's `prepare.py`; submission,
+  acknowledgements, quota and reconciliation reuse the BA/SA native owners. Video
+  admission reuses AI's advertised-resolution and complete-decode checks.
+- `config/shared-renderer.json` pins EA revision
+  `1a19439285822e852f45cf3ad50bbe22740e85a4` through SA's verified export owner.
+  The local index reuses EA directory/subject/media components and original/PDF
+  rendition owners plus AI's exact-input readers and topic hierarchy. Its thin
+  adapter supplies OPDA data, navigation, URLs and file-bound review findings.
+- Runtime inputs, source readbacks, durable provider IDs, media originals and
+  delivery evidence are retained under the ignored
+  `.local/property-pack-media/runs/property-pack-v1/`. The local site is isolated
+  under `.local/property-pack-media/site/`; it is outside OPDA's public build.
+- Four representative jobs completed first. A full 17-slide visual review found
+  material generated diagram/terminology errors, recorded against the original
+  hash in `property-pack-media/review.json` and shown beside that deck. One complete
+  infographic was visually reviewed and Brief audio playback was exercised. These
+  are bounded review observations, not factual approval of the whole collection.
+- The owner then explicitly instructed “no local reviews” and “generate everything
+  now”. The local review hold was removed and all nine remaining requests were
+  acknowledged without waiting for delivery, rendering or review. No automatic
+  rerolls or duplicate creates were commissioned. The inherited local concurrency
+  cap is disabled for this finite set; provider quota and uncertain-create handling
+  remain with the shared owner. Additional content review was stopped.
+- Verified loopback directory:
+  `http://127.0.0.1:4340/development/property-pack/learning-media/`.
+  Section: `http://127.0.0.1:4340/development/property-pack/learning-media/property-pack/`.
+  The equivalent `/runs/property-pack-v1/` routes preserve exact frozen inputs.
+  Input dialogs distinguish supplied bodies from provenance-only evidence.
+- Seven focused identity/source/cache/review tests pass. `make test` passes
+  (1,106 passed and one skipped, then 19 passed); `make build` passes. Loopback
+  directory, section and versioned routes and their local resource links resolve.
+  Media and HTML install atomically; unchanged compatible renditions are reused.
+  The live local availability count remains the delivery authority during the run.
 
 ## Consequences
 

@@ -1,0 +1,301 @@
+/** Local-only ADR0095 data adapter over the pinned EA and shared AI notebook views. */
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {fileURLToPath, pathToFileURL} from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const OWNERS = path.resolve(ROOT, '../hm');
+const AI = path.join(OWNERS, 'semantic-ai-stratecy-business-architecture');
+const ROUTE = '/development/property-pack/learning-media';
+const EXT = {slide_deck:'pdf', video:'mp4', audio:'m4a', infographic:'png'};
+const SETTINGS = {urlNamespace:'/presentations/platform/media/property-pack/', slides:{width:2048, quality:88, thumbnails:true, renderer:'pdfium'}, image:{width:960, quality:78}, poster:{width:960, quality:76}};
+const hash = value => createHash('sha256').update(value).digest('hex');
+const json = async file => JSON.parse(await fs.readFile(file, 'utf8'));
+const exists = file => fs.stat(file).then(() => true, () => false);
+const same = (a,b) => JSON.stringify([...(a??[])].sort()) === JSON.stringify([...(b??[])].sort());
+const safe = value => typeof value === 'string' && /^[a-z0-9][a-z0-9-]*$/.test(value);
+const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
+async function atomic(file, body) {
+  await fs.mkdir(path.dirname(file), {recursive:true});
+  const pending = `${file}.${process.pid}.pending`;
+  await fs.writeFile(pending, body);
+  await fs.rename(pending, file);
+}
+const save = (file, value) => atomic(file, JSON.stringify(value, null, 2)+'\n');
+
+export function projectInputs(snapshot) {
+  if (snapshot.config?.publish !== false || !safe(snapshot.config.id) || !uuid(snapshot.notebookId)) throw Error('Invalid local commission');
+  const sourceBodies = {}, sources = {}, requests = new Map();
+  for (const source of snapshot.sources) {
+    if (!uuid(source.sourceId) || hash(source.body) !== source.sha256 || hash(source.uploadedBody) !== source.uploadedSha256) throw Error('Frozen source body differs: '+source.id);
+    if (sources[source.sourceId]) throw Error('Duplicate native source identity');
+    sourceBodies[source.sourceId] = source.uploadedBody;
+    sources[source.sourceId] = {title:source.title, role:source.kind, bodySha256:source.uploadedSha256,
+      indexedTextSha256:source.indexedTextSha256, readbackPath:`source-readbacks/${source.sourceId}.json`,
+      provenance:{locator:source.path, originalSha256:source.sha256, evidence:source.provenance}};
+  }
+  const sections = snapshot.config.sections;
+  const topics = new Map();
+  for (const section of sections) {
+    if (!safe(section.id)) throw Error('Unsafe section identity');
+    for (const chapter of section.chapters) {
+      if (!safe(chapter.id)) throw Error('Unsafe chapter identity');
+      for (const topic of chapter.topics) {
+        if (!safe(topic.id) || topics.has(topic.id) || !EXT[topic.type]) throw Error('Invalid topic identity');
+        topics.set(topic.id, {section:section.id, chapter:chapter.id, type:topic.type});
+      }
+    }
+  }
+  for (const request of snapshot.requests) {
+    const topic = topics.get(request.topic?.id), args = request.consumedCreateArguments;
+    if (!safe(request.key) || requests.has(request.key) || !topic || topic.section !== request.section || topic.chapter !== request.chapter || topic.type !== request.type) throw Error('Request outside frozen hierarchy');
+    if (args.notebook_id !== snapshot.notebookId || args.focus_prompt !== request.prompt || hash(request.prompt) !== request.promptSha256 || !same(args.source_ids, request.sourceIds) || !args.source_ids.length) throw Error('Frozen request differs: '+request.key);
+    for (const id of args.source_ids) {
+      const selected = request.selectedSources.find(source => source.sourceId === id);
+      if (!sources[id] || selected?.indexedTextSha256 !== sources[id].indexedTextSha256 || selected?.uploadedSha256 !== sources[id].bodySha256) throw Error('Request source differs: '+request.key);
+    }
+    requests.set(request.key, {...request, subject:request.chapter,
+      ...(request.type === 'infographic' ? {infographicDetail:request.settings.detail_level, take:(request.ordinal-1)%2+1} : {})});
+  }
+  return {variant:'full-section-v1', snapshot, sections, sourceBodies, sourceProof:{sources}, requests};
+}
+
+export function assertJobMatches(job, request, ledger, snapshot) {
+  if (!request || ledger.notebookId !== snapshot.notebookId || ledger.publish !== false || ledger.manifestSha256 !== snapshot.manifestSha256 ||
+      job.completeInputSha256 !== request.completeInputSha256 || job.promptSha256 !== request.promptSha256 ||
+      job.type !== request.type || job.format !== request.format || job.ordinal !== request.ordinal ||
+      JSON.stringify(job.settings) !== JSON.stringify(request.settings)) throw Error('Ledger differs from frozen request: '+job.key);
+  if (!uuid(job.id) || !job.providerProof?.settingsVerified || !same(job.sourceIds, request.sourceIds) ||
+      !same(job.providerProof.sourceIds, request.sourceIds) || job.providerProof.promptSha256 !== request.promptSha256) throw Error('Provider proof differs: '+job.key);
+}
+
+export function renditionCacheKey({sha256, revision, id, type, settings=SETTINGS}) {
+  return hash(JSON.stringify({sha256, revision, id, type, settings}));
+}
+
+export function matchingReview(reviews, item) {
+  const review = Array.isArray(reviews) ? reviews.find(review => review.key === item.key && review.originalSha256 === item.original.sha256) : reviews[item.key];
+  return review?.originalSha256 === item.original.sha256 ? review : null;
+}
+
+async function resolveRenderer() {
+  const resolver = path.join(OWNERS, 'semantic-solution-architecture/src/programme/shared-renderer.py');
+  return JSON.parse(execFileSync('python3', ['-c', `import importlib.util,json,sys
+from pathlib import Path
+spec=importlib.util.spec_from_file_location('shared_renderer',sys.argv[1])
+m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+print(json.dumps(m.resolve_renderer(Path(sys.argv[2]))))`, resolver, ROOT], {encoding:'utf8'}));
+}
+
+async function verifiedRecords(item, publicDir, digest) {
+  const records = [item.original, item.pdfRecord, item.preview, item.poster, ...(item.slides??[]), ...(item.thumbnails??[])].filter(Boolean);
+  for (const record of records) {
+    const file = path.join(publicDir, record.path);
+    if (!record.path.startsWith('/') || record.path.includes('..') || !await exists(file) || await digest(file) !== record.sha256) return false;
+  }
+  return records.length > 0;
+}
+
+async function renderMedia({input, runRoot, publicDir, build, renderer}) {
+  const {details, prepareRenditions, digest, videoInfo} = await import(pathToFileURL(path.join(renderer.directory, 'site/scripts/media-originals.mjs')));
+  const {renderPdfSlides} = await import(pathToFileURL(path.join(renderer.directory, 'site/scripts/pdf-slide-images.mjs')));
+  const {verifiedVideoKey} = await import(pathToFileURL(path.join(AI, 'scripts/notebooks/video-quality.mjs')));
+  const {focusedInputViews} = await import(pathToFileURL(path.join(AI, 'scripts/notebooks/local-unified-view.mjs')));
+  const stateFile = path.join(build, 'renditions.json'), state = await exists(stateFile) ? await json(stateFile) : {};
+  const subjects = [], items = [], errors = [];
+  for (const section of input.sections) for (const chapter of section.chapters) {
+    const file = path.join(runRoot, 'docs/generation', chapter.id+'.json');
+    const ledger = await exists(file) ? await json(file) : null;
+    const requests = [...input.requests.values()].filter(request => request.chapter === chapter.id);
+    const jobs = requests.map(request => ({...request, status:'planned', topicId:request.topic.id, topicTitle:request.topic.title,
+      ...(ledger?.jobs.find(job => job.key === request.key)??{}), infographicDetail:request.infographicDetail, take:request.take}));
+    const level = subjects.length;
+    for (const job of jobs) {
+      if (job.status !== 'completed') continue;
+      try {
+        const request = input.requests.get(job.key);
+        assertJobMatches(job, request, ledger, input.snapshot);
+        const source = path.join(runRoot, 'originals', job.key+'.'+EXT[job.type]);
+        if (!await exists(source) || !(await fs.stat(source)).size) throw Error('Original not downloaded');
+        const sha256 = await digest(source);
+        if (job.type === 'video') verifiedVideoKey({job, notebookId:ledger.notebookId, hash:sha256, info:videoInfo(source),
+          proof:await json(path.join(runRoot, 'transfers/video-readiness', job.id+'.json')), originals:{}});
+        const key = renditionCacheKey({sha256, revision:renderer.revision, id:job.id, type:job.type});
+        const prefix = `${SETTINGS.urlNamespace}${input.snapshot.config.id}/${key}/`;
+        const custody = `/custody/generation/${ledger.notebookId}/${job.id}-${sha256.slice(0,16)}.${EXT[job.type]}`;
+        const destination = path.join(publicDir, prefix), original = path.join(publicDir, custody);
+        let rendition = state[key];
+        if (!rendition || !await verifiedRecords(rendition, publicDir, digest)) {
+          await fs.mkdir(destination, {recursive:true});
+          await fs.mkdir(path.dirname(original), {recursive:true});
+          if (!await exists(original)) {
+            await fs.copyFile(source, original+'.pending');
+            if (await digest(original+'.pending') !== sha256) throw Error('Original copy changed');
+            await fs.rename(original+'.pending', original);
+          }
+          if (await digest(original) !== sha256) throw Error('Retained original changed');
+          const origin = await details(original, custody);
+          if (job.type === 'slide_deck') {
+            await fs.copyFile(original, path.join(destination, job.id+'.pdf'));
+            const slides = await renderPdfSlides({pdf:source, destination, id:job.id, urlPrefix:prefix, ...SETTINGS.slides});
+            rendition = {original:origin, prefix, slug:job.id, pdf:prefix+job.id+'.pdf', pdfRecord:await details(path.join(destination, job.id+'.pdf'), prefix+job.id+'.pdf'), slideCount:slides.slides.length, cover:slides.slides[0], ...slides};
+          } else rendition = {original:origin, prefix, ...await prepareRenditions({original:source, destination, id:job.id, type:job.type,
+            preview:prefix+job.id+'-preview.webp', poster:prefix+job.id+'-poster.webp'})};
+          state[key] = rendition;
+          await save(stateFile, state);
+        }
+        items.push({...rendition, id:job.id, key:job.key, type:job.type, format:job.format, settings:job.settings,
+          title:job.generatedTitle??job.title??job.topicTitle, level, editorial:false, version:1,
+          infographicDetail:job.infographicDetail, take:job.take, conditionId:job.topicId, conditionLabel:job.topicTitle,
+          qualityStatus:'Provider and file verified; content available for review',
+          notebook:`https://notebooklm.google.com/notebook/${ledger.notebookId}?artifactId=${job.id}`});
+      } catch (error) { errors.push({key:job.key, error:error.message}); }
+    }
+    const topicInputs = chapter.topics.map(topic => {
+      const selected = requests.filter(request => request.topic.id === topic.id);
+      if (!selected.length) throw Error('Topic has no frozen requests: '+topic.id);
+      return {topicId:topic.id, sourceIds:[...new Set(selected.flatMap(request => request.sourceIds))], requests:selected};
+    });
+    subjects.push({id:chapter.id, section:section.id, title:chapter.title, description:chapter.purpose, jobs,
+      topics:chapter.topics.map(topic => ({...topic, commission:topic.description})), topicInputs,
+      selectedSourceIds:[...new Set(requests.flatMap(request => request.sourceIds))],
+      brief:{id:chapter.id, editorialTerm:'Synthesis', readingViews:focusedInputViews(input, chapter, jobs)}});
+  }
+  return {subjects, errors, items};
+}
+
+async function adapt(html, data, {baseUrl, heading, home, parse, one, all, h, renderSync, unifiedHierarchy}) {
+  const tree = parse(data ? unifiedHierarchy(html, data).replaceAll(`http://127.0.0.1:8932/v/${data.variant}`, baseUrl) : html);
+  // The pinned shell's GlobalSiteNav ignores its product prop. Branding remains a consumer option.
+  const header = one(tree, '.index-header__inner');
+  if (header) header.children = [h('nav', {class:'opda-local-header', 'aria-label':'OPDA learning media'},
+    h('a', {href:home}, 'OPDA · Learning media'), h('a', {href:'http://127.0.0.1:4339/development/property-pack'}, 'Property Pack guide'))];
+  const nav = one(tree, '.nav-overview');
+  if (nav) nav.children = [h('span', {}, heading)];
+  for (const type of all(tree, '.unified-type')) if (!one(type, '.unified-topic')) {
+    for (const link of all(tree, 'a')) if (link.attributes.href === '#'+type.attributes.id) link.parent.children = link.parent.children.filter(child => child !== link);
+    type.parent.children = type.parent.children.filter(child => child !== type);
+  }
+  if (data) for (const item of [...data.catalogue.decks, ...data.catalogue.multimedia]) {
+    const card = all(tree, '[id]').find(node => node.attributes.id === (item.type === 'slide_deck' ? item.slug : 'media-'+item.id));
+    if (!card) throw Error('Review target missing: '+item.key);
+    const reviewContainer = item.type === 'infographic' ? one(card, 'figcaption')??card : card;
+    const review = item.review;
+    if (review) reviewContainer.children.push(h('details', {class:'media-review'}, h('summary', {}, review.status.replaceAll('-', ' ')),
+      h('p', {}, typeof review.coverage === 'string' ? review.coverage : JSON.stringify(review.coverage)),
+      h('ul', {}, ...(review.findings??[]).map(finding => h('li', {}, finding)))));
+    else reviewContainer.children.push(h('p', {class:'media-review'}, 'Content review pending.'));
+  }
+  for (const node of all(tree, 'h1,h2,h3,h4,h5')) if (node.children?.length === 1 && node.children[0].value === 'The case for an AI-enabled H&M') node.children = [h('span', {}, heading)];
+  for (const link of all(tree, 'a')) if ((link.attributes.href??'').startsWith('https://notebooklm.google.com/')) link.parent.children = link.parent.children.filter(child => child !== link);
+  const style = parse('<style>.opda-local-header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding:20px 32px;border-bottom:1px solid var(--line)}.opda-local-header a{color:var(--ink);text-underline-offset:.25em}.opda-local-header a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.collapsible-index main :is(h1,h2,h3,h4,h5),.collapsible-index .index-toggle{white-space:normal;overflow-wrap:break-word}.unified-topic>.authoring-actions{margin-block:16px}</style>').children[0];
+  one(tree, 'head').children.push(style);
+  return renderSync(tree);
+}
+
+export async function buildIndex({run='property-pack-v1', port=4340}={}) {
+  if (!safe(run) || !Number.isSafeInteger(port) || port < 1024 || port > 65535) throw Error('Invalid local run or port');
+  const work = path.join(ROOT, '.local/property-pack-media'), runRoot = path.join(work, 'runs', run);
+  const build = path.join(work, 'build'), site = path.join(work, 'site'), publicDir = path.join(build, 'public');
+  await fs.mkdir(build, {recursive:true});
+  const lockFile = path.join(build, 'index.lock');
+  let lock;
+  for (let attempt=0; attempt<2; attempt++) {
+    try { lock = await fs.open(lockFile, 'wx'); await lock.writeFile(String(process.pid)); break; }
+    catch (error) {
+      if (error.code !== 'EEXIST') throw error;
+      const pid = Number(await fs.readFile(lockFile, 'utf8'));
+      if (!Number.isSafeInteger(pid) || pid < 1) return {busy:true};
+      try { process.kill(pid, 0); return {busy:true}; }
+      catch (probe) { if (probe.code !== 'ESRCH') return {busy:true}; }
+      await fs.unlink(lockFile);
+    }
+  }
+  if (!lock) return {busy:true};
+  try {
+    const snapshot = await json(path.join(runRoot, 'request-inputs.json'));
+    if (snapshot.config.id !== run) throw Error('Run identity differs from frozen inputs');
+    const input = projectInputs(snapshot), renderer = await resolveRenderer();
+    const {unifiedHierarchy} = await import(pathToFileURL(path.join(AI, 'scripts/notebooks/local-unified-view.mjs')));
+    const {parse, h, renderSync} = await import(pathToFileURL(path.join(AI, 'site/node_modules/ultrahtml/dist/index.js')));
+    const {querySelector:one, querySelectorAll:all} = await import(pathToFileURL(path.join(AI, 'site/node_modules/ultrahtml/dist/selector.js')));
+    for (const source of snapshot.sources) {
+      const readback = await json(path.join(runRoot, 'source-readbacks', source.sourceId+'.json'));
+      if (hash(readback.content) !== source.indexedTextSha256) throw Error('Readback differs: '+source.id);
+    }
+    const model = await renderMedia({input, runRoot, publicDir, build, renderer});
+    const reviewFile = await exists(path.join(runRoot, 'review.json')) ? path.join(runRoot, 'review.json') : path.join(ROOT, 'docs/notebooklm/property-pack-media/review.json');
+    if (await exists(reviewFile)) {
+      const reviewData = await json(reviewFile), reviews = reviewData.reviews??reviewData;
+      for (const item of model.items) item.review = matchingReview(reviews, item);
+    }
+    const origin = `http://127.0.0.1:${port}`, runRoute = `${ROUTE}/runs/${run}`;
+    const catalogue = {decks:model.items.filter(item => item.type === 'slide_deck').map(item => ({...item, slug:item.prefix.replace(/^\/presentations\//, '')+item.slug})), multimedia:model.items.filter(item => item.type !== 'slide_deck')};
+    const data = {inspectionModel:'three-views', variant:run, sourceProof:input.sourceProof.sources, renderer,
+      subjects:model.subjects, catalogue, requested:input.requests.size, available:model.items.length, errors:model.errors,
+      updatedAt:new Date().toISOString(), title:snapshot.config.title, sections:input.sections, runRoute, route:ROUTE};
+    const pin = await json(path.join(ROOT, 'config/shared-renderer.json'));
+    for (const asset of pin.assets) {
+      if (!asset.startsWith('fonts/') || asset.includes('..')) throw Error('Unexpected shared asset');
+      const target = path.join(publicDir, asset); await fs.mkdir(path.dirname(target), {recursive:true});
+      await fs.copyFile(path.join(renderer.directory, 'site/public', asset), target);
+    }
+    if (!await exists(path.join(build, 'node_modules'))) await fs.symlink(path.join(renderer.directory, 'site/node_modules'), path.join(build, 'node_modules'), 'dir');
+    await fs.rm(path.join(build, 'src/pages'), {recursive:true, force:true});
+    await save(path.join(build, 'src/data.json'), data);
+    const components = path.join(renderer.directory, 'site/src/components');
+    const shell = {canonicalOrigin:origin, brandTitle:'OPDA · Learning media', description:'Property Pack explanations with the exact commissioned sources and prompts.', homeHref:ROUTE+'/', notebookUrl:'#', comments:false, chat:false};
+    await atomic(path.join(build, 'astro.config.mjs'), `import {defineConfig} from 'astro/config';import react from '@astrojs/react';export default defineConfig({integrations:[react()],cacheDir:'./.astro-cache',output:'static',trailingSlash:'always',devToolbar:{enabled:false},vite:{environments:{prerender:{resolve:{noExternal:['@astrojs/react']}}},resolve:{dedupe:['react','react-dom'],alias:{'@ea':${JSON.stringify(path.join(renderer.directory, 'site/src'))}}}}});`);
+    await atomic(path.join(build, 'src/pages/index.astro'), `---
+import Shell from ${JSON.stringify(path.join(components, 'NotebookIndexShell.astro'))};
+import Directory from ${JSON.stringify(path.join(components, 'NotebookCollectionDirectory.astro'))};
+import data from '../data.json';
+const collections=data.sections.map(section=>{const preview=data.catalogue.multimedia.find(item=>item.type==='infographic'&&data.subjects[item.level].section===section.id);return {id:section.id,title:section.title,path:data.route+'/'+section.id+'/',question:section.question,summary:section.purpose,perspective:section.audience,image:preview?{src:preview.preview.path,alt:'Preview of '+preview.title}:undefined,description:[{heading:'Related subjects',items:section.relatedSubjects}],chapters:section.chapters.map((chapter,index)=>({title:chapter.title,href:data.route+'/'+section.id+'/#system-'+index}))}});
+---
+<Shell {...${JSON.stringify(shell)}} localOnly bodyClass="notebook-index collections-index" path={data.route+'/'} title="OPDA · Property Pack learning media"><Directory collections={collections} heading="Property Pack learning media" eyebrow="Local review · NotebookLM explanations" intro="Explore how property information becomes a connected model, and how its meaning and readiness are reviewed." navigationLabel="Property Pack media sections"><div slot="before-collections"><p>Generated explanations support learning. The documented candidate and its recorded decisions remain the source of authority.</p></div><p><a href={data.runRoute+'/'}>Open the versioned run and its frozen inputs</a></p><details><summary>Local run status</summary><p>{data.available} of {data.requested} commissioned artefacts are available for review. Updated {data.updatedAt}.</p><p>Completed media remains subject to content review. Pending variants are labelled in their topic.</p></details></Directory></Shell>`);
+    for (const section of input.sections) {
+      const sectionData = {...data, subjects:data.subjects.filter(subject => subject.section === section.id), section};
+      const levels = new Map(sectionData.subjects.map((subject, index) => [subject.id, index]));
+      sectionData.catalogue = Object.fromEntries(Object.entries(catalogue).map(([type, items]) => [type, items.filter(item => levels.has(data.subjects[item.level].id)).map(item => ({...item, level:levels.get(data.subjects[item.level].id)}))]));
+      await save(path.join(build, 'src', section.id+'.json'), sectionData);
+      await atomic(path.join(build, 'src/pages', section.id+'.astro'), `---
+import Collection from ${JSON.stringify(path.join(components, 'NotebookSubjectCollection.astro'))};
+import data from ${JSON.stringify('../'+section.id+'.json')};
+---
+<Collection levels={data.subjects.map(s=>[s.title])} descriptions={data.subjects.map(s=>s.description)} subjectIds={data.subjects.map(s=>s.id)} briefs={data.subjects.map(s=>s.brief)} editorials={[]} catalogue={data.catalogue} multimedia={data.catalogue.multimedia} prefix="/presentations/" configured localOnly label="Chapter" heading={data.section.title} title={data.section.title+' · OPDA'} eyebrow="Property Pack · Local learning media" intro={data.section.purpose} path={data.route+'/'+data.section.id+'/'} shell={${JSON.stringify({...shell, bodyClass:'notebook-index collapsible-index unified-index'})}}><div slot="intro"><p><a href={data.route+'/'}>All learning media</a> · <a href={data.runRoute+'/'+data.section.id+'/'}>Versioned run</a></p><p>These generated explanations describe a draft Property Pack candidate. The Property Pack guide retains the documented model and decisions.</p><p>Open a chapter, then a topic. Its three input readers show the exact commission and selected source bodies.</p><details><summary>Availability and review</summary><p>{data.available} of {data.requested} commissioned artefacts are available locally. Updated {data.updatedAt}. Content quality remains for review.</p>{data.errors.length>0&&<ul>{data.errors.map(error=><li>{error.key}: awaiting verified local delivery.</li>)}</ul>}</details></div></Collection>`);
+    }
+    execFileSync(path.join(build, 'node_modules/.bin/astro'), ['build', '--root', build], {cwd:ROOT, stdio:'pipe', maxBuffer:8*1024*1024});
+    // Install immutable asset paths and exact inputs before replacing any visible HTML.
+    await fs.mkdir(site, {recursive:true});
+    for (const folder of ['_astro','fonts','presentations','custody']) if (await exists(path.join(build, 'dist', folder))) await fs.cp(path.join(build, 'dist', folder), path.join(site, folder), {recursive:true});
+    const runSite = path.join(site, runRoute);
+    await save(path.join(runSite, 'inputs/request-inputs.json'), snapshot);
+    for (const [id, body] of Object.entries(input.sourceBodies)) await atomic(path.join(runSite, 'inputs/sources', id+'.txt'), body);
+    for (const source of snapshot.sources) await atomic(path.join(runSite, 'inputs/source-readbacks', source.sourceId+'.json'), await fs.readFile(path.join(runRoot, 'source-readbacks', source.sourceId+'.json')));
+    const options = {baseUrl:origin+runRoute, home:ROUTE+'/', parse, one, all, h, renderSync, unifiedHierarchy};
+    const directory = await adapt(await fs.readFile(path.join(build, 'dist/index.html'), 'utf8'), null, {...options, heading:'Property Pack learning media'});
+    for (const base of [path.join(site, ROUTE), runSite]) await atomic(path.join(base, 'index.html'), base === runSite ? directory.replaceAll(ROUTE+'/property-pack/', runRoute+'/property-pack/') : directory);
+    for (const section of input.sections) {
+      const sectionData = await json(path.join(build, 'src', section.id+'.json'));
+      const html = await adapt(await fs.readFile(path.join(build, 'dist', section.id, 'index.html'), 'utf8'), sectionData, {...options, heading:section.title});
+      await atomic(path.join(site, ROUTE, section.id, 'index.html'), html);
+      await atomic(path.join(runSite, section.id, 'index.html'), html);
+    }
+    await save(path.join(runSite, 'release.json'), {...data, catalogue:undefined, frozenInputSha256:hash(await fs.readFile(path.join(runRoot, 'request-inputs.json')))});
+    await save(path.join(runSite, 'version.json'), {id:run, title:data.title, available:data.available, requested:data.requested, manifestSha256:snapshot.manifestSha256, renderer, updatedAt:data.updatedAt, publish:false});
+    return {available:data.available, requested:data.requested, errors:data.errors, directory:site, url:origin+ROUTE+'/'};
+  } finally { await lock.close(); await fs.unlink(lockFile); }
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const args = process.argv.slice(2), options = {};
+  while (args.length) {
+    const flag = args.shift(), value = args.shift();
+    if (flag === '--run') options.run = value;
+    else if (flag === '--port') options.port = Number(value);
+    else throw Error('Usage: property-pack-index.mjs [--run property-pack-v1] [--port 4340]');
+  }
+  console.log(JSON.stringify(await buildIndex(options)));
+}

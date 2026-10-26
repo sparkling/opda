@@ -1,0 +1,7 @@
+{
+  "repository": "hm-group/semantic-enterprise-architecture",
+  "revision": "1a19439285822e852f45cf3ad50bbe22740e85a4",
+  "checkout": "../hm/semantic-enterprise-architecture",
+  "scope": "ADR0095 local learning-media build only; no publication",
+  "assets": ["fonts/space-grotesk-400.ttf", "fonts/space-grotesk-600.ttf", "fonts/manrope-latin.woff2", "fonts/manrope-latin-ext.woff2", "fonts/source-sans-3-latin.woff2", "fonts/source-sans-3-latin-ext.woff2"]
+}
