@@ -221,7 +221,7 @@ a:visited { text-decoration-color: currentColor; }
 
 /* Keep the header full-width. These variables model the body rails solely so
    the first nav label can start on the article's left edge. */
-#app:has(> .app-body:is(.with-toc, .reserve-toc-rail)) .app-header--with-sidebar {
+#app:has(> .app-body:is(.with-toc, .reserve-toc-rail)) .app-header {
   --header-content-right-rail: var(--toc-width);
 }
 .app-header .global-nav::-webkit-scrollbar { display: none; }

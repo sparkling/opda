@@ -316,7 +316,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(toc, /@media \(prefers-reduced-motion: reduce\)\s*\{[^}]*\.toc,[^}]*\.toc > ul/su);
   assert.doesNotMatch(base, /#app:has\(> \.app-body\.sidebar-collapsed\)/u);
   assert.doesNotMatch(base, /#app:has\(> \.app-body\.with-toc\.toc-collapsed\)/u);
-  assert.match(base, /#app:has\(> \.app-body:is\(\.with-toc, \.reserve-toc-rail\)\) \.app-header--with-sidebar\s*\{[^}]*--header-content-right-rail:\s*var\(--toc-width\)/su);
+  // The contents rail affects header alignment even when there is no left navigation.
+  assert.match(base, /#app:has\(> \.app-body:is\(\.with-toc, \.reserve-toc-rail\)\) \.app-header\s*\{[^}]*--header-content-right-rail:\s*var\(--toc-width\)/su);
   assert.match(base, /\.app-header\s*\{[^}]*--header-content-left-rail:[^}]*--header-content-right-rail:/su);
   assert.match(tokens, /--sidebar-width:\s*15rem;\s*--toc-width:\s*var\(--sidebar-width\);/u);
   assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*var\(--space-2\) auto 0;[^}]*padding-block:\s*0/su);
