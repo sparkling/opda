@@ -58,3 +58,23 @@ test('review findings remain bound to the exact reviewed file', () => {
   assert.equal(matchingReview([review], {...item, original:{sha256:'replacement'}}), null);
   assert.equal(matchingReview([review], {...item, key:'another-deck'}), null);
 });
+
+test('successors retain original provider custody only against the frozen predecessor', () => {
+  const v=fixture();v.snapshot.manifestSha256='successor';
+  assert.throws(()=>assertJobMatches(v.job,v.request,v.ledger,v.snapshot));
+  v.request.inheritedFrom={run:'previous',chapter:'chapter',manifestSha256:'manifest'};
+  assert.doesNotThrow(()=>assertJobMatches(v.job,v.request,v.ledger,v.snapshot));
+  v.ledger.manifestSha256='unrelated';
+  assert.throws(()=>assertJobMatches(v.job,v.request,v.ledger,v.snapshot));
+});
+
+test('native originals distinguish uploaded file bytes from indexed text', () => {
+  const {snapshot}=fixture(),source=snapshot.sources[0];
+  Object.assign(source,{ingestKind:'file',path:'source/report.pdf',bodySha256:sha(source.body),sha256:sha('binary-original'),uploadedSha256:sha('binary-original'),verificationLimits:'Visual extraction fidelity is not proved.'});
+  const input=projectInputs(snapshot);
+  assert.match(input.sourceBodies[sourceId],/Native original file supplied/);
+  assert.match(input.sourceBodies[sourceId],/Download supplied original/);
+  assert.equal(input.sourceProof.sources[sourceId].bodySha256,source.bodySha256);
+  source.body+='changed';
+  assert.throws(()=>projectInputs(snapshot));
+});

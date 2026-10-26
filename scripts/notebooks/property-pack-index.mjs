@@ -29,12 +29,13 @@ export function projectInputs(snapshot) {
   if (snapshot.config?.publish !== false || !safe(snapshot.config.id) || !uuid(snapshot.notebookId)) throw Error('Invalid local commission');
   const sourceBodies = {}, sources = {}, requests = new Map();
   for (const source of snapshot.sources) {
-    if (!uuid(source.sourceId) || hash(source.body) !== source.sha256 || hash(source.uploadedBody) !== source.uploadedSha256) throw Error('Frozen source body differs: '+source.id);
+    const fileSource = source.ingestKind==='file';
+    if (!uuid(source.sourceId) || hash(source.body) !== (fileSource?source.bodySha256:source.sha256) || (fileSource?source.sha256:hash(source.uploadedBody)) !== source.uploadedSha256) throw Error('Frozen source body differs: '+source.id);
     if (sources[source.sourceId]) throw Error('Duplicate native source identity');
-    sourceBodies[source.sourceId] = source.uploadedBody;
-    sources[source.sourceId] = {title:source.title, role:source.kind, bodySha256:source.uploadedSha256,
+    sourceBodies[source.sourceId] = fileSource ? `Native original file supplied: ${source.path}. The text below is its complete indexed readback; it is not a replacement for the uploaded file. ${source.verificationLimits} ${source.readbackComparison??''}\n\n[Download supplied original](${ROUTE}/runs/${snapshot.config.id}/inputs/originals/${source.sourceId}${path.extname(source.path)})\n\n${source.body}` : source.uploadedBody;
+    sources[source.sourceId] = {title:source.title, role:source.kind, bodySha256:fileSource?source.bodySha256:source.uploadedSha256,
       indexedTextSha256:source.indexedTextSha256, readbackPath:`source-readbacks/${source.sourceId}.json`,
-      provenance:{locator:source.path, originalSha256:source.sha256, evidence:source.provenance}};
+      provenance:{locator:source.path, originalSha256:source.sha256, selection:source.verificationLimits, evidence:source.provenance}};
   }
   const sections = snapshot.config.sections;
   const topics = new Map();
@@ -54,7 +55,7 @@ export function projectInputs(snapshot) {
     if (args.notebook_id !== snapshot.notebookId || args.focus_prompt !== request.prompt || hash(request.prompt) !== request.promptSha256 || !same(args.source_ids, request.sourceIds) || !args.source_ids.length) throw Error('Frozen request differs: '+request.key);
     for (const id of args.source_ids) {
       const selected = request.selectedSources.find(source => source.sourceId === id);
-      if (!sources[id] || selected?.indexedTextSha256 !== sources[id].indexedTextSha256 || selected?.uploadedSha256 !== sources[id].bodySha256) throw Error('Request source differs: '+request.key);
+      if (!sources[id] || selected?.indexedTextSha256 !== sources[id].indexedTextSha256 || selected?.uploadedSha256 !== snapshot.sources.find(s=>s.sourceId===id).uploadedSha256) throw Error('Request source differs: '+request.key);
     }
     requests.set(request.key, {...request, subject:request.chapter,
       ...(request.type === 'infographic' ? {infographicDetail:request.settings.detail_level, take:(request.ordinal-1)%2+1} : {})});
@@ -63,7 +64,7 @@ export function projectInputs(snapshot) {
 }
 
 export function assertJobMatches(job, request, ledger, snapshot) {
-  if (!request || ledger.notebookId !== snapshot.notebookId || ledger.publish !== false || ledger.manifestSha256 !== snapshot.manifestSha256 ||
+  if (!request || ledger.notebookId !== snapshot.notebookId || ledger.publish !== false || ledger.manifestSha256 !== (request.inheritedFrom?.manifestSha256??snapshot.manifestSha256) ||
       job.completeInputSha256 !== request.completeInputSha256 || job.promptSha256 !== request.promptSha256 ||
       job.type !== request.type || job.format !== request.format || job.ordinal !== request.ordinal ||
       JSON.stringify(job.settings) !== JSON.stringify(request.settings)) throw Error('Ledger differs from frozen request: '+job.key);
@@ -107,21 +108,34 @@ async function renderMedia({input, runRoot, publicDir, build, renderer}) {
   const subjects = [], items = [], errors = [];
   for (const section of input.sections) for (const chapter of section.chapters) {
     const file = path.join(runRoot, 'docs/generation', chapter.id+'.json');
-    const ledger = await exists(file) ? await json(file) : null;
+    const ownLedger = await exists(file) ? await json(file) : null;
     const requests = [...input.requests.values()].filter(request => request.chapter === chapter.id);
+    const owners = new Map();
+    for (const request of requests) {
+      const previous = request.inheritedFrom;
+      if (previous && (!safe(previous.run) || !safe(previous.chapter))) throw Error('Unsafe inherited custody');
+      const origin = previous ? path.join(path.dirname(runRoot), previous.run) : runRoot;
+      const ledger = previous ? await json(path.join(origin, 'docs/generation', previous.chapter+'.json')) : ownLedger;
+      if (previous) {
+        const frozen = await json(path.join(origin, 'request-inputs.json'));
+        if (frozen.manifestSha256 !== previous.manifestSha256 || frozen.requests.find(r=>r.key===request.key)?.completeInputSha256 !== request.completeInputSha256) throw Error('Inherited request differs');
+      }
+      owners.set(request.key,{origin,ledger});
+    }
     const jobs = requests.map(request => ({...request, status:'planned', topicId:request.topic.id, topicTitle:request.topic.title,
-      ...(ledger?.jobs.find(job => job.key === request.key)??{}), infographicDetail:request.infographicDetail, take:request.take}));
+      ...(owners.get(request.key).ledger?.jobs.find(job => job.key === request.key)??{}), infographicDetail:request.infographicDetail, take:request.take}));
     const level = subjects.length;
     for (const job of jobs) {
       if (job.status !== 'completed') continue;
       try {
         const request = input.requests.get(job.key);
+        const {origin,ledger} = owners.get(job.key);
         assertJobMatches(job, request, ledger, input.snapshot);
-        const source = path.join(runRoot, 'originals', job.key+'.'+EXT[job.type]);
+        const source = path.join(origin, 'originals', job.key+'.'+EXT[job.type]);
         if (!await exists(source) || !(await fs.stat(source)).size) throw Error('Original not downloaded');
         const sha256 = await digest(source);
         if (job.type === 'video') verifiedVideoKey({job, notebookId:ledger.notebookId, hash:sha256, info:videoInfo(source),
-          proof:await json(path.join(runRoot, 'transfers/video-readiness', job.id+'.json')), originals:{}});
+          proof:await json(path.join(origin, 'transfers/video-readiness', job.id+'.json')), originals:{}});
         const key = renditionCacheKey({sha256, revision:renderer.revision, id:job.id, type:job.type});
         const prefix = `${SETTINGS.urlNamespace}${input.snapshot.config.id}/${key}/`;
         const custody = `/custody/generation/${ledger.notebookId}/${job.id}-${sha256.slice(0,16)}.${EXT[job.type]}`;
@@ -149,7 +163,7 @@ async function renderMedia({input, runRoot, publicDir, build, renderer}) {
         items.push({...rendition, id:job.id, key:job.key, type:job.type, format:job.format, settings:job.settings,
           title:job.generatedTitle??job.title??job.topicTitle, level, editorial:false, version:1,
           infographicDetail:job.infographicDetail, take:job.take, conditionId:job.topicId, conditionLabel:job.topicTitle,
-          qualityStatus:'Provider and file verified; content available for review',
+          qualityStatus:'Provider and file verified; output review waived',
           notebook:`https://notebooklm.google.com/notebook/${ledger.notebookId}?artifactId=${job.id}`});
       } catch (error) { errors.push({key:job.key, error:error.message}); }
     }
@@ -186,7 +200,7 @@ async function adapt(html, data, {baseUrl, heading, home, parse, one, all, h, re
     if (review) reviewContainer.children.push(h('details', {class:'media-review'}, h('summary', {}, review.status.replaceAll('-', ' ')),
       h('p', {}, typeof review.coverage === 'string' ? review.coverage : JSON.stringify(review.coverage)),
       h('ul', {}, ...(review.findings??[]).map(finding => h('li', {}, finding)))));
-    else reviewContainer.children.push(h('p', {class:'media-review'}, 'Content review pending.'));
+    else reviewContainer.children.push(h('p', {class:'media-review'}, 'Content not reviewed; further output review was waived for this commission.'));
   }
   for (const node of all(tree, 'h1,h2,h3,h4,h5')) if (node.children?.length === 1 && node.children[0].value === 'The case for an AI-enabled H&M') node.children = [h('span', {}, heading)];
   for (const link of all(tree, 'a')) if ((link.attributes.href??'').startsWith('https://notebooklm.google.com/')) link.parent.children = link.parent.children.filter(child => child !== link);
@@ -218,6 +232,8 @@ export async function buildIndex({run='property-pack-v1', port=4340}={}) {
     const snapshot = await json(path.join(runRoot, 'request-inputs.json'));
     if (snapshot.config.id !== run) throw Error('Run identity differs from frozen inputs');
     const input = projectInputs(snapshot), renderer = await resolveRenderer();
+    const currentFile = path.join(work,'current-run.json');
+    const isCurrent = !await exists(currentFile) || (await json(currentFile)).run === run;
     const {unifiedHierarchy} = await import(pathToFileURL(path.join(AI, 'scripts/notebooks/local-unified-view.mjs')));
     const {parse, h, renderSync} = await import(pathToFileURL(path.join(AI, 'site/node_modules/ultrahtml/dist/index.js')));
     const {querySelector:one, querySelectorAll:all} = await import(pathToFileURL(path.join(AI, 'site/node_modules/ultrahtml/dist/selector.js')));
@@ -254,7 +270,7 @@ import Directory from ${JSON.stringify(path.join(components, 'NotebookCollection
 import data from '../data.json';
 const collections=data.sections.map(section=>{const preview=data.catalogue.multimedia.find(item=>item.type==='infographic'&&data.subjects[item.level].section===section.id);return {id:section.id,title:section.title,path:data.route+'/'+section.id+'/',question:section.question,summary:section.purpose,perspective:section.audience,image:preview?{src:preview.preview.path,alt:'Preview of '+preview.title}:undefined,description:[{heading:'Related subjects',items:section.relatedSubjects}],chapters:section.chapters.map((chapter,index)=>({title:chapter.title,href:data.route+'/'+section.id+'/#system-'+index}))}});
 ---
-<Shell {...${JSON.stringify(shell)}} localOnly bodyClass="notebook-index collections-index" path={data.route+'/'} title="OPDA · Property Pack learning media"><Directory collections={collections} heading="Property Pack learning media" eyebrow="Local review · NotebookLM explanations" intro="Explore how property information becomes a connected model, and how its meaning and readiness are reviewed." navigationLabel="Property Pack media sections"><div slot="before-collections"><p>Generated explanations support learning. The documented candidate and its recorded decisions remain the source of authority.</p></div><p><a href={data.runRoute+'/'}>Open the versioned run and its frozen inputs</a></p><details><summary>Local run status</summary><p>{data.available} of {data.requested} commissioned artefacts are available for review. Updated {data.updatedAt}.</p><p>Completed media remains subject to content review. Pending variants are labelled in their topic.</p></details></Directory></Shell>`);
+<Shell {...${JSON.stringify(shell)}} localOnly bodyClass="notebook-index collections-index" path={data.route+'/'} title="OPDA · Property Pack learning media"><Directory collections={collections} heading="Property Pack learning media" eyebrow="Local review · NotebookLM explanations" intro="Explore how property information becomes a connected model, and how its meaning and readiness are reviewed." navigationLabel="Property Pack media sections"><div slot="before-collections"><p>Generated explanations support learning. The documented candidate and its recorded decisions remain the source of authority.</p></div><p><a href={data.runRoute+'/'}>Open the versioned run and its frozen inputs</a></p><details><summary>Local run status</summary><p>{data.available} of {data.requested} commissioned artefacts are available for review. Updated {data.updatedAt}.</p><p>Further output review was waived for this commission. Pending delivery is labelled in each topic.</p></details></Directory></Shell>`);
     for (const section of input.sections) {
       const sectionData = {...data, subjects:data.subjects.filter(subject => subject.section === section.id), section};
       const levels = new Map(sectionData.subjects.map((subject, index) => [subject.id, index]));
@@ -264,23 +280,29 @@ const collections=data.sections.map(section=>{const preview=data.catalogue.multi
 import Collection from ${JSON.stringify(path.join(components, 'NotebookSubjectCollection.astro'))};
 import data from ${JSON.stringify('../'+section.id+'.json')};
 ---
-<Collection levels={data.subjects.map(s=>[s.title])} descriptions={data.subjects.map(s=>s.description)} subjectIds={data.subjects.map(s=>s.id)} briefs={data.subjects.map(s=>s.brief)} editorials={[]} catalogue={data.catalogue} multimedia={data.catalogue.multimedia} prefix="/presentations/" configured localOnly label="Chapter" heading={data.section.title} title={data.section.title+' · OPDA'} eyebrow="Property Pack · Local learning media" intro={data.section.purpose} path={data.route+'/'+data.section.id+'/'} shell={${JSON.stringify({...shell, bodyClass:'notebook-index collapsible-index unified-index'})}}><div slot="intro"><p><a href={data.route+'/'}>All learning media</a> · <a href={data.runRoute+'/'+data.section.id+'/'}>Versioned run</a></p><p>These generated explanations describe a draft Property Pack candidate. The Property Pack guide retains the documented model and decisions.</p><p>Open a chapter, then a topic. Its three input readers show the exact commission and selected source bodies.</p><details><summary>Availability and review</summary><p>{data.available} of {data.requested} commissioned artefacts are available locally. Updated {data.updatedAt}. Content quality remains for review.</p>{data.errors.length>0&&<ul>{data.errors.map(error=><li>{error.key}: awaiting verified local delivery.</li>)}</ul>}</details></div></Collection>`);
+<Collection levels={data.subjects.map(s=>[s.title])} descriptions={data.subjects.map(s=>s.description)} subjectIds={data.subjects.map(s=>s.id)} briefs={data.subjects.map(s=>s.brief)} editorials={[]} catalogue={data.catalogue} multimedia={data.catalogue.multimedia} prefix="/presentations/" configured localOnly label="Chapter" heading={data.section.title} title={data.section.title+' · OPDA'} eyebrow="Property Pack · Local learning media" intro={data.section.purpose} path={data.route+'/'+data.section.id+'/'} shell={${JSON.stringify({...shell, bodyClass:'notebook-index collapsible-index unified-index'})}}><div slot="intro"><p><a href={data.route+'/'}>All learning media</a> · <a href={data.runRoute+'/'+data.section.id+'/'}>Versioned run</a></p><p>These generated explanations describe a draft Property Pack candidate. The Property Pack guide retains the documented model and decisions.</p><p>Open a chapter, then a topic. Its three input readers show the exact commission and selected source bodies.</p><details><summary>Availability and review</summary><p>{data.available} of {data.requested} commissioned artefacts are available locally. Updated {data.updatedAt}. Further output review was waived for this commission.</p>{data.errors.length>0&&<ul>{data.errors.map(error=><li>{error.key}: awaiting verified local delivery.</li>)}</ul>}</details></div></Collection>`);
     }
     execFileSync(path.join(build, 'node_modules/.bin/astro'), ['build', '--root', build], {cwd:ROOT, stdio:'pipe', maxBuffer:8*1024*1024});
     // Install immutable asset paths and exact inputs before replacing any visible HTML.
     await fs.mkdir(site, {recursive:true});
-    for (const folder of ['_astro','fonts','presentations','custody']) if (await exists(path.join(build, 'dist', folder))) await fs.cp(path.join(build, 'dist', folder), path.join(site, folder), {recursive:true});
+    for (const folder of ['_astro','fonts','presentations','custody']) if (await exists(path.join(build, 'dist', folder))) await fs.cp(path.join(build, 'dist', folder), path.join(site, folder), {recursive:true,force:false});
     const runSite = path.join(site, runRoute);
     await save(path.join(runSite, 'inputs/request-inputs.json'), snapshot);
-    for (const [id, body] of Object.entries(input.sourceBodies)) await atomic(path.join(runSite, 'inputs/sources', id+'.txt'), body);
+    for (const source of snapshot.sources) await atomic(path.join(runSite, 'inputs/sources', source.sourceId+'.txt'), source.uploadedBody);
     for (const source of snapshot.sources) await atomic(path.join(runSite, 'inputs/source-readbacks', source.sourceId+'.json'), await fs.readFile(path.join(runRoot, 'source-readbacks', source.sourceId+'.json')));
+    for (const source of snapshot.sources) if (source.ingestKind==='file') {
+      const retained=path.join(runRoot,'source-originals',source.id+'-'+source.sha256.slice(0,12)+path.extname(source.path).toLowerCase());
+      const original=await fs.readFile(await exists(retained)?retained:path.join(ROOT,source.path));
+      if (hash(original)!==source.sha256) throw Error('Supplied original bytes changed');
+      await atomic(path.join(runSite,'inputs/originals',source.sourceId+path.extname(source.path)),original);
+    }
     const options = {baseUrl:origin+runRoute, home:ROUTE+'/', parse, one, all, h, renderSync, unifiedHierarchy};
     const directory = await adapt(await fs.readFile(path.join(build, 'dist/index.html'), 'utf8'), null, {...options, heading:'Property Pack learning media'});
-    for (const base of [path.join(site, ROUTE), runSite]) await atomic(path.join(base, 'index.html'), base === runSite ? directory.replaceAll(ROUTE+'/property-pack/', runRoute+'/property-pack/') : directory);
+    for (const base of [...(isCurrent?[path.join(site, ROUTE)]:[]), runSite]) await atomic(path.join(base, 'index.html'), base === runSite ? input.sections.reduce((html,section)=>html.replaceAll(ROUTE+'/'+section.id+'/',runRoute+'/'+section.id+'/'),directory) : directory);
     for (const section of input.sections) {
       const sectionData = await json(path.join(build, 'src', section.id+'.json'));
       const html = await adapt(await fs.readFile(path.join(build, 'dist', section.id, 'index.html'), 'utf8'), sectionData, {...options, heading:section.title});
-      await atomic(path.join(site, ROUTE, section.id, 'index.html'), html);
+      if (isCurrent) await atomic(path.join(site, ROUTE, section.id, 'index.html'), html);
       await atomic(path.join(runSite, section.id, 'index.html'), html);
     }
     await save(path.join(runSite, 'release.json'), {...data, catalogue:undefined, frozenInputSha256:hash(await fs.readFile(path.join(runRoot, 'request-inputs.json')))});
@@ -298,4 +320,11 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     else throw Error('Usage: property-pack-index.mjs [--run property-pack-v1] [--port 4340]');
   }
   console.log(JSON.stringify(await buildIndex(options)));
+  // An inherited job can complete after its successor's own queue has finished.
+  // Every delivery refresh therefore also advances the current aggregate view.
+  const currentFile = path.join(ROOT, '.local/property-pack-media/current-run.json');
+  if (await exists(currentFile)) {
+    const {run} = await json(currentFile);
+    if (run !== (options.run ?? 'property-pack-v1')) console.log(JSON.stringify(await buildIndex({...options, run})));
+  }
 }

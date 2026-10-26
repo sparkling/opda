@@ -1,0 +1,107 @@
+{"sources": [
+  {"id": "pp-05", "title": "OPDA's purpose and the people who need shared property data", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-05.md", "provenance": ["src/pages/programme/index.astro", "src/pages/governance/opda-organisation.astro", "src/pages/governance/opda-members.astro", "src/pages/development/index.astro", "docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md", "source/01-organisation/constitution-and-policies/OPDA Constitution 2026.docx", "source/05-engagement/presentations/OPDA overview 2026.pptx"]},
+  {"id": "pp-06", "title": "How forms, the PDTF schema and the Property Pack relate", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-06.md", "provenance": ["docs/research/property-pack-451-evidence-validation.md", "docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md", "docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md", "src/pages/development/inputs/pdtf-schema/index.astro", "src/pages/programme/index.astro", "source/04-governance-bodies/working-groups/comms-pr/DPMSG-Data-Standards-Interoperability-Report-Spring-2025-FINAL-1-1.pdf", "source/08-external-references/nts/README.md", "source/05-engagement/presentations/OPDA overview 2026.pptx"]},
+  {"id": "pp-07", "title": "Government policy, Smart Data and property information", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-07.md", "provenance": ["src/pages/programme/index.astro", "docs/adr/ADR-0062-dbt-smart-data-implications-for-spdtf-and-pdtf-schema-lineage.md", "src/pages/dbt-smart-data/index.astro", "docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md", "docs/adr/ADR-0051-site-content-realignment-dvstf-spdtf-uk-initiative-mhclg.md", "src/pages/governance/uk-initiative.astro", "source/08-external-references/uk-government/data_standards_for_smart_data.pdf", "source/08-external-references/uk-government/understanding-the-costs-and-benefits-of-smart-data-use-cases-research-report.pdf"]},
+  {"id": "pp-08", "title": "SPDTF development and the separate PDTF evidence lineage", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-08.md", "provenance": ["src/pages/programme/index.astro", "docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md", "docs/adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md", "docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md", "docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md", "docs/research/property-pack-451-evidence-validation.md", "source/06-research/trust-framework-poc/DPMSG trust framework explainer.docx"]},
+  {"id": "original-constitution", "title": "OPDA Constitution 2026 — complete retained original", "kind": "original", "path": "source/01-organisation/constitution-and-policies/OPDA Constitution 2026.docx", "provenance": []},
+  {"id": "original-overview", "title": "OPDA introductory overview 2026 — complete retained presentation", "kind": "original", "path": "source/05-engagement/presentations/OPDA overview 2026.pptx", "provenance": []},
+  {"id": "original-dpmsg-report", "title": "DPMSG Data Standards and Interoperability Report, Spring 2025 — complete retained report", "kind": "original", "path": "source/04-governance-bodies/working-groups/comms-pr/DPMSG-Data-Standards-Interoperability-Report-Spring-2025-FINAL-1-1.pdf", "provenance": []},
+  {"id": "original-nts-history", "title": "NTS historical material-information source and withdrawal note — complete text", "kind": "original", "path": "source/08-external-references/nts/README.md", "provenance": []},
+  {"id": "original-smart-data-standards", "title": "Data Standards for Smart Data, November 2025 — complete retained report", "kind": "original", "path": "source/08-external-references/uk-government/data_standards_for_smart_data.pdf", "provenance": []},
+  {"id": "original-smart-data-economics", "title": "Understanding the costs and benefits of Smart Data use cases, March 2026 — complete retained report", "kind": "original", "path": "source/08-external-references/uk-government/understanding-the-costs-and-benefits-of-smart-data-use-cases-research-report.pdf", "provenance": []},
+  {"id": "original-trust-explainer", "title": "DPMSG trust-framework explainer — complete retained explanatory document", "kind": "original", "path": "source/06-research/trust-framework-poc/DPMSG trust framework explainer.docx", "provenance": []},
+  {"id": "original-adr75", "title": "Accepted ADR0075 — Property Pack as an accelerated SPDTF component, complete text", "kind": "original", "path": "docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md", "provenance": []},
+  {"id": "original-adr77", "title": "Accepted ADR0077 — PDTF input and schema-derived authority, complete text", "kind": "original", "path": "docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md", "provenance": []},
+  {"id": "pp-09", "title": "How evidence becomes a reviewable model", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-09.md", "provenance": ["docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md", "docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md", "docs/research/ai-assisted-working-group-method.md", "docs/research/property-pack-451-evidence-validation.md", "src/pages/development/working-groups/member-guide/model-review-and-decisions.astro"]},
+  {"id": "pp-10", "title": "Domain working groups and accountable meaning", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-10.md", "provenance": ["docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md", "docs/adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md", "docs/adr/ADR-0070-uniform-microsoft-365-working-group-workspaces.md", "docs/adr/ADR-0089-separate-internal-technical-governance-from-cross-scheme-coordination.md", "src/pages/development/working-groups/member-guide/model-review-and-decisions.astro"]},
+  {"id": "pp-11", "title": "Standards maturity, review and a recorded determination", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-11.md", "provenance": ["docs/adr/ADR-0068-govern-opda-standards-lifecycle.md", "docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md", "docs/adr/ADR-0090-close-property-pack-review-with-explicit-status-and-sign-off.md", "docs/adr/ADR-0089-separate-internal-technical-governance-from-cross-scheme-coordination.md", "source/01-organisation/constitution-and-policies/OPDA Constitution 2026.docx"]},
+  {"id": "pp-12", "title": "Ontology-first change and a controlled migration", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-12.md", "provenance": ["docs/adr/ADR-0039-linked-data-model-as-spdtf-foundation.md", "docs/adr/ADR-0091-ratify-ontology-first-schema-change-and-migration-process.md", "docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md", "docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md", "docs/linked-data-initiative/09-model-driven-generation-vision.md"]},
+  {"id": "original-adr63", "title": "Accepted ADR0063 — domain ownership and current eight-category method — complete text", "kind": "original", "path": "docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md", "provenance": []},
+  {"id": "original-adr65", "title": "Proposed ADR0065 — human-governed AI-assisted workflow — complete text", "kind": "original", "path": "docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md", "provenance": []},
+  {"id": "original-scope-validation", "title": "Property Pack workbook evidence validation, August 2026 — complete retained report — complete text", "kind": "original", "path": "docs/research/property-pack-451-evidence-validation.md", "provenance": []},
+  {"id": "original-adr70", "title": "Accepted ADR0070 — working-group workspace and evidence boundaries — complete text", "kind": "original", "path": "docs/adr/ADR-0070-uniform-microsoft-365-working-group-workspaces.md", "provenance": []},
+  {"id": "original-adr89", "title": "Proposed ADR0089 — internal and wider technology responsibilities — complete text", "kind": "original", "path": "docs/adr/ADR-0089-separate-internal-technical-governance-from-cross-scheme-coordination.md", "provenance": []},
+  {"id": "original-adr68", "title": "Proposed ADR0068 — standards maturity and human ratification — complete text", "kind": "original", "path": "docs/adr/ADR-0068-govern-opda-standards-lifecycle.md", "provenance": []},
+  {"id": "original-adr90", "title": "Proposed ADR0090 — Property Pack review close-out and recorded status — complete text", "kind": "original", "path": "docs/adr/ADR-0090-close-property-pack-review-with-explicit-status-and-sign-off.md", "provenance": []},
+  {"id": "original-adr91", "title": "Proposed ADR0091 — ontology-first change and migration — complete text", "kind": "original", "path": "docs/adr/ADR-0091-ratify-ontology-first-schema-change-and-migration-process.md", "provenance": []},
+  {"id": "original-adr39", "title": "Accepted ADR0039 — linked-data direction and phased delivery — complete text", "kind": "original", "path": "docs/adr/ADR-0039-linked-data-model-as-spdtf-foundation.md", "provenance": []},
+  {"id": "pp-13", "title": "Contributing evidence and making a useful model review", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-13.md", "provenance": ["src/pages/development/working-groups/member-guide/source-material-and-sharepoint.astro", "src/pages/development/working-groups/member-guide/model-review-and-decisions.astro", "docs/adr/ADR-0070-uniform-microsoft-365-working-group-workspaces.md", "docs/adr/ADR-0092-support-evidence-and-feedback-without-microsoft-tenant-access.md", "docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md", "docs/research/property-pack-451-evidence-validation.md"]},
+  {"id": "pp-14", "title": "Working together through discussion, meetings and durable records", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-14.md", "provenance": ["src/pages/development/working-groups/member-guide/teams-and-discussions.astro", "src/pages/development/working-groups/member-guide/meetings-and-records.astro", "src/pages/development/working-groups/member-guide/source-material-and-sharepoint.astro", "docs/adr/ADR-0070-uniform-microsoft-365-working-group-workspaces.md", "docs/adr/ADR-0085-approval-driven-working-group-onboarding-and-invitations.md", "docs/adr/ADR-0092-support-evidence-and-feedback-without-microsoft-tenant-access.md", "docs/adr/ADR-0068-govern-opda-standards-lifecycle.md"]},
+  {"id": "pp-15", "title": "Reading linked data and understanding what an implementation proves", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-15.md", "provenance": ["docs/ontology/odr/ODR-0065-namespace-topology-and-identifiers.md", "docs/adr/ADR-0057-rml-mapping-implementation.md", "docs/adr/ADR-0037-apache-jena-sole-rdf-shacl-sparql-toolchain.md", "source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/address-separation.rq", "source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/property-identity.rq", "source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/no-same-as.rq", "docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md", "docs/adr/ADR-0091-ratify-ontology-first-schema-change-and-migration-process.md"]},
+  {"id": "pp-16", "title": "Adoption, interoperability and the responsibilities of data consumers", "kind": "authored-reading", "path": "docs/notebooklm/property-pack-media/expanded/pp-16.md", "provenance": ["source/08-external-references/uk-government/data_standards_for_smart_data.pdf", "source/06-research/trust-framework-poc/Introduction-to-the-Sandbox-Technical-Guide.pdf", "source/06-research/trust-framework-poc/DPMSG trust framework explainer.docx", "docs/research/property-pack-451-evidence-validation.md", "source/03-standards/ontology-candidates/property-pack/0.1/candidate-summary.json", "docs/ontology/odr/ODR-0065-namespace-topology-and-identifiers.md", "docs/adr/ADR-0090-close-property-pack-review-with-explicit-status-and-sign-off.md", "docs/adr/ADR-0091-ratify-ontology-first-schema-change-and-migration-process.md"]},
+  {"id": "original-adr92", "title": "Proposed ADR0092 — participation without Microsoft tenant access — complete text", "kind": "original", "path": "docs/adr/ADR-0092-support-evidence-and-feedback-without-microsoft-tenant-access.md", "provenance": [], "authorisationEvidence": "docs/notebooklm/working-group-participant-guide.yaml#repository-public-source-authorisation"},
+  {"id": "original-adr85", "title": "Accepted ADR0085 — independent domain approval and onboarding — complete text", "kind": "original", "path": "docs/adr/ADR-0085-approval-driven-working-group-onboarding-and-invitations.md", "provenance": [], "authorisationEvidence": "docs/notebooklm/working-group-participant-guide.yaml#repository-public-source-authorisation"},
+  {"id": "original-namespace-odr65", "title": "Accepted ODR0065 — namespace policy, preserved corpora and implementation boundary — complete text", "kind": "original", "path": "docs/ontology/odr/ODR-0065-namespace-topology-and-identifiers.md", "provenance": [], "authorisationEvidence": "docs/notebooklm/working-group-participant-guide.yaml#repository-public-source-authorisation"},
+  {"id": "original-rml-adr57", "title": "Accepted ADR0057 — historical PDTF mapping implementation and superseding amendments — complete text", "kind": "original", "path": "docs/adr/ADR-0057-rml-mapping-implementation.md", "provenance": [], "authorisationEvidence": "docs/notebooklm/working-group-participant-guide.yaml#repository-public-source-authorisation"},
+  {"id": "original-candidate-address-query", "title": "Property Pack 0.1 address-separation competency query — complete original", "kind": "original", "path": "source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/address-separation.rq", "provenance": [], "authorisationEvidence": "docs/notebooklm/working-group-participant-guide.yaml#repository-public-source-authorisation"}
+], "chapterSources": {
+  "pp-05": [
+    "pp-05",
+    "original-constitution",
+    "original-overview"
+  ],
+  "pp-06": [
+    "pp-06",
+    "original-dpmsg-report",
+    "original-nts-history",
+    "original-overview"
+  ],
+  "pp-07": [
+    "pp-07",
+    "original-smart-data-standards",
+    "original-smart-data-economics"
+  ],
+  "pp-08": [
+    "pp-08",
+    "original-trust-explainer",
+    "original-adr75",
+    "original-adr77"
+  ],
+  "pp-09": [
+    "pp-09",
+    "original-adr63",
+    "original-adr65",
+    "original-scope-validation"
+  ],
+  "pp-10": [
+    "pp-10",
+    "original-adr63",
+    "original-adr70",
+    "original-adr89"
+  ],
+  "pp-11": [
+    "pp-11",
+    "original-adr68",
+    "original-adr90",
+    "original-constitution"
+  ],
+  "pp-12": [
+    "pp-12",
+    "original-adr91",
+    "original-adr39",
+    "original-scope-validation"
+  ],
+  "pp-13": [
+    "pp-13",
+    "original-adr92",
+    "original-scope-validation",
+    "original-adr65"
+  ],
+  "pp-14": [
+    "pp-14",
+    "original-adr70",
+    "original-adr85"
+  ],
+  "pp-15": [
+    "pp-15",
+    "original-namespace-odr65",
+    "original-rml-adr57",
+    "original-candidate-address-query"
+  ],
+  "pp-16": [
+    "pp-16",
+    "original-sandbox-technical",
+    "original-smart-data-standards",
+    "original-trust-explainer"
+  ]
+}}

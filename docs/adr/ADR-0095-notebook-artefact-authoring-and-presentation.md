@@ -133,6 +133,51 @@ reports in the default set; ADR-0081's separately requested briefings can remain
 explicit additions. If one topic receives every default there are 13 outputs, but
 format-specific topics mean totals must be calculated from actual requests.
 
+### Current owner commission: every chapter, every media family
+
+The owner expanded the implementation commission on 26 October 2026: every
+chapter must receive videos, decks, audio and infographics using the full defaults
+above (13 outputs per chapter). This explicitly overrides the initial selective
+13-output catalogue. Topics still have useful medium-specific accounts; the
+curriculum is organised by audience questions, not copied from website routes.
+The owner also instructed that local output reviews must not hold generation.
+Source identity/readback, native settings, duplicate prevention and delivery
+integrity remain necessary; they are not discretionary content-approval gates.
+
+`docs/notebooklm/property-pack-media/curriculum.json` records the expanded teaching
+scope: five sections and 22 chapters, targeting 286 outputs. The sections cover
+purpose/history/programme, the Property Pack model, building/governing standards,
+participation/implementation, and meaning/evidence/trust. Deeper repository research
+adds consumer economics, claims/provenance, identity/roles, time/state/change,
+privacy/access, and operational sandbox learning. These are evidenced subjects,
+not a quota of additional website pages.
+
+Source packages combine substantial attributed readings with independently useful
+complete originals: government and industry research, constitutional/programme
+documents, sandbox records, modelling decisions and concrete candidate artefacts.
+Native PDF/DOCX/PPTX files retain their original bytes and complete indexed-text
+readbacks, with visual/table extraction limits stated explicitly. Native readbacks
+can rotate provider image-URL tokens; identical complete text, unchanged image
+dimensions and original-file hashes preserve the first frozen readback while
+fresh observations are retained separately. Other content changes fail inheritance. Older receipts
+establish provenance and public-source authorisation; current versioned sources
+retain their own hashes. Private email and newly accessed private repositories are
+not admitted automatically.
+
+Freezing and submission proceed in bounded source-ready batches. `catalogue.json`
+retains the original 13 requests; `catalogue-v2.json` adds 39 to complete the first
+four chapters, while later catalogues add the expanded subjects. Successor records
+inherit unchanged requests, acknowledged provider IDs and originals from their
+actual owning run. They do not create another job for unchanged inputs. Separate
+run supervisors own disjoint new requests; one index lock serialises rendering,
+and the current-run pointer prevents an older completion from replacing the newer
+directory. Every delivery refresh also advances that aggregate view, including
+late completions inherited from an earlier run. The final
+`catalogue-complete-v1.json` combines 22 readings (22,417 words) with 38 complete
+originals. It inherits 156 acknowledged requests and commissions 130 new ones.
+The workflow binding selects this complete catalogue. The 286 target is a
+commission, not a claim that every job is complete.
+
 ## Reference copy and reuse contract
 
 [Reference archive](../notebooklm/reference/notebook-index-reference.zip) contains
@@ -342,11 +387,12 @@ served routes before handing over URLs.
 
 ## Implementation evidence — 26 October 2026
 
-- `docs/notebooklm/property-pack-media/catalogue.json` freezes one section, four
+- The initial `docs/notebooklm/property-pack-media/catalogue.json` freezes one section, four
   chapters and four deliberately different media topics: the transaction account
   (two videos), reading the connected model (two Long decks), semantic ownership
   and reuse (six infographics), and validation/judgement/release (three audio
-  formats). This is 13 commissioned outputs, not every chapter multiplied by 13.
+  formats). This initial 13-output slice is retained unchanged; the expanded
+  commission above supersedes its selective scope.
 - Four attributed readings and three complementary complete originals are selected.
   All seven private notebook sources passed complete indexed-text readback and exact
   source membership checks. Verification preserves ordered, case-sensitive words;

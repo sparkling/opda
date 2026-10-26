@@ -36,3 +36,37 @@ test('Prospective complete source bodies retain material candidate qualification
   assert.match(sources.find(s=>s.id==='assurance').body,/does not claim full RDF 1\.2 or SHACL 1\.2 Union conformance/);
   assert.match(sources.find(s=>s.id==='boundaries').body,/no governed cross-context mappings/);
 });
+
+test('expanded commission adds every family while retaining the original requests', async () => {
+  const original=await resolveInputs(),expanded=await resolveInputs('docs/notebooklm/property-pack-media/catalogue-v2.json');
+  assert.equal(expanded.requests.length,52);
+  for (const chapter of expanded.config.sections.flatMap(s=>s.chapters)) {
+    const rows=expanded.requests.filter(r=>r.chapter===chapter.id);
+    assert.equal(rows.length,13);
+    assert.deepEqual(Object.fromEntries(['video','slide_deck','audio','infographic'].map(type=>[type,rows.filter(r=>r.type===type).length])),{video:2,slide_deck:2,audio:3,infographic:6});
+  }
+  for(const request of original.requests) assert.deepEqual(expanded.requests.find(r=>r.key===request.key),request);
+});
+
+test('complete curriculum preserves acknowledged inputs and supplies complete original files', async () => {
+  const full=await resolveInputs('docs/notebooklm/property-pack-media/catalogue-complete-v1.json');
+  assert.equal(full.requests.length,286);
+  assert.equal(full.config.sections.length,5);
+  assert.equal(full.sources.length,60);
+  assert.equal(full.sources.filter(s=>s.kind==='authored-reading').length,22);
+  assert.equal(new Set(full.sources.map(s=>s.path)).size,full.sources.length);
+  for (const chapter of full.config.sections.flatMap(s=>s.chapters)) {
+    const requests=full.requests.filter(r=>r.chapter===chapter.id);
+    assert.deepEqual(Object.fromEntries(['video','slide_deck','audio','infographic'].map(type=>[type,requests.filter(r=>r.type===type).length])),{video:2,slide_deck:2,audio:3,infographic:6});
+    if(Number(chapter.id.slice(-2))>4) assert.ok(chapter.topics.every(t=>t.sourceKeys.length>=3));
+  }
+  for (const name of ['catalogue-v3.json','catalogue-methods-v1.json']) {
+    const prior=await resolveInputs('docs/notebooklm/property-pack-media/'+name);
+    for(const request of prior.requests) assert.deepEqual(full.requests.find(r=>r.key===request.key),request);
+  }
+  for(const source of full.sources.filter(s=>s.ingestKind==='file')) {
+    assert.equal(source.body,'');
+    assert.ok(source.bytes>1000);
+    assert.equal(source.kind,'original');
+  }
+});

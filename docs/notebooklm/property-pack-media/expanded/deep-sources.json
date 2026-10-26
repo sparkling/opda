@@ -1,0 +1,208 @@
+{
+  "sources": [
+    {
+      "id": "pp-17",
+      "title": "Consumer experience and the economic case for better property information",
+      "kind": "authored-reading",
+      "path": "docs/notebooklm/property-pack-media/expanded/pp-17.md",
+      "provenance": [
+        "source/02-policy-and-positioning/opda-reports/OPDA Report.pdf",
+        "source/02-policy-and-positioning/opda-reports/Santander Fixing the Broken Chain.pdf",
+        "source/08-external-references/uk-government/understanding-the-costs-and-benefits-of-smart-data-use-cases-research-report.pdf",
+        "source/08-external-references/uk-government/MHCLG-Home-Buying-and-Selling-Reform-Roadmap.pdf",
+        "source/04-governance-bodies/working-groups/regulator/PDTF base schema.xlsx",
+        "docs/research/property-pack-451-evidence-validation.md"
+      ]
+    },
+    {
+      "id": "pp-22",
+      "title": "Operational trust and what the property sandbox can teach",
+      "kind": "authored-reading",
+      "path": "docs/notebooklm/property-pack-media/expanded/pp-22.md",
+      "provenance": [
+        "source/06-research/trust-framework-poc/Introduction-to-the-Sandbox-Technical-Guide.pdf",
+        "source/06-research/trust-framework-poc/DPMSG trust framework explainer.docx",
+        "source/06-research/trust-framework-poc/Building Trust in Property Data - article.docx",
+        "source/08-external-references/uk-government/MHCLG-Home-Buying-and-Selling-Reform-Roadmap.pdf",
+        "docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md",
+        "docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md",
+        "source/03-standards/ontology-candidates/property-pack/0.1/candidate-summary.json"
+      ]
+    },
+    {
+      "id": "original-consumer-report",
+      "title": "OPDA The Future of Homebuying consumer report — complete retained original",
+      "kind": "original",
+      "path": "source/02-policy-and-positioning/opda-reports/OPDA Report.pdf",
+      "provenance": [],
+      "authorisationEvidence": "docs/notebooklm/programme-policy-history.yaml#repository-public-source-authorisation"
+    },
+    {
+      "id": "original-santander-report",
+      "title": "Santander Fixing the Broken Chain — complete retained original",
+      "kind": "original",
+      "path": "source/02-policy-and-positioning/opda-reports/Santander Fixing the Broken Chain.pdf",
+      "provenance": [],
+      "authorisationEvidence": "docs/notebooklm/programme-policy-history.yaml#repository-public-source-authorisation"
+    },
+    {
+      "id": "original-sandbox-technical",
+      "title": "Introduction to the Sandbox Technical Guide — complete retained pilot guide",
+      "kind": "original",
+      "path": "source/06-research/trust-framework-poc/Introduction-to-the-Sandbox-Technical-Guide.pdf",
+      "provenance": [],
+      "authorisationEvidence": "docs/notebooklm/programme-policy-history.yaml#repository-public-source-authorisation"
+    },
+    {
+      "id": "original-sandbox-first-test",
+      "title": "Building Trust in Property Data — complete retained OPDA first-test account",
+      "kind": "original",
+      "path": "source/06-research/trust-framework-poc/Building Trust in Property Data - article.docx",
+      "provenance": [],
+      "authorisationEvidence": "docs/notebooklm/programme-policy-history.yaml#repository-public-source-authorisation"
+    },
+    {
+      "id": "original-odr9",
+      "title": "Historical ODR0009 claims and evidence — complete schema-derived design",
+      "kind": "original",
+      "path": "docs/ontology/odr/ODR-0009-claims-evidence-provenance.md",
+      "provenance": []
+    },
+    {
+      "id": "original-odr41",
+      "title": "Accepted ODR0041 kinds, roles and phases — complete method",
+      "kind": "original",
+      "path": "docs/ontology/odr/ODR-0041-role-view-modeling-pattern.md",
+      "provenance": []
+    },
+    {
+      "id": "original-odr52",
+      "title": "Accepted ODR0052 provenance and extraction quality — complete method",
+      "kind": "original",
+      "path": "docs/ontology/odr/ODR-0052-cat9-extraction-provenance-prov-o-adoption.md",
+      "provenance": []
+    },
+    {
+      "id": "original-odr53",
+      "title": "Accepted ODR0053 temporal state and history — complete method",
+      "kind": "original",
+      "path": "docs/ontology/odr/ODR-0053-cat10-temporal-state-history-adoption.md",
+      "provenance": []
+    },
+    {
+      "id": "original-odr54",
+      "title": "Accepted ODR0054 sensitivity classification — complete method",
+      "kind": "original",
+      "path": "docs/ontology/odr/ODR-0054-cat11-access-control-data-sensitivity-adoption.md",
+      "provenance": []
+    },
+    {
+      "id": "original-odr57",
+      "title": "Conditionally accepted ODR0057 DPV/ODRL policy — complete method",
+      "kind": "original",
+      "path": "docs/ontology/odr/ODR-0057-odrl-cat11-dpv-profile.md",
+      "provenance": []
+    },
+    {
+      "id": "original-odr59",
+      "title": "Accepted ODR0059 criterion-based identity — complete method",
+      "kind": "original",
+      "path": "docs/ontology/odr/ODR-0059-cross-context-identity-criterion-protocol.md",
+      "provenance": []
+    },
+    {
+      "id": "original-stewardship-draft",
+      "title": "DBT Smart Data guidebook chapter4, 25 June2026 draft — complete retained original",
+      "kind": "original",
+      "path": "source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-4/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy and Ethics_V2.pdf",
+      "provenance": [],
+      "authorisationEvidence": "docs/notebooklm/programme-policy-history.yaml#repository-public-source-authorisation"
+    },
+    {
+      "id": "pp-18",
+      "title": "Claims, evidence and the provenance of property information",
+      "kind": "authored-reading",
+      "path": "docs/notebooklm/property-pack-media/expanded/pp-18.md",
+      "provenance": [
+        "docs/ontology/odr/ODR-0052-cat9-extraction-provenance-prov-o-adoption.md",
+        "docs/ontology/odr/ODR-0009-claims-evidence-provenance.md",
+        "source/06-research/trust-framework-poc/DPMSG trust framework explainer.docx",
+        "docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md",
+        "docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md"
+      ]
+    },
+    {
+      "id": "pp-19",
+      "title": "Identity, agents and roles across property systems",
+      "kind": "authored-reading",
+      "path": "docs/notebooklm/property-pack-media/expanded/pp-19.md",
+      "provenance": [
+        "docs/ontology/odr/ODR-0041-role-view-modeling-pattern.md",
+        "docs/ontology/odr/ODR-0059-cross-context-identity-criterion-protocol.md",
+        "source/08-external-references/uk-government/data_standards_for_smart_data.pdf"
+      ]
+    },
+    {
+      "id": "pp-20",
+      "title": "Time, state and the history of property information",
+      "kind": "authored-reading",
+      "path": "docs/notebooklm/property-pack-media/expanded/pp-20.md",
+      "provenance": [
+        "docs/ontology/odr/ODR-0053-cat10-temporal-state-history-adoption.md",
+        "docs/ontology/odr/ODR-0052-cat9-extraction-provenance-prov-o-adoption.md",
+        "source/06-research/trust-framework-poc/DPMSG trust framework explainer.docx",
+        "source/04-governance-bodies/working-groups/regulator/PDTF base schema.xlsx",
+        "docs/research/property-pack-451-evidence-validation.md"
+      ]
+    },
+    {
+      "id": "pp-21",
+      "title": "Privacy, consent and access in a shared property-data ecosystem",
+      "kind": "authored-reading",
+      "path": "docs/notebooklm/property-pack-media/expanded/pp-21.md",
+      "provenance": [
+        "docs/ontology/odr/ODR-0054-cat11-access-control-data-sensitivity-adoption.md",
+        "docs/ontology/odr/ODR-0057-odrl-cat11-dpv-profile.md",
+        "source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-4/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy and Ethics_V2.pdf"
+      ]
+    }
+  ],
+  "chapterSources": {
+    "pp-17": [
+      "pp-17",
+      "original-consumer-report",
+      "original-santander-report",
+      "original-smart-data-economics"
+    ],
+    "pp-22": [
+      "pp-22",
+      "original-sandbox-technical",
+      "original-trust-explainer",
+      "original-sandbox-first-test"
+    ],
+    "pp-18": [
+      "pp-18",
+      "original-odr52",
+      "original-odr9",
+      "original-trust-explainer"
+    ],
+    "pp-19": [
+      "pp-19",
+      "original-odr41",
+      "original-odr59",
+      "original-smart-data-standards"
+    ],
+    "pp-20": [
+      "pp-20",
+      "original-odr53",
+      "original-odr52",
+      "original-trust-explainer"
+    ],
+    "pp-21": [
+      "pp-21",
+      "original-odr54",
+      "original-odr57",
+      "original-stewardship-draft"
+    ]
+  }
+}
