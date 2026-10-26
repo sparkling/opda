@@ -1,0 +1,26 @@
+---
+import { HANDOVER_DOCUMENTS } from '@/lib/handover-navigation';
+
+export function getStaticPaths() {
+  return ['/resources/handover', ...HANDOVER_DOCUMENTS.map(({ url }) => url)].map((target) => ({
+    params: { path: target.slice('/resources/handover/'.length) || undefined },
+    props: { target },
+  }));
+}
+const { target } = Astro.props;
+const canonical = new URL(target, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Handover has moved</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <script is:inline define:vars={{ target }}>
+      window.location.replace(target + window.location.search + window.location.hash);
+    </script>
+    <noscript><meta http-equiv="refresh" content={`0;url=${target}`} /></noscript>
+  </head>
+  <body><p>Handover is now in Resources. <a href={target}>Continue to the handover document</a>.</p></body>
+</html>

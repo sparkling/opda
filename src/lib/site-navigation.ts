@@ -8,7 +8,7 @@ import { SECTIONS, normalizeUrl } from './site.ts';
 import { GLOBAL_DESTINATIONS, getActiveDestination } from './site-ia.mjs';
 import { isRetiredPdtf1DocumentationRoute, PDTF1_ROUTES } from './pdtf1-routes.mjs';
 import { MARKETING_NAVIGATION_SECTION } from './marketing-navigation.ts';
-import { HANDOVER_NAVIGATION_SECTION } from './handover-navigation.ts';
+import { HANDOVER_DOCUMENTS } from './handover-navigation.ts';
 import { workPackageRoute, workPackages } from './property-pack-model.mjs';
 import {
   GOVERNANCE_FRAMEWORK_ITEMS,
@@ -380,6 +380,7 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
       category('Library', '/library', ownedSectionItems('library', 'resources')),
       category('Engagement records', '/engagement', ownedSectionItems('engagement', 'resources')),
       category('Find and inspect', '/glossary'),
+      category('Handover', '/resources/handover', HANDOVER_DOCUMENTS),
     ],
   },
   marketing: MARKETING_NAVIGATION_SECTION,
@@ -407,7 +408,6 @@ const ACTIVE_ROUTE_ALIASES = [
 
 export function getNavigationSection(path: string): NavigationSection | null {
   const normalized = normalizeUrl(path);
-  if (normalized === '/handover' || normalized.startsWith('/handover/')) return HANDOVER_NAVIGATION_SECTION;
   if (STANDALONE_SURFACES.some((pattern) => pattern.test(normalized))) return null;
   if (isRetiredPdtf1DocumentationRoute(normalized)) return null;
   const key = getActiveDestination(path) as DestinationKey | null;

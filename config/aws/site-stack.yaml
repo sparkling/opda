@@ -274,7 +274,7 @@ Resources:
           var request = event.request;
           var uri = request.uri;
           if (uri === '/resources' || uri === '/resources/') request.uri = '/resources/index.html';
-          else if (uri.startsWith('/resources/')) request.uri = uri.slice('/resources'.length);
+          else if (uri.startsWith('/resources/') && uri !== '/resources/handover' && !uri.startsWith('/resources/handover/')) request.uri = uri.slice('/resources'.length);
           else if (uri.endsWith('/')) request.uri = uri + 'index.html';
           else if (!uri.split('/').pop().includes('.')) request.uri = uri + '/index.html';
           return request;
@@ -379,14 +379,13 @@ Resources:
             Compress: true
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref AuthSessionOriginRequestPolicy
-          - PathPattern: '/resources/'
-            TargetOriginId: site-s3
-            ResponseHeadersPolicyId: !Ref PublicResponseHeaders
-            ViewerProtocolPolicy: redirect-to-https
-            Compress: true
-            CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
-            FunctionAssociations:
-              - { EventType: viewer-request, FunctionARN: !GetAtt PublicPathFunction.FunctionARN }
+          # Resources pages use the site origin; other resources remain downloads.
+          - { PathPattern: '/resources/', TargetOriginId: site-s3, ResponseHeadersPolicyId: !Ref PublicResponseHeaders,
+              ViewerProtocolPolicy: redirect-to-https, Compress: true, CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6, FunctionAssociations: [{ EventType: viewer-request, FunctionARN: !GetAtt PublicPathFunction.FunctionARN }] }
+          - { PathPattern: '/resources/handover', TargetOriginId: site-s3, ResponseHeadersPolicyId: !Ref PublicResponseHeaders,
+              ViewerProtocolPolicy: redirect-to-https, Compress: true, CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6, FunctionAssociations: [{ EventType: viewer-request, FunctionARN: !GetAtt PublicPathFunction.FunctionARN }] }
+          - { PathPattern: '/resources/handover/*', TargetOriginId: site-s3, ResponseHeadersPolicyId: !Ref PublicResponseHeaders,
+              ViewerProtocolPolicy: redirect-to-https, Compress: true, CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6, FunctionAssociations: [{ EventType: viewer-request, FunctionARN: !GetAtt PublicPathFunction.FunctionARN }] }
           # Public downloads cached at the CDN.
           - PathPattern: '/resources/*'
             TargetOriginId: resources-s3

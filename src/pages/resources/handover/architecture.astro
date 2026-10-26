@@ -18,7 +18,7 @@ import HandoverLayout from '@/layouts/HandoverLayout.astro';
     <caption>Where to find and change things</caption>
     <thead><tr><th scope="col">Path</th><th scope="col">Responsibility</th></tr></thead>
     <tbody>
-      <tr><td><code>src/pages/</code></td><td>Public Astro routes. This handover is maintained in <code>src/pages/handover/</code>.</td></tr>
+      <tr><td><code>src/pages/</code></td><td>Public Astro routes. This handover is maintained in <code>src/pages/resources/handover/</code>.</td></tr>
       <tr><td><code>src/layouts/</code>, <code>src/components/</code>, <code>src/styles/</code>, <code>public/ui/</code></td><td>Shared page shell, accessible interface, typography, theme, tokens and generated design assets. Reuse their owners; do not copy a page's implementation into another route.</td></tr>
       <tr><td><code>src/lib/</code>, <code>src/data/</code></td><td>Navigation, route/status contracts, model loaders, maintained catalogues and committed generated projections. Check which fields are maintained versus generated before editing.</td></tr>
       <tr><td><code>docs/adr/</code>, <code>docs/ontology/odr/</code>, <code>docs/manual/</code></td><td>Architecture decisions, ontology decisions and generated reference content. Configured collections render selected documents; treat changes here as potential publication.</td></tr>

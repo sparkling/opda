@@ -9,7 +9,7 @@ import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
 import { MODELLING_JOURNEYS } from '../src/lib/modelling-navigation.ts';
 import { SEMANTIC_MODELLING_JOURNEYS } from '../src/lib/section-navigation-journeys.ts';
 import { operationalEmails } from '../src/data/marketing/operational-emails.mjs';
-import { HANDOVER_DOCUMENTS, HANDOVER_NAVIGATION_SECTION } from '../src/lib/handover-navigation.ts';
+import { HANDOVER_DOCUMENTS } from '../src/lib/handover-navigation.ts';
 import {
   SECTION_NAVIGATION,
   findNavigationPage,
@@ -39,12 +39,12 @@ const flattenGroup = (group) => [
 ];
 
 test('handover documents share a section, ancestor and sequential navigation', () => {
-  const routes = ['/handover', ...HANDOVER_DOCUMENTS.map(({url}) => url)];
+  const routes = ['/resources/handover', ...HANDOVER_DOCUMENTS.map(({url}) => url)];
   assert.equal(new Set(routes).size, 8);
   for (const [index, route] of routes.entries()) {
-    assert.equal(getNavigationSection(route), HANDOVER_NAVIGATION_SECTION);
-    assert.equal(findNavigationPage(route).group.url, '/handover');
-    assert.equal(getNavigationPrevNext(route).prev?.url, routes[index - 1]);
+    assert.equal(getNavigationSection(route), SECTION_NAVIGATION.resources);
+    assert.equal(findNavigationPage(route).group.url, '/resources/handover');
+    if (index > 0) assert.equal(getNavigationPrevNext(route).prev?.url, routes[index - 1]);
     assert.equal(getNavigationPrevNext(route).next?.url, routes[index + 1]);
   }
   assert.equal(getNavigationSection('/handover-unrelated'), null);
@@ -98,7 +98,7 @@ test('the left section navigation implements all seven destinations from one reg
     'semantic-modelling': 1 + MODELLING_JOURNEYS.reduce((count, journey) => count + 1 + journey.children.length, 0),
     spdtf: 241,
     'working-groups': 39,
-    resources: 12,
+    resources: 20,
     marketing: 20 + operationalEmails.length,
   });
   const decisionDetail = /^\/modelling\/(?:adr|odr)\/[^/]+$/u;

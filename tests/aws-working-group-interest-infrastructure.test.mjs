@@ -11,7 +11,13 @@ test('public path function preserves index pages and resource downloads without 
   const handler = Function(`${source}\nreturn handler;`)();
   for (const [uri, expected] of [['/', '/index.html'], ['/programme', '/programme/index.html'],
     ['/programme/', '/programme/index.html'], ['/resources', '/resources/index.html'],
-    ['/resources/', '/resources/index.html'], ['/resources/model.ttl', '/model.ttl'],
+    ['/resources/', '/resources/index.html'],
+    ['/resources/handover', '/resources/handover/index.html'],
+    ['/resources/handover/', '/resources/handover/index.html'],
+    ['/resources/handover/architecture', '/resources/handover/architecture/index.html'],
+    ['/resources/handover/architecture/', '/resources/handover/architecture/index.html'],
+    ['/resources/handover/architecture/index.html', '/resources/handover/architecture/index.html'],
+    ['/resources/handover-other.pdf', '/handover-other.pdf'], ['/resources/model.ttl', '/model.ttl'],
     ['/ui/design-system.css', '/ui/design-system.css'], ['/_astro/a.js', '/_astro/a.js']]) {
     const request = { uri, method: 'GET', querystring: {} };
     assert.equal(handler({ request }).uri, expected);
@@ -54,7 +60,7 @@ test('the same-origin auth surface forwards cookies and query strings without ca
   const site = await read('config/aws/site-stack.yaml');
   assert.match(site, /Id: auth-session-api[\s\S]*OriginProtocolPolicy: https-only/u);
 
-  const behavior = site.match(/- PathPattern: '\/_auth\/\*'[\s\S]*?(?=\n\s*- PathPattern:|\n\s*CustomErrorResponses:)/u)?.[0];
+  const behavior = site.match(/- PathPattern: '\/_auth\/\*'[\s\S]*?(?=\n\s*- (?:\{ )?PathPattern:|\n\s*CustomErrorResponses:)/u)?.[0];
   assert.ok(behavior, 'auth session cache behavior exists');
   assert.match(behavior, /TargetOriginId: auth-session-api/u);
   // CloudFront's POST-capable method set is broad; the edge and HTTP API
@@ -129,12 +135,13 @@ test('public content uses only path rewriting; APIs enforce their own authorizat
   assert.match(gate, /Runtime: cloudfront-js-2\.0/u);
   const behaviors = site.match(/DefaultCacheBehavior:[\s\S]*?(?=\n\s{8}CustomErrorResponses:)/u)?.[0];
   assert.ok(behaviors);
-  assert.equal((behaviors.match(/TargetOriginId:/gu) ?? []).length, 7);
+  assert.equal((behaviors.match(/TargetOriginId:/gu) ?? []).length, 9);
   assert.doesNotMatch(behaviors, /LambdaFunctionAssociations|GateFunctionVersionArn/u);
-  assert.equal((behaviors.match(/FunctionARN: !GetAtt PublicPathFunction.FunctionARN/gu) ?? []).length, 3);
+  assert.equal((behaviors.match(/FunctionARN: !GetAtt PublicPathFunction.FunctionARN/gu) ?? []).length, 5);
   assert.equal((behaviors.match(/ResponseHeadersPolicyId: !Ref PrivateResponseHeaders/gu) ?? []).length, 3);
-  assert.equal((behaviors.match(/ResponseHeadersPolicyId: !Ref PublicResponseHeaders/gu) ?? []).length, 3);
+  assert.equal((behaviors.match(/ResponseHeadersPolicyId: !Ref PublicResponseHeaders/gu) ?? []).length, 5);
   assert.match(behaviors, /PathPattern: '\/resources\/'[\s\S]*?TargetOriginId: site-s3[\s\S]*?PathPattern: '\/resources\/\*'[\s\S]*?TargetOriginId: resources-s3/u);
+  assert.match(behaviors, /PathPattern: '\/resources\/handover'[\s\S]*?TargetOriginId: site-s3[\s\S]*?PathPattern: '\/resources\/handover\/\*'[\s\S]*?TargetOriginId: site-s3[\s\S]*?PathPattern: '\/resources\/\*'/u);
   const source = gate.match(/FunctionCode: \|\n([\s\S]*)$/u)?.[1]
     .split('\n').map((line) => line.replace(/^ {8}/u, '')).join('\n');
   assert.ok(source, 'barrier source is extractable');
@@ -160,7 +167,7 @@ test('the registration API configuration stays same-origin and cache-disabled be
   assert.match(site, /Type: AWS::CloudFormation::Stack[\s\S]*TemplateURL: working-group-interest-stack\.yaml/u);
   assert.match(site, /Id: working-group-interest-api[\s\S]*OriginProtocolPolicy: https-only/u);
 
-  const behavior = site.match(/- PathPattern: '\/api\/working-group-interest\*'[\s\S]*?(?=\n\s*- PathPattern:|\n\s*CustomErrorResponses:)/u)?.[0];
+  const behavior = site.match(/- PathPattern: '\/api\/working-group-interest\*'[\s\S]*?(?=\n\s*- (?:\{ )?PathPattern:|\n\s*CustomErrorResponses:)/u)?.[0];
   assert.ok(behavior, 'working-group API cache behavior exists');
   assert.match(behavior, /TargetOriginId: working-group-interest-api/u);
   assert.match(behavior, /4135ea2d-6df8-44a3-9df3-4b5a84be39ad/u);

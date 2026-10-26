@@ -51,7 +51,6 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
   governance: 'governance',
   council: 'governance',
   resources: 'resources',
-  handover: 'resources',
   marketing: 'marketing',
   resource: 'resources',
   library: 'resources',
