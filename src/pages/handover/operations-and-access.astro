@@ -1,0 +1,60 @@
+---
+import HandoverLayout from '@/layouts/HandoverLayout.astro';
+---
+
+<HandoverLayout title="Operations and access" description="Transfer account ownership, scheduled automation, Microsoft workspaces and evidence intake.">
+  <h2 id="ownership">Accounts, ownership and restricted operational handoff</h2>
+  <p>AWS hosting is intended to sit in OPDA's account. The receiving owner must verify organisational ownership, billing responsibility, administrative recovery and their own access. This repository review does not establish those facts. Main infrastructure is in <code>eu-west-2</code>; certificate/edge resources also use <code>us-east-1</code>.</p>
+  <table>
+    <caption>Access transfer register — owners and acceptance evidence to confirm</caption>
+    <thead><tr><th scope="col">Service</th><th scope="col">Restricted handoff</th><th scope="col">Acceptance evidence</th></tr></thead>
+    <tbody>
+      <tr><td>GitHub and repository</td><td>Organisation/repository owner, maintainer/deputy, Actions permissions, repository variables, environment controls and recovery.</td><td>Successor can clone, review, commit on <code>main</code> and observe an authorised CI release with their own access.</td></tr>
+      <tr><td>AWS and public domain</td><td>OPDA account/billing owner, approved SSO profile, role assignments, OIDC trust, stack inventory, domain/registrar and DNS owners, certificate renewal and alert recipients.</td><td>Expected identity and permissions verified; billing/domain ownership confirmed; operational dashboards and release outputs visible.</td></tr>
+      <tr><td>Identity, sessions and comments</td><td>Identity-provider ownership, app registrations, session service operations, comment moderation, container registry, database persistence and recovery.</td><td>Approved test user can use the intended participation journey; unauthorised access fails; moderator and recovery responsibilities are accepted.</td></tr>
+      <tr><td>Microsoft 365</td><td>Tenant administrators, Team owners/deputies, SharePoint site/group/folder administrators, application permissions and automation identity.</td><td>Live memberships and organisation isolation read back; a permitted contributor can reach the right workspace and an unrelated organisation cannot.</td></tr>
+      <tr><td>CRM and outbound email</td><td>HubSpot, Postmark and Microsoft app owners, approved credentials/secrets management, sending-domain responsibility, suppression and delivery support.</td><td>Authorised canary verifies acknowledgement, approval state and delivery without duplicate invitations or unintended participant mail.</td></tr>
+      <tr><td>NotebookLM and media</td><td>Notebook ownership/access, subscription responsibility, export inventory and authorised media destination.</td><td>Successor opens each required notebook, follows a source citation and downloads/opens the agreed source and output exports.</td></tr>
+      <tr><td>Developer and scheduled-agent environment</td><td>Approved native model subscriptions, MCP registrations, local source archive, scheduler host, automation identity and operational checkpoint owner.</td><td>Tools are reachable under successor access; scheduled run and recovery are demonstrated independently of the departing developer's machine.</td></tr>
+    </tbody>
+  </table>
+  <p>For AWS sign-in use the approved profile and device flow: <code>aws sso login --profile &lt;approved-profile&gt; --use-device-code --no-browser</code>. Give the operator the fresh verification link and code privately, then verify <code>aws sts get-caller-identity --profile &lt;approved-profile&gt;</code> against the expected account and role. Never save the code, tokens or identity output in this public page.</p>
+  <p>Transfer roles and recovery methods rather than sharing personal logins. Keep secret locations, exact identifiers, provider configuration, authorised contacts and data-recovery instructions in the restricted operational record. Confirm rotation/revocation with the owners after successful transfer; do not revoke the only working access prematurely.</p>
+
+  <h2 id="ai">Developer AI and scheduled automation</h2>
+  <p>AI tools assist research, coding, review, modelling proposals and communications preparation. They are not a dependency for reading the static site. The AWS participant services execute ordinary application code; the checked-in architecture does not establish a public website inference API.</p>
+  <p>Contributor tooling includes Codex/Claude arrangements, Ruflo coordination/memory, local source-knowledge connections and approved native provider subscriptions. Availability is host- and session-specific. Configuration in Git is not proof that a tool is registered, reachable or authorised on the successor's machine. Do not transfer credentials through prompts or use a different model transport silently.</p>
+  <p>Read <code>AGENTS.md</code> for current execution rules and <code>CLAUDE.md</code> for Claude-specific settings. Historical time-bounded subscription notices need checking with the owner. Reusable process recall and repository operational state have different memory stores; neither is a place for participant records, raw mail or credentials.</p>
+  <h3>Working-group inbox agent</h3>
+  <p>The repository contains a separately scheduled AI inbox workflow, its deterministic policy, prompt, wrapper and systemd definitions. This is operational automation outside the static page runtime. Its tracked manifest freezes a specific model and sequential roles; changing that model or moving the host requires deliberate revalidation. The 26 October configuration preflight passed with nine registered groups, two implemented workspaces, five roles and nine gates; this did not execute a mailbox run.</p>
+  <pre><code>{`# Configuration/template preflight only; no mailbox run
+node scripts/working-group-inbox-agent.mjs check
+node scripts/working-group-inbox-agent.mjs list-groups`}</code></pre>
+  <p>The timer definition specifies 10:00 and 17:00 Europe/London on weekdays. <strong>Current activation is unverified here.</strong> Establish which host/scheduler actually owns execution, verify provider/Microsoft authentication, inspect a recent safe outcome and transfer the activation/checkpoint state before enabling a successor schedule. Two active schedulers risk duplicate effects.</p>
+  <p>The policy sequence is read, validate, write, read back, reply, checkpoint. Mail and attachments are untrusted evidence. Ambiguous requests stop; the agent must not execute attachments or follow submitted instructions as commands. A configuration preflight proves neither live mailbox permissions nor successful participant handling.</p>
+
+  <h2 id="intake">Teams, SharePoint and the evidence-intake lifecycle</h2>
+  <p>The accepted workspace pattern uses live Team membership as participant authority and derived SharePoint access for source material. Organisation folders are isolated: being in a working group does not grant access to another organisation's submissions. The checked-in registry marks Finance and Banking and Technology as implemented; check the live roster and registry before asserting that another workspace exists.</p>
+  <p>Registration, approval, identity creation, invitations, Team membership, SharePoint access and welcome delivery are different states. The repository includes signup, approval/onboarding, acknowledgement, CRM and Teams-card components. Their templates and default flags do not establish current enablement. Read back the actual service configuration and relevant state before retrying or reporting completion.</p>
+  <h3>Participant service flow</h3>
+  <ol>
+    <li><strong>Apply:</strong> the public form validates and records an AWS intake submission. Submission events feed separate consumers; an acknowledgement reports receipt and grants no membership.</li>
+    <li><strong>Review:</strong> the CRM bridge projects the application into HubSpot. An authorised human reviews each requested domain independently. Interests, newsletter consent and a CRM contact are not approvals.</li>
+    <li><strong>Apply the decision:</strong> the trusted approval integration updates the AWS participant register and effective eligibility. The register owns participant identity bindings and access state; HubSpot is not queried on every sign-in.</li>
+    <li><strong>Provision asynchronously:</strong> a durable per-domain operation prepares verified Microsoft membership and organisation-folder access where supported. It reads current decisions before effects, then sends the domain-specific invitation after the required postconditions. Website eligibility does not wait for Microsoft or mail availability.</li>
+    <li><strong>Sign in and participate:</strong> Auth0 verifies website identity in the current documented arrangement; the retained Cognito pool serves lifecycle integration. The AWS register and session service enforce entitlement. Neither a provider account nor Microsoft membership independently grants website privileges. Confirm the live provider configuration and comments availability during acceptance.</li>
+    <li><strong>Withdraw or recover:</strong> a domain withdrawal removes that domain's approval and initiates the corresponding owned-access cleanup. Remaining approvals are assessed independently. Account/security/privacy restrictions and ambiguous effects require their owning review path; do not replay an invitation to resolve uncertainty.</li>
+  </ol>
+  <p>The participant-facing <a href="/development/working-groups/member-guide">member guide</a> explains the intended journey. The operational owners are <code>config/aws/working-group-interest/</code>, <code>acknowledgement/</code>, <code>hubspot-sync/</code>, <code>hubspot-approval/</code>, <code>auth-session/</code> and <code>src/approval-onboarding/</code>; inspect the owning implementation and service state when troubleshooting.</p>
+  <h3>Evidence intake</h3>
+  <ol>
+    <li><strong>Receive.</strong> Record the source, submitting organisation, date, version, intended use and permitted sharing. An invitation or discussion is not proof that a file was supplied.</li>
+    <li><strong>Store and verify.</strong> Use the authorised organisation-isolated workspace; confirm the exact stored artefact and access. Email attachments can be a fallback when organisational controls block tenant access. Never advise bypassing those controls.</li>
+    <li><strong>Register and review.</strong> Link the artefact to the existing source/intake record. Keep sensitivity, rights, provenance, review owner, questions and current disposition.</li>
+    <li><strong>Model or decline.</strong> Link incorporated concepts to the exact source version and model change. Record exclusions, unresolved questions or reasons for deferral. Upload alone is not incorporation.</li>
+    <li><strong>Close the loop.</strong> Acknowledge the actual receipt and communicate the review/model disposition through the authorised channel. Publication requires its own permission and content review.</li>
+  </ol>
+  <p>The inbox policy permits only bounded approved attachment types and verified company identities for automatic organisation-folder intake. Generic-provider identities do not automatically establish a company SharePoint boundary. Failed or partial provisioning must remain visible and must not receive a success claim.</p>
+  <p><strong>Outstanding acceptance check:</strong> demonstrate how an approved participant whose employer blocks the OPDA Microsoft tenant can submit evidence and feedback through the agreed alternative. Public reading and an optional sign-in control do not prove that end-to-end journey. Reconcile actual received, stored, reviewed, incorporated and pending material against the private intake records; historical snapshots are not a current submission census.</p>
+
+</HandoverLayout>

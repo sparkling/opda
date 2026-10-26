@@ -1,0 +1,27 @@
+---
+import HandoverLayout from '@/layouts/HandoverLayout.astro';
+---
+
+<HandoverLayout title="Content and NotebookLM" description="Maintain resources, marketing materials, notebooks, generated media and source provenance.">
+  <h2 id="content">Maintain public content, marketing and NotebookLM</h2>
+  <h3>Website and source evidence</h3>
+  <p>Use the shared layouts, navigation/status owners, tokens and components. Preserve stable identifiers and redirects; keep generated references downstream of their maintained input. New documents are not automatically approved for the public site. Inspect content-collection rules and the actual built output when changing ADRs, ODRs, manuals or source integrations.</p>
+  <p>The local evidence archive needs an explicit transfer inventory because it is largely gitignored. Preserve original files, source URLs, capture/version dates, rights, checksums and associated metadata. Keep superseded files as archives. Resource manifests and production resource-bucket contents have separate generation/publication steps; verify both. No top-level repository licence grants unrestricted reuse of all imported material.</p>
+  <h3>Marketing and illustrations</h3>
+  <p>Maintained marketing data and scripts produce portable rich HTML, images and copy, available through the <a href="/marketing">marketing workspace</a>. Run <code>make marketing-build</code> after an intentional source change, then <code>make marketing-check</code>. The build also checks generated marketing drift. Review the rendered email/page and intended destination before sending or publishing.</p>
+  <p>Invitations and primary marketing use designed rich HTML; plain text is an accessible/transport fallback. Social platforms need compatible image/video assets and post copy. Each illustration placement has distinct relevant artwork, shared brand/accessibility treatment and archived superseded assets; light/dark renditions belong to one placement. Keep rights and asset manifests with the files.</p>
+  <h3>NotebookLM source and media workflow</h3>
+  <p>ADR-0081 defines six purpose-specific core notebooks: Programme, policy and history; Standards governance; Semantic modelling method; Working-group participant guide; Property Pack ontology; and PDTF lineage and historical evidence. A separate private aggregate supports discovery. The notebooks are derived production/research workspaces; repository sources retain their authority.</p>
+  <p>Configurations, shared facts, source manifests, prompt dependencies and append-only receipts live under <code>docs/notebooklm/</code>. Historical records describe machine-complete preparation, with human authority/fitness review still pending. <strong>The current local integrity check on 26 October failed:</strong> <code>programme-policy-history: upload hash differs for src-468fc63ce6752d69</code>. Those historical receipts therefore do not establish that today's repository sources match the uploaded notebook content.</p>
+  <p>Before relying on or regenerating that portfolio, identify the changed source and intended version, inspect its prepared projection and upload receipt, refresh the affected approved sources and dependent outputs through the governed workflow, then rerun the verifier. Preserve the old evidence; do not edit a receipt merely to make its checksum pass. NotebookLM repair and current remote-state verification remain outstanding handover actions. Private draft-generation authority does not establish permission to share notebooks, publish media or place it on the homepage.</p>
+  <pre><code>{`# Local integrity check; does not access or prove live notebook ownership
+node scripts/verify-notebooklm-execution.mjs --require-all-prompts
+
+# Inspect the builder/runner interfaces before an authorised refresh
+node scripts/build-notebooklm-prepared-sources.mjs --help
+node scripts/run-notebooklm-preparation.mjs --help`}</code></pre>
+  <p>For a refresh, first review the selected sources and shared facts, then rebuild the one-to-one prepared inputs and checksums using the documented local site address. Ingest only the approved manifest into the correct authorised account/profile, run prompts in dependency order and retain versioned receipts. The execution command writes to remote notebooks; it is not an offline verification command. Do not reuse a departing operator's personal profile by assumption.</p>
+  <p>Keep source authority, proposed status, dates, contradictions and missing evidence visible in prompts and outputs. Review final audio, video, slides or infographics for factual accuracy, pronunciation, captions/accessibility, permissions and prohibited authority claims before publication. A citation count or generated review is not human approval.</p>
+  <p><strong>Notebook handoff deliverables:</strong> an inventory of the notebooks and their owners/access; original source files and manifests; prepared-source and prompt/receipt records; generated notes and media exports; review/approval status; and an agreed authorised storage location. Open representative files and follow their provenance under successor access. Confirm current product-supported ownership/sharing options before choosing transfer or recreation; do not assume every account type permits ownership transfer. Preserve the existing workspace until the receiving owner verifies continuity.</p>
+
+</HandoverLayout>

@@ -1,0 +1,24 @@
+---
+import Layout from '@/layouts/Layout.astro';
+interface Props { title: string; description: string; overview?: boolean; }
+const { title, description, overview = false } = Astro.props;
+---
+<Layout title={title} description={description} hideComments mainClass="handover">
+  {!overview && <>
+    <h1>{title}</h1>
+    <p class="lead">{description}</p>
+    <p><strong>Repository review:</strong> <time datetime="2026-10-26">26 October 2026</time>. Public operational reference; acceptance remains to be recorded by the receiving owner.</p>
+  </>}
+  <slot />
+</Layout>
+
+<style>
+  :global(.handover) pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+  @media print {
+    :global(.handover) { color: #000; background: #fff; }
+    :global(.handover) :is(h1, h2, h3, p, li, td, th, caption, code) { color: #000; }
+    :global(.handover) :is(table, pre) { max-width: 100%; font-size: 9pt; }
+    :global(.handover) tr { break-inside: avoid; }
+    :global(.handover) thead { display: table-header-group; }
+  }
+</style>

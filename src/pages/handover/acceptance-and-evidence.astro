@@ -1,0 +1,43 @@
+---
+import HandoverLayout from '@/layouts/HandoverLayout.astro';
+---
+
+<HandoverLayout title="Acceptance and evidence" description="Record acceptance, assign open actions and retain the evidence behind this handover.">
+  <h2 id="acceptance">Acceptance checklist and open decisions</h2>
+  <p>Use this as an agenda for the outgoing and receiving owners. Record names, dates, evidence links and dispositions in the restricted transfer record. These are checks to complete, not statements that the transfer has happened.</p>
+  <table>
+    <caption>Handover acceptance evidence</caption>
+    <thead><tr><th scope="col">Area</th><th scope="col">Required evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Ownership and access</td><td>Named accountable owners/deputies; approved successor access; account, billing, domain and recovery ownership verified; restricted configuration inventory delivered.</td></tr>
+      <tr><td>Reproducible website</td><td>Successor runs locked install, tests and build from the identified commit and explains generated outputs and archive dependencies.</td></tr>
+      <tr><td>Reproducible model</td><td>Correct Python/Java/upstream inputs available; affected ontology/candidate gates pass; maintained sources and generated projections identified.</td></tr>
+      <tr><td>Release and recovery</td><td>Supervised CI release, matching live source commit, changed-route/asset check, scoped rollback exercise and an agreed incident/recovery plan.</td></tr>
+      <tr><td>Participant services</td><td>Current enablement and service ownership read back; canary signup/approval/acknowledgement/onboarding and permitted comments tested without unintended participant effects.</td></tr>
+      <tr><td>Operations and data</td><td>Alert delivery demonstrated; logs and queue ownership confirmed; retention and backup coverage verified; isolated restore evidence and recovery objectives accepted.</td></tr>
+      <tr><td>Microsoft and intake</td><td>Team/SharePoint authority and isolation verified; actual contribution states reconciled; alternative route for blocked participants demonstrated.</td></tr>
+      <tr><td>Scheduled automation</td><td>Actual host and schedule identified; one active owner; provider/Microsoft access verified; checkpoints and a recent audited outcome handed over.</td></tr>
+      <tr><td>Content and NotebookLM</td><td>Source/archive/asset and export inventories complete; notebooks usable by successor; human review and publication status retained.</td></tr>
+      <tr><td>Formal acceptance</td><td>Receiving owner records accepted scope, date, evidence, remaining risks, action owners and review dates before outgoing access is retired.</td></tr>
+    </tbody>
+  </table>
+  <p>The remaining governance work includes the exact Property Pack review/version, source-count reconciliation, named decision owner, reviewer dispositions and recorded determination. Wider SPDTF lifecycle/ratification policy remains proposed. Do not report model generation, schema comparisons, pull-request/module reviews or a handover meeting as formal approval.</p>
+  <p>The remaining operational work is to verify current account access, live integration enablement, deployment/recovery evidence, alert recipients, backup restoration, scheduler activation and notebook continuity. No current live census of private submissions, provider subscriptions or account ownership is asserted by this page. Assign an owner and next action to each unresolved item instead of silently treating it as complete.</p>
+
+  <h2 id="evidence">Source map and maintenance of this handover</h2>
+  <p>This page was checked against the repository sources below. Paths identify what an authorised successor should inspect in the checkout; private operational contents and correspondence are deliberately not reproduced. Recheck the implementation and dated evidence after material changes.</p>
+  <p>Open the <a href="https://github.com/sparkling/opda">repository</a>, <a href="https://github.com/sparkling/opda/blob/main/README.md">setup and architecture README</a>, <a href="https://github.com/sparkling/opda/blob/main/Makefile">command catalogue</a>, <a href="https://github.com/sparkling/opda/blob/main/.github/workflows/site-release.yml">release workflow</a>, <a href="https://github.com/sparkling/opda/blob/main/docs/adr/ADR-0084-integrate-hubspot-with-signup-and-cognito.md">participant integration and recovery decision</a>, <a href="https://github.com/sparkling/opda/blob/main/docs/adr/ADR-0085-approval-driven-working-group-onboarding-and-invitations.md">onboarding decision</a> and <a href="https://github.com/sparkling/opda/blob/main/docs/adr/ADR-0081-organise-opda-evidence-into-purpose-specific-notebooklm-portfolios.md">NotebookLM maintenance decision</a>. These links follow <code>main</code>; use the accepted release commit when investigating historical behaviour.</p>
+  <table>
+    <caption>Sources for the procedures and limitations above</caption>
+    <thead><tr><th scope="col">Subject</th><th scope="col">Repository source</th></tr></thead>
+    <tbody>
+      <tr><td>Contributor rules, commands and architecture</td><td><code>AGENTS.md</code>, <code>README.md</code>, <code>Makefile</code>, <code>package.json</code>, <code>astro.config.mjs</code>, <code>src/content.config.ts</code>, <code>DESIGN.md</code>.</td></tr>
+      <tr><td>Release and assurance</td><td><code>.github/workflows/deploy-aws.yml</code>, <code>site-release.yml</code>, <code>site-assurance.yml</code>, <code>infra.yml</code>; <code>scripts/classify-ci-changes.mjs</code>, <code>scripts/site-cache-release.mjs</code>, <code>scripts/write-release-manifest.mjs</code>.</td></tr>
+      <tr><td>AWS and recovery boundaries</td><td><code>config/aws/site-stack.yaml</code>, <code>operations-stack.yaml</code>, <code>participant-identity-stack.yaml</code>, <code>working-group-interest-stack.yaml</code>, <code>comments-stack.yaml</code>; ADR-0038, ADR-0040 and ADR-0079.</td></tr>
+      <tr><td>Semantic authority and generators</td><td>ADR-0063, ADR-0065, ADR-0066, ADR-0067, ADR-0068, ADR-0075, ADR-0077; <code>tools/opda-gen/</code>, <code>src/data/property-pack/</code>, <code>scripts/property_pack_catalogue.py</code>, <code>scripts/property_pack_candidate.py</code>.</td></tr>
+      <tr><td>Workspaces, intake and scheduled agent</td><td>ADR-0070, ADR-0072, ADR-0085, ADR-0087, ADR-0088; <code>src/agents/working-group-inbox/domain.mjs</code>, <code>config/agents/working-group-inbox/</code>, <code>scripts/working-group-inbox-agent.mjs</code>, <code>src/approval-onboarding/</code>.</td></tr>
+      <tr><td>Evidence, marketing and NotebookLM</td><td><code>source/README.md</code>, <code>src/data/resources-manifest.json</code>, <code>scripts/publish-resources.sh</code>, <code>scripts/marketing/</code>; ADR-0081; <code>docs/notebooklm/</code>, preparation/execution scripts and <code>scripts/verify-notebooklm-execution.mjs</code>.</td></tr>
+    </tbody>
+  </table>
+  <p>Maintain this route alongside changes to commands, deployment, ownership boundaries or toolchains. Update the review date only after checking the affected sources. Keep operational secrets in their authorised owner systems and record acceptance separately from this public reference. The shared site print stylesheet supports a printable copy; a saved copy must retain its review date and status.</p>
+</HandoverLayout>

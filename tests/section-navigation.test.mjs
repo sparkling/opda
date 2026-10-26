@@ -9,6 +9,7 @@ import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
 import { MODELLING_JOURNEYS } from '../src/lib/modelling-navigation.ts';
 import { SEMANTIC_MODELLING_JOURNEYS } from '../src/lib/section-navigation-journeys.ts';
 import { operationalEmails } from '../src/data/marketing/operational-emails.mjs';
+import { HANDOVER_DOCUMENTS, HANDOVER_NAVIGATION_SECTION } from '../src/lib/handover-navigation.ts';
 import {
   SECTION_NAVIGATION,
   findNavigationPage,
@@ -36,6 +37,18 @@ const flattenGroup = (group) => [
   { url: group.url, title: group.heading },
   ...flattenItems(group.items),
 ];
+
+test('handover documents share a section, ancestor and sequential navigation', () => {
+  const routes = ['/handover', ...HANDOVER_DOCUMENTS.map(({url}) => url)];
+  assert.equal(new Set(routes).size, 8);
+  for (const [index, route] of routes.entries()) {
+    assert.equal(getNavigationSection(route), HANDOVER_NAVIGATION_SECTION);
+    assert.equal(findNavigationPage(route).group.url, '/handover');
+    assert.equal(getNavigationPrevNext(route).prev?.url, routes[index - 1]);
+    assert.equal(getNavigationPrevNext(route).next?.url, routes[index + 1]);
+  }
+  assert.equal(getNavigationSection('/handover-unrelated'), null);
+});
 
 test('category headings own canonical landing pages without duplicate landing children', () => {
   assert.equal(validateSectionNavigation(), true);

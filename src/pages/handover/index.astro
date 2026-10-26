@@ -1,0 +1,59 @@
+---
+import HandoverLayout from '@/layouts/HandoverLayout.astro';
+import Callout from '@/components/Callout.astro';
+---
+
+<HandoverLayout title="Maintainer handover" description="The operational handover for the OPDA knowledge base, model toolchain, working-group services and supporting content." overview>
+  <h1>Maintainer handover</h1>
+  <p class="lead">A practical guide to taking responsibility for the OPDA knowledge base, its semantic-model toolchain and the services around it. Start with access and a reproducible build, then complete the service and ownership checks before accepting the handover.</p>
+  <p><strong>Repository review:</strong> <time datetime="2026-10-26">26 October 2026</time>. <strong>Document status:</strong> public operational reference; acceptance remains to be recorded by the receiving owner.</p>
+
+  <Callout title="What this handover establishes" tone="important">
+    <p>The commands and architecture below are grounded in the checked-in implementation. A template, passing test or historic receipt does not prove that an account is accessible, an automation is running or an integration is enabled today. Those checks are listed explicitly. This page does not certify a completed transfer or approve a standard.</p>
+    <p>Account identifiers, tenant locations, private submissions, personal contact details, credentials and recovery secrets belong in an authorised, restricted handoff. Obtain access through OPDA's owners; do not place those details in this public page or Git history.</p>
+  </Callout>
+
+  <h2 id="documents">Handover documents</h2>
+  <h3><a href="/handover/getting-started">Getting started</a></h3>
+  <p>Establish ownership, understand the standards boundaries and set up a reproducible local environment.</p>
+  <ul>
+    <li id="start"><a href="/handover/getting-started#start">First day: establish a safe baseline</a></li>
+    <li id="scope"><a href="/handover/getting-started#scope">Understand the four bodies of work</a></li>
+    <li id="setup"><a href="/handover/getting-started#setup">Local setup and prerequisites</a></li>
+  </ul>
+  <h3><a href="/handover/architecture">Architecture and repository</a></h3>
+  <p>Understand the public website, model tooling, participant services and maintained source locations.</p>
+  <ul>
+    <li id="architecture"><a href="/handover/architecture#architecture">Architecture and repository map</a></li>
+  </ul>
+  <h3><a href="/handover/models-and-validation">Models and validation</a></h3>
+  <p>Change models at their maintained source and select the right validation evidence.</p>
+  <ul>
+    <li id="model-workflow"><a href="/handover/models-and-validation#model-workflow">Change models at their maintained source</a></li>
+    <li id="validation"><a href="/handover/models-and-validation#validation">Choose and preserve the right validation evidence</a></li>
+  </ul>
+  <h3><a href="/handover/release-and-recovery">Release and recovery</a></h3>
+  <p>Publish through CI, verify the live release and respond to operational incidents.</p>
+  <ul>
+    <li id="release"><a href="/handover/release-and-recovery#release">Release through CI and verify the result</a></li>
+    <li id="recovery"><a href="/handover/release-and-recovery#recovery">Incident triage and recovery</a></li>
+  </ul>
+  <h3><a href="/handover/operations-and-access">Operations and access</a></h3>
+  <p>Transfer account ownership, scheduled automation, Microsoft workspaces and evidence intake.</p>
+  <ul>
+    <li id="ownership"><a href="/handover/operations-and-access#ownership">Accounts, ownership and restricted operational handoff</a></li>
+    <li id="ai"><a href="/handover/operations-and-access#ai">Developer AI and scheduled automation</a></li>
+    <li id="intake"><a href="/handover/operations-and-access#intake">Teams, SharePoint and the evidence-intake lifecycle</a></li>
+  </ul>
+  <h3><a href="/handover/content-and-notebooklm">Content and NotebookLM</a></h3>
+  <p>Maintain resources, marketing materials, notebooks, generated media and source provenance.</p>
+  <ul>
+    <li id="content"><a href="/handover/content-and-notebooklm#content">Maintain public content, marketing and NotebookLM</a></li>
+  </ul>
+  <h3><a href="/handover/acceptance-and-evidence">Acceptance and evidence</a></h3>
+  <p>Record acceptance, assign open actions and retain the evidence behind this handover.</p>
+  <ul>
+    <li id="acceptance"><a href="/handover/acceptance-and-evidence#acceptance">Acceptance checklist and open decisions</a></li>
+    <li id="evidence"><a href="/handover/acceptance-and-evidence#evidence">Source map and maintenance of this handover</a></li>
+  </ul>
+</HandoverLayout>

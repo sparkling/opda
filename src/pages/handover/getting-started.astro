@@ -1,0 +1,52 @@
+---
+import HandoverLayout from '@/layouts/HandoverLayout.astro';
+---
+
+<HandoverLayout title="Getting started" description="Establish ownership, understand the standards boundaries and set up a reproducible local environment.">
+  <h2 id="start">First day: establish a safe baseline</h2>
+  <ol>
+    <li><strong>Identify the receiving owners.</strong> Agree who owns the programme, standards decisions, website, AWS operations, Microsoft workspaces, participant data, communications and NotebookLM. Record a deputy and escalation route privately. A repository maintainer does not automatically inherit each of these authorities.</li>
+    <li><strong>Receive the repository and source archive.</strong> Confirm read/write access to the correct GitHub repository and its Actions settings. Work in the existing <code>main</code> checkout. Run <code>git status --short</code> and <code>git log -5 --oneline</code>; preserve other people's work. Record the starting commit and the currently deployed release identity.</li>
+    <li><strong>Read the contributor contract.</strong> Begin with <code>AGENTS.md</code>, <code>README.md</code>, <code>DESIGN.md</code>, <code>Makefile</code> and the relevant accepted ADRs. Some old guidance describes earlier hosting or time-limited executor arrangements; compare it with current code and record conflicts before relying on it.</li>
+    <li><strong>Build from the locked dependencies.</strong> Follow the <a href="/handover/getting-started#setup">local setup instructions</a>, then run <code>make test</code> and <code>make build</code>. Keep the results and inspect <code>git status --short</code> again for generated changes. A site build requires neither AWS credentials nor a production database.</li>
+    <li><strong>Inspect the public experience.</strong> Check the six main destinations, Property Pack pages, search and resource downloads. Use the approved Chrome connection and existing OPDA profile for local browser work. Reading is public; optional member sign-in serves participation features.</li>
+    <li><strong>Complete a supervised release and recovery exercise.</strong> Use a small authorised change, observe the CI gates and deployment, verify the published commit, then demonstrate the recovery procedure in a controlled setting. Agree an incident contact and confirm an operational alert actually reaches its recipient.</li>
+  </ol>
+  <p>The transfer is ready for acceptance when a successor can repeat these steps with their own approved access and can explain the remaining open items. The final checklist is in <a href="/handover/acceptance-and-evidence#acceptance">the acceptance checklist</a>.</p>
+
+  <h2 id="scope">Understand the four bodies of work</h2>
+  <p>The site explains work with different origins and authority. Keep these distinctions in pages, model outputs, presentations and generated media.</p>
+  <table>
+    <caption>Model and standards authority boundaries</caption>
+    <thead><tr><th scope="col">Body of work</th><th scope="col">Role</th><th scope="col">Authority boundary</th></tr></thead>
+    <tbody>
+      <tr><td>PDTF schema</td><td>Existing Digital Property Pack JSON Schema, overlays, dictionary, glossary and supporting implementation material.</td><td>Attributed third-party technical input. It does not determine SPDTF business meaning or demonstrate working-group agreement.</td></tr>
+      <tr><td>Schema-derived ontology</td><td>The separate draft linked-data extraction from that schema corpus, with RDF/OWL, SKOS, SHACL, mappings and provenance. Stable technical identifiers retain <code>/pdtf/**</code>.</td><td>A technical derivation with its own evidence and validation. It is neither the PDTF schema itself nor the SPDTF standard.</td></tr>
+      <tr><td>SPDTF</td><td>The Smart Property Data Trust Framework being developed collaboratively across domain practitioners and stakeholders.</td><td>In development and non-normative. Human groups determine meaning through recorded governance; publication does not confer statutory or standards authority.</td></tr>
+      <tr><td>Property Pack ontology candidate</td><td>An independent, greenfield delivery intended as a future SPDTF component, covering a closed source scope of 451 required items.</td><td>Machine-proposed and non-normative. Source items are coverage requirements, not 451 predetermined RDF properties. Technical determination and subsequent domain review remain separate authority stages.</td></tr>
+    </tbody>
+  </table>
+  <p>Accepted ADR-0063 establishes domain-led bounded contexts; ADR-0066 and ADR-0067 establish the Property Pack scope and architecture; ADR-0075 establishes its accelerated component role; ADR-0077 establishes the PDTF input boundary. ADR-0065's AI-assisted workflow and ADR-0068's wider lifecycle and ratification policy remain <strong>proposed</strong>. Do not turn their suggested process into an adopted rule through paraphrase.</p>
+  <p>Use <a href="/programme">Programme</a> for purpose, <a href="/governance">Governance</a> for authority, <a href="/semantic-modelling">Modelling</a> for method, <a href="/development">Development</a> for drafts and inputs, <a href="/development/working-groups">Groups</a> for participation and <a href="/resources">Resources</a> for evidence. The separate association website and this knowledge base have different publishing responsibilities.</p>
+
+  <h2 id="setup">Local setup and prerequisites</h2>
+  <p>Use Node.js 22 to match CI, Corepack and the <code>pnpm@11.17.0</code> version pinned in <code>package.json</code>. For ontology work, add Python <strong>3.11</strong> and Java 17 or newer; CI uses Java 21. Docker is only needed for optional Skosmos. Marketing asset regeneration requires local <code>ffmpeg</code>.</p>
+  <pre><code>{`# In the repository root, on main
+corepack enable
+make install
+make dev
+
+# Repeatable static-site checks
+make test
+make build`}</code></pre>
+  <p><code>make install</code> uses the frozen pnpm lockfile. <code>make dev</code> selects a free loopback port from 4330–4339 and reuses an existing project server. Use the exact address it prints. Do not run competing dev processes against the shared Vite cache. <code>make preview</code> builds and serves the production output.</p>
+  <pre><code>{`# Additional setup for opda-gen
+python3.11 -m venv tools/opda-gen/.venv
+make ontology-install
+
+# Model-query development; Ctrl-C stops the owned services
+make serve-data`}</code></pre>
+  <p><code>make serve-data</code> starts Fuseki on port 3031 and the optional local API on port 3002. Jena distributions are downloaded, checksum-verified and cached when required. Some full ontology gates need the upstream schema archive at <code>source/03-standards/schemas/</code>; obtain the revision pinned by the release workflow rather than an arbitrary latest checkout.</p>
+  <p>The development server exposes selected local evidence files for the resource viewer. The production build does not copy the whole archive. A resource that works locally is therefore not proof that its approved production download exists.</p>
+
+</HandoverLayout>

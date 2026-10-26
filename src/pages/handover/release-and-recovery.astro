@@ -1,0 +1,44 @@
+---
+import HandoverLayout from '@/layouts/HandoverLayout.astro';
+import Callout from '@/components/Callout.astro';
+---
+
+<HandoverLayout title="Release and recovery" description="Publish through CI, verify the live release and respond to operational incidents.">
+  <h2 id="release">Release through CI and verify the result</h2>
+  <ol>
+    <li><strong>Prepare a scoped change on main.</strong> Read before editing, preserve unrelated work, stage only the requested slice and use a meaningful conventional commit. Check that generated files and publication boundaries match the intended change.</li>
+    <li><strong>Run local checks.</strong> Complete the <a href="/handover/models-and-validation#validation">relevant validation checks</a> and inspect the final diff. Repository working notes, confidential evidence and exploratory reports must not become public routes incidentally.</li>
+    <li><strong>Push under the applicable release authority.</strong> <code>make deploy</code> pushes <code>main</code>; the AWS caller workflow selects the validation lanes. It does not upload the local <code>dist/</code>.</li>
+    <li><strong>Observe the whole release.</strong> Follow <code>.github/workflows/deploy-aws.yml</code> and <code>site-release.yml</code>. Required contracts and the release candidate must both succeed before the exact validated artifact can deploy.</li>
+    <li><strong>Check the live identity and behaviour.</strong> Read the published <code>/release.json</code> and compare its <code>sourceCommit</code> with the intended commit. Check the changed page, critical navigation, dependent assets and any affected service. Record the release/run identity and the observed result.</li>
+  </ol>
+  <p>The deployment uses GitHub OIDC to assume the approved AWS role. It publishes content-addressed assets first, then changed mutable objects and targeted CloudFront invalidations. Old immutable assets remain available to already-open pages. Do not assign immutable cache policy to HTML, manually copy a different build over the release, or delete the prior assets as routine cleanup.</p>
+  <p>Infrastructure changes have a separate <code>infra.yml</code> pipeline. Its ordered CloudFormation deployments and runtime packaging are part of the implementation. Bootstrap resources are deliberately outside that pipeline. A coupled infrastructure/site change needs the documented order and checks in both workflows.</p>
+  <Callout title="Publication and emergency boundaries" tone="caution">
+    <p><code>make publish-resources</code> is a separate, consequential publication of the local source archive to its resource bucket. Confirm the exact files, permissions and publication authority before using it. Never use it merely to repair an unexamined link.</p>
+    <p><strong>Use <code>make deploy</code>, not <code>npm run deploy</code> or <code>./deploy.sh</code>.</strong> The latter still invoke a legacy script that stages the entire working tree, can rewrite the remote and deploys to retired Cloudflare hosting. <code>make deploy-manual</code> also reaches that script. These names are not interchangeable.</p>
+    <p>A separate AWS break-glass workflow bypasses normal release gates. It needs an explicitly authorised incident decision and follow-up validation; it is not the routine release procedure.</p>
+  </Callout>
+
+  <h2 id="recovery">Incident triage and recovery</h2>
+  <p>First distinguish a static-site problem from a participant-service incident or a local tool failure. Capture the release commit, affected feature, start time and non-sensitive error evidence. Assign an incident owner. Preserve participant data and previous immutable assets; a redeploy of HTML cannot restore a stateful service's data.</p>
+  <table>
+    <caption>Recovery paths and their limits</caption>
+    <thead><tr><th scope="col">Symptom</th><th scope="col">First checks</th><th scope="col">Recovery boundary</th></tr></thead>
+    <tbody>
+      <tr><td>Release failed before deployment</td><td>Read the failing job and retained failure evidence. Confirm whether deployment ran and compare the live release identity.</td><td>Fix the failure and rerun the normal pipeline. Do not assume a failed build changed production.</td></tr>
+      <tr><td>Bad page or client behaviour after release</td><td>Compare live and intended commits, changed routes, asset responses and cache evidence.</td><td>Revert the specific faulty change on <code>main</code>, preserving later accepted work, then validate and release through CI. Verify the resulting live commit and behaviour.</td></tr>
+      <tr><td>Local dev or model query fails</td><td>Check the owned server, selected port, Node/pnpm, Java/Python, upstream input revision and tool output.</td><td>Restart only the owned process or rebuild the affected projection. Do not start another server against shared state or change production to fix a local issue.</td></tr>
+      <tr><td>Signup, approval, acknowledgement or onboarding fails</td><td>Check the corresponding function, queue/dead-letter state, logs, provider health and enablement configuration with authorised access.</td><td>Use the owning service's idempotent retry/review path. Verify each real postcondition before resending messages or declaring provisioning complete.</td></tr>
+      <tr><td>Comments unavailable or data recovery needed</td><td>Check gateway/session services, the Artalk task and persistence health.</td><td>Preserve the SQLite/Litestream persistence model and single-writer invariant. Restore only under an agreed, tested data-recovery plan.</td></tr>
+      <tr><td>Infrastructure or identity access failure</td><td>Check the last infrastructure run, CloudFormation events, owner access and the relevant provider integration.</td><td>Use the authorised infrastructure owner. Do not delete/recreate stacks, alter trust or rotate shared credentials as speculative troubleshooting.</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Rollback implementation limit:</strong> there is no general one-command production/data rollback established by this handover. The normal site recovery is a reviewed forward commit or scoped revert followed by the same CI release. Site artifacts currently have short retention, so do not assume an old workflow artifact remains downloadable. A revert that affects infrastructure, stored data or third-party side effects needs a separate recovery decision.</p>
+  <p><strong>Backup evidence:</strong> checked-in templates enable point-in-time recovery on key registration/participant stores and versioning on relevant persistence buckets. A retained migration-evidence bucket is explicitly not an automated backup service. Confirm live settings, retention, recovery-point/recovery-time objectives and a successful isolated restore with the operator. Repository code and template declarations are not restore-test evidence.</p>
+  <p><strong>Alert delivery:</strong> the operations stack wires an SNS alarm topic; email subscriptions must be confirmed. An existing topic or configured alarm does not prove somebody receives notifications. Transfer the recipient ownership and demonstrate delivery, including the agreed Teams route where used.</p>
+  <h3>Participant data, retention and queue replay</h3>
+  <p>Agree who receives privacy requests and owns retention, expiry, withdrawals, erasure and provider suppression. Check the actual maintenance schedule and outcomes; documented policy is not evidence that a daily sweep is active. Participant approval, email preference, operational access and a marketing unsubscribe have distinct effects and must not be substituted for one another.</p>
+  <p>Inspect failed consumer events and their live source state before a bounded replay. The worker must recheck approval, expiry, deletion and suppression; do not restore an old grant or resend old messages from a queue snapshot. A data restore needs quarantine and reconciliation with subsequent erasures, withdrawals and security suspensions before anything returns to service. ADR-0084 records this boundary; complete the restricted retention/recovery runbook and demonstrate it with the data owner.</p>
+
+</HandoverLayout>

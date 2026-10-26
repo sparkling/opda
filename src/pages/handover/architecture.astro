@@ -1,0 +1,36 @@
+---
+import HandoverLayout from '@/layouts/HandoverLayout.astro';
+---
+
+<HandoverLayout title="Architecture and repository" description="Understand the public website, model tooling, participant services and maintained source locations.">
+  <h2 id="architecture">Architecture and repository map</h2>
+  <p><strong>The main website is static.</strong> Astro renders maintained routes, Markdown collections and committed data into <code>dist/</code>. GitHub Actions validates that candidate, publishes it to S3 and refreshes CloudFront. Route 53 and an ACM certificate support the public domain. Normal page reading does not call an LLM or a live triplestore.</p>
+  <table>
+    <caption>Three operational surfaces</caption>
+    <thead><tr><th scope="col">Surface</th><th scope="col">Implementation</th><th scope="col">Maintenance boundary</th></tr></thead>
+    <tbody>
+      <tr><td>Public pages and assets</td><td>Astro, shared OPDA design system, client scripts, static search/data bundles, S3 and CloudFront.</td><td>Build and release the website through CI. Keep stable routes, redirects, resource receipts and accessible shared components.</td></tr>
+      <tr><td>Model generation and inspection</td><td>Python generators, Apache Jena/Fuseki, SHACL, a local GRLC-style SPARQL-to-REST API and committed model projections.</td><td>Local or conditional build-time tooling. Fuseki and <code>src/api/</code> are not deployed as public production services.</td></tr>
+      <tr><td>Participant operations</td><td>AWS API/Lambda services, participant/registration data, identity/session integrations, comments, event queues, CRM and email/Microsoft connections.</td><td>Stateful services require separate access, monitoring, data protection and recovery. A successful static build does not verify them.</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <caption>Where to find and change things</caption>
+    <thead><tr><th scope="col">Path</th><th scope="col">Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td><code>src/pages/</code></td><td>Public Astro routes. This handover is maintained in <code>src/pages/handover/</code>.</td></tr>
+      <tr><td><code>src/layouts/</code>, <code>src/components/</code>, <code>src/styles/</code>, <code>public/ui/</code></td><td>Shared page shell, accessible interface, typography, theme, tokens and generated design assets. Reuse their owners; do not copy a page's implementation into another route.</td></tr>
+      <tr><td><code>src/lib/</code>, <code>src/data/</code></td><td>Navigation, route/status contracts, model loaders, maintained catalogues and committed generated projections. Check which fields are maintained versus generated before editing.</td></tr>
+      <tr><td><code>docs/adr/</code>, <code>docs/ontology/odr/</code>, <code>docs/manual/</code></td><td>Architecture decisions, ontology decisions and generated reference content. Configured collections render selected documents; treat changes here as potential publication.</td></tr>
+      <tr><td><code>source/</code></td><td>Attributed evidence, standards and upstream/research archives. Much of the local archive is gitignored and will not arrive with a clone.</td></tr>
+      <tr><td><code>source/03-standards/ontology/</code></td><td>The committed schema-derived ontology corpus consumed by the generator, Fuseki and drift gates.</td></tr>
+      <tr><td><code>src/data/property-pack/</code>, <code>source/03-standards/ontology-candidates/property-pack/</code></td><td>Maintained catalogue/model definitions and isolated candidate outputs and validation receipts.</td></tr>
+      <tr><td><code>tools/opda-gen/</code>, <code>scripts/</code>, <code>src/api/</code></td><td>Deterministic ontology toolchain, build/resource/operational helpers and local query API.</td></tr>
+      <tr><td><code>config/aws/</code>, <code>.github/workflows/</code></td><td>CloudFormation and runtime implementation; site, infrastructure and assurance pipelines.</td></tr>
+      <tr><td><code>docs/notebooklm/</code>, <code>src/data/marketing/</code>, <code>scripts/marketing/</code></td><td>Notebook source/prompt/receipt records and maintained marketing sources and generated assets.</td></tr>
+      <tr><td><code>tests/</code>, <code>config/ci-test-tiers.json</code>, <code>Makefile</code></td><td>Contracts, fixtures, test ownership and the task catalogue.</td></tr>
+    </tbody>
+  </table>
+  <p><code>dist/</code>, <code>node_modules/</code>, <code>.astro/</code>, <code>.fuseki/</code>, <code>.jena/</code> and local run directories are generated state or caches. They do not replace version-controlled sources or a backup of the research archive.</p>
+
+</HandoverLayout>

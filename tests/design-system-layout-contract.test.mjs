@@ -61,6 +61,7 @@ test('every Astro page belongs to an explicit visual route family', async () => 
       || source.includes("@/layouts/StandalonePublicLayout.astro")
       || source.includes("@/layouts/ModellingLayout.astro")
       || source.includes("@/layouts/MarketingLayout.astro")
+      || source.includes("@/layouts/HandoverLayout.astro")
       || source.includes("@/layouts/OntologyChapter.astro")
       || source.includes("@/components/property-pack/PropertyPackPage.astro")
       || source.includes("@/components/HeaderPreviewControls.astro")

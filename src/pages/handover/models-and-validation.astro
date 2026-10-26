@@ -1,0 +1,48 @@
+---
+import HandoverLayout from '@/layouts/HandoverLayout.astro';
+---
+
+<HandoverLayout title="Models and validation" description="Change models at their maintained source and select the right validation evidence.">
+  <h2 id="model-workflow">Change models at their maintained source</h2>
+  <h3>Schema-derived ontology</h3>
+  <p>Read <code>tools/opda-gen/README.md</code>, the relevant ODR and generator input definitions before changing the committed Turtle corpus. Keep derivation, provenance, documentary annotations and permitted inference behaviour intact. Fix the generator or maintained inputs, regenerate and compare the output; editing only a generated reference page creates drift.</p>
+  <pre><code>{`make ontology-test
+make ci-ontology
+make build-data
+make ci-ontology-doc
+make ci-ontology-graph`}</code></pre>
+  <p><code>make ci-ontology</code> covers unit/round-trip, profile, declaration, construct, coverage and provenance contracts, then proves regeneration byte identity. <code>make build-data</code> uses ephemeral Fuseki to refresh the committed model and graph and build the site. Review changes to <code>src/data/ontology-model.json</code> and <code>public/data/ontology-graph-elements.json</code> alongside the model inputs. Use <code>make ci-ontology-model</code> with a running local Fuseki when checking that extraction independently.</p>
+  <p><code>make jena-load</code> clears and reloads the selected local dataset. Confirm the target before using it. <code>make api</code> and <code>make ontology-model</code> expect a running local Fuseki; they do not administer production.</p>
+  <h3>Property Pack candidate</h3>
+  <p>The maintained catalogue and contextual rules live under <code>src/data/property-pack/</code>, including <code>properties/</code> and <code>candidate-model/</code>. The Python catalogue and candidate scripts produce the isolated versioned artefacts. Preserve the accepted 451-item evidence scope and item-to-model traceability; a count comparison alone does not establish semantic equivalence.</p>
+  <pre><code>{`# After an intentional maintained-model change
+make property-pack-candidate
+
+# Non-publishing validation and deterministic regeneration
+make ci-property-pack-candidate
+make test
+make build`}</code></pre>
+  <p>The candidate gates validate RDF, SHACL, SPARQL, coverage and byte identity. They do not sign off the model. Use the <a href="/development/property-pack">Property Pack workspace</a> and <a href="/development/property-pack/review-and-releases">review and release record</a> to keep open questions, reviewer dispositions and the exact candidate version linked to the eventual determination. Any unresolved required-field counting or source-version discrepancy needs an explicit crosswalk and decision.</p>
+  <h3>Semantic review</h3>
+  <p>Keep six outputs aligned: business glossary, data dictionary, taxonomies, controlled vocabularies, resources and relationships. Record a resource's contextual home, source version, rights, definition, examples, counterexamples and competency questions. Domain practitioners own domain meaning; interoperability work owns the limited shared boundary and qualified mappings. Proposals, objections, validations and human decisions must remain distinguishable.</p>
+
+  <h2 id="validation">Choose and preserve the right validation evidence</h2>
+  <p>There is no <code>lint</code> script. The Makefile is the task entry point. Always run <code>make test</code> after code changes and <code>make build</code> for website changes; use <code>make build-data</code> when ontology inputs change. Add the affected model, operational or interface checks rather than treating every change as equivalent.</p>
+  <table>
+    <caption>Checks by affected surface</caption>
+    <thead><tr><th scope="col">Change</th><th scope="col">Additional evidence</th></tr></thead>
+    <tbody>
+      <tr><td>Ordinary content or route</td><td>Inspect status/provenance and internal links, validate the changed built route and verify the page with the approved Chrome connection.</td></tr>
+      <tr><td>Shared interface</td><td>Focused consumer contracts, <code>make check-design-system</code>, accessible light/dark and narrow-viewport review. Use the shared component and update its consumers.</td></tr>
+      <tr><td>ADR</td><td>Read the status enum and format in <code>docs/adr/README.md</code>; run <code>make gen-adr</code> and <code>make check-adr</code>. Check publication eligibility before building.</td></tr>
+      <tr><td>Schema or ontology</td><td><code>make ci-ontology</code>, relevant schema reproducibility gates, model/document/graph drift checks and regenerated-output review.</td></tr>
+      <tr><td>Property Pack</td><td><code>make ci-property-pack-candidate</code>, catalogue/model contracts and human review of affected definitions and traceability.</td></tr>
+      <tr><td>AWS or participant services</td><td>Focused boundary tests, infrastructure workflow validation and an authorised live acceptance check that avoids unintended participant effects.</td></tr>
+      <tr><td>Marketing or NotebookLM</td><td><code>make marketing-check</code> or the local notebook receipt verifier, then human content/authority/rights review.</td></tr>
+    </tbody>
+  </table>
+  <p>The release workflow classifies changed paths into editorial, application, ontology, infrastructure and tooling lanes. Common checks include design/ADR drift, governed test ownership and stable release contracts. Application changes add focused behaviour checks; ontology changes provision the model toolchain and upstream pinned schema. Changed-route checks and critical browser journeys run against the built candidate before publication.</p>
+  <p>Broader whole-site, accessibility, responsive and visual assurance is scheduled separately; external-link checks run weekly. Scheduled assurance does not deploy. <code>make ci</code> remains a comprehensive local path. Repository browser commands describe CI's Playwright suite; local browser interaction must follow <code>AGENTS.md</code> and use the authorised existing Chrome session. If that connection is unavailable, report the exact missing browser evidence rather than claiming a visual pass.</p>
+  <p>Keep validation outputs with the relevant commit or release record. Passing syntax, machine validation or AI review does not prove source rights, standards approval, operational activation or transfer of ownership.</p>
+
+</HandoverLayout>
