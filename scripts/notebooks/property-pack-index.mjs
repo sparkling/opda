@@ -12,7 +12,6 @@ const AI = path.join(OWNERS, 'semantic-ai-stratecy-business-architecture');
 const ROUTE = '/development/property-pack/learning-media';
 const EXT = {slide_deck:'pdf', video:'mp4', audio:'m4a', infographic:'png'};
 const SETTINGS = {urlNamespace:'/presentations/platform/media/property-pack/', slides:{width:2048, quality:88, thumbnails:true, renderer:'pdfium'}, image:{width:960, quality:78}, poster:{width:960, quality:76}};
-const CARD_PREVIEWS = {'property-pack':'pp-01-infographic-concise-2'};
 const hash = value => createHash('sha256').update(value).digest('hex');
 const json = async file => JSON.parse(await fs.readFile(file, 'utf8'));
 const exists = file => fs.stat(file).then(() => true, () => false);
@@ -264,10 +263,16 @@ export async function buildIndex({run='property-pack-v1', port=4340, publication
     }
     const origin = release?.origin??`http://127.0.0.1:${port}`, runRoute = `${route}/runs/${run}`;
     const catalogue = {decks:model.items.filter(item => item.type === 'slide_deck').map(item => ({...item, slug:item.prefix.replace(/^\/presentations\//, '')+item.slug})), multimedia:model.items.filter(item => item.type !== 'slide_deck')};
+    const artwork = await json(path.join(ROOT, 'config/presentations-card-artwork.json'));
     const data = {inspectionModel:'three-views', variant:run, sourceProof:(exposed?.input??input).sourceProof.sources, renderer,
       subjects:model.subjects, catalogue, requested:input.requests.size, available:model.items.length, errors:model.errors,
-      updatedAt:new Date().toISOString(), title:snapshot.config.title, sections:input.sections, cardPreviews:CARD_PREVIEWS, runRoute, route};
+      updatedAt:new Date().toISOString(), title:snapshot.config.title, sections:input.sections, cardArtwork:artwork.cards, runRoute, route};
     const pin = await json(path.join(ROOT, 'config/shared-renderer.json'));
+    for (const section of input.sections) {
+      const card = artwork.cards[section.id];
+      if (!card?.src?.startsWith('/presentations/artwork/midnight-atlas-v1/') || !card.src.endsWith('.webp') || card.src.includes('..') || !card.alt) throw Error('Invalid section artwork: '+section.id);
+      await copyVerified(path.join(ROOT, 'public', card.src), path.join(site, card.src), card.sha256);
+    }
     for (const asset of pin.assets) {
       if (!asset.startsWith('fonts/') || asset.includes('..')) throw Error('Unexpected shared asset');
       const target = path.join(publicDir, asset); await fs.mkdir(path.dirname(target), {recursive:true});
@@ -283,7 +288,7 @@ export async function buildIndex({run='property-pack-v1', port=4340, publication
 import Shell from ${JSON.stringify(path.join(components, 'NotebookIndexShell.astro'))};
 import Directory from ${JSON.stringify(path.join(components, 'NotebookCollectionDirectory.astro'))};
 import data from '../data.json';
-const collections=data.sections.map(section=>{const previews=data.catalogue.multimedia.filter(item=>item.type==='infographic'&&data.subjects[item.level].section===section.id);const preview=previews.find(item=>item.key===data.cardPreviews[section.id])??previews[0];return {id:section.id,title:section.title,path:data.route+'/'+section.id+'/',question:section.question,summary:section.purpose,perspective:section.audience,image:preview?{src:preview.preview.path,alt:'Preview of '+preview.title}:undefined,chapters:section.chapters.map((chapter,index)=>({title:chapter.title,href:data.route+'/'+section.id+'/#system-'+index}))}});
+const collections=data.sections.map(section=>({id:section.id,title:section.title,path:data.route+'/'+section.id+'/',question:section.question,summary:section.purpose,perspective:section.audience,image:data.cardArtwork[section.id],chapters:section.chapters.map((chapter,index)=>({title:chapter.title,href:data.route+'/'+section.id+'/#system-'+index}))}));
 ---
 <Shell {...${JSON.stringify(shell)}} localOnly={${!publication}} bodyClass="notebook-index collections-index" path={data.route+'/'} title="OPDA · Property Pack learning media"><Directory collections={collections} heading="Property Pack learning media" eyebrow="${publication?'NotebookLM explanations':'Local review · NotebookLM explanations'}" intro="Explore how property information becomes a connected model, and how its meaning and readiness are reviewed." navigationLabel="Property Pack media sections"><div slot="before-collections"><p>Generated explanations support learning. The documented candidate and its recorded decisions remain the source of authority.</p></div><p><a href={data.runRoute+'/'}>Open the versioned run and its frozen inputs</a></p><details><summary>${publication?'Release status':'Local run status'}</summary><p>{data.available} of {data.requested} commissioned artefacts are available for review. Updated {data.updatedAt}.</p><p>Further output review was waived for this commission. Pending delivery is labelled in each topic.</p></details></Directory></Shell>`);
     for (const section of input.sections) {

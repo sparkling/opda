@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "theme": "Midnight property atlas",
+  "generated": "2026-10-26",
+  "provider": "OpenAI built-in image generation",
+  "modelVersionEvidence": "The tool exposes neither a model selector nor a returned model-version identifier; no specific model version is asserted.",
+  "purpose": "Unique editorial orientation for the five learning-section cards, not normative diagrams or replacements for the commissioned learning artefacts.",
+  "palette": [
+    "#081622",
+    "#173d48",
+    "#d9b85e"
+  ],
+  "encoding": {
+    "format": "webp",
+    "width": 1600,
+    "quality": 86,
+    "effort": 6
+  },
+  "cards": {
+    "purpose-programme": {
+      "src": "/presentations/artwork/midnight-atlas-v1/purpose-programme.webp",
+      "alt": "Historic street maps and terraced houses connected by a golden path to a modern city.",
+      "original": "docs/notebooklm/property-pack-media/artwork/midnight-atlas-v1/purpose-programme.png",
+      "generatedFile": "exec-10e7b2c4-6ffa-4455-acd5-32c985645ef5.png",
+      "prompt": "Use case: illustration-story. Asset type: a unique wide landscape 16:9 illustration for an OPDA Property Pack learning-section card. Theme: Midnight property atlas — very dark ink navy #081622, petrol teal #173d48, restrained antique gold #d9b85e, small muted mint accents, richly textured ink on dark paper, sophisticated architectural editorial artwork. Dark background fills the entire image, no white panel. Legible strong silhouettes at thumbnail scale, polished and beautifully composed, no generic stock imagery, no text, no letters, no numbers, no logos, no watermarks. Do not depict legal approval, certification or endorsement. Purpose: explain the history and shared public purpose of property data. Subject and action: an old folded street map and a sequence of progressively more connected British terraced homes lead into a contemporary city plan, one fine golden path connects the eras. Style: restrained risograph editorial print, broad graphic silhouettes, subtle ink grain. Broad horizontal panoramic composition, physical street and paper-map imagery, no people. Unique composition for this section.",
+      "width": 1600,
+      "height": 900,
+      "bytes": 438588,
+      "sha256": "8a9fb2708a2eac5bdc1385ddaa023d862ef3872d39a99d4f771e24d56b8ee2c7",
+      "originalSha256": "f1718b33bb3f9849ca5bdd61baf67a1b5b7420cd0d45bcb13a16bda23390e26b"
+    },
+    "property-pack": {
+      "src": "/presentations/artwork/midnight-atlas-v1/property-pack.webp",
+      "alt": "A house cutaway linked to separate survey plans, property drawings and evidence sheets.",
+      "original": "docs/notebooklm/property-pack-media/artwork/midnight-atlas-v1/property-pack.png",
+      "generatedFile": "exec-bf914933-aea9-4acf-b31e-c73ae8f35509.png",
+      "prompt": "Use case: illustration-story. Asset type: a unique wide landscape 16:9 illustration for an OPDA Property Pack learning-section card. Theme: Midnight property atlas — very dark ink navy #081622, petrol teal #173d48, restrained antique gold #d9b85e, small muted mint accents, richly textured ink on dark paper, sophisticated architectural editorial artwork. Dark background fills the entire image, no white panel. Legible strong silhouettes at thumbnail scale, polished and beautifully composed, no generic stock imagery, no text, no letters, no numbers, no logos, no watermarks. Do not depict legal approval, certification or endorsement. Purpose: explain connected property information anchored to one property. Subject and action: a detailed architectural cutaway of one British terraced house floats above its matching cadastral plot, five distinct evidence sheets and survey drawings connect to the house with fine gold threads. Clearly show a house as the shared focus with documents retaining their distinct shapes. Style: precise hand-inked architectural cutaway with coloured-pencil shading on midnight paper. Wide landscape 16:9, balanced spacious composition. No padlock or closed vault; this is shared information.",
+      "width": 1600,
+      "height": 900,
+      "bytes": 287366,
+      "sha256": "153f90769cb9382166467bfb53a959f72bdde85c884fe18cb00f48f0dffc0d17",
+      "originalSha256": "38aa161ed57682e0d8ecd3ccee0f392bd798619fe82eaa2870669076217e9e2d"
+    },
+    "building-governing": {
+      "src": "/presentations/artwork/midnight-atlas-v1/building-governing.webp",
+      "alt": "Source drawings, interlocking model tiles and a revised blueprint on a drafting board.",
+      "original": "docs/notebooklm/property-pack-media/artwork/midnight-atlas-v1/building-governing.png",
+      "generatedFile": "exec-db4572f5-e855-43eb-bdeb-9e5ad829950a.png",
+      "prompt": "Use case: illustration-story. Asset type: a unique wide landscape 16:9 illustration for an OPDA Property Pack learning-section card. Theme: Midnight property atlas — very dark ink navy #081622, petrol teal #173d48, restrained antique gold #d9b85e, small muted mint accents, richly textured ink on dark paper, sophisticated architectural editorial artwork. Dark background fills the entire image, no white panel. Legible strong silhouettes at thumbnail scale, polished and beautifully composed, no generic stock imagery, no text, no letters, no numbers, no logos, no watermarks. Do not depict legal approval, certification or endorsement. Purpose: explain evidence becoming a governed standard through modelling and accountable review. Subject and action: a craftsperson's drawing board viewed directly from above, raw annotated-looking sheets on the left, clean interlocking model tiles in the centre, a carefully revised blueprint held under a brass drafting ruler on the right. Suggest revision and review with aligned paper layers, not a stamp. Style: dramatic tactile layered paper sculpture with grazing warm light and ink details, dark navy desk. Wide 16:9 composition, no hands or people, no writing.",
+      "width": 1600,
+      "height": 900,
+      "bytes": 313002,
+      "sha256": "679b2d3fa5893a8677c409298c87a66958e8b52d38f1dbde5ecbea0c82729530",
+      "originalSha256": "29b4182e6996f3e44b60fa9b8cdfd873efe34c57a7ce26c51de410dbbb6da0e7"
+    },
+    "participating-implementing": {
+      "src": "/presentations/artwork/midnight-atlas-v1/participating-implementing.webp",
+      "alt": "Four distinct evidence and modelling workspaces connected by bridges around a shared courtyard.",
+      "original": "docs/notebooklm/property-pack-media/artwork/midnight-atlas-v1/participating-implementing.png",
+      "generatedFile": "exec-c8ad6c95-44b9-4e54-80b2-d3069da569f4.png",
+      "prompt": "Use case: illustration-story. Asset type: a unique wide landscape 16:9 illustration for an OPDA Property Pack learning-section card. Theme: Midnight property atlas — very dark ink navy #081622, petrol teal #173d48, restrained antique gold #d9b85e, small muted mint accents, richly textured ink on dark paper, sophisticated architectural editorial artwork. Dark background fills the entire image, no white panel. Legible strong silhouettes at thumbnail scale, polished and beautifully composed, no generic stock imagery, no text, no letters, no numbers, no logos, no watermarks. Do not depict legal approval, certification or endorsement. Purpose: invite useful contributions and technical interoperability between independent participants. Subject and action: four separate miniature architectural workbenches around an open shared courtyard, each holding a different evidence object — survey plan, house model, document folio, small connected-node model — slender golden bridges connect them while benches remain clearly separate. Style: isometric screenprint and precise ink illustration, sculptural geometry, midnight blue and teal with warm gold paths. Wide 16:9, distinct from a network house or drafting table, no generic meeting table or people.",
+      "width": 1600,
+      "height": 900,
+      "bytes": 340912,
+      "sha256": "f101b269c1d65f8ae2a01476ce913b45f5a6054e8ad1655e005f7c3cd8d8e75e",
+      "originalSha256": "14118dfa0b8406c4156005c15a86704dc6c9530a9326fb1480885ef6f9f6bb5e"
+    },
+    "meaning-evidence-trust": {
+      "src": "/presentations/artwork/midnight-atlas-v1/meaning-evidence-trust.webp",
+      "alt": "An archival property folio with transparent evidence layers, a magnifying lens and a timeline.",
+      "original": "docs/notebooklm/property-pack-media/artwork/midnight-atlas-v1/meaning-evidence-trust.png",
+      "generatedFile": "exec-f9daaabb-f666-4a8e-b7f1-be10f4ec000a.png",
+      "prompt": "Use case: illustration-story. Asset type: a unique wide landscape 16:9 illustration for an OPDA Property Pack learning-section card. Theme: Midnight property atlas — very dark ink navy #081622, petrol teal #173d48, restrained antique gold #d9b85e, small muted mint accents, richly textured ink on dark paper, sophisticated architectural editorial artwork. Dark background fills the entire image, no white panel. Legible strong silhouettes at thumbnail scale, polished and beautifully composed, no generic stock imagery, no text, no letters, no numbers, no logos, no watermarks. Do not depict legal approval, certification or endorsement. Purpose: show that property claims depend on evidence, identity, time and permission. Subject and action: an open archival folio on dark velvet, a single property drawing on one page, transparent overlapping evidence sheets and a magnifying lens above it reveal matching boundary outlines, a small brass timeline instrument lies beside the folio. Use physical metaphor of tracing a claim to its source, not cybersecurity or a shield. Style: exquisite engraved ink still life with coloured pencil and soft chiaroscuro, wide 16:9. Gold light on evidence, dark petrol shadows.",
+      "width": 1600,
+      "height": 900,
+      "bytes": 327760,
+      "sha256": "7e1cf47c3fe94aaba4f542c769699c505400887192a59a186e6150158ba61991",
+      "originalSha256": "5ba0cd56ec42b247e96caf04ddb3e0804fe1527e49a254bced50ef0750e704bd"
+    }
+  }
+}
