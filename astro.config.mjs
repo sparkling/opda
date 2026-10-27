@@ -32,6 +32,7 @@ import { responsiveArtworkPublisher } from './src/integrations/responsive-artwor
 import { inlineSmallPageStyles } from './src/integrations/asset-inlining.mjs';
 import { immutableUiAssets } from './src/integrations/immutable-ui-assets.mjs';
 import { presentationsSnapshot } from './src/integrations/presentations-snapshot.mjs';
+import { modelBrowserSite } from './src/integrations/model-browser.mjs';
 
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
@@ -181,7 +182,7 @@ export default defineConfig({
   // inspect emitted head metadata for noindex/redirects; preserve their files.
   integrations: [odrSourcesGenerator(), reportGenerator(), diagramLinksGenerator(), councilGenerator(), siteSearchIndexGenerator(), designSystemBundler(), responsiveArtworkPublisher(), sitemap({
     filter: (page) => sitemapPageIsIndexable(page, new URL('./dist/', import.meta.url)),
-  }), immutableUiAssets(), presentationsSnapshot()],
+  }), immutableUiAssets(), presentationsSnapshot(), modelBrowserSite()],
   // The ADR, ODR and generated manual collections exceed Vite's safe
   // single-module size in development. Astro's chunked store keeps each
   // virtual module below 1 MiB, so getCollection() cannot silently fall back

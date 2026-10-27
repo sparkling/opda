@@ -1,0 +1,7 @@
+{
+  "repository": "hm-group/semantic-app",
+  "revision": "b74468734729b7760748a1106eea3e4161b41937",
+  "archive": "config/model-browser/semantic-app-source.zip",
+  "sha256": "c39d9f715684f0c0b7c3a17c083439e297ae37bfb60a4f4cc2b3166683394925",
+  "scope": "Pinned shared browser components and theme; OPDA owns corpus adapters, navigation and routes."
+}

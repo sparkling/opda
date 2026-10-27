@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-14
-updated: 2026-09-03
+updated: 2026-10-27
 tags: [ontology, information-architecture, ssg, sparql, dereferenceability, linked-data, detail-pages, shacl, skos, bounded-context, doc-drift-gate]
 supersedes: []
 depends-on: [ADR-0021, ADR-0041, ADR-0039, ADR-0043, ODR-0004]
@@ -9,6 +9,23 @@ implements: []
 ---
 
 # Ontology as web pages — dereferenceable per-entity detail pages, SPARQL-driven SSG
+
+> **Standalone-browser amendment, 2026-10-27 — implemented.** A separate Astro
+> application in `tools/model-browser` reuses the pinned semantic-app browser
+> components at `b74468734729b7760748a1106eea3e4161b41937`. It renders the Property
+> Pack candidate and the schema-derived ontology as separate corpora at
+> `/model-browser` and `/model-browser/schema`. Shared detail sections expose
+> relationships, constraints and provenance; the Property Pack corpus also
+> exposes its controlled values, source-topic concepts and all 451 source items.
+> Existing canonical technical-reference routes and RDF identifiers remain
+> unchanged. This app is a read-only model browser, with its own navigation and
+> development server (`make model-browser`); the normal site build publishes its
+> static output through the same CI release. The source adapter verifies original
+> candidate-file hashes and does not modify, promote or merge the model corpora.
+> Upstream components are extracted from a hash-pinned source archive; two additive
+> list-layout slots allow OPDA records to replace the H&M-specific client loader.
+> OPDA owns the shell, descriptors and corpus projection. Existing discussion,
+> authentication and chat services are not inherited from the source application.
 
 > **Build-path amendment, 2026-09-03.** The SPARQL extraction still defines the
 > committed ontology model, but ordinary SSG reads that validated snapshot

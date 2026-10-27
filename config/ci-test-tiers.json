@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "tiers": ["release-blocking", "pull-request-blocking", "scheduled-assurance", "development-aid", "delete"],
   "tests": [
+    { "path": "tests/rendering-model-browser.test.mjs", "owner": "modelling-platform", "tier": "release-blocking", "lane": "application" },
     { "path": "tests/property-pack-publication.test.mjs", "owner": "learning-media", "tier": "release-blocking", "lane": "application" },
     { "path": "tests/property-pack-learning-journey.test.mjs", "owner": "property-pack", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/property-pack-media-index.test.mjs", "owner": "learning-media", "tier": "pull-request-blocking", "lane": "application" },

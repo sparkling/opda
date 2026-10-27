@@ -24,6 +24,13 @@ help:	## Show this help
 	@echo ""
 
 ##@ Site (Astro website)
+.PHONY: model-browser model-browser-build
+model-browser: node_modules ## Standalone OPDA model browser → http://127.0.0.1:4342/model-browser
+	node scripts/model-browser.mjs --dev
+
+model-browser-build: node_modules ## Build the standalone model browser (also included in make build)
+	node scripts/model-browser.mjs
+
 .PHONY: install
 install:	## Install the CI-locked pnpm dependencies
 	pnpm install --frozen-lockfile

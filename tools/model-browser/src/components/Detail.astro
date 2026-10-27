@@ -1,0 +1,39 @@
+---
+import GenericDetail from '@semantic-app/components/GenericDetail.astro';
+import DetailSection from '@semantic-app/components/DetailSection.astro';
+import DocumentationSection from '@semantic-app/components/sections/DocumentationSection.astro';
+import ConstraintSection from '@semantic-app/components/sections/ConstraintSection.astro';
+import RelationshipDiagram from './RelationshipDiagram.astro';
+import {corpora,corpusHref,href,sourceHref,sourceItems} from '../../model.mjs';
+const {corpus,id}=Astro.props;
+const entry=corpora[corpus].byId.get(id);
+const section=entry.kind==='class'?'concepts':entry.kind.includes('property')?'properties':entry.kind.includes('shape')?'shapes':'vocabularies';
+const title={concepts:'Concepts',properties:'Properties',shapes:'Shapes',vocabularies:'Vocabularies'}[section];
+const related=entry.groups.filter(g=>g.refs.length);
+const sources=(entry.sourceIds||[]).map(id=>sourceItems.find(item=>item.item_id===id)).filter(Boolean);
+const blank={pathName:'',path:'',datatype:'',className:'',minCount:'',maxCount:'',pattern:'',severity:'',message:'',editor:'',viewer:'',nodeKind:'',hasValue:'',equals:'',disjoint:'',lessThan:'',lessThanOrEquals:'',uniqueLang:'',uniqueValueForClass:'',singleLine:'',suggestion:'',inValues:[],order:0,group:''};
+const constraints=(entry.constraints||[]).map((c,i)=>({...blank,pathName:c.label,path:c.path_iri,datatype:c.datatype,className:corpora[corpus].byIri.get(c.class)?.title||c.class,minCount:c.min_count==null?'':String(c.min_count),maxCount:c.max_count==null?'':String(c.max_count),pattern:c.pattern,severity:c.severity||'',message:c.message||'',order:i}));
+const tabs=[['documentation','Documentation',true],['relationships','Relationships',related.length>0],['constraints','Constraints',constraints.length>0],['evidence','Source evidence',sources.length>0],['representation','Model record',true]].map(([id,label,hasData])=>({id,href:'#section-'+id,label,hasData}));
+const descriptor={entityType:section,entitySingular:entry.kindLabel,listEndpoint:'',sectionClass:'model-section',breadcrumbBase:{label:title,href:corpusHref(corpus,section)},showNavFilter:false};
+const facts=[...(entry.facts||[]),...(entry.raw?.constraints?Object.entries(entry.raw.constraints).filter(([,v])=>v!==''&&v!=null).map(([label,value])=>({label:label.replaceAll('_',' '),value:String(value)})):[])];
+---
+<GenericDetail descriptor={descriptor} entityName={entry.title} context={entry.context} localName={entry.id} contextLabel={entry.contextLabel} subtitle={entry.summary} badges={[{label:entry.kindLabel,class:'bg-blue-100 text-blue-700'},{label:entry.statusLabel,class:'bg-yellow-100 text-yellow-800'}]} sectionTabs={tabs}>
+  <code slot="hero-after-title" class="browser-identity">{entry.iri}</code>
+  <DocumentationSection definition={entry.summary} usage={entry.raw?.identity_criterion||''} notesList={entry.raw?.scopeNote?[entry.raw.scopeNote]:[]} sectionClass="model-section" />
+  {facts.length>0&&<DetailSection id="section-facts" heading="Model facts" sectionClass="model-section"><dl>{facts.map(fact=><div class="mb-3"><dt class="text-xs font-semibold uppercase text-gray-500">{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl></DetailSection>}
+  {related.length>0&&<DetailSection id="section-relationships" heading="Relationships and hierarchy" count={related.reduce((n,g)=>n+g.refs.length,0)} sectionClass="model-section">
+    <RelationshipDiagram entry={entry} corpus={corpus} />
+    {related.map(section=><section class="mb-6"><h3 class="mb-3 text-sm font-semibold text-gray-500">{section.label}</h3><div class="browser-graph">{section.refs.map(ref=><div>{ref.url?<a href={ref.url}>{ref.label}<small>{ref.id}</small></a>:<code class="browser-identity">{ref.label}</code>}</div>)}</div></section>)}
+  </DetailSection>}
+  <ConstraintSection constraints={constraints} sectionClass="model-section" />
+  {sources.length>0&&<DetailSection id="section-evidence" heading="Source evidence" count={sources.length} sectionClass="model-section">
+    <p class="text-sm text-gray-500">Direct traces identify the construct evidenced by a source item. Structural traces identify the model context needed to carry it.</p>
+    <div class="browser-table-wrap"><table class="browser-table"><thead><tr><th>Source question</th><th>Trace</th><th>Source path</th></tr></thead><tbody>{sources.map(item=><tr><td><a href={sourceHref(item.item_id)}>{item.label}</a></td><td>{entry.directSourceIds?.includes(item.item_id)?'Direct':entry.structuralSourceIds?.includes(item.item_id)?'Structural':'Recorded source'}</td><td><code>{item.source_path}</code></td></tr>)}</tbody></table></div>
+  </DetailSection>}
+  <DetailSection id="section-representation" heading="Model record and provenance" sectionClass="model-section">
+    <p>IRI: <code class="browser-identity">{entry.iri}</code></p>
+    <p><a href={corpusHref(corpus,'exports/model.json')}>Download this corpus as JSON</a>{entry.referenceUrl&&<> · <a href={'https://opda.org.uk'+entry.referenceUrl}>Open existing technical reference</a></>}</p>
+    <details><summary>Recorded source fields</summary><pre class="overflow-auto text-xs max-w-full">{JSON.stringify(entry.raw||{id:entry.id,iri:entry.iri,definition:entry.summary},null,2)}</pre></details>
+    <p class="mt-4 text-sm text-gray-500">{corpus==='pack'?'Part of the machine-proposed Property Pack candidate.':'Part of the separate schema-derived draft.'} <a href={href('governance')}>Review authority and status</a>.</p>
+  </DetailSection>
+</GenericDetail>

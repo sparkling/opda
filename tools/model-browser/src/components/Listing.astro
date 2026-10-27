@@ -1,0 +1,36 @@
+---
+import ListPageLayout from '@semantic-app/components/ListPageLayout.astro';
+import {computeFacetCounts} from '../../../../src/lib/ontology-browser/filter.mjs';
+import {corpora,entriesFor,corpusHref} from '../../model.mjs';
+const {corpus,section,context}=Astro.props;
+const titles={concepts:'Concepts',properties:'Properties',shapes:'Validation shapes',vocabularies:'Vocabularies',search:'Search the model'};
+const entries=entriesFor(corpus,section).filter(e=>!context||e.context===context).sort((a,b)=>a.title.localeCompare(b.title));
+const counts=computeFacetCounts(entries,['kind','context']);
+const labels=Object.fromEntries(corpora[corpus].contexts.map(c=>[c.id,c.label]));
+const kinds=Object.fromEntries(entries.map(e=>[e.kind,e.kindLabel]));
+const payload=JSON.stringify(entries.map(({id,title,summary,identifier,kind,context})=>({id,title,summary,identifier,kind,context}))).replace(/</g,'\\u003c');
+---
+<ListPageLayout title={titles[section]} subtitle={context?labels[context]:corpora[corpus].description} searchPlaceholder="Name, identifier or definition…" exportLinks={[{format:'Model JSON',href:corpusHref(corpus,'exports/model.json')}]}>
+  <Fragment slot="filters">
+    {Object.entries(counts).map(([key,values])=><fieldset class="browser-facet"><legend>{key==='kind'?'Resource kind':'Semantic home / module'}</legend>{values.map(({value,count})=><label><input type="checkbox" data-model-filter={key} value={value} /><span>{key==='kind'?kinds[value]:labels[value]||value}</span><span data-filter-count>{count}</span></label>)}</fieldset>)}
+  </Fragment>
+  <div class="browser-list-controls" slot="controls">
+    <label>Sort <select data-sort aria-label="Sort resources"><option value="name">Name</option><option value="kind">Kind</option><option value="context">Semantic home</option></select></label>
+    <label>Order <select data-order aria-label="Sort order"><option value="asc">A–Z</option><option value="desc">Z–A</option></select></label>
+    <label>View <select data-view aria-label="Result view"><option value="cards">Cards</option><option value="compact">Compact</option></select></label>
+    <button type="button" data-reset>Reset</button>
+  </div>
+  <div slot="results">
+    <div class="browser-grid" data-results>{entries.map(entry=><article class="browser-card" data-record={entry.id}>
+      <p class="browser-eyebrow">{entry.kindLabel} · <a href={entry.contextUrl}>{entry.contextLabel}</a></p>
+      <h2><a href={entry.url}>{entry.title}</a></h2>
+      <code class="browser-identity">{entry.id}</code>
+      <p>{entry.summary||'No definition recorded in this model.'}</p>
+      <p>{entry.statusLabel}</p>
+    </article>)}</div>
+    <p class="browser-empty" data-empty hidden>No matching resources. Try a shorter search or remove a filter.</p>
+    <noscript><p>All resources are listed. Search, filters and pagination require JavaScript.</p></noscript>
+  </div>
+  <script type="application/json" is:inline data-model-data set:html={payload} />
+</ListPageLayout>
+<script>import '../scripts/listing.mjs';</script>

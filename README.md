@@ -8,6 +8,13 @@ review.
 
 The public knowledge base is [opda.org.uk](https://opda.org.uk/).
 
+The standalone **OPDA Models** browser runs independently with `make model-browser`
+at [http://127.0.0.1:4342/model-browser](http://127.0.0.1:4342/model-browser).
+`make model-browser-build` builds it alone; `make build` includes its static output
+at `/model-browser` in the normal website release. It reuses pinned semantic-app
+components and keeps the Property Pack candidate and schema-derived input model
+separate. The source/archive boundary is recorded in ADR-0044.
+
 > **Status and authority:** SPDTF is in development. It is not an adopted OPDA standard or an
 > approved statutory property Smart Data scheme. The existing PDTF schema, the separate ontology
 > derived from it, and the Property Pack ontology candidate each retain their own provenance and

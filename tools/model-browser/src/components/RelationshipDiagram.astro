@@ -1,0 +1,20 @@
+---
+import GraphDiagram from '@/components/GraphDiagram.astro';
+import {diagramPreamble,wrapDiagramLabel} from '../../../../src/lib/property-pack-diagram-utils.mjs';
+import {corpora} from '../../model.mjs';
+import '@/styles/graph-diagram.css';
+const {entry,corpus}=Astro.props;
+const model=corpora[corpus];
+const relations=entry.groups.flatMap(group=>group.refs.filter(ref=>ref.id&&model.byId.has(ref.id)).map(ref=>({group:group.label,target:model.byId.get(ref.id)})));
+const selected=relations.slice(0,24);
+const lines=diagramPreamble(entry.title+' relationships','Recorded relationships from the current model. See the complete linked lists below.');
+lines.push(`focus["${wrapDiagramLabel(entry.title)}"]`);
+selected.forEach(({group,target},i)=>{lines.push(`n${i}["${wrapDiagramLabel(target.title)}"]`,`focus -->|"${wrapDiagramLabel(group)}"| n${i}`,`click n${i} "${target.url}"`);});
+---
+{selected.length>0&&<><GraphDiagram source={lines.join('\n')} caption="Recorded model relationships. Use the linked lists below for the complete reference." minHeight="340px" />{relations.length>24&&<p class="text-sm text-gray-500">Showing 24 of {relations.length} relationships to keep the diagram readable. All relationships are listed below.</p>}</>}
+<script>
+  import {mountGraphDiagrams,disposeGraphDiagrams} from '@/scripts/graph-diagram';
+  mountGraphDiagrams();
+  window.addEventListener('pagehide',disposeGraphDiagrams);
+  window.addEventListener('pageshow',mountGraphDiagrams);
+</script>

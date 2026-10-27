@@ -1,0 +1,61 @@
+---
+import Base from '../components/Base.astro';
+import Listing from '../components/Listing.astro';
+import Detail from '../components/Detail.astro';
+import {routes,corpora,href,corpusHref,sourceItems,sourceHref,lifecycle,validation,mappingStatus,connections,manifest,workPackages} from '../../model.mjs';
+export function getStaticPaths(){return routes();}
+const {view,corpus,id,section,context}=Astro.props;
+const model=corpora[corpus];
+const source=view==='source'?sourceItems.find(item=>item.item_id===id):null;
+const titles={overview:model.title,contexts:'Semantic homes and modules',context:context?.label,sources:'Property Pack source questions',source:source?.label,governance:'Governance and model status',validation:'Validation evidence',mappings:'Boundaries and mappings',downloads:'Downloads and model data',namespaces:'Namespaces'};
+const title=titles[view]||model.title;
+const cards=[['Concepts','concepts','Understand the things, roles and records in the model.'],['Properties','properties','Follow relationships and the values that describe a concept.'],['Vocabularies','vocabularies','Inspect controlled values and the schemes that organise them.'],['Validation shapes','shapes','Read the constraints attached to model resources.'],['Semantic homes','boundaries','Explore the distinct meanings owned by each domain.'],['Search the model','search','Find a term, identifier or definition across this corpus.']];
+const recordCount=kind=>model.entries.filter(e=>e.kind===kind).length;
+const namespaceRows=[...new Set(model.entries.map(e=>e.iri?.slice(0,Math.max(e.iri.lastIndexOf('/'),e.iri.lastIndexOf('#'))+1)).filter(Boolean))];
+---
+{view==='listing'?<Listing corpus={corpus} section={section} />:view==='detail'?<Detail corpus={corpus} id={id} />:<Base title={title}>
+  <header class="browser-hero"><p class="browser-eyebrow">{corpus==='pack'?'OPDA · Property Pack modelling':'OPDA · Separate input model'}</p><h1>{title}</h1>
+  {view==='overview'&&<><p class="browser-lead">{model.description}</p><div class="browser-stats"><a href={corpusHref(corpus,'concepts')}><strong>{recordCount('class')}</strong>classes</a><a href={corpusHref(corpus,'properties')}><strong>{recordCount('object-property')+recordCount('datatype-property')}</strong>properties</a><a href={corpusHref(corpus,'shapes')}><strong>{recordCount('node-shape')}</strong>shapes</a><a href={corpusHref(corpus,'vocabularies')}><strong>{recordCount('concept-scheme')}</strong>vocabulary schemes</a>{corpus==='pack'&&<a href={href('sources')}><strong>{sourceItems.length}</strong>source questions</a>}</div></>}
+  </header>
+  {view==='overview'&&<>
+    <div class="browser-grid">{cards.map(([label,route,description])=><article class="browser-card"><h2><a href={corpusHref(corpus,route)}>{label}</a></h2><p>{description}</p><a href={corpusHref(corpus,route)}>Explore →</a></article>)}</div>
+    <section class="browser-section"><h2>Read the model through a property</h2><p class="browser-lead">Start with a concept, follow its relationships, inspect its validation rules, then trace what it means back to the evidence.</p>{model.entries.find(e=>e.kind==='class'&&e.title==='Property')&&<p><a href={model.entries.find(e=>e.kind==='class'&&e.title==='Property').url}>Start with Property →</a></p>}</section>
+    <section class="browser-section"><h2>{corpus==='pack'?'Distinct semantic homes':'Modules in this input model'}</h2><div class="browser-grid">{model.contexts.map(c=><article class="browser-card"><h3><a href={corpusHref(corpus,'boundary/'+encodeURIComponent(c.id||'unassigned'))}>{c.label}</a></h3><p>{c.definition}</p></article>)}</div></section>
+    {corpus==='pack'&&<aside class="browser-note">The candidate is {manifest.candidate_version}, machine-proposed and non-normative. <a href={href('governance')}>See the recorded lifecycle and review responsibilities</a>.</aside>}
+  </>}
+  {view==='contexts'&&<><p class="browser-lead">Each resource retains its own semantic home. Shared exchange meanings do not replace domain meanings.</p><div class="browser-grid">{model.contexts.map(c=><article class="browser-card"><h2><a href={corpusHref(corpus,'boundary/'+encodeURIComponent(c.id||'unassigned'))}>{c.label}</a></h2><p>{c.definition}</p><p>{model.entries.filter(e=>e.context===c.id).length} resources</p></article>)}</div></>}
+  {view==='context'&&<>
+    <p class="browser-lead">{context.definition}</p>
+    <div class="browser-grid">{cards.slice(0,4).map(([label,route,description])=><article class="browser-card"><h2><a href={corpusHref(corpus,route)+'?context='+encodeURIComponent(context.id)}>{label}</a></h2><p>{description}</p></article>)}</div>
+    <section class="browser-section"><h2>Resources in this semantic home</h2><ul class="browser-links">{model.entries.filter(e=>e.context===context.id).map(e=><li><a href={e.url}>{e.title}</a> <span class="text-gray-500">· {e.kindLabel}</span></li>)}</ul></section>
+    {corpus==='pack'&&<section class="browser-section"><h2>Source questions</h2><p><a href={href('sources')+'?context='+context.id}>Browse the source register</a></p><p><a href={'https://opda.org.uk/development/working-groups/'+context.id}>Working-group context on the OPDA website</a></p></section>}
+  </>}
+  {view==='sources'&&<>
+    <p class="browser-lead">The 451 required source items define the candidate's coverage boundary. They are source questions, not 451 predefined RDF properties.</p>
+    <label class="block mb-6">Filter source questions <input type="search" data-source-search placeholder="Question, source path or semantic home…" class="block w-full rounded border border-gray-300 p-3 mt-2" /></label><p data-source-count>{sourceItems.length} source questions</p>
+    <div class="browser-table-wrap"><table class="browser-table"><thead><tr><th>Source question</th><th>Semantic home</th><th>Source path</th></tr></thead><tbody>{sourceItems.map(item=><tr data-source-row data-home={item.semantic_home}><td><a href={sourceHref(item.item_id)}>{item.label}</a></td><td><a href={corpusHref('pack','boundary/'+item.semantic_home)}>{corpora.pack.contexts.find(c=>c.id===item.semantic_home)?.label}</a></td><td><code>{item.source_path}</code></td></tr>)}</tbody></table></div>
+  </>}
+  {view==='source'&&source&&<>
+    <p class="browser-lead">{source.definition}</p><code class="browser-identity">{source.source_path}</code>
+    <div class="browser-grid">{[['Requiredness',source.requiredness],['Conditional',String(source.conditional)],['Datatype',source.datatype],['Cardinality',JSON.stringify(source.cardinality)]].map(([label,value])=><div class="browser-card"><h2>{label}</h2><p>{value}</p></div>)}</div>
+    <section class="browser-section"><h2>Model constructs</h2><p>The following resources carry or contextualise this question in the proposed model.</p><ul class="browser-links">{source.construct_refs.map(iri=>{const e=corpora.pack.byIri.get(iri);return <li>{e?<a href={e.url}>{e.title}</a>:<code>{iri}</code>}</li>;})}</ul></section>
+    {source.permitted_values.length>0&&<section class="browser-section"><h2>Permitted source values</h2><ul class="browser-links">{source.permitted_values.map(value=><li>{value}</li>)}</ul><p>Source response choices retain their recorded context and do not establish universal classification.</p></section>}
+    <details><summary>Complete dictionary record</summary><pre class="overflow-auto text-xs">{JSON.stringify(source,null,2)}</pre></details><p class="mt-6"><a href={href('sources')}>All source questions</a></p>
+  </>}
+  {view==='governance'&&<>
+    <p class="browser-lead">The browser makes the committed model inspectable. Human working groups determine meaning and disposition.</p>
+    <div class="browser-grid">{Object.entries(lifecycle).map(([key,value])=><article class="browser-card"><h2>{key.replace(/([A-Z])/g,' $1').replace(/^./,s=>s.toUpperCase())}</h2><p>{value}</p></article>)}</div>
+    <section class="browser-section"><h2>How to use this browser in review</h2><ol class="browser-links"><li>Find the concept or source question relevant to your domain.</li><li>Read its definition, relationships and constraints.</li><li>Follow the evidence; distinguish direct source traces from structural support.</li><li>Record a correction or decision through the relevant working-group process.</li></ol><p><a href="https://opda.org.uk/development/working-groups/member-guide/model-review-and-decisions">Review and decision guidance</a> · <a href="https://opda.org.uk/development/property-pack/technical-working-group-determination">Technical Working Group determination</a></p></section>
+  </>}
+  {view==='validation'&&<><p class="browser-lead">Recorded deterministic checks for the exact candidate tree. Passing technical checks does not establish business truth or approval.</p><code class="browser-identity">Checked tree SHA256: {validation.checked_tree_digest}</code><div class="browser-table-wrap"><table class="browser-table"><thead><tr><th>Check</th><th>Recorded result</th><th>Evidence</th></tr></thead><tbody>{validation.checks.map(check=><tr><td>{check.name}</td><td>{check.state}</td><td>{check.detail}</td></tr>)}</tbody></table></div><p class="mt-6"><a href={corpusHref('pack','shapes')}>Inspect the validation shapes</a> · <a href={href('exports/property-pack/validation/report.json')}>Download recorded results</a></p></>}
+  {view==='mappings'&&<><p class="browser-lead">Cross-domain semantic mappings: {mappingStatus}. No approved equivalence is inferred from a shared label or structural link.</p><h2>Recorded context connections</h2><div class="browser-grid">{connections.map(connection=><article class="browser-card"><h3><a href={corpusHref('pack','boundary/'+connection.from)}>{connection.from}</a> → <a href={corpusHref('pack','boundary/'+connection.to)}>{connection.to}</a></h3><p>{connection.kind.replaceAll('-',' ')}</p></article>)}</div><aside class="browser-note">The schema-derived ontology is an independent input model. This browser does not invent a semantic crosswalk between it and the Property Pack candidate.</aside></>}
+  {view==='namespaces'&&<><p class="browser-lead">IRI namespaces observed in this corpus. Browser addresses are navigation routes; resource IRIs remain unchanged.</p><ul class="browser-links">{namespaceRows.map(namespace=><li><code class="browser-identity">{namespace}</code></li>)}</ul></>}
+  {view==='downloads'&&<>
+    <p class="browser-lead">Download the committed candidate and browser projections for independent inspection.</p><div class="browser-grid"><article class="browser-card"><h2>Property Pack candidate</h2><p>Original RDF/OWL, SKOS, SHACL, projections, manifest and validation results.</p><a href={href('exports/property-pack.zip')}>Download complete candidate ZIP</a><p class="mt-3"><a href={href('exports/model.json')}>Browser model JSON</a> · <a href={href('exports/property-pack/candidate-manifest.json')}>Source manifest</a></p></article><article class="browser-card"><h2>Schema-derived input</h2><p>A separate snapshot with its own resource identities and provenance.</p><a href={corpusHref('schema','exports/model.json')}>Download schema-derived browser JSON</a><p class="mt-3"><a href={href('exports/schema-ontology-model.json')}>Complete source model JSON</a></p></article></div>
+    <section class="browser-section"><h2>RDF and validation files</h2><ul class="browser-links">{manifest.files.filter(file=>file.path.endsWith('.ttl')).map(file=><li><a href={href('exports/property-pack/'+file.path)}>{file.path}</a></li>)}</ul></section>
+  </>}
+</Base>}
+<script>
+  const input=document.querySelector('[data-source-search]');
+  if(input){const rows=[...document.querySelectorAll('[data-source-row]')];const home=new URL(location.href).searchParams.get('context');function filter(){const query=(input as HTMLInputElement).value.toLowerCase();let count=0;for(const row of rows){const show=(!home||(row as HTMLElement).dataset.home===home)&&row.textContent.toLowerCase().includes(query);(row as HTMLElement).hidden=!show;if(show)count++;}document.querySelector('[data-source-count]').textContent=`${count} of ${rows.length} source questions`;}input.addEventListener('input',filter);filter();}
+</script>

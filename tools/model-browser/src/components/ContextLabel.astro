@@ -1,0 +1,6 @@
+---
+import {corpusHref} from '../../model.mjs';
+const {context,label}=Astro.props;
+const corpus=Astro.url.pathname.startsWith('/model-browser/schema')?'schema':'pack';
+---
+<a class="text-xs font-semibold uppercase tracking-wider text-gray-500" href={corpusHref(corpus,'boundary/'+encodeURIComponent(context))}>{label}</a>

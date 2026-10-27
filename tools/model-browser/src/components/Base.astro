@@ -1,0 +1,33 @@
+---
+import '../styles/browser.css';
+import {href,corpusHref,corpora} from '../../model.mjs';
+const {title,description='Explore the Property Pack model and the evidence behind it.'}=Astro.props;
+const corpus=Astro.url.pathname.startsWith('/model-browser/schema')?'schema':'pack';
+const nav=[['Concepts','concepts'],['Properties','properties'],['Vocabularies','vocabularies'],['Shapes','shapes'],['Semantic homes','boundaries']];
+const tools=[['Sources',href('sources')],['Governance',href('governance')],['Validation',href('validation')],['Mappings',href('mappings')],['Downloads',href('downloads')],['Namespaces',corpusHref(corpus,'namespaces')]];
+---
+<!doctype html>
+<html lang="en" data-theme="dark" data-view-mode="expert">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="description" content={description} /><meta name="theme-color" content="#081622" /><title>{title} · OPDA Models</title></head>
+<body>
+  <a class="browser-skip" href="#main-content">Skip to content</a>
+  <header class="browser-masthead">
+    <div class="browser-masthead-inner">
+      <a class="browser-brand" href={href()}><span aria-hidden="true">◇</span> OPDA <span class="browser-brand-sub">Models</span></a>
+      <nav aria-label="Model navigation">{nav.map(([label,route])=><a href={corpusHref(corpus,route)} aria-current={Astro.url.pathname.startsWith(corpusHref(corpus,route))?'page':undefined}>{label}</a>)}</nav>
+      <a class="browser-search-link" href={corpusHref(corpus,'search')}>Search</a>
+      <button type="button" data-theme-toggle aria-label="Switch colour theme">Light / dark</button>
+    </div>
+  </header>
+  <div class="browser-modelbar">
+    <nav aria-label="Model selection">{Object.values(corpora).map(model=><a href={corpusHref(model.id)} aria-current={corpus===model.id?'true':undefined}>{model.title}</a>)}</nav>
+    <span>{corpus==='pack'?'0.1.0-draft · Machine-proposed':'Separate schema-derived draft'}</span>
+  </div>
+  <main id="main-content" class="browser-main"><slot /></main>
+  <footer class="browser-footer"><nav aria-label="Model tools">{tools.map(([label,url])=><a href={url}>{label}</a>)}</nav><p><a href="https://opda.org.uk/development/property-pack">Property Pack guide</a> · <a href="https://opda.org.uk/semantic-modelling">Modelling method</a> · <a href="https://opda.org.uk">OPDA website</a></p><p>Candidate publication and technical checks do not record standards adoption or working-group approval.</p></footer>
+  <script>
+    const button=document.querySelector('[data-theme-toggle]');
+    button?.addEventListener('click',()=>{document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';});
+  </script>
+</body>
+</html>

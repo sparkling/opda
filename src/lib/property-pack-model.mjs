@@ -20,7 +20,7 @@ import {
 } from './property-pack-diagram-utils.mjs';
 
 export const CANDIDATE_ROOT = path.resolve(
-  process.cwd(), 'source/03-standards/ontology-candidates/property-pack/0.1',
+  process.env.OPDA_MODEL_ROOT || process.cwd(), 'source/03-standards/ontology-candidates/property-pack/0.1',
 );
 export const PROPERTY_PACK_ROUTE = '/development/property-pack';
 
